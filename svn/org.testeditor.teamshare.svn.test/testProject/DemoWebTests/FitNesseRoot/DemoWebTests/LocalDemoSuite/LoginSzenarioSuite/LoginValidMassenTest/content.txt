@@ -1,0 +1,11 @@
+Dieser Test ist ein Massentest und führt mehrere Login-Versuche mit unterschiedlichen Test-Daten durch.
+!include <DemoWebTests.TestSzenarien.LoginValidationSzenario
+!|Login Validation Szenario|
+|Name|Passwort|Land|TextVorhanden|TextNichtVorhanden|
+|Max Mustermann|maxi||erfolgreich|Login|
+|Hans Mller|mllerman|Australien|erfolgreich|Name|
+|Hans Mller|Siemens|Australien||erfolgreich|
+|Moxen|chicago|USA|USA|Login|
+|Hilde|swiz|Schweden|erfolgreich|Deutschland|
+|Jan|admin|Deutschland||erfolgreich|
+#

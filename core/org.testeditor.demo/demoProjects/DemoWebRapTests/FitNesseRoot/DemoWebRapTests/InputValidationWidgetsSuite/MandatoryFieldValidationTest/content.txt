@@ -1,0 +1,30 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+Fehlende Eingabe
+# Maske: Input Validation
+-!|script|
+|leere das Feld|input_mandatory|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+# Maske: Input Validation
+-!|script|
+|überprüfe ob das Pflichtfeld|input_mandatory|nicht gefüllt ist|
+Vorhandene Eingabe
+# Maske: Input Validation
+-!|script|
+|leere das Feld|input_mandatory|
+|gebe in das Feld|input_mandatory|den Wert|nicht leer|ein|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+# Maske: Input Validation
+-!|script|
+|überprüfe ob das Pflichtfeld|input_mandatory|gefüllt ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

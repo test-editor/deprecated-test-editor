@@ -1,0 +1,31 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+Fehlerhafte Eingabe
+# Maske: Input Validation
+-!|script|
+|leere das Feld|input_digitsonly|
+|gebe in das Feld|input_digitsonly|den Wert|4611 Kölnisch Wasser|ein|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+# Maske: Input Validation
+-!|script|
+|überprüfe ob die Eingabe am Element|input_digitsonly|fehlerhaft ist|
+Korrekte Eingabe
+# Maske: Input Validation
+-!|script|
+|leere das Feld|input_digitsonly|
+|gebe in das Feld|input_digitsonly|den Wert|0815|ein|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+# Maske: Input Validation
+-!|script|
+|überprüfe ob die Eingabe am Element|input_digitsonly|fehlerfrei ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

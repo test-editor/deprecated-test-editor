@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+
+	 Manage the Fitnesse Server start and stop for the maven tycho build of 
+	 the testeditor. This script is called before and after the maven build.
+	 Before build: ant startFitnesse
+	 After build: ant shutdownFitnesse
+                   
+     ====================================================================== -->
+<project name="manageFitnesse" default="shutdownFitnesse" basedir=".">
+	
+	<property name="fitnesse_jar" location="${basedir}/../org.testeditor.fitnesse.server/fitnesse.jar" />
+	<property name="testPath" location="${basedir}/../../../TestEditor-FitNesse-Tests/workspace/org.testeditor.fitnesse.demo/demoProjects/TestEditorTests" />
+	<property name="port" value="9234"/>
+	
+    <!-- ================================= 
+          target: startFitnesse
+          Starts the Fitnesse Server in a background VM              
+         ================================= -->
+    <target name="startFitnesse" description="Starts the Fitnesse Server for Tests" depends="correctPathToExecutableOfEditorOnLinux, correctPathToExecutableOfEditorOnWindows">
+    	 <java jar="${fitnesse_jar}" fork="true" spawn="true" dir="${testPath}" >
+    	 	  <arg value="-e"/>
+    	 	  <arg value="0"/>
+    	      <arg value="-d"/>
+    	      <arg value="${testPath}" />
+    	      <arg value="-p"/>
+    	      <arg value="${port}"/>
+        	<jvmarg value="-DSLIM_CMD_VAR_LOG4J_RELATIV_PATH=${basedir}/../org.testeditor.core/log4j.xml"/>
+    	 	<jvmarg value="-DAPPLICATION_WORK=${basedir}/../org.testeditor.fitnesse.demo/demoProjects/"/>
+        	<jvmarg value="-DFIXTURE_JAR_PATH=${basedir}/../org.testeditor.fitnesse.server/lib/"/>
+        	<jvmarg value="-DPATH_TO_TESTEDITOR_AUT=${testEditorExecutable}"/>
+    	 </java>
+    	<sleep seconds="3"/>
+    </target>
+
+    <!-- ================================= 
+          target: shutdownFitnesse
+          Calls the FitNesse Server REST API to shutdown hte Fitnesse Server.              
+         ================================= -->
+    <target name="shutdownFitnesse" description="Shutdown the Fitnesse Server for Tests">
+        <java classname="fitnesse.Shutdown" classpath="${fitnesse_jar}">
+        	<arg value="-h"/>
+        	<arg value="localhost"/>
+        	<arg value="-p"/>
+        	<arg value="${port}"/>
+        </java>
+    </target>
+	
+    <!-- ================================= 
+          target: correctPathToExecutableOfEditor
+          Fixing for the Operating System of the Buildserver the AUT Path in the FitNesse Server. 
+         ================================= -->
+	<target name="correctPathToExecutableOfEditorOnLinux" depends="osCheck" if="linuxos">
+		<property name="testEditorExecutable" location="${basedir}/../../../TestEditor-FitNesse-Tests/workspace/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor"/>
+
+		<echo>Linux detected</echo>
+	</target>
+
+    <!-- ================================= 
+          target: correctPathToExecutableOfEditor
+          Fixing for the Operating System of the Buildserver the AUT Path in the FitNesse Server. 
+         ================================= -->
+	<target name="correctPathToExecutableOfEditorOnWindows" depends="osCheck" if="windowsos">
+		<property name="testEditorExecutable" location="${basedir}/../../../TestEditor-FitNesse-Tests/workspace/org.testeditor.jre.product/target/products/TestEditor_JRE/win32/win32/x86/testeditor.exe" />
+		
+		<echo>Windows detected</echo>
+	</target>
+
+    <!-- ================================= 
+          target: osCheck
+          Detecting the current operating system.
+         ================================= -->
+	<target name="osCheck" depends="">
+		 <condition property="windowsos">
+		                    <os family="windows" />
+		 </condition>
+
+		 <condition property="linuxos">
+		                    <os family="unix" />
+		 </condition>
+	</target>
+	
+	<target name="copyInitProjectConfig">
+		<copy file="${basedir}/templates/content.txt" tofile="${testPath}/TestEditorTests/content.txt" overwrite="true"/>
+		<property name="fixturePath" location="${basedir}/../org.testeditor.fitnesse.server/lib/TestEditorFixtureSWT-1.4.0-jar-with-dependencies.jar" />
+		<property name="log4jConfigPath" location="${basedir}/../org.testeditor.core/log4j.xml" />
+	    <replace 
+	        file="${testPath}/FitNesseRoot/TestEditorTests/content.txt" 
+	    	token="@FIXTUREPATH@" value="${fixturePath}"
+	    	/>
+    	<replace 
+        	file="${testPath}/FitNesseRoot/TestEditorTests/content.txt" 
+    		token="@LOGGINGCONFIG@" value="${log4jConfigPath}"
+    		/>
+    	<replace 
+        	file="${testPath}/FitNesseRoot/TestEditorTests/content.txt" 
+    		token="@ELEMENTLISTE@" value="${testPath}/FitNesseRoot/TestEditorTests/ElementListe/content.txt"
+    		/>
+	</target>
+	
+</project>

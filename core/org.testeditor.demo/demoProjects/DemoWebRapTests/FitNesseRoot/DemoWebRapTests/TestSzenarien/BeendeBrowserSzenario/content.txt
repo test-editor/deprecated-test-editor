@@ -1,0 +1,4 @@
+!|scenario |BeendeBrowserSzenario _||
+|note| Maske: Allgemein Browser|
+|warte|3|Sekunden|
+|beende Browser|

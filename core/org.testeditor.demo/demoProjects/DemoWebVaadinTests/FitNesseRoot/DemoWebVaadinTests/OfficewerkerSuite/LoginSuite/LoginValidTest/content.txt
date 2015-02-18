@@ -1,0 +1,28 @@
+Dieser Test überprüft den gültigen Login beim Officewerker.
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStartLoginSzenario
+!|script|
+|Applikation Start Login Szenario|
+#
+# Maske: Officewerker Startseite
+-!|script|
+|warte auf Element|Startseite|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|Startseite|vorhanden ist|
+# Maske: Officewerker Startseite
+-!|script|
+|klicke auf|Abmelden|
+# Maske: Officewerker Abfrage
+-!|script|
+|warte auf Element|JaAbmelden|
+|klicke auf|JaAbmelden|
+# Maske: Officewerker Anmeldung
+-!|script|
+|warte auf Element|loginForm|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|Anmeldung|vorhanden ist|
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

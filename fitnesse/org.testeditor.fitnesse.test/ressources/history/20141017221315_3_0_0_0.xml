@@ -1,0 +1,1675 @@
+<?xml version="1.0"?>
+<testResults>
+  <FitNesseVersion>v20121220 Build-20140417</FitNesseVersion>
+  <rootPath>AddTestCaseForFitSlim</rootPath>
+    <result>
+    <counts>
+      <right>3</right>
+      <wrong>0</wrong>
+      <ignores>0</ignores>
+      <exceptions>0</exceptions>
+    </counts>
+    <runTimeInMillis>11082</runTimeInMillis>
+    <content><![CDATA[<div class="collapsible closed"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Precompiled Libraries</p>
+	<div><br/><div class="collapsible closed"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="TestEditorTestsFitSlim.ScenarioLibrary">.TestEditorTestsFitSlim.ScenarioLibrary</a> <a href="TestEditorTestsFitSlim.ScenarioLibrary?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=4239499764876852448>
+	<tr>
+		<td>import</td>
+	</tr>
+	<tr>
+		<td>org.testeditor.fixture.swt</td>
+	</tr>
+</table>
+<br/><table _TABLENUMBER=5615687970245963998>
+	<tr>
+		<td>Library</td>
+	</tr>
+	<tr>
+		<td><span class="pass">SwtBotFixture</span></td>
+	</tr>
+</table>
+<br/><table _TABLENUMBER=2157990756572607380>
+	<tr class="hidden">
+		<td colspan="2">script</td>
+	</tr>
+	<tr>
+		<td>setElementlist</td>
+		<td>/home/karsten/.testeditor/TestEditorTestsFitSlim/ElementList.conf</td>
+	</tr>
+</table>
+<br/><h1>SWTBot Methoden</h1>
+<br/><b>Wert eingeben</b> <hr size="5"/>
+<br/><table _TABLENUMBER=9063237357686665713>
+	<tr>
+		<td>scenario</td>
+		<td>gebe in das Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>ein</td>
+	</tr>
+	<tr>
+		<td>setTextById;</td>
+		<td>@guiid</td>
+		<td colspan="4">@text</td>
+	</tr>
+</table>
+<br/><b>Wert auswählen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=6759773302576110894>
+	<tr>
+		<td>scenario</td>
+		<td>wähle in Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>aus</td>
+	</tr>
+	<tr>
+		<td>selectComboBoxWithId;</td>
+		<td>@guiid</td>
+		<td colspan="4">@text</td>
+	</tr>
+</table>
+<br/><b>Button betätigen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=2593522452299144555>
+	<tr>
+		<td>scenario</td>
+		<td>klicke auf</td>
+		<td>guiElement</td>
+	</tr>
+	<tr>
+		<td>clickButton</td>
+		<td colspan="2">@guiElement</td>
+	</tr>
+</table>
+<br/><b>Kontextmenüeintrag auswählen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=1501427435560542142>
+	<tr>
+		<td>scenario</td>
+		<td>wähle aus dem Kontextmenü den Eintrag _ aus</td>
+		<td>menueeintrag</td>
+	</tr>
+	<tr>
+		<td>clickContextMenu</td>
+		<td colspan="2">@menueeintrag</td>
+	</tr>
+</table>
+<br/><b>Menüeintrag auswählen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=5068136788403457104>
+	<tr>
+		<td>scenario</td>
+		<td>wähle den Menüeintrag _ aus</td>
+		<td>menueeintrag</td>
+	</tr>
+	<tr>
+		<td>clickMenuByName</td>
+		<td colspan="2">@menueeintrag</td>
+	</tr>
+</table>
+<br/><b>Menüeintrag auswählen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=2881232430488180648>
+	<tr>
+		<td>scenario</td>
+		<td>wähle den Menüeintrag mit Id _ aus</td>
+		<td>idofmenue</td>
+	</tr>
+	<tr>
+		<td>clickMenuById</td>
+		<td colspan="2">@idofmenue</td>
+	</tr>
+</table>
+<br/><b>Element aufklappen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=6687627938830498916>
+	<tr>
+		<td>scenario</td>
+		<td>navigiere zum Element</td>
+		<td>elementname</td>
+	</tr>
+	<tr>
+		<td>expandTreeItems</td>
+		<td colspan="2">@elementname</td>
+	</tr>
+</table>
+<br/><b>Zeile markieren</b> <hr size="5"/>
+<br/><table _TABLENUMBER=6300661050329481784>
+	<tr>
+		<td>scenario</td>
+		<td>markiere Zeile</td>
+		<td>number</td>
+		<td>im Text</td>
+		<td>guiid</td>
+	</tr>
+	<tr>
+		<td>selectLineInText</td>
+		<td>@guiid</td>
+		<td colspan="3">@number</td>
+	</tr>
+</table>
+<br/><b>Zeile mit Text markieren</b> <hr size="5"/>
+<br/><table _TABLENUMBER=601485665958510316>
+	<tr>
+		<td>scenario</td>
+		<td>markiere in dem Text</td>
+		<td>guiid</td>
+		<td>die Zeile</td>
+		<td>pattern</td>
+		<td>an Position</td>
+		<td>number</td>
+	</tr>
+	<tr>
+		<td>setCursorInTextWithContentsAtPosition;</td>
+		<td>@guiid</td>
+		<td>@pattern</td>
+		<td colspan="4">@number</td>
+	</tr>
+</table>
+<br/><b>Test Editor starten</b> <hr size="5"/>
+<br/><table _TABLENUMBER=3172333074862101414>
+	<tr>
+		<td>scenario</td>
+		<td>starte Test Editor</td>
+		<td>path</td>
+	</tr>
+	<tr>
+		<td>startApplication</td>
+		<td colspan="2">@path</td>
+	</tr>
+</table>
+<br/><b>Test Editor beenden</b> <hr size="5"/>
+<br/><table _TABLENUMBER=4539179232477716669>
+	<tr>
+		<td>scenario</td>
+		<td>beende Test Editor</td>
+	</tr>
+	<tr>
+		<td colspan="2">stopApplication</td>
+	</tr>
+</table>
+<br/><b>Sekunden warten</b> <hr size="5"/>
+<br/><table _TABLENUMBER=3001772326681757601>
+	<tr>
+		<td>scenario</td>
+		<td>warte</td>
+		<td>anzahlSekunden</td>
+		<td>Sekunden</td>
+	</tr>
+	<tr>
+		<td>waitSeconds</td>
+		<td colspan="3">@anzahlSekunden</td>
+	</tr>
+</table>
+<br/><b>Text prüfen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=2855613191522117621>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob im Feld</td>
+		<td>guiid</td>
+		<td>der Text</td>
+		<td>pattern</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>checkTextExistInWidgets;</td>
+		<td>@guiid</td>
+		<td colspan="4">@pattern</td>
+	</tr>
+</table>
+<br/><b>Text ungültig prüfen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=6895853930633575898>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob im Textblock</td>
+		<td>guiid</td>
+		<td>der Text</td>
+		<td>pattern</td>
+		<td>nicht vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>compareTextNotInStyledById;</td>
+		<td>@guiid</td>
+		<td colspan="4">@pattern</td>
+	</tr>
+</table>
+<br/><b>Text prüfen</b> <hr size="5"/>
+<br/><table _TABLENUMBER=7701698044940723674>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob im Textblock</td>
+		<td>guiid</td>
+		<td>der Text</td>
+		<td>pattern</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>compareTextInStyledById;</td>
+		<td>@guiid</td>
+		<td colspan="4">@pattern</td>
+	</tr>
+</table>
+<br/><br/><b>Widgets analysieren</b> <hr size="5"/>
+<br/><table _TABLENUMBER=3259146781665727095>
+	<tr>
+		<td>scenario</td>
+		<td>Alle Widgets suchen und protokollieren</td>
+	</tr>
+	<tr>
+		<td colspan="2">analyzeWidgets</td>
+	</tr>
+</table>
+<br/><b>Button aktiviert</b> <hr size="5"/>
+<br/><table _TABLENUMBER=1705372109124419872>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob der Button</td>
+		<td>guiElement</td>
+		<td>aktiviert ist</td>
+	</tr>
+	<tr>
+		<td>isButtonEnabled</td>
+		<td colspan="3">@guiElement</td>
+	</tr>
+</table>
+<br/><b>Button deaktiviert</b> <hr size="5"/>
+<br/><table _TABLENUMBER=5078835594673581360>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob der Button</td>
+		<td>guiElement</td>
+		<td>deaktiviert ist</td>
+	</tr>
+	<tr>
+		<td>isButtonDisabled;</td>
+		<td colspan="3">@guiElement</td>
+	</tr>
+</table>
+<br/><br/><b>Klicke Toolbar-Button mit Tooltip</b> <hr size="5"/>
+<br/><table _TABLENUMBER=288414605589717427>
+	<tr>
+		<td>scenario</td>
+		<td>drücke den Toolbar-Button</td>
+		<td>tooltip</td>
+	</tr>
+	<tr>
+		<td>clickToolbarButtonWithTooltip;</td>
+		<td colspan="2">@tooltip</td>
+	</tr>
+</table>
+<br/><b>Vergleiche Text in Feld</b> <hr size="5"/>
+<br/><table _TABLENUMBER=7993260211504368268>
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob im Feld</td>
+		<td>guiid</td>
+		<td>der Text</td>
+		<td>pattern</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>compareTextById;</td>
+		<td>@guiid</td>
+		<td colspan="4">@pattern</td>
+	</tr>
+</table>
+<br/><b>Vergleiche Text in Beschreibung</b> <hr size="5"/>
+<br/><table _TABLENUMBER=2112299601836968289>
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob die Beschriftung</td>
+		<td>guiid</td>
+		<td>dem Text</td>
+		<td>pattern</td>
+		<td>entspricht</td>
+	</tr>
+	<tr>
+		<td>compareLabelById;</td>
+		<td>@guiid</td>
+		<td colspan="4">@pattern</td>
+	</tr>
+</table>
+<br/><b>Schließe den Reiter</b> <hr size="5"/>
+<br/><table _TABLENUMBER=7469655980355293588>
+	<tr>
+		<td>scenario</td>
+		<td>schließe den Reiter</td>
+		<td>pattern</td>
+	</tr>
+	<tr>
+		<td>closeTabItemWithName;</td>
+		<td colspan="2">@pattern</td>
+	</tr>
+</table>
+<br/><b>Sende das Tastaturkommando an Ansicht des Testfalls</b> <hr size="5"/>
+<br/><table _TABLENUMBER=2383960893380685706>
+	<tr>
+		<td>scenario</td>
+		<td>sende Tastaturkommando</td>
+		<td>guiid</td>
+		<td>an die Testfallansicht</td>
+	</tr>
+	<tr>
+		<td>pressShortcutOfStyledText;</td>
+		<td>Testfall</td>
+		<td colspan="2">@guiid</td>
+	</tr>
+</table>
+<br/><b>Sende das kombinierte Tastaturkommando an Ansicht des Testfalls</b>  <hr size="5"/>
+<br/><table _TABLENUMBER=8698616288444017867>
+	<tr>
+		<td>scenario</td>
+		<td>sende kombiniertes Tastaturkommando</td>
+		<td>guimodifier</td>
+		<td>und</td>
+		<td>guiid</td>
+		<td>an die Testfallansicht</td>
+	</tr>
+	<tr>
+		<td>pressShortcutWithModificationKeyOfStyledText;</td>
+		<td>Testfall</td>
+		<td>@guimodifier</td>
+		<td colspan="3">@guiid</td>
+	</tr>
+</table>
+<br/><b>Alle Projekte lesen</b>  <hr size="5"/>
+<br/><table _TABLENUMBER=7720245778344704379>
+	<tr>
+		<td>scenario</td>
+		<td>alle Projekte lesen</td>
+	</tr>
+	<tr>
+		<td colspan="2">readAllProjectsInTree</td>
+	</tr>
+</table>
+<br/><b>Alle Projekte löschen</b>  <hr size="5"/>
+<br/><table _TABLENUMBER=795242083555877699>
+	<tr>
+		<td>scenario</td>
+		<td>alle Projekte löschen</td>
+	</tr>
+	<tr>
+		<td colspan="2">deleteAllProjects</td>
+	</tr>
+</table>
+<br/><b>Zahl der Projekte gegen angenommenden Wert testen</b>  <hr size="5"/>
+<br/><table _TABLENUMBER=4368093160961968841>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob die Anzahl der Projekte _ entspricht</td>
+		<td>expectedCount</td>
+	</tr>
+	<tr>
+		<td>countProjectsEquals</td>
+		<td colspan="2">@expectedCount</td>
+	</tr>
+</table>
+<br/><b>Zahl der Kinder gegen angenommenden Wert testen</b>  <hr size="5"/>
+<br/><table _TABLENUMBER=7356303361088756814>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob das Element</td>
+		<td>nodes</td>
+		<td>genau</td>
+		<td>expectedCount</td>
+		<td>Kinder hat</td>
+	</tr>
+	<tr>
+		<td>countChildrenEquals;</td>
+		<td>@nodes</td>
+		<td colspan="4">@expectedCount</td>
+	</tr>
+</table>
+<br/><b>Prüfe ob der Server für das Projekt läuft </b> <hr size="5"/>
+<br/><table _TABLENUMBER=4651720950690031210>
+	<tr>
+		<td>scenario</td>
+		<td>prüfe ob der Server auf dem Port</td>
+		<td>port</td>
+		<td>für das Projekt</td>
+		<td>projectName</td>
+		<td>läuft</td>
+	</tr>
+	<tr>
+		<td>isFitNesseProjectServerRunning;</td>
+		<td>@port</td>
+		<td colspan="4">@projectName</td>
+	</tr>
+</table>
+<br/><br/><b>Selektiere Element in Tabelle </b> <hr size="5"/>
+<br/><table _TABLENUMBER=1567631643152727444>
+	<tr>
+		<td>scenario</td>
+		<td>selektiere Index</td>
+		<td>index</td>
+	</tr>
+	<tr>
+		<td>selectTableAtIndex</td>
+		<td>@index</td>
+		<td></td>
+	</tr>
+</table>
+</div>
+</div>
+<br/></div>
+</div>
+<br/><div class="collapsible closed"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="TestEditorTestsFitSlim.SetUp">.TestEditorTestsFitSlim.SetUp</a> <a href="TestEditorTestsFitSlim.SetUp?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=975605723598729265>
+	<tr>
+		<td colspan="2">script</td>
+	</tr>
+	<tr>
+		<td>setTestName</td>
+		<td>TestEditorTestsFitSlim.MyFitSlimSuite.AddTestCaseForFitSlim</td>
+	</tr>
+</table>
+ </div>
+</div>
+<br/>Hey Hoh<br/><div class="collapsible"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="TestEditorTestsFitSlim.TestSzenarien.ApplikationStartenSzenario">&lt;TestEditorTestsFitSlim.TestSzenarien.ApplikationStartenSzenario</a> <a href="TestEditorTestsFitSlim.TestSzenarien.ApplikationStartenSzenario?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=4541218614018077568>
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStartenSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Das Szenario startet den lokalen Test-Editor als zu testendes System (AUT). Der Pfad zu der ausführbaren AUT Datei (unter Windows: testeditor.exe), muss unter Einstellungen hinterlegt sein.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: !!!!!!! Hinweis !!!!!!! Das warten auf 1 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 1 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet wurde, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein</td>
+	</tr>
+	<tr>
+		<td>warte</td>
+		<td>1</td>
+		<td>Sekunden</td>
+	</tr>
+	<tr>
+		<td>starte Test-Editor</td>
+		<td colspan="2">/home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor</td>
+	</tr>
+</table>
+</div>
+</div>
+<br/><table _TABLENUMBER=920205399511506826>
+	<tr>
+		<td>script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="pass">ApplikationStartenSzenario</td>
+	</tr><tr class="scenario-detail"><td colspan="1"><table _TABLENUMBER=3958567277668477032 table_name="scriptTable_35_0/scriptTable_34">
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStartenSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Das Szenario startet den lokalen Test-Editor als zu testendes System (AUT). Der Pfad zu der ausführbaren AUT Datei (unter Windows: testeditor.exe), muss unter Einstellungen hinterlegt sein.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: !!!!!!! Hinweis !!!!!!! Das warten auf 1 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 1 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet wurde, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="pass">warte</td>
+		<td class="pass">1</td>
+		<td class="pass">Sekunden</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=4719565414428307005 table_name="scriptTable_35_0/scriptTable_34_0/scriptTable_14">
+	<tr>
+		<td>scenario</td>
+		<td>warte</td>
+		<td>anzahlSekunden</td>
+		<td>Sekunden</td>
+	</tr>
+	<tr>
+		<td><span class="pass">waitSeconds</span></td>
+		<td colspan="3">1</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="pass">starte Test-Editor</td>
+		<td colspan="2" class="pass">/home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=8406232615713777412 table_name="scriptTable_35_0/scriptTable_34_1/scriptTable_12">
+	<tr>
+		<td>scenario</td>
+		<td>starte Test Editor</td>
+		<td>path</td>
+	</tr>
+	<tr>
+		<td>startApplication</td>
+		<td colspan="2">/home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor</td>
+	</tr>
+</table></td></tr>
+</table></td></tr>
+</table>
+<table _TABLENUMBER=6582633888580847786>
+	<tr class="hidden">
+		<td colspan="2">script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="pass">navigiere zum Element</td>
+		<td class="pass">DemoWebTests,LocalDemoSuite</td>
+	</tr><tr class="scenario-detail"><td colspan="2"><table _TABLENUMBER=6904479349215304087 table_name="scriptTable_36_0/scriptTable_9">
+	<tr>
+		<td>scenario</td>
+		<td>navigiere zum Element</td>
+		<td>elementname</td>
+	</tr>
+	<tr>
+		<td><span class="pass">expandTreeItems</span></td>
+		<td colspan="2">DemoWebTests,LocalDemoSuite</td>
+	</tr>
+</table></td></tr>
+</table>
+<div class="collapsible"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="TestEditorTestsFitSlim.TestSzenarien.ApplikationStoppenSzenario">&lt;TestEditorTestsFitSlim.TestSzenarien.ApplikationStoppenSzenario</a> <a href="TestEditorTestsFitSlim.TestSzenarien.ApplikationStoppenSzenario?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=3189428308116717931>
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStoppenSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Das Szenario stoppt den lokalen Test-Editor als zu testendes System (AUT).</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein</td>
+	</tr>
+	<tr>
+		<td colspan="3">beende Test-Editor</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: !!!!!!! Hinweis !!!!!!! Das warten auf 2 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 2 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet ist, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein</td>
+	</tr>
+	<tr>
+		<td>warte</td>
+		<td>2</td>
+		<td>Sekunden</td>
+	</tr>
+</table>
+</div>
+</div>
+<br/><table _TABLENUMBER=9023472589851343435>
+	<tr>
+		<td>script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="pass">ApplikationStoppenSzenario</td>
+	</tr><tr class="scenario-detail"><td colspan="1"><table _TABLENUMBER=5896900765195439997 table_name="scriptTable_38_0/scriptTable_37">
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStoppenSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Das Szenario stoppt den lokalen Test-Editor als zu testendes System (AUT).</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein</td>
+	</tr>
+	<tr class="scenario closed">
+		<td colspan="3" class="pass">beende Test-Editor</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=146444872294821634 table_name="scriptTable_38_0/scriptTable_37_0/scriptTable_13">
+	<tr>
+		<td>scenario</td>
+		<td>beende Test Editor</td>
+	</tr>
+	<tr>
+		<td colspan="2">stopApplication</td>
+	</tr>
+</table></td></tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: !!!!!!! Hinweis !!!!!!! Das warten auf 2 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 2 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet ist, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="pass">warte</td>
+		<td class="pass">2</td>
+		<td class="pass">Sekunden</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=2925373300205616946 table_name="scriptTable_38_0/scriptTable_37_1/scriptTable_14">
+	<tr>
+		<td>scenario</td>
+		<td>warte</td>
+		<td>anzahlSekunden</td>
+		<td>Sekunden</td>
+	</tr>
+	<tr>
+		<td><span class="pass">waitSeconds</span></td>
+		<td colspan="3">2</td>
+	</tr>
+</table></td></tr>
+</table></td></tr>
+</table>
+]]></content>
+    <relativePageName>AddTestCaseForFitSlim</relativePageName>
+    
+        <tables>
+            <table>
+        <name>import_0</name>
+                <row>
+                    <col><![CDATA[import]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[org.testeditor.fixture.swt]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>library_1</name>
+                <row>
+                    <col><![CDATA[Library]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[pass(SwtBotFixture)]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_2</name>
+                <row>
+                    <col><![CDATA[script]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[setElementlist]]></col>
+                    <col><![CDATA[/home/karsten/.testeditor/TestEditorTestsFitSlim/ElementList.conf]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_3</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[gebe in das Feld]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[den Wert]]></col>
+                    <col><![CDATA[text]]></col>
+                    <col><![CDATA[ein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[setTextById;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@text]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_4</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[wähle in Feld]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[den Wert]]></col>
+                    <col><![CDATA[text]]></col>
+                    <col><![CDATA[aus]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[selectComboBoxWithId;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@text]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_5</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[klicke auf]]></col>
+                    <col><![CDATA[guiElement]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[clickButton]]></col>
+                    <col><![CDATA[@guiElement]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_6</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[wähle aus dem Kontextmenü den Eintrag _ aus]]></col>
+                    <col><![CDATA[menueeintrag]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[clickContextMenu]]></col>
+                    <col><![CDATA[@menueeintrag]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_7</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[wähle den Menüeintrag _ aus]]></col>
+                    <col><![CDATA[menueeintrag]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[clickMenuByName]]></col>
+                    <col><![CDATA[@menueeintrag]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_8</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[wähle den Menüeintrag mit Id _ aus]]></col>
+                    <col><![CDATA[idofmenue]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[clickMenuById]]></col>
+                    <col><![CDATA[@idofmenue]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_9</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[navigiere zum Element]]></col>
+                    <col><![CDATA[elementname]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[expandTreeItems]]></col>
+                    <col><![CDATA[@elementname]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_10</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[markiere Zeile]]></col>
+                    <col><![CDATA[number]]></col>
+                    <col><![CDATA[im Text]]></col>
+                    <col><![CDATA[guiid]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[selectLineInText]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@number]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_11</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[markiere in dem Text]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[die Zeile]]></col>
+                    <col><![CDATA[pattern]]></col>
+                    <col><![CDATA[an Position]]></col>
+                    <col><![CDATA[number]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[setCursorInTextWithContentsAtPosition;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@pattern]]></col>
+                    <col><![CDATA[@number]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_12</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[starte Test Editor]]></col>
+                    <col><![CDATA[path]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[startApplication]]></col>
+                    <col><![CDATA[@path]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_13</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[beende Test Editor]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[stopApplication]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_14</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[anzahlSekunden]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[waitSeconds]]></col>
+                    <col><![CDATA[@anzahlSekunden]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_15</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob im Feld]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[der Text]]></col>
+                    <col><![CDATA[pattern]]></col>
+                    <col><![CDATA[vorhanden ist]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[checkTextExistInWidgets;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@pattern]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_16</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob im Textblock]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[der Text]]></col>
+                    <col><![CDATA[pattern]]></col>
+                    <col><![CDATA[nicht vorhanden ist]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[compareTextNotInStyledById;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@pattern]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_17</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob im Textblock]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[der Text]]></col>
+                    <col><![CDATA[pattern]]></col>
+                    <col><![CDATA[vorhanden ist]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[compareTextInStyledById;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@pattern]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_18</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[Alle Widgets suchen und protokollieren]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[analyzeWidgets]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_19</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob der Button]]></col>
+                    <col><![CDATA[guiElement]]></col>
+                    <col><![CDATA[aktiviert ist]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[isButtonEnabled]]></col>
+                    <col><![CDATA[@guiElement]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_20</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob der Button]]></col>
+                    <col><![CDATA[guiElement]]></col>
+                    <col><![CDATA[deaktiviert ist]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[isButtonDisabled;]]></col>
+                    <col><![CDATA[@guiElement]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_21</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[drücke den Toolbar-Button]]></col>
+                    <col><![CDATA[tooltip]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[clickToolbarButtonWithTooltip;]]></col>
+                    <col><![CDATA[@tooltip]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_22</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[überprüfe ob im Feld]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[der Text]]></col>
+                    <col><![CDATA[pattern]]></col>
+                    <col><![CDATA[vorhanden ist]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[compareTextById;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@pattern]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_23</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[überprüfe ob die Beschriftung]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[dem Text]]></col>
+                    <col><![CDATA[pattern]]></col>
+                    <col><![CDATA[entspricht]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[compareLabelById;]]></col>
+                    <col><![CDATA[@guiid]]></col>
+                    <col><![CDATA[@pattern]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_24</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[schließe den Reiter]]></col>
+                    <col><![CDATA[pattern]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[closeTabItemWithName;]]></col>
+                    <col><![CDATA[@pattern]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_25</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[sende Tastaturkommando]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[an die Testfallansicht]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[pressShortcutOfStyledText;]]></col>
+                    <col><![CDATA[Testfall]]></col>
+                    <col><![CDATA[@guiid]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_26</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[sende kombiniertes Tastaturkommando]]></col>
+                    <col><![CDATA[guimodifier]]></col>
+                    <col><![CDATA[und]]></col>
+                    <col><![CDATA[guiid]]></col>
+                    <col><![CDATA[an die Testfallansicht]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[pressShortcutWithModificationKeyOfStyledText;]]></col>
+                    <col><![CDATA[Testfall]]></col>
+                    <col><![CDATA[@guimodifier]]></col>
+                    <col><![CDATA[@guiid]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_27</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[alle Projekte lesen]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[readAllProjectsInTree]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_28</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[alle Projekte löschen]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[deleteAllProjects]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_29</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob die Anzahl der Projekte _ entspricht]]></col>
+                    <col><![CDATA[expectedCount]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[countProjectsEquals]]></col>
+                    <col><![CDATA[@expectedCount]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_30</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob das Element]]></col>
+                    <col><![CDATA[nodes]]></col>
+                    <col><![CDATA[genau]]></col>
+                    <col><![CDATA[expectedCount]]></col>
+                    <col><![CDATA[Kinder hat]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[countChildrenEquals;]]></col>
+                    <col><![CDATA[@nodes]]></col>
+                    <col><![CDATA[@expectedCount]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_31</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[prüfe ob der Server auf dem Port]]></col>
+                    <col><![CDATA[port]]></col>
+                    <col><![CDATA[für das Projekt]]></col>
+                    <col><![CDATA[projectName]]></col>
+                    <col><![CDATA[läuft]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[isFitNesseProjectServerRunning;]]></col>
+                    <col><![CDATA[@port]]></col>
+                    <col><![CDATA[@projectName]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_32</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[selektiere Index]]></col>
+                    <col><![CDATA[index]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[selectTableAtIndex]]></col>
+                    <col><![CDATA[@index]]></col>
+                    <col><![CDATA[]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_33</name>
+                <row>
+                    <col><![CDATA[script]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[setTestName]]></col>
+                    <col><![CDATA[TestEditorTestsFitSlim.MyFitSlimSuite.AddTestCaseForFitSlim]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_34</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[ApplikationStartenSzenario _]]></col>
+                    <col><![CDATA[]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: Das Szenario startet den lokalen Test-Editor als zu testendes System (AUT). Der Pfad zu der ausführbaren AUT Datei (unter Windows: testeditor.exe), muss unter Einstellungen hinterlegt sein.]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: !!!!!!! Hinweis !!!!!!! Das warten auf 1 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 1 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet wurde, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Maske: Allgemein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[1]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[starte Test-Editor]]></col>
+                    <col><![CDATA[/home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_35</name>
+                <row>
+                    <col><![CDATA[script]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[ApplikationStartenSzenario]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_35_0/scriptTable_34</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[ApplikationStartenSzenario _]]></col>
+                    <col><![CDATA[]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: Das Szenario startet den lokalen Test-Editor als zu testendes System (AUT). Der Pfad zu der ausführbaren AUT Datei (unter Windows: testeditor.exe), muss unter Einstellungen hinterlegt sein.]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: !!!!!!! Hinweis !!!!!!! Das warten auf 1 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 1 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet wurde, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Maske: Allgemein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[1]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[starte Test-Editor]]></col>
+                    <col><![CDATA[/home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_35_0/scriptTable_34_0/scriptTable_14</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[anzahlSekunden]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[pass(waitSeconds)]]></col>
+                    <col><![CDATA[1]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_35_0/scriptTable_34_1/scriptTable_12</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[starte Test Editor]]></col>
+                    <col><![CDATA[path]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[startApplication]]></col>
+                    <col><![CDATA[/home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_36</name>
+                <row>
+                    <col><![CDATA[script]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[navigiere zum Element]]></col>
+                    <col><![CDATA[DemoWebTests,LocalDemoSuite]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_36_0/scriptTable_9</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[navigiere zum Element]]></col>
+                    <col><![CDATA[elementname]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[pass(expandTreeItems)]]></col>
+                    <col><![CDATA[DemoWebTests,LocalDemoSuite]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scenarioTable_37</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[ApplikationStoppenSzenario _]]></col>
+                    <col><![CDATA[]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: Das Szenario stoppt den lokalen Test-Editor als zu testendes System (AUT).]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Maske: Allgemein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[beende Test-Editor]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: !!!!!!! Hinweis !!!!!!! Das warten auf 2 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 2 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet ist, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Maske: Allgemein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[2]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_38</name>
+                <row>
+                    <col><![CDATA[script]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[ApplikationStoppenSzenario]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_38_0/scriptTable_37</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[ApplikationStoppenSzenario _]]></col>
+                    <col><![CDATA[]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: Das Szenario stoppt den lokalen Test-Editor als zu testendes System (AUT).]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Maske: Allgemein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[beende Test-Editor]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Description: !!!!!!! Hinweis !!!!!!! Das warten auf 2 Sekunden ist derzeit notwendig, damit eine Suite von Testfällen korrekt ausgeführt werden kann. Das liegt daran, dass die AUT nicht synchron beendet wird und ein folgender Testfall sonst fehlschlägt, da die AUT dann nicht erneut gestartet werden kann. Die 2 Sek. sind also ein Workaround um sicherzustellen, dass die AUT beendet ist, besser wäre es das Beenden der Applikation im Test-Treiber korrekt abzubilden.]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[note]]></col>
+                    <col><![CDATA[Maske: Allgemein]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[2]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_38_0/scriptTable_37_0/scriptTable_13</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[beende Test Editor]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[stopApplication]]></col>
+          
+        </row>
+        
+      </table>
+            <table>
+        <name>scriptTable_38_0/scriptTable_37_1/scriptTable_14</name>
+                <row>
+                    <col><![CDATA[scenario]]></col>
+                    <col><![CDATA[warte]]></col>
+                    <col><![CDATA[anzahlSekunden]]></col>
+                    <col><![CDATA[Sekunden]]></col>
+          
+        </row>
+                <row>
+                    <col><![CDATA[pass(waitSeconds)]]></col>
+                    <col><![CDATA[2]]></col>
+          
+        </row>
+        
+      </table>
+      
+    </tables>
+    
+    
+    <instructions>
+            <instructionResult>
+        <instruction><![CDATA[[import_0_0, import, org.testeditor.fixture.swt]]]></instruction>
+        <slimResult><![CDATA[OK]]></slimResult>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[library_1_0, make, library1, SwtBotFixture]]]></instruction>
+        <slimResult><![CDATA[OK]]></slimResult>
+                <expectation>
+          <status>right</status>
+          <instructionId>library_1_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ConstructionExpectation</type>
+                    <actual><![CDATA[OK]]></actual>
+                              <expected><![CDATA[SwtBotFixture]]></expected>
+                              <evaluationMessage><![CDATA[pass(SwtBotFixture)]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_2_0, call, scriptTableActor, setElementlist, /home/karsten/.testeditor/TestEditorTestsFitSlim/ElementList.conf]]]></instruction>
+        <slimResult><![CDATA[/__VOID__/]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_2_0</instructionId>
+          <col>1</col>
+          <row>1</row>
+          <type>ArgumentExpectation</type>
+                                        <evaluationMessage><![CDATA[]]></evaluationMessage>
+                  </expectation>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_2_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[/__VOID__/]]></actual>
+                              <expected><![CDATA[setElementlist]]></expected>
+                              <evaluationMessage><![CDATA[setElementlist]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_33_0, call, scriptTableActor, setTestName, TestEditorTestsFitSlim.MyFitSlimSuite.AddTestCaseForFitSlim]]]></instruction>
+        <slimResult><![CDATA[/__VOID__/]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_33_0</instructionId>
+          <col>1</col>
+          <row>1</row>
+          <type>ArgumentExpectation</type>
+                                        <evaluationMessage><![CDATA[]]></evaluationMessage>
+                  </expectation>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_33_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[/__VOID__/]]></actual>
+                              <expected><![CDATA[setTestName]]></expected>
+                              <evaluationMessage><![CDATA[setTestName]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_35_0/scriptTable_34_0/scriptTable_14_0, call, scriptTableActor, waitSeconds, 1]]]></instruction>
+        <slimResult><![CDATA[true]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_35_0/scriptTable_34_0/scriptTable_14_0</instructionId>
+          <col>1</col>
+          <row>1</row>
+          <type>ArgumentExpectation</type>
+                                        <evaluationMessage><![CDATA[]]></evaluationMessage>
+                  </expectation>
+                <expectation>
+          <status>right</status>
+          <instructionId>scriptTable_35_0/scriptTable_34_0/scriptTable_14_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[true]]></actual>
+                              <expected><![CDATA[waitSeconds]]></expected>
+                              <evaluationMessage><![CDATA[pass(waitSeconds)]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_35_0/scriptTable_34_1/scriptTable_12_0, call, scriptTableActor, startApplication, /home/karsten/projects/tfeditor/testeditor/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor]]]></instruction>
+        <slimResult><![CDATA[/__VOID__/]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_35_0/scriptTable_34_1/scriptTable_12_0</instructionId>
+          <col>1</col>
+          <row>1</row>
+          <type>ArgumentExpectation</type>
+                                        <evaluationMessage><![CDATA[]]></evaluationMessage>
+                  </expectation>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_35_0/scriptTable_34_1/scriptTable_12_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[/__VOID__/]]></actual>
+                              <expected><![CDATA[startApplication]]></expected>
+                              <evaluationMessage><![CDATA[startApplication]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_36_0/scriptTable_9_0, call, scriptTableActor, expandTreeItems, DemoWebTests,LocalDemoSuite]]]></instruction>
+        <slimResult><![CDATA[true]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_36_0/scriptTable_9_0</instructionId>
+          <col>1</col>
+          <row>1</row>
+          <type>ArgumentExpectation</type>
+                                        <evaluationMessage><![CDATA[]]></evaluationMessage>
+                  </expectation>
+                <expectation>
+          <status>right</status>
+          <instructionId>scriptTable_36_0/scriptTable_9_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[true]]></actual>
+                              <expected><![CDATA[expandTreeItems]]></expected>
+                              <evaluationMessage><![CDATA[pass(expandTreeItems)]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_38_0/scriptTable_37_0/scriptTable_13_0, call, scriptTableActor, stopApplication]]]></instruction>
+        <slimResult><![CDATA[/__VOID__/]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_38_0/scriptTable_37_0/scriptTable_13_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[/__VOID__/]]></actual>
+                              <expected><![CDATA[stopApplication]]></expected>
+                              <evaluationMessage><![CDATA[stopApplication]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+            <instructionResult>
+        <instruction><![CDATA[[scriptTable_38_0/scriptTable_37_1/scriptTable_14_0, call, scriptTableActor, waitSeconds, 2]]]></instruction>
+        <slimResult><![CDATA[true]]></slimResult>
+                <expectation>
+          <status>ignored</status>
+          <instructionId>scriptTable_38_0/scriptTable_37_1/scriptTable_14_0</instructionId>
+          <col>1</col>
+          <row>1</row>
+          <type>ArgumentExpectation</type>
+                                        <evaluationMessage><![CDATA[]]></evaluationMessage>
+                  </expectation>
+                <expectation>
+          <status>right</status>
+          <instructionId>scriptTable_38_0/scriptTable_37_1/scriptTable_14_0</instructionId>
+          <col>0</col>
+          <row>1</row>
+          <type>ScriptActionExpectation</type>
+                    <actual><![CDATA[true]]></actual>
+                              <expected><![CDATA[waitSeconds]]></expected>
+                              <evaluationMessage><![CDATA[pass(waitSeconds)]]></evaluationMessage>
+                  </expectation>
+        
+      </instructionResult>
+      
+    </instructions>
+    
+  </result>
+  
+    <finalCounts>
+    <right>0</right>
+    <wrong>0</wrong>
+    <ignores>0</ignores>
+    <exceptions>0</exceptions>
+  </finalCounts>
+  <totalRunTimeInMillis>0</totalRunTimeInMillis>
+  
+</testResults>
+

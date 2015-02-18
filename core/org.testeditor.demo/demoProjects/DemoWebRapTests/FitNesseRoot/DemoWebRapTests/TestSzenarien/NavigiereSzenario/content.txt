@@ -1,0 +1,15 @@
+!|scenario |NavigiereSzenario _|Menu, Item, Seite|
+|note| Maske: Allgemein Browser|
+|starte Browser|IE|
+|navigiere auf die Seite|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+|warte|3|Sekunden|
+|note| Maske: Navigations Widgets|
+|klicke auf|@{Menu}|
+|note| Maske: Allgemein Browser|
+|warte|1|Sekunden|
+|note| Maske: Navigations Widgets|
+|klicke auf|@{Item}|
+|note| Maske: Allgemein Browser|
+|warte|1|Sekunden|
+|überprüfe ob der Text|@{Seite}|vorhanden ist|
+|beende Browser|

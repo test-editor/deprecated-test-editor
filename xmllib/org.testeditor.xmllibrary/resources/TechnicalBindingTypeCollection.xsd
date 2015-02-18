@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	version="1.0">
+
+	<xs:element name="TechnicalBindingTypes">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TechnicalBindingType" type="TechnicalBindingType"
+					maxOccurs="unbounded" />
+			</xs:sequence>
+				<xs:attribute name="schemaVersion" type="xs:decimal"  use="required" fixed="1.1"/>		
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="TechnicalBindingType">
+		<xs:sequence>
+			<xs:element name="actionPart" type="ActionPart" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="id" type="xs:ID" use="required" />
+		<xs:attribute name="sort" type="xs:int" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="ActionPart">
+		<xs:attribute name="position" type="xs:int" use="required" />
+		<xs:attribute name="type" type="ActionType" use="required" />
+		<xs:attribute name="value" type="xs:string" use="optional" />
+		<xs:attribute name="id" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TEXT" />
+			<xs:enumeration value="ARGUMENT" />
+			<xs:enumeration value="ACTION_NAME" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

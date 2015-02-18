@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	version="1.0">
+<xs:element name="Action" type="Action" >
+    <xs:unique name="UniqueAction">
+        <xs:selector xpath="Action" />
+        <xs:field xpath="@actionName" />
+    </xs:unique>
+</xs:element>
+
+	<xs:element name="ActionGroups">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ActionGroup" type="ActionGroup"
+					maxOccurs="unbounded" />
+			</xs:sequence>			
+		<xs:attribute name="schemaVersion" type="xs:decimal"  use="required" fixed="1.1"/>		
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ActionGroup">
+		<xs:sequence>
+			<xs:element name="action" type="Action" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="sort" type="xs:int" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="Action">
+     <xs:sequence>
+        <xs:element minOccurs="0"  maxOccurs="1"  ref="actionName" />
+         <xs:element minOccurs="0" ref="argument"/>
+      </xs:sequence>
+      <xs:attribute name="technicalBindingType" use="required" type="xs:string"/>
+      <xs:attribute name="sort" type="xs:int" use="optional" />
+    </xs:complexType>
+  <xs:element name="actionName">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="locator" use="required" type="xs:string"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+    <xs:element name="argument">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="value"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="value" type="xs:string"/>
+</xs:schema>

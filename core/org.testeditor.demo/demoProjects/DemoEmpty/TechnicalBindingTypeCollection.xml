@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<TechnicalBindingTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xsi:noNamespaceSchemaLocation="../../org.testeditor.xmllibrary/resources/TechnicalBindingTypeCollection.xsd">
+    <TechnicalBindingType id="Pruefe_Text_Nicht_In_Element" name="Ist Text am Element nicht vorhanden">
+        <actionPart position="1" type="TEXT" value="überprüfe ob am Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="der Text"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="nicht vorhanden ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Auswahl_Wert" name="Wert auswählen">
+        <actionPart position="1" type="TEXT" value="wähle aus der Combobox"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="aus"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Starte_Browser" name="Browser starten">
+        <actionPart position="1" type="TEXT" value="starte Browser"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Beende_Browser" name="Browser beenden">
+        <actionPart position="1" type="TEXT" value="beende Browser"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Navigiere_auf_Seite" name="Seite navigieren">
+        <actionPart position="1" type="TEXT" value="navigiere auf die Seite"/>
+        <actionPart position="2" type="ARGUMENT"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Wert_Ist_Leer" name="Ist Wert leer">
+        <actionPart position="1" type="TEXT" value="ist der Wert"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="leer"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Werte_Sind_Gleich" name="Sind die Werte gleich">
+        <actionPart position="1" type="TEXT" value="sind die Werte"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="und"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="gleich"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Warte_Sekunden" name="Sekunden warten">
+        <actionPart position="1" type="TEXT" value="warte"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="Sekunden"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Wechsel_Fenster" name="Fenster wechseln">
+        <actionPart position="1" type="TEXT" value="wechsel zum Fenster"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Klicke_Element" name="Element klicken">
+        <actionPart position="1" type="TEXT" value="klicke auf"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Leere_Wert" name="Wert leeren">
+        <actionPart position="1" type="TEXT" value="leere das Feld"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Lese_Wert" name="Wert auslesen">
+        <actionPart position="1" type="TEXT" value="lese aus dem Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert aus"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Wert_In_Element" name="Besitzt das Element den Wert">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="besitzt"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Lese_Attribut" name="Attribut auslesen">
+        <actionPart position="1" type="TEXT" value="lese aus dem Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="das Attribut"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="aus"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Selektiere_Wert" name="Wert selektieren">
+        <actionPart position="1" type="TEXT" value="selektiere am Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert"/>
+        <actionPart position="4" type="ARGUMENT"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Wert_Selektiert" name="überprüfe ob selektiert">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="selektiert ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Wert_Nicht_Selektiert" name="überprüfe ob nicht selektiert">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="nicht selektiert ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Eingabe_Wert" name="Wert eingeben">
+        <actionPart position="1" type="TEXT" value="gebe in das Feld"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="ein"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Klicke_Element_Doppelt" name="Element doppelt klicken">
+        <actionPart position="1" type="TEXT" value="klicke doppelt auf"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Text_Vorhanden" name="Ist Text vorhanden">
+        <actionPart position="1" type="TEXT" value="überprüfe ob der Text"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="vorhanden ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Text_Nicht_Vorhanden" name="Ist Text nicht vorhanden">
+        <actionPart position="1" type="TEXT" value="überprüfe ob der Text"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="nicht vorhanden ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Bewege_Maus" name="Maus bewegen">
+        <actionPart position="1" type="TEXT" value="bewege Maus zum Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Element_Inaktiv" name="Ist Element inaktiv">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="inaktiv ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Element_Aktiv" name="Ist Element aktiv">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="aktiv ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Element_Nicht_Vorhanden" name="Ist Element nicht vorhanden">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="nicht vorhanden ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Element_Vorhanden" name="Ist Element vorhanden">
+        <actionPart position="1" type="TEXT" value="überprüfe ob das Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="vorhanden ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Werte_Sind_Nicht_Gleich" name="Sind die Werte ungleich">
+        <actionPart position="1" type="TEXT" value="sind die Werte"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="und"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="ungleich"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Wert_Ist_Nicht_Leer" name="Ist Wert nicht leer">
+        <actionPart position="1" type="TEXT" value="ist der Wert"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="nicht leer"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Wert_Nicht_Enthalten" name="Ist Wert nicht enthalten">
+        <actionPart position="1" type="TEXT" value="ist Wert"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="in"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="nicht enthalten"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Wert_Enthalten" name="Ist Wert enthalten">
+        <actionPart position="1" type="TEXT" value="ist Wert"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="in"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="enthalten"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Pruefe_Text_In_Element" name="Ist Text am Element vorhanden">
+        <actionPart position="1" type="TEXT" value="überprüfe ob am Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="der Text"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="vorhanden ist"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Taste_Druecken" name="Drücke Taste">
+        <actionPart position="1" type="TEXT" value="die Taste"/>
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="drücken"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Taste_Druecken_Am_Element" name="Drücke Taste am Element">
+        <actionPart position="1" type="TEXT" value="am Element"/>
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="die Taste"/>
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="drücken"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Testausfuehrung_Beenden" name="Beende Testausführung">
+        <actionPart position="1" type="TEXT" value="beende die Testausführung"/>
+    </TechnicalBindingType>
+    <TechnicalBindingType id="Seitenaufbau_Abwarten" name="Seitenaufbau abwarten">
+        <actionPart position="1" type="TEXT" value="vollständigen Seitenaufbau abwarten"/>
+    </TechnicalBindingType>
+</TechnicalBindingTypes>

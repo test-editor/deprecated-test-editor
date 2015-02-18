@@ -1,0 +1,12 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+# Maske: Input Widgets
+-!|script|
+|gebe in das Feld|input_firstname|den Wert|Markus Maria Herbst|ein|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

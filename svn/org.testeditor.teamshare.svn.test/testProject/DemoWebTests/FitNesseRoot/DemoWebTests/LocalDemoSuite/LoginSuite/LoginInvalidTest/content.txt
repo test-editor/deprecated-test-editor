@@ -1,0 +1,19 @@
+Dieser Test überprüft, dass ein ungültiger Benutzers sich nicht anmelden kann.
+!include <DemoWebTests.TestSzenarien.BrowserStartSzenario
+!|script|
+|Browser Start Szenario|
+#
+# Maske: Allgemein Browser
+-!|script|
+|navigiere auf die Seite|http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html|
+# Maske: Lokale Anmeldung
+-!|script|
+|gebe in das Feld|user|den Wert|Peter Mustermann|ein|
+|gebe in das Feld|password|den Wert|test|ein|
+|wähle in Feld|land|den Wert|Schweden|aus|
+|klicke auf|login|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob nicht der Text|war erfolgreich|vorhanden ist|
+|überprüfe ob der Text|Login|vorhanden ist|
+|beende Browser|

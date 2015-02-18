@@ -1,0 +1,19 @@
+
+.MTrimBar {
+
+  background-color: gradient linear grey lightgrey;
+  color: white;
+  font: Verdana 8px;
+}
+
+#TestResultLabelTitle{
+  color: black;
+  font: Arial 12px; 
+  font-weight:bold;
+}
+
+.bold { 
+  font: Verdana 12px; 
+  font-weight:bold;
+} 
+

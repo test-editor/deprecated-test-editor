@@ -1,0 +1,21 @@
+﻿Dieser Test überprüft, dass ein Login beim Officewerker mit einem falschen Passwort nicht möglich ist und eine entsprechende Fehlermeldung angezeigt wird.
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStartSzenario
+!|script|
+|Applikation Start Szenario|
+#
+# Maske: Officewerker Anmeldung
+-!|script|
+|gebe in das Feld|loginMandant|den Wert|offwrk|ein|
+|gebe in das Feld|loginName|den Wert|admin|ein|
+|gebe in das Feld|loginPwd|den Wert|ungültig|ein|
+|klicke auf|loginButton|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob nicht der Text|Startseite|vorhanden ist|
+|überprüfe ob der Text|Das Passwort ist nicht korrekt|vorhanden ist|
+|überprüfe ob der Text|Überprüfen Sie Ihre Eingabe|vorhanden ist|
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

@@ -1,0 +1,17 @@
+!|scenario |LoginValidationSzenario _|Name, Passwort, TextVorhanden, TextNichtVorhanden|
+|note|Description: ﻿Dieses Szenario überprüft den Login auf der Starseite.|
+!include <DemoWebTests.TestSzenarien.BrowserStartSzenario
+!|script|
+|Browser Start Szenario|
+#
+|note| Maske: Allgemein Browser|
+|navigiere auf die Seite|http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html|
+|note| Maske: Lokale Anmeldung|
+|gebe in das Feld|user|den Wert|@Name|ein|
+|gebe in das Feld|password|den Wert|@Passwort|ein|
+|wähle in Feld|land|den Wert|@Land|aus|
+|klicke auf|login|
+|note| Maske: Allgemein Browser|
+|überprüfe ob der Text|@TextVorhanden|vorhanden ist|
+|überprüfe ob nicht der Text|@TextNichtVorhanden|vorhanden ist|
+|beende Browser|

@@ -1,0 +1,16 @@
+!*****> Preferences
+
+!define TIMEOUT {10000}
+!define TEST_SYSTEM {slim}
+
+!path ${FIXTURE_JAR_PATH}TestEditorFixtureWeb-*-jar-with-dependencies.jar
+
+!define BROWSER_PATH {${path.browser}}
+
+!define LOGGING {${LOG4J_RELATIV_PATH}}
+!define COMMAND_PATTERN {java -Dwebdriver.ie.driver=${IEWEBDRIVERSERVER} -Dwebdriver.chrome.driver=${SLIM_CMD_VAR_CHROMEWEBDRIVERSERVER} -Dlog4j.configuration=file:${LOGGING} -cp %p %m -i org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction }
+
+!define ELEMENT_LISTE {${APPLICATION_WORK}/DemoWebTests/FitNesseRoot/DemoWebTests/ElementListe/content.txt}
+**********!
+
+!contents -R2 -g -p -f -h

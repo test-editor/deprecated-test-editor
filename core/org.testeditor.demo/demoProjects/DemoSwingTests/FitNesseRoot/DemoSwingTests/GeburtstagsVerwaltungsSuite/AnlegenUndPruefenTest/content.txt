@@ -1,0 +1,29 @@
+Dieser Testfall legt automatisiert einen neuen Eintrag in der Geburtstagsliste an und überprüft diesen
+!include <DemoSwingTests.TestSzenarien.ApplikationStartSzenario
+!|script|
+|Applikation Start Szenario|
+#
+# Maske: Neuanlage
+-!|script|
+|gebe in das Feld|NameText|den Wert|Schmidt|ein|
+|gebe in das Feld|VornameText|den Wert|Peter|ein|
+|wähle in Feld|GeburtsTag|den Wert|17|aus|
+|wähle in Feld|GeburtsMonat|den Wert|5|aus|
+|wähle in Feld|GeburtsJahr|den Wert|1970|aus|
+|deaktiviere Checkbox|GeschlechtVerbergen|
+|aktiviere Radio-Button|GeschlechtMaennlich|
+|prüfe ob im Feld|NameText|der Text|Schmidt|eingetragen ist|
+|prüfe ob im Feld|VornameText|der Text|Rolf|nicht eingetragen ist|
+|prüfe ob im Feld|GeburtsJahr|der Wert|1970|ausgewählt ist|
+|prüfe ob im Feld|GeburtsMonat|der Wert|12|nicht ausgewählt ist|
+|prüfe ob im Feld|GeburtsTag|der Wert|17|ausgewählt ist|
+# Maske: Aktionen
+-!|script|
+|klicke auf|Hinzufuegen|
+# Maske: Tabelle
+-!|script|
+|prüfe ob in der Tabelle|AlleAngestellten|in der letzten Zeile in Spalte|Name|der Wert|Schmidt|eingetragen ist|
+!include <DemoSwingTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

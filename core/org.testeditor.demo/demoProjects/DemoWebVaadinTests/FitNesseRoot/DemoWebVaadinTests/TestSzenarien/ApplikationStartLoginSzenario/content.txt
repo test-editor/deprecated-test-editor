@@ -1,0 +1,13 @@
+!|scenario |ApplikationStartLoginSzenario _||
+|note|Description: Dieses Szenario startet die Demo-Web-Applikation und führt einen gültigen Login auf der Anwendung aus. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.|
+|note| Maske: Allgemein Browser|
+|starte Browser|Firefox|
+|navigiere auf die Seite|http://www.officewerker.net|
+|note| Maske: Officewerker Anmeldung|
+|warte auf Element|loginForm|
+|gebe in das Feld|loginMandant|den Wert|offwrk|ein|
+|gebe in das Feld|loginName|den Wert|admin|ein|
+|gebe in das Feld|loginPwd|den Wert|#secret!|ein|
+|klicke auf|loginButton|
+|note| Maske: Officewerker Startseite|
+|warte auf Element|Startseite|

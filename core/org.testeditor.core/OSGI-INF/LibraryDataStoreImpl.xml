@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" name="org.testeditor.core.services.library.data.store.service">
+   <implementation class="org.testeditor.core.services.impl.LibraryDataStoreServiceImpl"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.LibraryDataStoreService"/>
+   </service>
+</scr:component>

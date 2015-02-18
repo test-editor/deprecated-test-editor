@@ -1,0 +1,10 @@
+Testen, ob der Sonnenaufgang für Weihnachten (24.12.2013) korrekt ermittelt wird.
+# Maske: Time Webservice
+-!|script|
+|setze den Prefix|wsx|für den Namespace|http://www.webserviceX.NET/|
+|gebe als Request|wsx:GetSunSetRiseTime/wsx:L/wsx:TimeZone|den Wert|1|ein|
+|gebe als Request|wsx:GetSunSetRiseTime/wsx:L/wsx:Year|den Wert|2013|ein|
+|gebe als Request|wsx:GetSunSetRiseTime/wsx:L/wsx:Month|den Wert|12|ein|
+|gebe als Request|wsx:GetSunSetRiseTime/wsx:L/wsx:Day|den Wert|24|ein|
+|rufe den Webservice|http://www.webservicex.net/sunsetriseservice.asmx|auf|
+|überprüfe ob der Response|wsx:GetSunSetRiseTimeResponse/wsx:GetSunSetRiseTimeResult/wsx:SunRiseTime|den Wert|7.055786|entspricht|

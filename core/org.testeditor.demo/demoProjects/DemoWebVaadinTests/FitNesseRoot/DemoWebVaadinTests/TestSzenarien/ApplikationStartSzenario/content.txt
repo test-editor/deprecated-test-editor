@@ -1,0 +1,6 @@
+!|scenario |ApplikationStartSzenario _||
+|note|Description: Dieses Szenario startet die Demo-Web-Applikation. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.|
+|note| Maske: Allgemein Browser|
+|starte Browser|Firefox|
+|navigiere auf die Seite|http://www.officewerker.net|
+|warte|1|Sekunden|

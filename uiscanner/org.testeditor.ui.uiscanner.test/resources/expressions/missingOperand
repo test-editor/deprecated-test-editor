@@ -1,0 +1,2 @@
+"input"
+	((tagname = input)  (!(type = radio)));

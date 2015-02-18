@@ -1,0 +1,13 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+# Maske: Input Widgets
+-!|script|
+|leere das Feld|input_passphrase|
+|gebe in das Feld|input_passphrase|den Wert|geheim|ein|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

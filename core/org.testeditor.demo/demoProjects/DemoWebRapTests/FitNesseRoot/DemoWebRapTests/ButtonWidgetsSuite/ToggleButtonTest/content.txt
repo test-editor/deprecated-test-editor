@@ -1,0 +1,22 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#button|
+#
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|Unlocked|vorhanden ist|
+|überprüfe ob der Text|Locked|nicht vorhanden ist|
+# Maske: Button Widgets
+-!|script|
+|klicke auf|button_togglelock|
+Im Test kommt es an dieser Stelle regelmäßig zu einem Blockieren der Anwendung (es sieht so aus als würde die Anwendung etwas verarbeiten). In der Folge schlägt der Test fehl, da auch eine Wartezeit keine Abhilfe schafft. Gut möglich, dass der Fehler nur durch eine zweite IE-Instanz verursacht wurde. 
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Locked|vorhanden ist|
+|überprüfe ob der Text|Unlocked|nicht vorhanden ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#
