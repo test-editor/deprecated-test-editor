@@ -1,0 +1,38 @@
+/*******************************************************************************
+ * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Signal Iduna Corporation - initial API and implementation
+ * akquinet AG
+ *******************************************************************************/
+package org.testeditor.ui.parts.testsuite;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
+import org.testeditor.core.model.teststructure.TestCase;
+import org.testeditor.core.model.teststructure.TestSuite;
+
+/**
+ * 
+ * Modultest for ReferredTestStructureContentProvicer.
+ * 
+ */
+public class ReferredTestStructureContentProvicerTest {
+
+	/**
+	 * Tests the get ELements.
+	 */
+	@Test
+	public void testGetElements() {
+		ReferredTestStructureContentProvicer contentProv = new ReferredTestStructureContentProvicer();
+		assertNull("Expect Null on unsopported Object.", contentProv.getElements(new TestCase()));
+		assertNotNull("Expect Not null on sopported Object.", contentProv.getElements(new TestSuite()));
+	}
+
+}

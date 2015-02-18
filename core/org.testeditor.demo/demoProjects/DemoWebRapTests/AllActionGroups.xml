@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/AllActionGroups.xsd"
+	schemaVersion="1.1">
+
+	<ActionGroup name="Allgemein Browser">
+		<action technicalBindingType="Starte_Browser">
+			<actionName locator="Firefox">Firefox</actionName>
+		</action>
+		<action technicalBindingType="Starte_Browser">
+			<actionName locator="IE">IE</actionName>
+		</action>
+		<action technicalBindingType="Navigiere_auf_Seite" />
+		<action technicalBindingType="Beende_Browser" />
+		<action technicalBindingType="Warte_Sekunden" />
+		<action technicalBindingType="Pruefe_Text_Vorhanden" />
+		<action technicalBindingType="Pruefe_Text_Nicht_Vorhanden" />
+		<action technicalBindingType="Seitenaufbau_Abwarten" />
+	</ActionGroup>
+
+	<ActionGroup name="Input Widgets">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_firstname">First Name</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_firstname">First Name</actionName>
+		</action>	
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_passphrase">Passphrase</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_passphrase">Passphrase</actionName>
+		</action>		
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_age">Age</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_age">Age</actionName>
+		</action>		
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_country">Country</actionName>
+		</action>	
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_country">Country</actionName>
+		</action>			
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_class">Class</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_class">Class</actionName>
+		</action>		
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_date">Date</actionName>
+		</action>		
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_date">Date</actionName>
+		</action>	
+		
+		<action technicalBindingType="Auswahl_Wert">
+			<actionName locator="input_country">Country</actionName>
+			<argument id="argument1">
+			  <value>Germany</value>
+			  <value>Canada</value>
+			  <value>USA</value>
+			  <value>Bulgaria</value>
+			  <value>Australien</value>
+			</argument>
+		</action>
+		<action technicalBindingType="Auswahl_Wert">
+			<actionName locator="input_class">Class</actionName>
+			<argument id="argument1">
+			  <value>Business</value>
+			  <value>Economy</value>
+			  <value>Economy Plus</value>
+			</argument>
+		</action>
+			
+		<action technicalBindingType="Eingabe_Datum">
+			<actionName locator="input_date">Date</actionName>
+		</action>		
+		<action technicalBindingType="Lese_Datumsfeld">
+			<actionName locator="input_date">Date</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_In_Datumsfeld">
+			<actionName locator="input_date">Date</actionName>
+		</action>
+	</ActionGroup>
+	
+	<ActionGroup name="Input Validation">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_digitsonly">Digits Only</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Validierung_Fehlerhaft_Nicht_Vorhanden">
+			<actionName locator="input_digitsonly">Digits Only</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Validierung_Fehlerhaft_Vorhanden">
+			<actionName locator="input_digitsonly">Digits Only</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_digitsonly">Digits Only</actionName>
+		</action>	
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="input_mandatory">Mandatory</actionName>
+		</action>	
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="input_mandatory">Mandatory</actionName>
+		</action>			
+		<action technicalBindingType="Pruefe_Validierung_Mandatory_Vorhanden">
+			<actionName locator="input_mandatory">Mandatory</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Validierung_Mandatory_Nicht_Vorhanden">
+			<actionName locator="input_mandatory">Mandatory</actionName>
+		</action>		
+	</ActionGroup>
+	
+	<ActionGroup name="Multiline Texts">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="textbox_wraps">Text Box wraps</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="textbox_donotwraps">Text Box don't wraps</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="textbox_wraps">Text Box wraps</actionName>
+		</action>	
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="textbox_donotwraps">Text Box don't wraps</actionName>
+		</action>	
+	</ActionGroup>	
+	
+	<ActionGroup name="Button Widgets">
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_togglelock">Lock/Unlock</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_download">Download</actionName>
+		</action>
+	    <action technicalBindingType="Klicke_Element">
+			<actionName locator="button_salami">Salami</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_funghi">Funghi</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_calzone">Calzone</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Selektiert">
+			<actionName locator="button_funghi">Funghi</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Nicht_Selektiert">
+			<actionName locator="button_funghi">Funghi</actionName>
+		</action>		
+		
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_extracheese">Extra Cheese</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_extrahot">Extra Hot</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="button_kingsize">King Size</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Selektiert">
+			<actionName locator="button_extracheese">Extra Cheese</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Selektiert">
+			<actionName locator="button_extrahot">Extra Hot</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Selektiert">
+			<actionName locator="button_kingsize">King Size</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Nicht_Selektiert">
+			<actionName locator="button_extracheese">Extra Cheese</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Nicht_Selektiert">
+			<actionName locator="button_extrahot">Extra Hot</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_Nicht_Selektiert">
+			<actionName locator="button_kingsize">King Size</actionName>
+		</action>
+	</ActionGroup>
+	
+	<ActionGroup name="Navigations Widgets">
+		<action technicalBindingType="Klicke_Button" />
+		<!--
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="navigation_basicwidgets">Basic Widgets</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="navigation_inputwidgets">Input Widgets</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="navigation_buttons">Buttons</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="navigation_basic">Basic</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="navigation_canvaswidgets">Canvas</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="navigation_dialogswidgets">Dialogs</actionName>
+		</action>-->
+	</ActionGroup>
+	
+	<ActionGroup name="Dialog Widgets">
+		<!-- SWT -->
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_swt_messagebox">SWT Message Box</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_swt_colordialog">SWT Color Dialog</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_swt_colordialog_green">Green Basic Color</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_swt_frontdialog">SWT Front Dialog</actionName>
+		</action>
+
+		<!-- JFace -->
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_jface_inputdialog">JFace Input Dialog</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_jface_infomessage">JFace Info Message</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_jface_warningdialog">JFace Warning Dialog</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_jface_errormessage">JFace Error Message</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_jface_questiondialog">JFace Question Dialog</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_jface_confirmmessage">JFace Confirm Message</actionName>
+		</action>
+		
+		<!-- Custom -->
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_custom_login">Custom Login Dialog</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_custom_button_login">Login Button</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="dialog_custom_input_password">Password</actionName>
+		</action>
+		
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_button_ok">OK</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_button_cancel">Cancel</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_button_yes">Yes</actionName>
+		</action>
+		<action technicalBindingType="Klicke_Element">
+			<actionName locator="dialog_button_no">No</actionName>
+		</action>
+	</ActionGroup>
+	
+</ActionGroups>

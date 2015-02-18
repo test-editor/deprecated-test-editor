@@ -1,0 +1,10 @@
+Es wird der REST Webservice von Google aufgerufen um die Zeitzone für die Koordinaten von Hamburg zu ermitteln. Das Ergebnis wird entsprecht auf Richtigkeit untersucht.
+# Maske: Time Webservice
+-!|script|
+|rufe den Webservice|https://maps.googleapis.com/maps/api/timezone/xml?location=53,10&timestamp=1331161200&sensor=true|auf|
+Nachdem der Webservice aufgerufen wurde, werden als nächstes Teile der XML Response Nachricht überprüft
+# Maske: Time Webservice
+-!|script|
+|überprüfe ob der Response|//TimeZoneResponse/status/text()|dem Wert|OK|entspricht|
+|überprüfe ob der Response|//TimeZoneResponse/time_zone_id/text()|dem Wert|Europe/Berlin|entspricht|
+|überprüfe ob der Response|//TimeZoneResponse/time_zone_name/text()|dem Wert|Central European Standard Time|entspricht|

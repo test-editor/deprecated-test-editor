@@ -1,0 +1,10 @@
+!|scenario |NeuanlageSzenario _|name, vorname, tag, monat, jahr|
+|note|Description: Legt einen neuen Eintrag in der Geburtstagsliste an.|
+|note| Maske: Neuanlage|
+|gebe in das Feld|NameText|den Wert|@name|ein|
+|gebe in das Feld|VornameText|den Wert|@vorname|ein|
+|wähle in Feld|GeburtsTag|den Wert|@tag|aus|
+|wähle in Feld|GeburtsMonat|den Wert|@monat|aus|
+|wähle in Feld|GeburtsJahr|den Wert|@jahr|aus|
+|note| Maske: Aktionen|
+|klicke auf|Hinzufuegen|

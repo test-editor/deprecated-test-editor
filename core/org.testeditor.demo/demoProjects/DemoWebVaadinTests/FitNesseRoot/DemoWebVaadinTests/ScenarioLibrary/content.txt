@@ -1,0 +1,61 @@
+|import|
+|org.testeditor.fixture.core|
+|org.testeditor.fixture.web|  
+  
+!|Library|
+|WebFixture|
+
+-!|script|
+|setElementlist|${ELEMENT_LISTE}|
+
+'''Steuerung des Browsers''' --------
+'''Browser starten'''
+!|scenario|starte Browser|browser|
+|open browser;|@browser|${BROWSER_PATH}|
+
+'''Seite navigieren'''
+!|scenario|navigiere auf die Seite|url|
+|navigate to Url|@url|
+
+'''Browser beenden'''
+!|scenario|beende Browser|
+|close browser|
+
+'''Eingaben''' --------
+'''Wert eingeben'''
+!|scenario|gebe in das Feld|guiid|den Wert|text|ein|
+|insert|@text|into field|@guiid|
+
+'''Wert leeren'''
+!|scenario|leere das Feld|guiid|
+|clear|@guiid|
+
+'''Auswahl auswählen'''
+!|scenario|wähle in Feld|guiid|den Wert|text|aus|
+|insert|@text|into field|@guiid|
+
+'''Button betätigen'''
+!|scenario|klicke auf|guiElement|
+|click|@guiElement|
+
+'''Warten''' --------
+'''Sekunden warten'''
+!|scenario|warte|anzahlSekunden|Sekunden|
+|wait|@anzahlSekunden|seconds|
+
+'''Element warten'''
+!|scenario|warte auf Element|warteElement|
+|wait for Element|@warteElement|
+
+'''Prüfung''' --------
+'''Text prüfen'''
+!|scenario|überprüfe ob der Text|textVorhanden|vorhanden ist|
+|text|@textVorhanden|is visible|
+
+'''Text ungültig prüfen'''
+!|scenario|überprüfe ob nicht der Text|textVorhanden|vorhanden ist|
+|text|@textVorhanden|is unvisible|
+
+'''Test im Feld prüfen'''
+!|scenario|überprüfe ob der Text|textVisible|im Feld|fieldId|vorhanden ist|
+|textIsVisibleInField;|@textVisible|@fieldId||

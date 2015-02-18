@@ -1,0 +1,30 @@
+!3 !-slim-!
+|'''Date: '''| 10:28:00 PM (MEZ) on Freitag, März 21, 2014 |
+|'''Test Page: '''|.DemoWebserviceSoapTests.SunRiseSoapSuite.SunRiseTimeValidTest|
+|'''Command: '''| !-java -Dwebdriver.ie.driver=/Users/olaf/Development/Workspaces/test-editor/org.testeditor.fitnesse.server/lib/IEDriverServer_32.exe -Dlog4j.configuration=file:/Users/olaf/.testeditor/.metadata/testEditorLog4j/log4j.xml -cp /Users/olaf/Development/Workspaces/test-editor/org.testeditor.fitnesse.server/lib//TestEditorFixtureWebserviceSoap-1.0.0-SNAPSHOT-jar-with-dependencies.jar fitnesse.slim.SlimService -i org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction   8086-! |
+|'''Exit code: '''| 0 |
+|'''Time elapsed: '''| 2.013 seconds |
+
+----
+'''Standard Output:'''
+{{{ 22:27:58:998 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : addPrefixNamespace ( "wsx","http://www.webserviceX.NET/" )true
+22:27:59:021 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : setXPathValue ( "wsx:GetSunSetRiseTime/wsx:L/wsx:TimeZone","1" )true
+22:27:59:023 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : setXPathValue ( "wsx:GetSunSetRiseTime/wsx:L/wsx:Year","2013" )true
+22:27:59:024 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : setXPathValue ( "wsx:GetSunSetRiseTime/wsx:L/wsx:Month","12" )true
+22:27:59:026 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : setXPathValue ( "wsx:GetSunSetRiseTime/wsx:L/wsx:Day","24" )true
+22:27:59:036 - DEBUG - org.testeditor.fixture.webservice.soap.SoapFixture.sendTo() send to: REQUEST: <wsx:GetSunSetRiseTime xmlns:wsx="http://www.webserviceX.NET/"><wsx:L><wsx:TimeZone>1</wsx:TimeZone><wsx:Year>2013</wsx:Year><wsx:Month>12</wsx:Month><wsx:Day>24</wsx:Day></wsx:L></wsx:GetSunSetRiseTime>
+22:28:00:323 - DEBUG - org.testeditor.fixture.webservice.soap.SoapFixture.sendTo() send to: RESPONSE: <GetSunSetRiseTimeResponse xmlns="http://www.webserviceX.NET/"><GetSunSetRiseTimeResult><Latitude>0</Latitude><Longitude>0</Longitude><SunSetTime>19.1758251</SunSetTime><SunRiseTime>7.055786</SunRiseTime><TimeZone>1</TimeZone><Day>24</Day><Month>12</Month><Year>2013</Year></GetSunSetRiseTimeResult></GetSunSetRiseTimeResponse>
+22:28:00:325 - DEBUG - org.testeditor.fixture.webservice.soap.SoapFixture.copyHeaders() header: Accept, value: text/xml, text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+22:28:00:325 - DEBUG - org.testeditor.fixture.webservice.soap.SoapFixture.copyHeaders() header: Content-Type, value: text/xml; charset=utf-8
+22:28:00:326 - DEBUG - org.testeditor.fixture.webservice.soap.SoapFixture.copyHeaders() header: Content-Length, value: 350
+22:28:00:326 - DEBUG - org.testeditor.fixture.webservice.soap.SoapFixture.copyHeaders() header: SOAPAction, value: ""
+22:28:00:326 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : sendTo ( "http://www.webservicex.net/sunsetriseservice.asmx" )true
+22:28:00:329 - DEBUG - org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction.methodInvoke() Method : checkResponseEqualsTo ( "wsx:GetSunSetRiseTimeResponse/wsx:GetSunSetRiseTimeResult/wsx:SunRiseTime","7.055786" )true
+ }}}
+----
+'''Standard Error:'''
+{{{ log4j:WARN Continuable parsing error 1 and column 123
+log4j:WARN Dokument-Root-Element "log4j:configuration"muss mit DOCTYPE-Root "null" ?bereinstimmen.
+log4j:WARN Continuable parsing error 1 and column 123
+log4j:WARN Dokument ist ung?ltig. Keine Grammatik gefunden.
+ }}}

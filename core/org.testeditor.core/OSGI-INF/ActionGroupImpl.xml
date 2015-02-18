@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="true" name="org.testeditor.core.services.action.group.service">
+   <implementation class="org.testeditor.core.services.impl.ActionGroupServiceImpl"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.ActionGroupService"/>
+   </service>
+   <reference bind="bindLibraryReader" cardinality="1..1" interface="org.testeditor.core.services.interfaces.LibraryReaderService" name="LibraryReaderService" policy="static" unbind="unbindLibraryReader"/>
+   <reference bind="bindLibraryDataStoreService" cardinality="1..1" interface="org.testeditor.core.services.interfaces.LibraryDataStoreService" name="LibraryDataStoreService" policy="static" unbind="unbindLibraryDataStoreService"/>
+</scr:component>

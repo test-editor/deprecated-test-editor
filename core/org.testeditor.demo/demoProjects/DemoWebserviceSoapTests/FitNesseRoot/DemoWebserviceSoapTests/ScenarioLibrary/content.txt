@@ -1,0 +1,22 @@
+|import|
+|org.testeditor.fixture.core|
+|org.testeditor.fixture.webservice.soap|  
+
+!|Library|
+|SoapFixture|
+
+'''Setze den Prefix für den Namespace''' --------
+!|scenario|setze den Prefix|prefix|für den namespace|namespace|
+|add prefix|@prefix|namespace|@namespace|
+
+'''Gebe als Request den Wert ein''' --------
+!|scenario|gebe als Request|path|den Wert|value|ein|
+|set x path|@path|value|@value|
+
+'''Rufe den Webservice auf''' --------
+!|scenario|rufe den webservice|webservice|auf|
+|send to|@webservice|
+
+'''Überprüfe ob der Response den Wert entspricht''' --------
+!|scenario|überprüfe ob der Response|path|den Wert|value|entspricht|
+|check response|@path|equals to|@value|

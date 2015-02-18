@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TechnicalBindingTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/TechnicalBindingTypeCollection.xsd"
+	schemaVersion="1.1">
+
+    <!-- Steuerung des Browsers -->
+
+    <TechnicalBindingType id="Starte_Browser" name="Browser starten">
+        <actionPart position="1" type="TEXT" value="starte Browser" />
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Navigiere_auf_Seite" name="Seite navigieren">
+        <actionPart position="1" type="TEXT" value="navigiere auf die Seite" />
+        <actionPart position="2" type="ARGUMENT"/>
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Beende_Browser" name="Browser beenden">
+        <actionPart position="1" type="TEXT" value="beende Browser" />
+    </TechnicalBindingType>
+
+    <!-- Eingaben -->
+
+    <TechnicalBindingType id="Eingabe_Wert" name="Wert eingeben">
+        <actionPart position="1" type="TEXT" value="gebe in das Feld" />
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert" />
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="ein" />
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Leere_Wert" name="Wert leeren">
+        <actionPart position="1" type="TEXT" value="leere das Feld" />
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Auswahl_Wert" name="Wert auswählen">
+        <actionPart position="1" type="TEXT" value="wähle in Feld" />
+        <actionPart position="2" type="ACTION_NAME" />
+        <actionPart position="3" type="TEXT" value="den Wert" />
+        <actionPart position="4" type="ARGUMENT" id="argument1" />
+        <actionPart position="5" type="TEXT" value="aus" />
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Button_Druecken" name="Button betätigen">
+        <actionPart position="1" type="TEXT" value="klicke auf" />
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+
+    <!-- Warten -->
+
+    <TechnicalBindingType id="Warte_Sekunden" name="Sekunden warten">
+        <actionPart position="1" type="TEXT" value="warte" />
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="Sekunden" />
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Warte_Element" name="Element warten">
+        <actionPart position="1" type="TEXT" value="warte auf Element" />
+        <actionPart position="2" type="ACTION_NAME"/>
+    </TechnicalBindingType>
+
+    <!-- Prüfung -->
+
+	<TechnicalBindingType id="Pruefe_Wert_vorhanden" name="Text prüfen">
+		<actionPart position="1" type="TEXT" value="überprüfe ob der Text" />
+		<actionPart position="2" type="ARGUMENT"/>
+		<actionPart position="3" type="TEXT" value="vorhanden ist" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Pruefe_Wert_nicht_vorhanden" name="Text ungültig prüfen">
+		<actionPart position="1" type="TEXT" value="überprüfe ob nicht der Text" />
+		<actionPart position="2" type="ARGUMENT"/>
+		<actionPart position="3" type="TEXT" value="vorhanden ist" />
+	</TechnicalBindingType>
+	
+    <TechnicalBindingType id="Pruefe_Wert_in_Feld_nicht_vorhanden" name="Text in Feld prüfen">
+		<actionPart position="1" type="TEXT" value="überprüfe ob der Text" />
+		<actionPart position="2" type="ARGUMENT"/>
+		<actionPart position="3" type="TEXT" value="im Feld" />
+		<actionPart position="4" type="ACTION_NAME"/>
+		<actionPart position="5" type="TEXT" value="vorhanden ist"/>
+	</TechnicalBindingType>
+    
+</TechnicalBindingTypes>

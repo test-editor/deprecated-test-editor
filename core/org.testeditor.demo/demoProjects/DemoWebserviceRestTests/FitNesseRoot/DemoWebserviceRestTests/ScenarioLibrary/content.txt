@@ -1,0 +1,16 @@
+|import|
+|org.testeditor.fixture.webservice.rest|
+
+!|Library|
+|RestFixture|
+
+
+!Rest Methoden
+!|Scenario|rufe den Webservice|page|auf|
+|sendGet;|@page|
+
+!|Scenario|überprüfe ob der Response|condition|insgesamt|count|Mal vorhanden ist|
+|checkChildrenCount;|@condition|@count|
+
+!|Scenario|überprüfe ob der Response|condition|dem Wert|response|entspricht|
+|checkXmlResponse;|@condition|@response|

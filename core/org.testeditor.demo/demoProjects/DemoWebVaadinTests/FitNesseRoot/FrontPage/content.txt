@@ -1,0 +1,5 @@
+!1 DemoWebVaadinTests
+
+
+
+!note Release ${FITNESSE_VERSION}

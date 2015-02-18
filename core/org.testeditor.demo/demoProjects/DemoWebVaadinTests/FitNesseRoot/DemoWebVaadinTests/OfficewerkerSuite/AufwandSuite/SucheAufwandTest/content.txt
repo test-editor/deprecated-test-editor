@@ -1,0 +1,16 @@
+Dieser Test führt eine Suche nach Aufwänden durch und überprüft das Ergebnis.
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStartLoginSzenario
+!|script|
+|Applikation Start Login Szenario|
+#
+# Maske: Officewerker Startseite
+-!|script|
+|klicke auf|Aufwand|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob der Text|Komponieren|vorhanden ist|
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

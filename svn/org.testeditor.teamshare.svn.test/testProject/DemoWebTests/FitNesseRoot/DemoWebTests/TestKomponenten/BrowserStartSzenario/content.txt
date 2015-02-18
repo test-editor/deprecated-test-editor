@@ -1,0 +1,3 @@
+!|scenario |BrowserStartSzenario _||
+|note| Maske: Allgemein Browser|
+|starte Browser|Firefox|

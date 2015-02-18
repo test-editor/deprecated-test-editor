@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<PageHistory>
+
+  
+  <Page>
+    <Name>DemoWebTests.LocalDemoSuite.LoginSuite</Name>
+            <TestResult>
+      <Date>Thu Nov 21 13:24:30 CET 2013</Date>
+      <ResultLink>DemoWebTests.LocalDemoSuite.LoginSuite?pageHistory&amp;resultDate=20131121132430&amp;format=xml</ResultLink>
+            <Pass>2</Pass>
+      <Fail>1</Fail>
+     </TestResult>
+        <TestResult>
+      <Date>Thu Nov 21 13:23:39 CET 2013</Date>
+      <ResultLink>DemoWebTests.LocalDemoSuite.LoginSuite?pageHistory&amp;resultDate=20131121132339&amp;format=xml</ResultLink>
+            <Pass>2</Pass>
+      <Fail>1</Fail>
+     </TestResult>
+        <TestResult>
+      <Date>Thu Nov 21 13:22:45 CET 2013</Date>
+      <ResultLink>DemoWebTests.LocalDemoSuite.LoginSuite?pageHistory&amp;resultDate=20131121132245&amp;format=xml</ResultLink>
+            <Pass>2</Pass>
+      <Fail>1</Fail>
+     </TestResult>
+      </Page>
+
+  
+</PageHistory>

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Integration Tests of Analyzer
+Bundle-SymbolicName: org.testeditor.ui.analyzer.test
+Bundle-Version: 1.0.0
+Fragment-Host: org.testeditor.ui.analyzer;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit;bundle-version="4.11.0"
+Import-Package: org.osgi.framework;version="1.7.0"

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_vtvnASNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ide.application" contributorURI="platform:/plugin/org.testeditor.ui" selectedElement="_vtvnAiNOEeKR9Jsu4DQSAw" bindingContexts="_vtvnICNOEeKR9Jsu4DQSAw">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_vtvnAiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" selectedElement="_vtvnAyNOEeKR9Jsu4DQSAw" label="%trimmedwindow.label.testeditor" iconURI="platform:/plugin/org.testeditor.ui/icons/test_editor.png" tooltip="" x="0" y="0">
+    <tags>topLevel</tags>
+    <tags>shellMaximized</tags>
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_vtvnAyNOEeKR9Jsu4DQSAw" elementId="PerspectiveStack.org.testeditor" contributorURI="platform:/plugin/org.testeditor.ui" selectedElement="_vtvnBCNOEeKR9Jsu4DQSAw">
+      <children xsi:type="advanced:Perspective" xmi:id="_vtvnBCNOEeKR9Jsu4DQSAw" elementId="org.testeditor.perspective.testeditor" contributorURI="platform:/plugin/org.testeditor.ui" selectedElement="_vtvnBSNOEeKR9Jsu4DQSAw" label="">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_vtvnBSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" containerData="30" selectedElement="_vtvnBiNOEeKR9Jsu4DQSAw" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_vtvnBiNOEeKR9Jsu4DQSAw" elementId="PartStack.org.testeditor.testexplorer" contributorURI="platform:/plugin/org.testeditor.ui" containerData="20" selectedElement="_vtvnByNOEeKR9Jsu4DQSAw">
+            <children xsi:type="basic:Part" xmi:id="_vtvnByNOEeKR9Jsu4DQSAw" elementId="org.testeditor.ui.part.testexplorer" contributorURI="platform:/plugin/org.testeditor.ui" containerData="40" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.TestExplorer" label="%part.label.testexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif">
+              <menus xsi:type="menu:PopupMenu" xmi:id="_By15wC5IEeKVW5gnB3v2mQ" elementId="org.testeditor.ui.popupmenu" label="%command.description.testexplorerpopupmenudescription" iconURI="" tooltip="" mnemonics="">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_lEX_4D6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.handledmenuitem.opentestcase" label="%popupmenu.label.open.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/open.png" mnemonics="" command="_K6bh4D7GEeKXX6nM9hjBXQ"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="_jYfYID8GEeK-drQ1_16Aqg" elementId="org.testeditor.ui.menuseparator.0"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_HrOJ8D1pEeO8luwdlnv0DQ" elementId="org.testeditor.ui.handledmenuitem.newtestproject" label="%popupmenu.label.new.test.project" iconURI="platform:/plugin/org.testeditor.ui/icons/project.gif" command="_4IcyADvbEeO9FbJw7O3mmA"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_Gv0KEC5IEeKVW5gnB3v2mQ" elementId="org.testeditor.ui.handledmenuitem.newtestsuite" label="%popupmenu.label.new.test.suite" iconURI="platform:/plugin/org.testeditor.ui/icons/testsuite.gif" tooltip="" mnemonics="%handledmenuitem.mnemonics.1" command="_vsC-oD69EeKim5Ef38P8Tw"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_LMJygC5IEeKVW5gnB3v2mQ" elementId="org.testeditor.ui.handledmenuitem.newtestcase" label="%popupmenu.label.new.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/testcase.gif" tooltip="" mnemonics="%handledmenuitem.mnemonics.2" command="_6Q6EgD69EeKim5Ef38P8Tw"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="_N_qlkLQwEeOw2ufTk__f3w" elementId="org.testeditor.ui.menuseparator.10"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_Cs8UILQwEeOw2ufTk__f3w" elementId="org.testeditor.ui.newscenariosuite.handledmenuitem" label="%handledmenuitem.label.newScenarioSuite" iconURI="platform:/plugin/org.testeditor.ui/icons/scenariosuite.gif" command="_L-9ukLQvEeOw2ufTk__f3w"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_yW-woNcoEeKeqebfDEIM4g" elementId="org.testeditor.ui.handledmenuitem.newtestscenario" label="%popupmenu.label.new.test.scenario" iconURI="platform:/plugin/org.testeditor.ui/icons/scenario.gif" mnemonics="%handledmenuitem.mnemonics.2" command="_lZqloNcoEeKeqebfDEIM4g"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="_HYIwsC58EeKvb61axu41cw" elementId="org.testeditor.ui.menuseparator.1"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_H-u2oC58EeKvb61axu41cw" elementId="org.testeditor.ui.handledmenuitem.deleteitem" label="%popupmenu.label.delete.item" iconURI="platform:/plugin/org.testeditor.ui/icons/remove.png" mnemonics="%handledmenuitem.mnemonics.3" command="_8tNH0D69EeKim5Ef38P8Tw"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_8RlGUD6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.handledmenuitem.renameitem" label="%popupmenu.label.rename.item" iconURI="platform:/plugin/org.testeditor.ui/icons/rename.png" command="_Bf-TQD6-EeKim5Ef38P8Tw"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="_x6A1gERkEeKhxa2jZYac7A" elementId="org.testeditor.ui.menuseparator.2"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_2EjEUEqbEeKVwrxWYw_qcA" elementId="org.testeditor.ui.handledmenuitem.run" label="%popupmenu.label.runtest.item" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="" command="_4tsekEqgEeKVwrxWYw_qcA"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_CyEaIPRhEeKhvJHgD3On6A" elementId="org.testeditor.ui.handledmenuitem.showScenarioUsage" label="%popupmenu.label.show_scenario_usage.item" iconURI="platform:/plugin/org.testeditor.ui/icons/scenario_references.gif" command="_TcLccPRgEeKhvJHgD3On6A"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="_scaPINOEEeKEGbLPo3b6ng" elementId="org.testeditor.ui.menuseparator.3"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_RdHBQFjcEeKL66ViDCvhrw" elementId="org.testeditor.ui.handledmenuitem.openwith" label="%handledmenuitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/glasses.png" command="_bkGfYFjcEeKL66ViDCvhrw"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_aAp6kNM5EeKXiZqlHm_U4g" elementId="org.testeditor.ui.handler.openLogData" label="%popupmenu.label.show_testlog.item" iconURI="platform:/plugin/org.testeditor.ui/icons/testlog.gif" command="_hPrA0KdZEeKIcI0tdcqdJg"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="__OBgcImhEeO2m8BNTNOEzA" elementId="org.testeditor.ui.menuseparator.4"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_X6BWkFszEeOeLIc7pxHLHA" elementId="org.testeditor.ui.handledmenuitem.opentetshistory" label="%popupmenu.label.show_testhistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/history_view.gif" command="_EXfLEFszEeOeLIc7pxHLHA"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_AulUQImiEeO2m8BNTNOEzA" elementId="org.testeditor.ui.ClearHistory.handledmenuitem" label="%popupmenu.label.show_cleartesthistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/clear_co.gif" command="_fvzJkImiEeO2m8BNTNOEzA"/>
+                <children xsi:type="menu:MenuSeparator" xmi:id="__sx7AI5tEeOdc9HI3BwZBw" elementId="org.testeditor.ui.menuseparator.5"/>
+                <children xsi:type="menu:Menu" xmi:id="_sxmkkIq2EeOROL1VQfvVhw" elementId="org.testeditor.ui.menu.team" label="%popupmenu.label.menu.team">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_Dd5TENwIEeOhpN9L_TE-Ww" elementId="org.testeditor.ui.menu.team.import" label="%popupmenu.label.importProject" iconURI="platform:/plugin/org.testeditor.ui/icons/import_projectset.gif" command="_YHznwIyzEeO2e4ZsIKH9dg"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_4Y3ioIq2EeOROL1VQfvVhw" elementId="org.testeditor.ui.menu.team.share" label="%popupmenu.label.shareProject" iconURI="platform:/plugin/org.testeditor.ui/icons/share_project.gif" command="_bYJckIwCEeOROL1VQfvVhw"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_KinwMFniEeSo258iJyg0Sw" elementId="org.testeditor.ui.menu.team.disconnect" label="%popupmenu.label.disconnectProject" iconURI="platform:/plugin/org.testeditor.ui/icons/disconnect.gif" command="_FEmoUFniEeSo258iJyg0Sw"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_PnPrUI24EeODe-OipwitGA" elementId="org.testeditor.ui.handledmenuitem.update" label="%popupmenu.label.updateElement" iconURI="platform:/plugin/org.testeditor.ui/icons/synch_synch.gif" command="_qaJT0I29EeOTbaG3cTAb_A"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_l6Lh4I24EeODe-OipwitGA" elementId="org.testeditor.ui.handledmenuitem.approveElement" label="%popupmenu.label.approveElement" iconURI="platform:/plugin/org.testeditor.ui/icons/team_shareing.gif" command="_m0j0kI26EeODe-OipwitGA"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_Q7dukGpqEeSOgPsPr_FOyw" elementId="org.testeditor.ui.handledmenuitem.revertElement" label="%popupmenu.label.revertElement" iconURI="platform:/plugin/org.testeditor.ui/icons/revert.gif" command="_pwlOAGpqEeSOgPsPr_FOyw"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_MCg_YJSrEeSBt7RsTs2qPA" elementId="org.testeditor.ui.handledmenuitem.showChanges" label="%popupmenu.label.showChanges" iconURI="platform:/plugin/org.testeditor.ui/icons/show_changes.png" command="_5P-GYJSqEeSBt7RsTs2qPA"/>
+                </children>
+              </menus>
+              <toolbar xmi:id="_cl21AJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.toolbar.0">
+                <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA"/>
+                <children xsi:type="menu:DirectToolItem" xmi:id="_jc5lUJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.testExplorerRefreshHandler" iconURI="platform:/plugin/org.testeditor.ui/icons/refresh.gif" tooltip="%handledtoolitem.refresh.tree.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.handler.RefreshTestExplorer"/>
+              </toolbar>
+            </children>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_77-DsFKUEeOU_N3uSNRofQ" elementId="org.testeditor.ui.partsashcontainer.0" containerData="48">
+            <children xsi:type="basic:PartStack" xmi:id="_vtvnCCNOEeKR9Jsu4DQSAw" elementId="org.testeditor.ui.partstack.testeditor" contributorURI="platform:/plugin/org.testeditor.ui" containerData="70">
+              <tags>NoAutoCollapse</tags>
+              <tags>testProjectConfig</tags>
+              <tags>testCase</tags>
+              <tags>testScenarioView</tags>
+              <tags>systemConfigurationEditor</tags>
+              <tags>testSuite</tags>
+              <tags>testresult</tags>
+              <children xsi:type="basic:InputPart" xmi:id="_5kBdYM0oEeK5WqurIyBEGQ" elementId="org.testeditor.ui.inputpart.0" visible="false"/>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_lTOKoFKTEeOU_N3uSNRofQ" elementId="org.testeditor.ui.partstack.testhistory" containerData="30">
+              <tags>analyzer</tags>
+              <tags>reporting</tags>
+              <children xsi:type="basic:Part" xmi:id="_o6NfcFKTEeOU_N3uSNRofQ" elementId="org.testeditor.ui.part.testhistory" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testhistory.TestHistoryPart" label="%part.label.testhistory" iconURI="platform:/plugin/org.testeditor.ui/icons/history_view.gif">
+                <toolbar xmi:id="_r2EMkFKTEeOU_N3uSNRofQ" elementId="org.testeditor.ui.toolbar.0">
+                  <children xsi:type="menu:HandledToolItem" xmi:id="_7G_9wIj-EeO02uyCM-4W1A" elementId="org.testeditor.ui.handledtoolitem.clearHistory" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/clear_co.gif" tooltip="%handledtoolitem.clear.history.tooltip" enabled="false" command="__QgJwIj-EeO02uyCM-4W1A"/>
+                </toolbar>
+              </children>
+            </children>
+          </children>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_ow2y8HtqEeKaWLf62Nzpug" elementId="org.testeditor.ui.partsashcontainer.0" containerData="32">
+            <children xsi:type="basic:PartStack" xmi:id="_wpjtAKc6EeKIcI0tdcqdJg" elementId="org.testeditor.ui.partstack.Description" containerData="30">
+              <children xsi:type="basic:Part" xmi:id="_fiB2wKEYEeKdRLNG6A3HNg" elementId="org.testeditor.ui.partdescriptor.testStructureEditor.Description" containerData="" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.inputparts.descriptioninput.TestEditorDescriptionInputController" label="%part.Description" iconURI="platform:/plugin/org.testeditor.ui/icons/description.gif" tooltip="%part.Description">
+                <toolbar xmi:id="_JV5ksKgcEeK1qNYa6Ce2KA" elementId="org.testeditor.ui.toolbar.0">
+                  <children xsi:type="menu:DirectToolItem" xmi:id="_LPOd0KgcEeK1qNYa6Ce2KA" elementId="org.testeditor.ui.directtoolitem.0" iconURI="platform:/plugin/org.testeditor.ui/icons/eraser.png" tooltip="%handledtoolitem.clean.input.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.inputparts.descriptioninput.CleanDescriptionInput"/>
+                </toolbar>
+              </children>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_z5jeIKc6EeKIcI0tdcqdJg" elementId="org.testeditor.ui.partstack.Action" containerData="30">
+              <children xsi:type="basic:Part" xmi:id="_F6jqsH9VEeKArMEVwnPJQA" elementId="org.testeditor.ui.partdescriptor.testStructureEditor" containerData="" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.inputparts.actioninput.TestEditorActionInputController" label="%part.Action" iconURI="platform:/plugin/org.testeditor.ui/icons/action.gif" tooltip="%part.Action">
+                <toolbar xmi:id="__x8swKgcEeK1qNYa6Ce2KA" elementId="org.testeditor.ui.toolbar.0">
+                  <children xsi:type="menu:DirectToolItem" xmi:id="_AmZBcKgdEeK1qNYa6Ce2KA" elementId="org.testeditor.ui.directtoolitem.0" iconURI="platform:/plugin/org.testeditor.ui/icons/eraser.png" tooltip="%handledtoolitem.clean.input.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.inputparts.actioninput.CleanActionInput"/>
+                </toolbar>
+              </children>
+            </children>
+            <children xsi:type="basic:PartStack" xmi:id="_ptEacN79EeK9qc2UmP_pPA" elementId="org.testeditor.ui.partstack.0" containerData="40">
+              <children xsi:type="basic:Part" xmi:id="_qSNH0N79EeK9qc2UmP_pPA" elementId="org.testeditor.ui.partdescriptor.testStructureEditor.ScenarioSelection" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.inputparts.scenarioselection.TestEditorScenarioSelectionController" label="%part.Scenario" iconURI="platform:/plugin/org.testeditor.ui/icons/scenario.gif">
+                <toolbar xmi:id="_CXcvEAZGEeO-BMeA9Euwng" elementId="org.testeditor.ui.toolbar.2">
+                  <children xsi:type="menu:DirectToolItem" xmi:id="_wIvtgAZGEeO-BMeA9Euwng" elementId="org.testeditor.ui.directtoolitem.ResetScenarioSelection" iconURI="platform:/plugin/org.testeditor.ui/icons/eraser.png" tooltip="%handledtoolitem.clean.input.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.inputparts.scenarioselection.CleanScenarioSelectionInput"/>
+                </toolbar>
+              </children>
+            </children>
+          </children>
+        </children>
+      </children>
+    </children>
+    <mainMenu xmi:id="_vtvnCiNOEeKR9Jsu4DQSAw" elementId="menu:org.eclipse.ui.main.menu" contributorURI="platform:/plugin/org.testeditor.ui">
+      <children xsi:type="menu:Menu" xmi:id="_vtvnCyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" label="%menu.label.file">
+        <children xsi:type="menu:Menu" xmi:id="_JKrnMN5WEeK2QLpY6GR29Q" elementId="org.testeditor.ui.menu.0" label="%handledmenu.label.new">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_Rtt8ADvcEeO9FbJw7O3mmA" elementId="" label="%handledmenuitem.label.newTestProject" iconURI="platform:/plugin/org.testeditor.ui/icons/project.gif" command="_4IcyADvbEeO9FbJw7O3mmA"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_p84R8N5WEeK2QLpY6GR29Q" elementId="org.testeditor.ui.handledmenuitem.0" label="%handledmenuitem.label.newTestSuite" iconURI="platform:/plugin/org.testeditor.ui/icons/testsuite.gif" tooltip="%handledmenuitem.label.newTestSuite.ToolTip" command="_vsC-oD69EeKim5Ef38P8Tw">
+            <parameters xmi:id="_Bgi9UN5nEeKLLpaIdzeVUw" elementId="ignoreCanExecute" name="org.testeditor.ui.newsuite.command.parameter.canExecuteFromMainMenu" value="true"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_X43oAN5YEeKLLpaIdzeVUw" elementId="" label="%handledmenuitem.label.newTestCase" iconURI="platform:/plugin/org.testeditor.ui/icons/testcase.gif" command="_6Q6EgD69EeKim5Ef38P8Tw">
+            <parameters xmi:id="_IPv0sN5xEeKLLpaIdzeVUw" elementId="ignoreCanExecute" name="org.testeditor.ui.newcase.command.parameter.canExecuteFromMainMenu" value="true"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_oyngILQvEeOw2ufTk__f3w" elementId="org.testeditor.ui.newscenarisuite.handledmenuitem" label="%handledmenuitem.label.newScenarioSuite" iconURI="platform:/plugin/org.testeditor.ui/icons/scenariosuite.gif" command="_L-9ukLQvEeOw2ufTk__f3w">
+            <parameters xmi:id="_p6ZmALitEeOQStpZvNmWHw" elementId="ignoreCanExecute" name="org.testeditor.ui.newscenariosuite.command.parameter.canExecuteFromMainMenu" value="true"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_dpgw8N5YEeKLLpaIdzeVUw" elementId="" label="%handledmenuitem.label.newTestSenario" iconURI="platform:/plugin/org.testeditor.ui/icons/scenario.gif" command="_lZqloNcoEeKeqebfDEIM4g">
+            <parameters xmi:id="_WY_nUN5xEeKLLpaIdzeVUw" elementId="ignoreCanExecute" name="org.testeditor.ui.newtestscenario.command.parameter.canExecuteFromMainMenu" value="true"/>
+          </children>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_vtvnDSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" label="%handledmenuitem.label.save" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_cQqAUDpdEeO3nKXKoxHmgw" elementId="org.testeditor.ui.menuseparator.6"/>
+        <children xsi:type="menu:Menu" xmi:id="_9KrWIIy2EeO2e4ZsIKH9dg" elementId="org.testeditor.ui.menu.team" label="%popupmenu.label.menu.team">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_X96kkIy2EeO2e4ZsIKH9dg" elementId="org.testeditor.ui.handledmenuitem.iportproject" label="%popupmenu.label.importProject" iconURI="platform:/plugin/org.testeditor.ui/icons/import_projectset.gif" command="_YHznwIyzEeO2e4ZsIKH9dg"/>
+        </children>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_U7FFsIy2EeO2e4ZsIKH9dg" elementId="org.testeditor.ui.menuseparator.7"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_d_8MoDpdEeO3nKXKoxHmgw" elementId="org.testeditor.ui.handledmenuitem.0" label="%popupmenu.label.newdemoprojects.item" command="_sN6LYDflEeOL5qr8nwU3qA"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_-_YagJP0EeOa0rxZTei3iw" elementId="org.testeditor.ui.menuseparator.8"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_aYmSgDpdEeO3nKXKoxHmgw" elementId="org.testeditor.ui.menuseparator.9"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_vtvnDiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" label="%handledmenuitem.label.quit" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_byW7APqdEeOHNMxeLcKB7w" elementId="org.testeditor.ui.menu.config" label="%menu.label.config">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_muLHkIm7EeOi2LJ3lc9afg" elementId="org.testeditor.ui.handledmenuitem.SystemConfiguration" label="%part.label.systemconfiguration" command="_tEtL0Im7EeOi2LJ3lc9afg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_tKDmoPqdEeOHNMxeLcKB7w" elementId="org.testeditor.ui.handledmenuitem.resetui" label="%handledmenuitem.label.resetui" command="_9SKD0PtnEeOmHfkQ32ERag"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_vtvnDyNOEeKR9Jsu4DQSAw" elementId="org.testeditor.ui.menu.help" contributorURI="platform:/plugin/org.testeditor.ui" label="%menu.label.help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_hbhDQNMxEeKEGbLPo3b6ng" elementId="org.testeditor.ui.handledmenuitem.manual" label="%handledmenuitem.label.usermanual" iconURI="platform:/plugin/org.testeditor.ui/icons/user_guide.gif" command="__FnKENMwEeKEGbLPo3b6ng"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_4eKQsKhiEeORF59bxsdf3g" elementId="org.testeditor.ui.handledmenuitem.adminmanual" label="%handledmenuitem.label.adminmanual" iconURI="platform:/plugin/org.testeditor.ui/icons/user_guide.gif" command="_jKqBYKhjEeORF59bxsdf3g"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_vtvnECNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" label="%handledmenuitem.label.about" iconURI="platform:/plugin/org.testeditor.ui/icons/info.gif" command="_vtvnJyNOEeKR9Jsu4DQSAw"/>
+      </children>
+    </mainMenu>
+    <trimBars xmi:id="_vtvnESNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui"/>
+  </children>
+  <handlers xmi:id="_vtvnFSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.QuitHandler" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
+  <handlers xmi:id="_vtvnFyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.SaveHandler" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+  <handlers xmi:id="_vtvnGCNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.AboutHandler" command="_vtvnJyNOEeKR9Jsu4DQSAw"/>
+  <handlers xmi:id="_lxT6MD7FEeKXX6nM9hjBXQ" elementId="org.testeditor.ui.handler.OpenTestStructureHandler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenTestStructureHandler" command="_K6bh4D7GEeKXX6nM9hjBXQ"/>
+  <handlers xmi:id="_CCFy0FjeEeKL66ViDCvhrw" elementId="org.testeditor.ui.handledmenuitem.runTest" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.RunTestHandler" command="_4tsekEqgEeKVwrxWYw_qcA"/>
+  <handlers xmi:id="_9pdAAGVREeKCi7L6hFal3w" elementId="org.testeditor.ui.handledmenuitem.openwith" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenSourceCodeHandler" command="_bkGfYFjcEeKL66ViDCvhrw"/>
+  <handlers xmi:id="_JwPVwD69EeKim5Ef38P8Tw" elementId="org.testeditor.ui.newtestsuite.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewTestSuiteHandler" command="_vsC-oD69EeKim5Ef38P8Tw"/>
+  <handlers xmi:id="_JJQY0D6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.newcase.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewCaseHandler" command="_6Q6EgD69EeKim5Ef38P8Tw"/>
+  <handlers xmi:id="_OR7i0D6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.renametest.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.rename.RenameTestHandlerFacade" command="_Bf-TQD6-EeKim5Ef38P8Tw"/>
+  <handlers xmi:id="_RvLs0D6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.deletetest.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.DeleteTestHandler" command="_8tNH0D69EeKim5Ef38P8Tw"/>
+  <handlers xmi:id="_DmAeMEqcEeKVwrxWYw_qcA" elementId="org.testeditor.ui.handler.run" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.RunTestHandler" command="_4tsekEqgEeKVwrxWYw_qcA"/>
+  <handlers xmi:id="_2HAQUNMwEeKEGbLPo3b6ng" elementId="org.testeditor.ui.manual.command" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.UserManualHandler" command="__FnKENMwEeKEGbLPo3b6ng"/>
+  <handlers xmi:id="_IOLXcNM5EeKXiZqlHm_U4g" elementId="org.testeditor.ui.handler.openLogData" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenTestLogHandler" command="_hPrA0KdZEeKIcI0tdcqdJg"/>
+  <handlers xmi:id="_pFIKwNcoEeKeqebfDEIM4g" elementId="org.testeditor.ui.newtestscenario.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewScenarioHandler" command="_lZqloNcoEeKeqebfDEIM4g"/>
+  <handlers xmi:id="_RGuA8PRgEeKhvJHgD3On6A" elementId="org.testeditor.ui.showScenarioUsage.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.TestScenarioUsageHandler" command="_TcLccPRgEeKhvJHgD3On6A"/>
+  <handlers xmi:id="_KSAVIPhAEeK3HvD7VxkhpA" elementId="org.testeditor.ui.restartFitnesse.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.RestartTestServerHandler" command="_WB2ncPhAEeK3HvD7VxkhpA"/>
+  <handlers xmi:id="_VWX5IPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.reloadLibrary.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ReloadLibraryHandler" command="_eX6LEPhOEeK3HvD7VxkhpA"/>
+  <handlers xmi:id="_e11XADflEeOL5qr8nwU3qA" elementId="org.testeditor.ui.createDemoProjects.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.CreateDemoProjectsHandler" command="_sN6LYDflEeOL5qr8nwU3qA"/>
+  <handlers xmi:id="_A5LAwDvcEeO9FbJw7O3mmA" elementId="org.testeditor.ui.newproject.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewProjectHandler" command="_4IcyADvbEeO9FbJw7O3mmA"/>
+  <handlers xmi:id="_AFyFUFszEeOeLIc7pxHLHA" elementId="org.testeditor.ui.openTestHistory.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenTestHistoryHandler" command="_EXfLEFszEeOeLIc7pxHLHA"/>
+  <handlers xmi:id="_H5rwoIkAEeO02uyCM-4W1A" elementId="org.testeditor.ui.handler.ClearHistoryHandler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testhistory.handler.ClearTestHistoryHandler" command="__QgJwIj-EeO02uyCM-4W1A"/>
+  <handlers xmi:id="_G4HB0ImjEeO2m8BNTNOEzA" elementId="org.testeditor.ui.purgeTestHistoryFromExporerhandler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.handler.PurgeTestHistoryHandler" command="_fvzJkImiEeO2m8BNTNOEzA"/>
+  <handlers xmi:id="_br0B0InFEeOi2LJ3lc9afg" elementId="org.testeditor.ui.systemconfigurationopen.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.systemconfiguration.handler.SystemConfigurationOpenHandler" command="_tEtL0Im7EeOi2LJ3lc9afg"/>
+  <handlers xmi:id="_ovIEwIwCEeOROL1VQfvVhw" elementId="org.testeditor.ui.team.shareproject.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.ShareProjectHandler" command="_bYJckIwCEeOROL1VQfvVhw"/>
+  <handlers xmi:id="_P-dt0FniEeSo258iJyg0Sw" elementId="org.testeditor.ui.team.disconnectproject.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.DisconnectProjectHandler" command="_FEmoUFniEeSo258iJyg0Sw"/>
+  <handlers xmi:id="_yNhaIIy4EeO2e4ZsIKH9dg" elementId="org.testeditor.ui.handler.importproject" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.ImportProjectHandler" command="_YHznwIyzEeO2e4ZsIKH9dg"/>
+  <handlers xmi:id="_snBicI26EeODe-OipwitGA" elementId="org.testeditor.ui.handler.approveElement" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.ApproveElementHandler" command="_m0j0kI26EeODe-OipwitGA"/>
+  <handlers xmi:id="_irvdsI29EeOTbaG3cTAb_A" elementId="org.testeditor.ui.updateElement.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.UpdateElementHandler" command="_qaJT0I29EeOTbaG3cTAb_A"/>
+  <handlers xmi:id="_fQElsKhkEeORF59bxsdf3g" elementId="org.testeditor.ui.adminmanual.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.AdminManualHandler" command="_jKqBYKhjEeORF59bxsdf3g"/>
+  <handlers xmi:id="_i5kCELQvEeOw2ufTk__f3w" elementId="org.testeditor.ui.newscenariosuite.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewScenarioSuiteHandler" command="_L-9ukLQvEeOw2ufTk__f3w"/>
+  <handlers xmi:id="_uANH8PCLEeOJ2a2ThobEyw" elementId="org.testeditor.ui.handler.0" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.systemconfiguration.handler.SystemConfigurationAddElementHandler" command="_yg_m0PBwEeO1DNhYSBLJ7w"/>
+  <handlers xmi:id="_2CtwYPCMEeOJ2a2ThobEyw" elementId="org.testeditor.ui.handler.0" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.systemconfiguration.handler.SystemConfigurationRemoveElementHandler" command="_mjAx4PBwEeO1DNhYSBLJ7w"/>
+  <handlers xmi:id="_CyGeUPtoEeOmHfkQ32ERag" elementId="org.testeditor.ui.configuration.restartUI " contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.systemconfiguration.handler.RestartAndResetUIHandler" command="_9SKD0PtnEeOmHfkQ32ERag"/>
+  <handlers xmi:id="_dPDtgGpyEeSOgPsPr_FOyw" elementId="org.testeditor.ui.revert.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.RevertElementHandler" command="_pwlOAGpqEeSOgPsPr_FOyw"/>
+  <handlers xmi:id="__ElJUJSqEeSBt7RsTs2qPA" elementId="org.testeditor.ui.showChanges.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.ShowChangesHandler" command="_5P-GYJSqEeSBt7RsTs2qPA"/>
+  <bindingTables xmi:id="_vtvnGiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" bindingContext="_vtvnICNOEeKR9Jsu4DQSAw">
+    <bindings xmi:id="_vtvnGyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+Q" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
+    <bindings xmi:id="_vtvnHSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+S" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+    <bindings xmi:id="_vtvnHyNOEeKR9Jsu4DQSAw" elementId="e4.tooling.livemodel.binding" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="ALT+SHIFT+F9" command="_vtvnKCNOEeKR9Jsu4DQSAw"/>
+    <bindings xmi:id="_xlr0sKdTEeKIcI0tdcqdJg" elementId="" keySequence="Delete" command="_8tNH0D69EeKim5Ef38P8Tw"/>
+    <bindings xmi:id="_8mhwINggEeKUuehzuHQYMw" elementId="org.testeditor.ui.keybinding.manualcommand" keySequence="F1" command="__FnKENMwEeKEGbLPo3b6ng"/>
+    <bindings xmi:id="_krBaAE3kEeOsG7akaQSE_w" elementId="org.testeditor.ui.keybinding.rename" keySequence="F2" command="_Bf-TQD6-EeKim5Ef38P8Tw"/>
+  </bindingTables>
+  <rootContext xmi:id="_vtvnICNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.contexts.dialogAndWindow" contributorURI="platform:/plugin/org.testeditor.ui" name="In Dialog and Windows">
+    <children xmi:id="_vtvnISNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.contexts.window" contributorURI="platform:/plugin/org.testeditor.ui" name="In Windows"/>
+    <children xmi:id="_vtvnIiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.contexts.dialog" contributorURI="platform:/plugin/org.testeditor.ui" name="In Dialogs"/>
+  </rootContext>
+  <descriptors xmi:id="_vtvnIyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.tools.emf.liveeditor.view" contributorURI="platform:/plugin/org.testeditor.ui" label="%partdescriptor.label.liveapplicationmodel" iconURI="platform:/plugin/org.eclipse.e4.tools.emf.liveeditor/icons/full/obj16/application_lightning.png" category="org.eclipse.e4.secondaryDataStack" contributionURI="bundleclass://org.eclipse.e4.tools.emf.liveeditor/org.eclipse.e4.tools.emf.liveeditor.LivePartDelegator">
+    <tags>View</tags>
+    <tags>categoryTag:General</tags>
+  </descriptors>
+  <descriptors xmi:id="_s1Fw0LcoEeK_JN4mVKcrvA" elementId="org.testeditor.ui.partdescriptor.testProjectEditor" label="testProjectEditor" iconURI="platform:/plugin/org.testeditor.ui/icons/project.gif" allowMultiple="true" category="testProjectConfig" closeable="true" dirtyable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.projecteditor.TestProjectEditor">
+    <tags>removeOnHide</tags>
+    <toolbar xmi:id="_qMBlQPhBEeK3HvD7VxkhpA" elementId="org.testeditor.ui.toolbar.1">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_nE1woAA-EeOqq_-fy73ryQ" contributorURI="platform:/plugin/org.testeditor.ui" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" tooltip="%handledmenuitem.label.save" enabled="false" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_oniScAA-EeOqq_-fy73ryQ" elementId="org.testeditor.ui.toolbarseparator.0"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_4DRB4PhBEeK3HvD7VxkhpA" elementId="org.testeditor.ui.RestartFitnesseServer.handledtoolitem" label="" iconURI="platform:/plugin/org.testeditor.ui/icons/fitnesse_restart.gif" tooltip="%testprojecteditor.restart" command="_WB2ncPhAEeK3HvD7VxkhpA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_GQ4gsPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.reloadLibrary.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/library_reload.gif" tooltip="%testprojecteditor.reloadLibrary" command="_eX6LEPhOEeK3HvD7VxkhpA"/>
+    </toolbar>
+  </descriptors>
+  <descriptors xmi:id="_hVMvgPg2EeK3HvD7VxkhpA" elementId="org.testeditor.ui.partdescriptor.testCaseView" label="testCaseView" iconURI="platform:/plugin/org.testeditor.ui/icons/testcase.gif" allowMultiple="true" category="testCase" closeable="true" dirtyable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.TestEditorTestCaseController">
+    <tags>removeOnHide</tags>
+    <handlers xmi:id="_n1msIPkgEeKll5S8D7QlyA" elementId="org.testeditor.ui.handler.0" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewCutHandler" command="_uJkkkPkgEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_jHapQPkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.copy.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewCopyHandler" command="_aDH-QPkhEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_uTjKgPkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.handler.1" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewDeleteHandler" command="_diHNoPkhEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_337q0PkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.handler.2" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewImportHandler" command="_6WJZsPkhEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_k4oSwPkiEeKll5S8D7QlyA" elementId="org.testeditor.ui.paste.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewPasteHandler" command="_eTejsPkiEeKll5S8D7QlyA"/>
+    <menus xsi:type="menu:PopupMenu" xmi:id="_EuavINbLEeOJsrb-OYRb1w" elementId="org.testeditor.ui.popupmenu.qqweasds" label="%command.description.testexplorerpopupmenudescription">
+      <children xsi:type="menu:MenuSeparator" xmi:id="_L950oNbLEeOJsrb-OYRb1w" elementId="org.testeditor.ui.menuseparator.0"/>
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_R2tbENbLEeOJsrb-OYRb1w" elementId="org.testeditor.ui.handledmenuitem.0" iconURI="platform:/plugin/org.testeditor.ui/icons/copy.gif" tooltip="%TestEditViewToolbar_copy" command="_aDH-QPkhEeKll5S8D7QlyA"/>
+    </menus>
+    <toolbar xmi:id="_ehbLAPkgEeKll5S8D7QlyA" elementId="org.testeditor.ui.testcase.toolbar">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_aYbvcAA-EeOqq_-fy73ryQ" contributorURI="platform:/plugin/org.testeditor.ui" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" tooltip="%handledmenuitem.label.save" enabled="false" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_cf6ZUAA-EeOqq_-fy73ryQ" elementId="org.testeditor.ui.toolbarseparator.0"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_fh-CAPkgEeKll5S8D7QlyA" elementId="org.testeditor.ui.cut.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/cut.gif" tooltip="%TestEditViewToolbar_cut" command="_uJkkkPkgEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_MAi-4PkiEeKll5S8D7QlyA" elementId="org.testeditor.ui.copy.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/copy.gif" tooltip="%TestEditViewToolbar_copy" command="_aDH-QPkhEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_RveQkPkiEeKll5S8D7QlyA" elementId="org.testeditor.ui.paste.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/paste.gif" tooltip="%TestEditViewToolbar_paste" command="_eTejsPkiEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_R5Sk0PkrEeKll5S8D7QlyA" elementId="org.testeditor.ui.toolbarseparator.0"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_srdV4PkiEeKll5S8D7QlyA" elementId="org.testeditor.ui.handledtoolitem.0" iconURI="platform:/plugin/org.testeditor.ui/icons/delete.gif" tooltip="%TestEditViewToolbar_deleteLine" command="_diHNoPkhEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_THT3IPkrEeKll5S8D7QlyA" elementId="org.testeditor.ui.toolbarseparator.1"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_LmBCMPkmEeKll5S8D7QlyA" elementId="org.testeditor.ui.import.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/excel.png" tooltip="%TestEditViewToolbar_importfile" command="_6WJZsPkhEeKll5S8D7QlyA"/>
+    </toolbar>
+  </descriptors>
+  <descriptors xmi:id="_vFNiwPg2EeK3HvD7VxkhpA" elementId="org.testeditor.ui.partdescriptor.testScenarioView" label="testScenarioView" iconURI="platform:/plugin/org.testeditor.ui/icons/scenario.gif" allowMultiple="true" category="testScenarioView" closeable="true" dirtyable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.TestEditorTestScenarioController">
+    <tags>removeOnHide</tags>
+    <handlers xmi:id="_yKklwPkpEeKll5S8D7QlyA" elementId="org.testeditor.ui.testScenarioView.cut.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewCutHandler" command="_uJkkkPkgEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_15STMPkpEeKll5S8D7QlyA" elementId="org.testeditor.ui.testScenarioView.copy.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewCopyHandler" command="_aDH-QPkhEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_-vamYPkpEeKll5S8D7QlyA" elementId="org.testeditor.ui.testScenarioView.paste.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewPasteHandler" command="_eTejsPkiEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_CJ0QsPkqEeKll5S8D7QlyA" elementId="org.testeditor.ui.testScenarioView.delete.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewDeleteHandler" command="_diHNoPkhEeKll5S8D7QlyA"/>
+    <handlers xmi:id="_EYegoPkqEeKll5S8D7QlyA" elementId="org.testeditor.ui.testScenarioView.import.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.editor.view.handler.TestEditorViewImportHandler" command="_6WJZsPkhEeKll5S8D7QlyA"/>
+    <toolbar xmi:id="_lHElIPknEeKll5S8D7QlyA" elementId="org.testeditor.ui.testscenario.toolbar">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_t1kdkAA-EeOqq_-fy73ryQ" contributorURI="platform:/plugin/org.testeditor.ui" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" tooltip="%handledmenuitem.label.save" enabled="false" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_vHQu8AA-EeOqq_-fy73ryQ" elementId="org.testeditor.ui.toolbarseparator.0"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_Ro9xMPkoEeKll5S8D7QlyA" elementId="org.testeditor.ui.handledtoolitem.1" iconURI="platform:/plugin/org.testeditor.ui/icons/cut.gif" tooltip="%TestEditViewToolbar_cut" command="_uJkkkPkgEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_aaDzYPkoEeKll5S8D7QlyA" elementId="org.testeditor.ui.handledtoolitem.2" iconURI="platform:/plugin/org.testeditor.ui/icons/copy.gif" tooltip="%TestEditViewToolbar_copy" command="_aDH-QPkhEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_ndplgPkoEeKll5S8D7QlyA" elementId="org.testeditor.ui.paste.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/paste.gif" tooltip="%TestEditViewToolbar_paste" command="_eTejsPkiEeKll5S8D7QlyA"/>
+      <children xsi:type="menu:ToolBarSeparator" xmi:id="_U4ObIPkrEeKll5S8D7QlyA" elementId="org.testeditor.ui.toolbarseparator.2"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_s5hYUPkoEeKll5S8D7QlyA" elementId="org.testeditor.ui.delete.handledtoolitem.3" iconURI="platform:/plugin/org.testeditor.ui/icons/delete.gif" tooltip="%TestEditViewToolbar_deleteLine" command="_diHNoPkhEeKll5S8D7QlyA"/>
+    </toolbar>
+  </descriptors>
+  <descriptors xmi:id="_LCtikIm6EeOi2LJ3lc9afg" elementId="org.testeditor.ui.part.systemconfiguration" label="%part.label.systemconfiguration" iconURI="platform:/plugin/org.testeditor.ui/icons/project.gif" category="systemConfigurationEditor" closeable="true" dirtyable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.systemconfiguration.SystemConfigurationEditor">
+    <tags>removeOnHide</tags>
+    <toolbar xmi:id="_Xj8OgIm6EeOi2LJ3lc9afg" elementId="org.testeditor.ui.toolbar.3">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_k5j0QIpIEeO_2O3FcFTwTw" elementId="org.testeditor.ui.handledtoolitem.3" label="" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" tooltip="%handledmenuitem.label.save" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_AhgJoPBwEeO1DNhYSBLJ7w" elementId="org.testeditor.ui.handledtoolitem.0" iconURI="platform:/plugin/org.testeditor.ui/icons/add_obj.gif" tooltip="%TestEditViewToolbar_addLine" command="_yg_m0PBwEeO1DNhYSBLJ7w"/>
+      <children xsi:type="menu:HandledToolItem" xmi:id="_ELNbQPBwEeO1DNhYSBLJ7w" elementId="org.testeditor.ui.handledtoolitem.0" label="" iconURI="platform:/plugin/org.testeditor.ui/icons/delete.gif" tooltip="%TestEditViewToolbar_deleteLine" command="_mjAx4PBwEeO1DNhYSBLJ7w"/>
+    </toolbar>
+  </descriptors>
+  <descriptors xmi:id="_7gGdcK2hEeOfB5kSZb0yLQ" elementId="org.testeditor.ui.partdescriptor.testSuiteEditor" label="TestSuite Editor" iconURI="platform:/plugin/org.testeditor.ui/icons/testsuite.gif" allowMultiple="true" category="testSuite" closeable="true" dirtyable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testsuite.TestSuiteEditor">
+    <tags>removeOnHide</tags>
+    <toolbar xmi:id="_ZQZdcK2iEeOfB5kSZb0yLQ" elementId="org.testeditor.ui.toolbar.4">
+      <children xsi:type="menu:HandledToolItem" xmi:id="_eAU60K2jEeOfB5kSZb0yLQ" elementId="org.testeditor.ui.testuite.handledItem.save" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" tooltip="%handledmenuitem.label.save" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
+    </toolbar>
+  </descriptors>
+  <descriptors xmi:id="_qR6ooFtEEeS0I5PPKkGMVA" elementId="org.testeditor.ui.testresultexecutionpart" label="TestResult" category="testresult" closeable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testhistory.TestExecutionResultViewPart"/>
+  <commands xmi:id="_vtvnJCNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.file.exit" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%org.eclipse.ui.file.exit.command"/>
+  <commands xmi:id="_vtvnJiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.file.save" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%command.commandname.save.command"/>
+  <commands xmi:id="_vtvnJyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.help.aboutAction" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%command.commandname.about.command"/>
+  <commands xmi:id="_vtvnKCNOEeKR9Jsu4DQSAw" elementId="e4.tooling.livemodel" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%command.commandname.showappmodel.command" description="%command.description.showappmodel"/>
+  <commands xmi:id="_TnEj0C5dEeKVW5gnB3v2mQ" elementId="org.testeditor.ui.command.testexplorerpopupmenucommand" commandName="%command.commandname.testexplorerpopupmenu.command" description="%command.description.testexplorerpopupmenudescription"/>
+  <commands xmi:id="_kYxyEDAAEeK8j5YOOV8wsA" elementId="org.testeditor.ui.command.editor.deleteComponent" commandName="org.testeditor.ui.command.editor.deleteComponent" description="%command.description.1"/>
+  <commands xmi:id="_4IcyADvbEeO9FbJw7O3mmA" elementId="org.testeditor.ui.newproject.command" commandName="org.testeditor.ui.newproject.command">
+    <parameters xmi:id="_GQu7UDvcEeO9FbJw7O3mmA" elementId="org.testeditor.ui.newtestproject.command.parameter.ignoreCanExecute" name="ignoreCanExecute"/>
+  </commands>
+  <commands xmi:id="_vsC-oD69EeKim5Ef38P8Tw" elementId="org.testeditor.ui.newtestsuite.command" commandName="org.testeditor.ui.newtestsuite.command">
+    <parameters xmi:id="_w1Ta8N5ZEeKLLpaIdzeVUw" elementId="org.testeditor.ui.newsuite.command.parameter.canExecuteFromMainMenu" name="canExecuteFromMainMenu"/>
+  </commands>
+  <commands xmi:id="_6Q6EgD69EeKim5Ef38P8Tw" elementId="org.testeditor.ui.newcase.command" commandName="org.testeditor.ui.newcase.command">
+    <parameters xmi:id="_BwocMN5xEeKLLpaIdzeVUw" elementId="org.testeditor.ui.newcase.command.parameter.canExecuteFromMainMenu" name="canExecuteFromMainMenu"/>
+  </commands>
+  <commands xmi:id="_L-9ukLQvEeOw2ufTk__f3w" elementId="org.testeditor.ui.newsceanriosuite.command" commandName="org.testeditor.ui.newsceanriosuite.command">
+    <parameters xmi:id="_U5JbULQvEeOw2ufTk__f3w" elementId="org.testeditor.ui.newscenariosuite.command.parameter.canExecuteFromMainMenu" name="canExecuteFromMainMenu"/>
+  </commands>
+  <commands xmi:id="_lZqloNcoEeKeqebfDEIM4g" elementId="org.testeditor.ui.newtestscenario.command" commandName="org.testeditor.ui.newtestscenario.command">
+    <parameters xmi:id="_QVnvoN5xEeKLLpaIdzeVUw" elementId="org.testeditor.ui.newtestscenario.command.parameter.canExecuteFromMainMenu" name="canExecuteFromMainMenu"/>
+  </commands>
+  <commands xmi:id="_8tNH0D69EeKim5Ef38P8Tw" elementId="org.testeditor.ui.deletetest.command" commandName="org.testeditor.ui.deletetest.command"/>
+  <commands xmi:id="_Bf-TQD6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.renametest.command" commandName="org.testeditor.ui.renametest.command"/>
+  <commands xmi:id="_K6bh4D7GEeKXX6nM9hjBXQ" elementId="org.testeditor.ui.command.OpenTestStructureCommand" commandName="org.testeditor.ui.command.OpenTestStructureCommand"/>
+  <commands xmi:id="_4tsekEqgEeKVwrxWYw_qcA" elementId="org.testeditor.ui.command.runtest" commandName="org.testeditor.ui.command.runtest"/>
+  <commands xmi:id="_bkGfYFjcEeKL66ViDCvhrw" elementId="org.testeditor.ui.handledmenuitem.openwith" commandName="org.testeditor.ui.handledmenuitem.openwith"/>
+  <commands xmi:id="_hPrA0KdZEeKIcI0tdcqdJg" elementId="org.testeditor.ui.command.openLogData" commandName="org.testeditor.ui.command.openLogData"/>
+  <commands xmi:id="_-DF9wLMeEeKHGsEYFMoH2Q" elementId="org.testeditor.ui.command.reloadLibrary" commandName="org.testeditor.ui.command.reloadLibrary"/>
+  <commands xmi:id="__FnKENMwEeKEGbLPo3b6ng" elementId="org.testeditor.ui.user.manual.command" commandName="org.testeditor.ui.user.manual.command"/>
+  <commands xmi:id="_jKqBYKhjEeORF59bxsdf3g" elementId="org.testeditor.ui.admin.manual.command" commandName="org.testeditor.ui.admin.manual.command"/>
+  <commands xmi:id="_TcLccPRgEeKhvJHgD3On6A" elementId="org.testeditor.ui.showScenarioUsage.command" commandName="org.testeditor.ui.showScenarioUsage.command"/>
+  <commands xmi:id="_WB2ncPhAEeK3HvD7VxkhpA" elementId="org.testeditor.ui.restartFitnesse.command" commandName="org.testeditor.ui.restartFitnesse.command"/>
+  <commands xmi:id="_eX6LEPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.relaodLibrary.command" commandName="org.testeditor.ui.relaodLibrary.command"/>
+  <commands xmi:id="_uJkkkPkgEeKll5S8D7QlyA" elementId="org.testeditor.ui.editor.view.cut.command" commandName="org.testeditor.ui.editor.view.cut.command"/>
+  <commands xmi:id="_aDH-QPkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.test.editor.view.copy.command" commandName="org.testeditor.ui.test.editor.view.copy.command"/>
+  <commands xmi:id="_diHNoPkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.test.editor.view.delete.command" commandName="org.testeditor.ui.test.editor.view.delete.command"/>
+  <commands xmi:id="_6WJZsPkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.editor.view.import.command" commandName="org.testeditor.ui.editor.view.import.command"/>
+  <commands xmi:id="_eTejsPkiEeKll5S8D7QlyA" elementId="org.testeditor.ui.test.editor.view.paste.command" commandName="org.testeditor.ui.test.editor.view.paste.command"/>
+  <commands xmi:id="_sN6LYDflEeOL5qr8nwU3qA" elementId="org.testeditor.ui.createDemoProjects.command" commandName="org.testeditor.ui.createDemoProjects.command"/>
+  <commands xmi:id="_EXfLEFszEeOeLIc7pxHLHA" elementId="org.testeditor.ui.opentesthistory.command" commandName="org.testeditor.ui.opentesthistory.command"/>
+  <commands xmi:id="__QgJwIj-EeO02uyCM-4W1A" elementId="org.testeditor.ui.clearHistory.command" commandName="org.testeditor.ui.clearHistory.command"/>
+  <commands xmi:id="_fvzJkImiEeO2m8BNTNOEzA" elementId="org.testeditor.ui.deleteTestHistoryFromExplorer.command" commandName="org.testeditor.ui.deleteTestHistoryFromExplorer.command"/>
+  <commands xmi:id="_tEtL0Im7EeOi2LJ3lc9afg" elementId="org.testeditor.ui.command.SystemConfiguration" commandName="org.testeditor.ui.command.SystemConfiguration"/>
+  <commands xmi:id="_FEmoUFniEeSo258iJyg0Sw" elementId="org.testeditor.ui.team.disconnectproject.command" commandName="org.testeditor.ui.team.disconnectproject.command"/>
+  <commands xmi:id="_bYJckIwCEeOROL1VQfvVhw" elementId="org.testeditor.ui.team.shareproject.command" commandName="org.testeditor.ui.team.shareproject.command"/>
+  <commands xmi:id="_YHznwIyzEeO2e4ZsIKH9dg" elementId="org.testeditor.ui.importproject.command" commandName="org.testeditor.ui.importproject.command"/>
+  <commands xmi:id="_m0j0kI26EeODe-OipwitGA" elementId="org.testeditor.ui.approveElement.command" commandName="org.testeditor.ui.approveElement.command"/>
+  <commands xmi:id="_qaJT0I29EeOTbaG3cTAb_A" elementId="org.testeditor.ui.updateElement.command" commandName="org.testeditor.ui.updateElement.command"/>
+  <commands xmi:id="_mjAx4PBwEeO1DNhYSBLJ7w" elementId="org.testeditor.ui.parts.systemconfiguration.delete.command" commandName="org.testeditor.ui.parts.systemconfiguration.delete.command"/>
+  <commands xmi:id="_yg_m0PBwEeO1DNhYSBLJ7w" elementId="org.testeditor.ui.parts.systemconfiguration.add.command" commandName="org.testeditor.ui.parts.systemconfiguration.add.command"/>
+  <commands xmi:id="_9SKD0PtnEeOmHfkQ32ERag" elementId="org.testeditor.ui.configuration.restartUI" commandName="org.testeditor.ui.configuration.restartUI"/>
+  <commands xmi:id="_pwlOAGpqEeSOgPsPr_FOyw" elementId="org.testeditor.ui.revertElement.command" commandName="org.testeditor.ui.revertElement.command"/>
+  <commands xmi:id="_5P-GYJSqEeSBt7RsTs2qPA" elementId="org.testeditor.ui.showChanges.command" commandName="org.testeditor.ui.showChanges.command"/>
+  <addons xmi:id="_vtvnKSNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.core.commands.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_vtvnKiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.contexts.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_vtvnKyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.bindings.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_vtvnLCNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.workbench.commands.model" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_vtvnLSNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_vtvnLiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+  <addons xmi:id="_e3mMgGR5EeKSBuqN6T0XkQ" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+</application:Application>

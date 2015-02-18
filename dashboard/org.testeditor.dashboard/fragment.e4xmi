@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_ZFScwA2hEeSvG6TLqCTjfg">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_77aw4FnOEeSb-pY_-Ve37g" featurename="children" parentElementId="PerspectiveStack.org.testeditor">
+    <elements xsi:type="advanced:Perspective" xmi:id="_77aw4VnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.perspective.dasboard" label="DASHBOARD">
+      <children xsi:type="basic:PartSashContainer" xmi:id="_77aw4lnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partsashcontainer.3" horizontal="true">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_77aw41nOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partsashcontainer.1" containerData="56">
+          <children xsi:type="basic:PartStack" xmi:id="_77aw5FnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partstack.1">
+            <children xsi:type="basic:Part" xmi:id="_77aw5VnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.part.0" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.TableLastRuns" label="%dashboard.table.label.lastrun" tooltip="%dashboard.table.label.lastrun.tooltip">
+              <toolbar xmi:id="_77aw5lnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.toolbar.5">
+                <children xsi:type="menu:HandledToolItem" xmi:id="_77aw51nOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.handledtoolitem.4" label="" iconURI="platform:/plugin/org.testeditor.dashboard/project.gif" tooltip="%dashboard.toolbar.menu.project" command="_F6x9AVnPEeSb-pY_-Ve37g">
+                  <menu xmi:id="_77aw6FnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.menu.3" label="handled" iconURI="">
+                    <children xsi:type="menu:DynamicMenuContribution" xmi:id="_77aw6VnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.dynamicmenucontribution.0" label="Project" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.ProjectComboBox"/>
+                  </menu>
+                </children>
+              </toolbar>
+            </children>
+          </children>
+        </children>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_77aw6lnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partsashcontainer.2" containerData="44">
+          <children xsi:type="basic:PartStack" xmi:id="_77aw61nOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partstack.2" containerData="33">
+            <children xsi:type="basic:Part" xmi:id="_77aw7FnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.part.1" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.TableAllRuns" label="%dashboard.table.label.allruns" tooltip="%dashboard.table.label.allruns.tooltip.no.test.selected"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_77aw8VnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partstack.3" containerData="33">
+            <children xsi:type="basic:Part" xmi:id="_77aw8lnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.part.2" accessibilityPhrase="" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.TableDurationTrend" label="%dashboard.table.label.duration" tooltip="%dashboard.table.label.duration.tooltip.no.test.selected"/>
+          </children>
+          <children xsi:type="basic:PartStack" xmi:id="_77aw81nOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.partstack.4" containerData="34">
+            <children xsi:type="basic:Part" xmi:id="_77aw9FnOEeSb-pY_-Ve37g" elementId="org.testeditor.ui.part.3" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.TableErrorIdent" label="%dashboard.table.label.error" tooltip="%dashboard.table.label.error.tooltip.no.test.selected"/>
+          </children>
+        </children>
+      </children>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_F6x9AFnPEeSb-pY_-Ve37g" featurename="commands" parentElementId="org.eclipse.e4.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_F6x9AVnPEeSb-pY_-Ve37g" elementId="org.testeditor.ui.dashboard.dropdown.command" commandName="org.testeditor.ui.dashboard.dropdown.command"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_MzQB8FnVEeSb-pY_-Ve37g" featurename="handlers" parentElementId="org.eclipse.e4.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_MzQB8VnVEeSb-pY_-Ve37g" elementId="org.testeditor.ui.dashboard.dropdownmenu.handler" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.MenuToolbarItemHandler" command="_F6x9AVnPEeSb-pY_-Ve37g"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_4-L20FnmEeSb-pY_-Ve37g" featurename="children" parentElementId="menu:org.eclipse.ui.main.menu">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_4-L20VnmEeSb-pY_-Ve37g" elementId="org.testeditor.ui.menu.dashboard" label="%dashboard.menu.label" tooltip="%dashboard.menu.label.tooltip" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.SwitchPerspectiveDashboardHandler"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_7cNYcFnmEeSb-pY_-Ve37g" featurename="children" parentElementId="menu:org.eclipse.ui.main.menu">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_7cNYcVnmEeSb-pY_-Ve37g" elementId="org.testeditor.ui.menu.test" label="%testeditor.menu.label" tooltip="%testeditor.menu.label.tooltip" contributionURI="bundleclass://org.testeditor.dashboard/org.testeditor.dashboard.SwitchPerspectiveTestHandler"/>
+  </fragments>
+</fragment:ModelFragments>

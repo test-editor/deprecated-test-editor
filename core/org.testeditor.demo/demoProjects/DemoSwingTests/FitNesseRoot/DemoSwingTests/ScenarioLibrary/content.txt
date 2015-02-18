@@ -1,0 +1,98 @@
+|import|
+|org.testeditor.fixture.swing|  
+
+!|Library|
+|SwingFixture|
+
+-!|script|
+|setElementlist|${ELEMENT_LISTE}|
+
+'''Anwendung''' --------
+'''Starte Anwendung'''
+!|scenario|starte Anwendung|classWithMain|
+|startApplication|@classWithMain|
+
+'''Stoppe Anwendung'''
+!|scenario|beende Anwendung|
+|stopApplication|
+
+
+'''Eingabeelemente''' --------
+'''Klick auf ein Gui Element''' 
+!|scenario|klicke auf|guiname|
+|clickButton|@guiname|
+
+
+'''Eingabe von Werten''' --------
+'''Wert eingeben'''
+!|scenario|gebe in das Feld|guiname|den Wert|text|ein|
+|insertIntoTextField;|@guiname|@text|
+
+'''Wert löschen''' 
+!|scenario|lösche aus dem Feld|guiname|den Wert|
+|deleteTextField;|@guiname|
+
+'''Text in Eingabefeld ausgeben''' 
+!|scenario|gib Text im Feld|guiid|aus|
+|getTextFromTextField;|@guiid|
+
+'''Text in Eingabefeld prüfen''' 
+!|scenario|prüfe ob im Feld|guiid|der Text|pattern|eingetragen ist|
+|checkIfTextEquals;|@guiid|@pattern|
+
+'''Text in Eingabefeld ungültig prüfen''' 
+!|scenario|prüfe ob im Feld|guiid|der Text|pattern|nicht eingetragen ist|
+|checkIfTextNotEquals;|@guiid|@pattern|
+
+
+'''Combobox''' --------
+'''Auswahl aus Combobox''' 
+!|scenario|wähle in Feld|guiname|den Wert|auswahl|aus|
+|selectComboBox|@guiname|ItemByName|@auswahl|
+
+'''Text in Combobox prüfen''' 
+!|scenario|prüfe ob im Feld|guiid|der Wert|pattern|ausgewählt ist|
+|checkIfSelectedItemIs;|@guiid|@pattern|
+
+'''Text in Combobox ungültig prüfen''' 
+!|scenario|prüfe ob im Feld|guiid|der Wert|pattern|nicht ausgewählt ist|
+|checkIfSelectedItemIsNot;|@guiid|@pattern|
+
+
+'''Radiobutton''' --------
+'''Aktiviere Radiobutton''' 
+!|scenario|aktiviere Radio-Button|guiid|
+|checkRadioButton;|@guiid|
+
+'''Deaktiviere Radiobutton''' 
+!|scenario|deaktiviere Radio-Button|guiid|
+|uncheckRadioButton;|@guiid|
+
+
+'''Checkbox''' --------
+'''Aktiviere Checkbox''' 
+!|scenario|aktiviere Checkbox|guiid|
+|checkCheckBox;|@guiid|
+
+'''Deaktiviere Checkbox''' 
+!|scenario|deaktiviere Checkbox|guiid|
+|uncheckCheckBox;|@guiid|
+
+
+'''Tabelle''' --------
+'''Wählt die Tabellenzeile mit angegebener ID aus''' 
+!|scenario|in der Tabelle|guiid|wähle die Zeile|pattern|aus|
+|selectTableRowById;|@guiid|@pattern|
+
+'''Doppelklicke die Tabellenzeile mit der angegebener ID''' 
+!|scenario|in der Tabelle|guiid|doppelklicke die Zeile|pattern|
+|doubleClickTableRowById;|@guiid|@pattern|
+
+'''Prüfe Tabelleneintrag'''
+!|scenario|prüfe ob in der Tabelle|guiid|in der letzten Zeile in Spalte|columnno|der Wert|pattern|eingetragen ist|
+|checkTableCellValue;|@guiid|@pattern|@columnno|
+
+
+
+
+

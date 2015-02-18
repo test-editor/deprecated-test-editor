@@ -1,0 +1,26 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#dialog|
+#
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_swt_colordialog|
+|klicke auf|dialog_swt_colordialog_green|
+|klicke auf|dialog_button_ok|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Result: RGB {168, 230, 29}|vorhanden ist|
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_swt_colordialog|
+|klicke auf|dialog_button_cancel|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Result: null|vorhanden ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../../org.testeditor.xmllibrary/resources/AllActionGroups.xsd"
+	schemaVersion="1.1">
+
+	<ActionGroup name="Allgemein Browser">
+		<action technicalBindingType="Starte_Browser">
+			<actionName locator="Firefox">Firefox</actionName>
+		</action>
+		<action technicalBindingType="Starte_Browser">
+			<actionName locator="IE">IE</actionName>
+		</action>
+		<action technicalBindingType="Navigiere_auf_Seite" />
+		<action technicalBindingType="Beende_Browser" />
+		<action technicalBindingType="Warte_Sekunden" />
+		<action technicalBindingType="Pruefe_Wert_vorhanden" />
+		<action technicalBindingType="Pruefe_Wert_nicht_vorhanden" />
+	</ActionGroup>
+
+	<ActionGroup name="Lokale Anmeldung">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="user">Name</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="password">Passwort</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="user">Name</actionName>
+		</action>
+		<action technicalBindingType="Leere_Wert">
+			<actionName locator="password">Passwort</actionName>
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="login">Login</actionName>
+		</action>
+		<action technicalBindingType="Auswahl_Wert">
+       <actionName locator="land"> Land </actionName>
+       <argument id="argument1">
+              <value>Deutschland</value>
+              <value>Italien</value>
+              <value>USA</value>
+              <value>Schweden</value>
+              <value>Australien</value>
+       </argument>
+       </action>
+	</ActionGroup>
+	
+    
+    <ActionGroup name="Google Suche">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="gbqfq">Sucheingabe</actionName>
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="gbqfba">Suche</actionName>
+		</action>
+	</ActionGroup>
+    
+    
+    <ActionGroup name="Officewerker Anmeldung">
+		<action technicalBindingType="Warte_Element">
+			<actionName locator="loginForm">Anmelde-Form</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="loginMandant">Mandant</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="loginName">Benutzer</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="loginPwd">Passwort</actionName>
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="loginButton">Anmelden</actionName>
+		</action>
+	</ActionGroup>
+    
+    <ActionGroup name="Officewerker Startseite">
+        <action technicalBindingType="Warte_Element">
+			<actionName locator="Startseite">Startseite</actionName>
+		</action>
+        <action technicalBindingType="Button_Druecken">
+			<actionName locator="Abmelden">Abmelden</actionName>
+		</action>
+        <action technicalBindingType="Button_Druecken">
+			<actionName locator="Aufwand">Aufwand</actionName>
+		</action>
+        <action technicalBindingType="Button_Druecken">
+			<actionName locator="Eingangsrechnung">Eingangsrechnung</actionName>
+		</action>
+	</ActionGroup>
+
+    <ActionGroup name="Officewerker Aufwand">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Art">Art</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Bemerkung">Bemerkung</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Beschreibung">Beschreibung</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Netto">Netto</actionName>
+		</action>
+        <action technicalBindingType="Button_Druecken">
+			<actionName locator="AufwandNeu">AufwandNeu</actionName>
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="Loeschen">Loeschen</actionName>
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="Uebernehmen">Uebernehmen</actionName>
+		</action>
+	</ActionGroup>
+
+    <ActionGroup name="Officewerker Abfrage">
+        <action technicalBindingType="Button_Druecken">
+			<actionName locator="JaLoeschen">JaLoeschen</actionName>
+		</action>
+        <action technicalBindingType="Warte_Element">
+			<actionName locator="JaAbmelden">JaAbmelden</actionName>
+		</action>
+        <action technicalBindingType="Button_Druecken">
+			<actionName locator="JaAbmelden">JaAbmelden</actionName>
+		</action>
+	</ActionGroup>
+</ActionGroups>

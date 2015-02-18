@@ -1,0 +1,11 @@
+!include <DemoWebRapTests.TestSzenarien.NavigiereSzenario
+!|Navigiere Szenario|
+|Menu|Item|Seite|
+|navigation_basicwidgets|navigation_buttons|Buttons|
+|navigation_basicwidgets|navigation_canvaswidgets|Canvas|
+|navigation_basicwidgets|navigation_dialogswidgets|Dialogs|
+|navigation_treeandtables|navigation_tableviewer |TableViewer|
+|navigation_treeandtables|navigation_treeviewer |TreeViewer|
+|navigation_treeandtables|navigation_tablewithmarkup |Table with Markup|
+|navigation_treeandtables|navigation_tablewithrowtemplate |Table with RowTemplate|
+#

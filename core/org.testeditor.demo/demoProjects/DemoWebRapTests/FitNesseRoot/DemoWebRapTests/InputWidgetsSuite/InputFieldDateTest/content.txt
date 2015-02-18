@@ -1,0 +1,17 @@
+Testet das neue RAP-Feature - Datumseingabe 
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+# Maske: Input Widgets
+-!|script|
+|gebe in das Datumsfeld|input_date|den Tag|14|den Monat|06|und das Jahr|2003|ein|
+|überprüfe ob am Datumsfeld|input_date|der Wert|14.06.2003|vorhanden ist|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

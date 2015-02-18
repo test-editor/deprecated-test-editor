@@ -1,0 +1,8 @@
+!|scenario |OeffneStartseiteSzenario _||
+|note|Description: Dieses Szenario öffnet die Startseite.|
+!include <DemoWebTests.TestSzenarien.BrowserStartSzenario
+!|script|
+|Browser Start Szenario|
+#
+|note| Maske: Allgemein Browser|
+|navigiere auf die Seite|http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html|

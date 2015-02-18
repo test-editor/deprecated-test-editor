@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TechnicalBindingTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/TechnicalBindingTypeCollection.xsd"
+	schemaVersion="1.1">
+
+	<TechnicalBindingType id="Festlegung_Namespace" name="Namespace festlegen">
+		<actionPart position="1" type="TEXT" value="setze den Prefix" />
+		<actionPart position="2" type="ACTION_NAME"/>
+		<actionPart position="3" type="TEXT" value="für den Namespace" />
+		<actionPart position="4" type="ARGUMENT" id="argument1"/>
+	</TechnicalBindingType>
+
+    <TechnicalBindingType id="Eingabe_Request" name="Request eingeben">
+        <actionPart position="1" type="TEXT" value="gebe als Request" />
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert" />
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="ein" />
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Aufruf_Webservice" name="Webservice aufrufen">
+        <actionPart position="1" type="TEXT" value="rufe den Webservice" />
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="auf" />
+    </TechnicalBindingType>
+
+    <TechnicalBindingType id="Überprüfung_Response" name="Response überprüfen">
+        <actionPart position="1" type="TEXT" value="überprüfe ob der Response" />
+        <actionPart position="2" type="ACTION_NAME"/>
+        <actionPart position="3" type="TEXT" value="den Wert" />
+        <actionPart position="4" type="ARGUMENT"/>
+        <actionPart position="5" type="TEXT" value="entspricht" />
+    </TechnicalBindingType>
+
+</TechnicalBindingTypes>

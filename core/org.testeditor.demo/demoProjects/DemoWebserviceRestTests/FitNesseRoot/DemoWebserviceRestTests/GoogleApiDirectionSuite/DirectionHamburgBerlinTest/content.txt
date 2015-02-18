@@ -1,0 +1,10 @@
+# Maske: Direction Webservice
+-!|script|
+|rufe den Webservice|http://maps.googleapis.com/maps/api/directions/xml?origin=Hamburg&destination=Berlin&sensor=false|auf|
+Nachdem der Webservice aufgerufen wurde, werden als nächstes Teile der XML Response Nachricht überprüft
+# Maske: Direction Webservice
+-!|script|
+|überprüfe ob der Response|//DirectionsResponse/status/text()|dem Wert|OK|entspricht|
+|überprüfe ob der Response|//DirectionsResponse/route/summary/text()|dem Wert|A24|entspricht|
+|überprüfe ob der Response|//DirectionsResponse/route/leg/start_address/text()|dem Wert|Hamburg, Germany|entspricht|
+|überprüfe ob der Response|//DirectionsResponse/route/leg/end_address/text()|dem Wert|Berlin, Germany|entspricht|

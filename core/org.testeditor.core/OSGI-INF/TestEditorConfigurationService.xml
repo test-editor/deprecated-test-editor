@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.testeditor.core.services.TestEditorConfigurationService">
+   <implementation class="org.testeditor.core.services.impl.TestEditorConfigurationServiceImpl"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.TestEditorConfigurationService"/>
+   </service>
+</scr:component>

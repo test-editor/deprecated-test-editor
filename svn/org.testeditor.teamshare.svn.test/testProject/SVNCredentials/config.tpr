@@ -1,0 +1,10 @@
+#TestEditor Config created on Thu Sep 12 15:09:39 CEST 2013
+#Thu Sep 12 15:09:39 CEST 2013
+tpr-version=1.2
+library_id=org.testeditor.xmllibrary
+testautomat.port=8060
+classFixtures=org.testeditor.fitnesse.web.fixture
+library.xmllibrary.actiongroup=DemoWebTests/AllActionGroups.xml
+library.xmllibrary.technicalbindings=DemoWebTests/TechnicalBindingTypeCollection.xml
+variable.path.browser=
+variable.waits.afterteststep=1

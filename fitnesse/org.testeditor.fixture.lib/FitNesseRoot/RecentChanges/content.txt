@@ -1,0 +1,3 @@
+|JunitTestMangamentProject.JunitTestManagement.AnmeldungSuite.AnmeldenValidTest||20:08:19 Thu, Nov 06, 2014|
+|JunitTestMangamentProject.JunitTestManagement.AnmeldungSuite||20:08:12 Thu, Nov 06, 2014|
+|JunitTestMangamentProject.JunitTestManagement.AnmeldungSuite.TestScenario||20:08:12 Thu, Nov 06, 2014|

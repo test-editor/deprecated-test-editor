@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test the UiScanner Bundle
+Bundle-SymbolicName: org.testeditor.ui.uiscanner.test
+Bundle-Version: 1.0.0
+Fragment-Host: org.testeditor.ui.uiscanner;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit;bundle-version="4.11.0"
+Import-Package: org.osgi.framework;version="1.7.0"
