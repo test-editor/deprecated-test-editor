@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender class="org.apache.log4j.ConsoleAppender" name="stdout">
+		<param name="Threshold" value="trace" />
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss:SSS} - %p - %C.%M() %m%n" />
+		</layout>
+	</appender>
+
+	<!-- alle Fixture Methodenaufrufe werden zentral geloggt -->
+	<appender class="org.apache.log4j.FileAppender" name="interaction">
+		<param name="file"
+			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/interaction.log" />
+		<param name="encoding" value="UTF-8" />
+		<param name="append" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}.%M()] - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- alle Logs aus dem TestEditor werden geloggt -->
+	<appender class="org.apache.log4j.RollingFileAppender" name="testeditor">
+		<param name="file"
+			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/testeditor.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<param name="MaxFileSize" value="5000KB" />
+		<!-- Nur 10 Dateien werden gespeichert -->
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}.%M()] - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- alle Logs die aus dem Testprojekt heraus geloggt werden (FitNesse) -->
+	<appender class="org.apache.log4j.RollingFileAppender" name="projectname">
+		<param name="file"
+			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/projectname.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<param name="MaxFileSize" value="5000KB" />
+		<!-- Nur 10 Dateien werden gespeichert -->
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}.%M()] 
+				- %m%n" /> -->
+			<param name="ConversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+	<!-- every Logs from the swtbot-agent-package -->
+	<appender class="org.apache.log4j.RollingFileAppender" name="swtbot">
+		<param name="file"
+			value="C:/Users/llipinski/.testeditor_aut/.metadata/logs/projectname.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<param name="MaxFileSize" value="5000KB" />
+		<!-- Nur 10 Dateien werden gespeichert -->
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}.%M()] 
+				- %m%n" /> -->
+			<param name="ConversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+
+		<appender class="org.apache.log4j.RollingFileAppender" name="svn">
+		<param name="file" value="C:/Dokumente und Einstellungen/xxxx/.testeditor/.metadata/logs/svn.log"/>
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<param name="MaxFileSize" value="5000KB" />
+		<!-- Nur 10 Dateien werden gespeichert -->
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}.%M()] - %m%n" />
+		</layout>
+	</appender>
+
+	<category
+		name="org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction">
+		<priority value="debug" />
+		<appender-ref ref="interaction" />
+	</category>
+
+	<category name="org.testeditor">
+		<priority value="trace" />
+		<appender-ref ref="testeditor" />
+		<appender-ref ref="stdout" />
+	</category>
+
+	<category name="org.testeditor.fixture.web">
+		<priority value="trace" />
+		<appender-ref ref="projectname" />
+	</category>
+
+	<category name="org.testeditor.fixture.web">
+		<priority value="error" />
+		<appender-ref ref="interaction" />
+	</category>
+
+	<category name="org.testeditor.agent.swtbot">
+		<priority value="trace" />
+		<appender-ref ref="swtbot" />
+	</category>
+	
+	<category name="org.testeditor.teamshare.svn">
+		<priority value="trace" />
+		<appender-ref ref="svn" />
+	</category>	
+	
+	
+	
+	
+	
+	
+</log4j:configuration>

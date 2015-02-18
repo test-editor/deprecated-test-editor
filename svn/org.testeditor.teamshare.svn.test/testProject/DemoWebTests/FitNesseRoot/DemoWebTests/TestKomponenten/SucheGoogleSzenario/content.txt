@@ -1,0 +1,14 @@
+!|scenario |SucheGoogleSzenario _|page, textVorhanden, TextNichtvorhanden|
+|note|Description: Dieser Test führt eine Suche nach "akquinet" über www.google.de aus, anschließend wird überprüft ob bestimmte Ergebnisse angezeigt bzw. nicht angezeigt werden.|
+!include <DemoWebTests.TestSzenarien.BrowserStartSzenario
+!|script|
+|Browser Start Szenario|
+#
+|note| Maske: Allgemein Browser|
+|navigiere auf die Seite|https://www.google.de/|
+|note| Maske: Google Suche|
+|gebe in das Feld|gbqfq|den Wert|@page|ein|
+|note| Maske: Allgemein Browser|
+|überprüfe ob der Text|@textVorhanden|vorhanden ist|
+|überprüfe ob nicht der Text|@TextNichtvorhanden|vorhanden ist|
+|beende Browser|

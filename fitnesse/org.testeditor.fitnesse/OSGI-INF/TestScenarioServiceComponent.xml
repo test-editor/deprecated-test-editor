@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="testScenarioService">
+   <implementation class="org.testeditor.fitnesse.TestScenarioServiceImpl"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.TestScenarioService"/>
+   </service>
+   <reference bind="bind" cardinality="1..1" interface="org.testeditor.core.services.interfaces.TestStructureContentService" name="TestStructureContentService" policy="static" unbind="unBind"/>
+</scr:component>

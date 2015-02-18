@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/descriptor/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_ENpFEACTEeSkCYMO2A7Qnw">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_QH868ACTEeSkCYMO2A7Qnw" featurename="children" parentElementId="org.testeditor.ui.popupmenu">
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_LmwyQACUEeSkCYMO2A7Qnw" elementId="org.testeditor.ui.analyzer.directmenuitem.validatAlltestcases" label="%contextmenu.testexplorer.validate.teststructures" iconURI="platform:/plugin/org.testeditor.ui.analyzer/icons/problems_view.gif" contributionURI="bundleclass://org.testeditor.ui.analyzer/org.testeditor.ui.analyzer.ValidateAllTestFlowsHandler"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_hEkI4ACaEeSkCYMO2A7Qnw" featurename="descriptors" parentElementId="org.eclipse.e4.ide.application">
+    <elements xsi:type="basic:PartDescriptor" xmi:id="_JMJs0ACbEeSkCYMO2A7Qnw" elementId="org.testeditor.ui.analyzer.validateResults" label="%viewpart.teststructurevalidation" iconURI="platform:/plugin/org.testeditor.ui.analyzer/icons/problems_view.gif" category="analyzer" closeable="true" contributionURI="bundleclass://org.testeditor.ui.analyzer/org.testeditor.ui.analyzer.ValidateResultsView"/>
+  </fragments>
+</fragment:ModelFragments>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/AllActionGroups.xsd"
+	schemaVersion="1.1">
+
+	<ActionGroup name="Time Webservice">
+		<action technicalBindingType="Festlegung_Namespace">
+			<actionName locator="wsx">WSX</actionName>
+            <argument id="argument1">
+                <value>http://www.webserviceX.NET/</value>
+            </argument>
+        </action>
+        <action technicalBindingType="Eingabe_Request">
+			<actionName locator="wsx:GetSunSetRiseTime/wsx:L/wsx:TimeZone">GetSunSetRiseTime->TimeZone</actionName>
+		</action>
+        <action technicalBindingType="Eingabe_Request">
+			<actionName locator="wsx:GetSunSetRiseTime/wsx:L/wsx:Day">GetSunSetRiseTime->Day</actionName>
+		</action>
+        <action technicalBindingType="Eingabe_Request">
+			<actionName locator="wsx:GetSunSetRiseTime/wsx:L/wsx:Month">GetSunSetRiseTime->Month</actionName>
+		</action>
+        <action technicalBindingType="Eingabe_Request">
+			<actionName locator="wsx:GetSunSetRiseTime/wsx:L/wsx:Year">GetSunSetRiseTime->Year</actionName>
+		</action>
+        <action technicalBindingType="Aufruf_Webservice">
+			<actionName locator="http://www.webservicex.net/sunsetriseservice.asmx">Sunrise</actionName>
+		</action>
+        <action technicalBindingType="Überprüfung_Response">
+			<actionName locator="wsx:GetSunSetRiseTimeResponse/wsx:GetSunSetRiseTimeResult/wsx:SunRiseTime">GetSunSetRiseTimeResponse->SunRiseTime</actionName>
+		</action>
+	</ActionGroup>
+
+</ActionGroups>

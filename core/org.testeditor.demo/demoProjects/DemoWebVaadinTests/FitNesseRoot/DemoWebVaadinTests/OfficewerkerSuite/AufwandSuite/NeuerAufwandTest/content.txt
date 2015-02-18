@@ -1,0 +1,47 @@
+Dieser Test legt einen Aufwand im Officewerker an, überprüft die Anlage und löscht den Aufwand wieder.
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStartLoginSzenario
+!|script|
+|Applikation Start Login Szenario|
+#
+# Maske: Officewerker Startseite
+-!|script|
+|klicke auf|Aufwand|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob nicht der Text|Aufwand Oberflächentest / Automatisiert|vorhanden ist|
+|warte|1|Sekunden|
+# Maske: Officewerker Aufwand
+-!|script|
+|klicke auf|AufwandNeu|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+# Maske: Officewerker Aufwand
+-!|script|
+|gebe in das Feld|Beschreibung|den Wert|Aufwand Oberflächentest|ein|
+|gebe in das Feld|Art|den Wert|Automatisiert|ein|
+|gebe in das Feld|Netto|den Wert|1000|ein|
+|gebe in das Feld|Bemerkung|den Wert|Dies ist nur ein Test|ein|
+|klicke auf|Uebernehmen|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob der Text|Aufwand Oberflächentest / Automatisiert|vorhanden ist|
+# Maske: Officewerker Aufwand
+-!|script|
+|klicke auf|Loeschen|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+# Maske: Officewerker Abfrage
+-!|script|
+|klicke auf|JaLoeschen|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob nicht der Text|Aufwand Oberflächentest / Automatisiert|vorhanden ist|
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

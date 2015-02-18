@@ -1,0 +1,15 @@
+"input"
+	((tagname = input) & (!(type = radio)));
+	
+	"button"
+	((tagname = button) | 
+	((tagname = input) & (type = submit)));
+	
+	"radio"
+	(
+	(tagname = input) 
+	& 
+	(type = radio)
+	);
+	
+	

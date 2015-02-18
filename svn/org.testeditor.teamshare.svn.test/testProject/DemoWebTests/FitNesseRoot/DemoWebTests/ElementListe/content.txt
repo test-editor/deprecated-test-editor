@@ -1,0 +1,32 @@
+user = user
+password = password
+login = login
+land = land
+gbqfq = gbqfq
+gbqfba = gbqfba
+#Login
+loginMandant = loginMandant
+loginName = loginName
+loginPwd = loginPwd
+loginButton = loginButton
+loginForm = loginButton
+
+#Startseite
+Startseite=HeaderComponent-buttonHome
+Eingangsrechnung=HeaderComponent-buttonIngoingInvoices
+Aufwand=HeaderComponent-buttonExpenses
+Abmelden=HeaderComponent-embeddedLogout
+
+#Aufwand
+AufwandNeu=ExpenseToolbarComponent-buttonCreate
+
+Loeschen=ExpenseToolbarComponent-buttonDelete
+Beschreibung=ExpenseEditorComponent-textFieldDescription
+Art=ExpenseEditorComponent-textFieldType
+Netto=ExpenseEditorComponent-textFieldNetAmount
+Bemerkung=ExpenseEditorComponent-textAreaNote
+Uebernehmen=ExpenseEditorComponent-buttonApply
+
+#Sicherheitsfrage
+JaAbmelden=ConfirmLogoutModal-buttonYes
+JaLoeschen=ExpenseConfirmDeleteModal-buttonYes

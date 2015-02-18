@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" name="org.testeditor.core.services.TestProjectService">
+   <implementation class="org.testeditor.core.services.impl.TestProjectServiceImpl"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.TestProjectService"/>
+      <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
+   </service>
+   <reference bind="bind" cardinality="1..1" interface="org.testeditor.core.services.interfaces.TestEditorPlugInService" name="TestEditorPlugInService" policy="static" unbind="unBind"/>
+   <reference bind="bind" cardinality="1..1" interface="org.testeditor.core.util.FileLocatorService" name="FileLocatorService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.interfaces.TestServerService" name="TestServerService" policy="dynamic" unbind="unBind"/>
+</scr:component>

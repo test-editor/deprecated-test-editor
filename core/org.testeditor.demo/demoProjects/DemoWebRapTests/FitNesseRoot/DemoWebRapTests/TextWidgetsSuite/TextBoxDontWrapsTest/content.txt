@@ -1,0 +1,13 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+# Maske: Multiline Texts
+-!|script|
+|leere das Feld|textbox_donotwraps|
+|gebe in das Feld|textbox_donotwraps|den Wert|Der Test-Editor stellt eine intuitive Anwendung bereit, die das Erfassen und Ausführen von Akzeptanztests ermöglicht. Es können also Oberflächen aus einer fachlichen Sichtweise beschrieben und getestet werden. Ein Wissen über die Implementierung der jeweiligen Anwendung ist dabei nicht notwendig.|ein|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

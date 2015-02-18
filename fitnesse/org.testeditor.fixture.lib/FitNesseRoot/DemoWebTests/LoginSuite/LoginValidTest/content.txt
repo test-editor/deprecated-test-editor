@@ -1,0 +1,25 @@
+'''Dieser Test überprüft den Login eines gültigen Benutzers. Auf der Anmelde-Maske wird ein gültiger Benutzername und Passwort eingegeben und auf den Login-Button geklickt. Anschließend wird geprüft ob der Login erfolgreich war.''' --------
+# Maske: Allgemein Browser
+-!|script|
+|starte Browser|Firefox|
+# Maske: Allgemein Browser
+-!|script|
+|navigiere auf die Seite|http://localhost:8082/files/demo/ExampleApplication/WebApplicationDe/index.html|
+# Maske: Anmeldung
+-!|script|
+|gebe in das Feld|Name|den Wert|Max Mustermann|ein|
+# Maske: Anmeldung
+-!|script|
+|gebe in das Feld|Passwort|den Wert|test|ein|
+# Maske: Anmeldung
+-!|script|
+|klicke auf|Login|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|Anmeldung war erfolgreich|vorhanden ist|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob nicht der Text|Login|vorhanden ist|
+# Maske: Allgemein Browser
+-!|script|
+|beende Browser|

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ActionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/AllActionGroups.xsd"
+	schemaVersion="1.1">
+	
+    <ActionGroup name="Direction Webservice">
+		<action technicalBindingType="Aufruf_Webservice_Get" />
+		<action technicalBindingType="Überprüfung_Response">
+            <actionName locator="//DirectionsResponse/status/text()">Status</actionName>
+        </action>
+        <action technicalBindingType="Überprüfung_Response">
+            <actionName locator="//DirectionsResponse/route/summary/text()">Summary</actionName>
+        </action>
+        <action technicalBindingType="Überprüfung_Response">
+            <actionName locator="//DirectionsResponse/route/leg/start_address/text()">StartAddress</actionName>
+        </action>
+	    <action technicalBindingType="Überprüfung_Response">
+            <actionName locator="//DirectionsResponse/route/leg/end_address/text()">EndAddress</actionName>
+        </action>
+        <action technicalBindingType="Überprüfung_Response_Anzahl">
+            <actionName locator="//DirectionsResponse/route/leg/step">Step</actionName>
+        </action>
+	</ActionGroup>
+    
+	<ActionGroup name="Time Webservice">
+		<action technicalBindingType="Aufruf_Webservice_Get" />
+		<action technicalBindingType="Überprüfung_Response">
+           <actionName locator="//TimeZoneResponse/status/text()">Status</actionName>
+        </action>
+        <action technicalBindingType="Überprüfung_Response">
+            <actionName locator="//TimeZoneResponse/time_zone_id/text()">TimeZoneId</actionName>
+        </action>
+        <action technicalBindingType="Überprüfung_Response">
+            <actionName locator="//TimeZoneResponse/time_zone_name/text()">TimeZoneName</actionName>
+        </action>
+	</ActionGroup>
+	
+</ActionGroups>

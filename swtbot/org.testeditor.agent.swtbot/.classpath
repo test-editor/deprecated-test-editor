@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.swtbot.swt.finder_2.2.1.201402241301.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.apache.log4j_1.2.15.v201012070815.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.hamcrest.library_1.3.0.v201305281000.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

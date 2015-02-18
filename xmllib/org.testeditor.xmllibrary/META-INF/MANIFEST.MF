@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Testeditor XML-Library
+Bundle-SymbolicName: org.testeditor.xmllibrary
+Bundle-Version: 1.8.0.qualifier
+Bundle-Activator: org.testeditor.xmllibrary.activator.XMLLibraryActivator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.inject;version="1.0.0",
+ org.apache.log4j;version="1.2.15",
+ org.eclipse.e4.core.contexts,
+ org.eclipse.e4.core.services.translation,
+ org.osgi.framework;version="1.3.0",
+ org.testeditor.core.exceptions,
+ org.testeditor.core.model.action,
+ org.testeditor.core.model.teststructure,
+ org.testeditor.core.services.interfaces,
+ org.testeditor.core.util
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
+ org.eclipse.equinox.ds;bundle-version="1.4.100"
+Service-Component: OSGI-INF/LibraryReaderImpl.xml,OSGI-INF/XMLActionGroupConfigurationService.xml,
+ OSGI-INF/LibraryConfigurationServiceImpl.xml
+Eclipse-BundleShape: dir
+Export-Package: org.testeditor.xmllibrary.services.impl;
+  uses:="org.testeditor.core.model.action,
+   org.testeditor.core.services.interfaces,
+   javax.xml.validation,
+   javax.xml.bind"
+

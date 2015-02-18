@@ -1,0 +1,16 @@
+!*****> Preferences
+
+!define TIMEOUT {10000}
+!define TEST_SYSTEM {slim}
+
+!define classpath_fixtures {org.testeditor.fitnesse.web.fixture}
+
+!path ./lib/fixture-1.0.0-jar-with-dependencies.jar
+
+!define SELENIUM_BROWSER {*firefox}
+!define ELEMENT_LISTE {./FitNesseRoot/DemoWebTests/ElementListe/content.txt}
+
+
+**********!
+
+!contents -R2 -g -p -f -h

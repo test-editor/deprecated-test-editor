@@ -1,0 +1,27 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#dialog|
+#
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_swt_messagebox|
+|klicke auf|dialog_button_yes|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Result: SWT.YES|vorhanden ist|
+|überprüfe ob der Text|Result: SWT.NO|nicht vorhanden ist|
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_swt_messagebox|
+|klicke auf|dialog_button_no|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Result: SWT.NO|vorhanden ist|
+|überprüfe ob der Text|Result: SWT.YES|nicht vorhanden ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

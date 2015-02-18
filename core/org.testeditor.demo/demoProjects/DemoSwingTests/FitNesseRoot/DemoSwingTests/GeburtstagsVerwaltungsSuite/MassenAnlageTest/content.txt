@@ -1,0 +1,16 @@
+Dieser Testfall legt mehrere Einträge in der Geburtstagsliste an
+!include <DemoSwingTests.TestSzenarien.ApplikationStartSzenario
+!|script|
+|Applikation Start Szenario|
+#
+!include <DemoSwingTests.TestSzenarien.NeuanlageSzenario
+!|Neuanlage Szenario|
+|name|vorname|tag|monat|jahr|
+|Hase|Bernhard|5|10|1970|
+|Schmidt|Paula|3|7|1977|
+|Mustermann|Max|21|2|1978|
+#
+!include <DemoSwingTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

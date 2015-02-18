@@ -1,0 +1,14 @@
+Diese Art von Eingabemaske muss vorher geleert werden.
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+# Maske: Input Widgets
+-!|script|
+|leere das Feld|input_country|
+|gebe in das Feld|input_country|den Wert|USA|ein|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

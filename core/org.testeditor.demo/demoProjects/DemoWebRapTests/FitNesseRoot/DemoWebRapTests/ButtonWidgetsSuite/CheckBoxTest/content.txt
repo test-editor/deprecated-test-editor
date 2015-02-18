@@ -1,0 +1,14 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#button|
+#
+# Maske: Button Widgets
+-!|script|
+|überprüfe ob das Element|button_extrahot|nicht selektiert ist|
+|klicke auf|button_extrahot|
+|überprüfe ob das Element|button_extrahot|selektiert ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

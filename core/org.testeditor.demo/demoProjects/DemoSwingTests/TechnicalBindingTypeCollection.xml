@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TechnicalBindingTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/TechnicalBindingTypeCollection.xsd"
+	schemaVersion="1.1">
+	
+	<TechnicalBindingType id="Starte_Anwendung" name="Anwendung starten">
+		<actionPart position="1" type="TEXT" value="starte Anwendung" />
+		<actionPart position="2" type="ARGUMENT" />
+	</TechnicalBindingType>
+
+	<TechnicalBindingType id="Beende_Anwendung" name="Anwendung beenden">
+		<actionPart position="1" type="TEXT" value="beende Anwendung" />
+	</TechnicalBindingType>
+
+	<TechnicalBindingType id="Wert_eingeben" name="Wert eingeben">
+		<actionPart position="1" type="TEXT" value="gebe in das Feld" />
+		<actionPart position="2" type="ACTION_NAME"/>
+		<actionPart position="3" type="TEXT" value="den Wert" />
+		<actionPart position="4" type="ARGUMENT"/>
+		<actionPart position="5" type="TEXT" value="ein" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Wert_löschen" name="Wert löschen">
+		<actionPart position="1" type="TEXT" value="lösche aus dem Feld" />
+		<actionPart position="2" type="ACTION_NAME"/>
+		<actionPart position="3" type="TEXT" value="den Wert" />
+		<actionPart position="4" type="ARGUMENT"/>
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Button_Druecken" name="Button klicken">
+		<actionPart position="1" type="TEXT" value="klicke auf" />
+		<actionPart position="2" type="ACTION_NAME"/>
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Wert_auswählen" name="Wert auswählen">
+		<actionPart position="1" type="TEXT" value="wähle in Feld" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="den Wert" />
+		<actionPart position="4" type="ARGUMENT" id="argument1" />
+		<actionPart position="5" type="TEXT" value="aus" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="RadioButton_aktivieren" name="RadioButton aktivieren">
+		<actionPart position="1" type="TEXT" value="aktiviere Radio-Button" />
+		<actionPart position="2" type="ACTION_NAME" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="RadioButton_deaktivieren" name="RadioButton deaktivieren">
+		<actionPart position="1" type="TEXT" value="deaktiviere Radio-Button" />
+		<actionPart position="2" type="ACTION_NAME" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Checkbox_aktivieren" name="Checkbox aktivieren">
+		<actionPart position="1" type="TEXT" value="aktiviere Checkbox" />
+		<actionPart position="2" type="ACTION_NAME" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Checkbox_deaktivieren" name="Checkbox deaktivieren">
+		<actionPart position="1" type="TEXT" value="deaktiviere Checkbox" />
+		<actionPart position="2" type="ACTION_NAME" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Text_ungültig_prüfen" name="Text ungültig prüfen">
+		<actionPart position="1" type="TEXT" value="prüfe ob im Feld" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="der Text" />
+		<actionPart position="4" type="ARGUMENT" />
+		<actionPart position="5" type="TEXT" value="nicht eingetragen ist" />
+	</TechnicalBindingType>
+
+	<TechnicalBindingType id="Text_prüfen" name="Text prüfen">
+		<actionPart position="1" type="TEXT" value="prüfe ob im Feld" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="der Text" />
+		<actionPart position="4" type="ARGUMENT" />
+		<actionPart position="5" type="TEXT" value="eingetragen ist" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Wert_ungültig_prüfen" name="Wert ungültig prüfen">
+		<actionPart position="1" type="TEXT" value="prüfe ob im Feld" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="der Wert" />
+		<actionPart position="4" type="ARGUMENT" />
+		<actionPart position="5" type="TEXT" value="nicht ausgewählt ist" />
+	</TechnicalBindingType>
+
+	<TechnicalBindingType id="Wert_prüfen" name="Wert prüfen">
+		<actionPart position="1" type="TEXT" value="prüfe ob im Feld" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="der Wert" />
+		<actionPart position="4" type="ARGUMENT" />
+		<actionPart position="5" type="TEXT" value="ausgewählt ist" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Tabellenzeile_auswählen" name="Tabellenzeile auswählen">		
+	    <actionPart position="1" type="TEXT" value="in der Tabelle" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="wähle die Zeile" />
+		<actionPart position="4" type="ARGUMENT" />
+		<actionPart position="5" type="TEXT" value="aus" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Tabellenzeile_doppelklicken" name="Tabellenzeile doppelklicke">		
+	    <actionPart position="1" type="TEXT" value="in der Tabelle" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="doppelklicke die Zeile" />
+		<actionPart position="4" type="ARGUMENT" />
+	</TechnicalBindingType>
+	
+	<TechnicalBindingType id="Tabelleneintrag_prüfen" name="Tabelleneintrag prüfen">		
+	    <actionPart position="1" type="TEXT" value="prüfe ob in der Tabelle" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="in der letzten Zeile in Spalte" />
+		<actionPart position="4" type="ARGUMENT" id="argument1"/>
+		<actionPart position="5" type="TEXT" value="der Wert" />
+		<actionPart position="6" type="ARGUMENT" />
+		<actionPart position="7" type="TEXT" value="eingetragen ist" />
+	</TechnicalBindingType>
+</TechnicalBindingTypes>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.testeditor.core.services.pluginsystem.TestEditorPlugInServiceImpl">
+   <implementation class="org.testeditor.core.services.impl.TestEditorPlugInServiceImpl"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.TestEditorPlugInService"/>
+   </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.LibraryReaderService" name="LibraryReaderService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.LibraryConfigurationService" name="LibraryConfigurationService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.TeamShareConfigurationService" name="TeamShareConfigurationService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.TeamShareService" name="TeamShareService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.TestStructureService" name="TestStructureService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.TestStructureContentService" name="TestStructureContentService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.TestScenarioService" name="TestScenarioService" policy="dynamic" unbind="unBind"/>
+</scr:component>

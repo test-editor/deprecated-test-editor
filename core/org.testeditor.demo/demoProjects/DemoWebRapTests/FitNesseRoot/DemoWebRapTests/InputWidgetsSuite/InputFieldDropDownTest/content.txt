@@ -1,0 +1,13 @@
+Die Auswahl in einer DropDown-Liste funktioniert aktuell nur über "gebe in das Feld..." und nicht über "wähle in Feld...".
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#input|
+#
+# Maske: Input Widgets
+-!|script|
+|wähle aus der Combobox|input_class|den Wert|Economy|aus|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

@@ -1,0 +1,5 @@
+!|scenario |StarteBrowserSzenario _|URL|
+|note| Maske: Allgemein Browser|
+|starte Browser|IE|
+|navigiere auf die Seite|@{URL}|
+|warte|2|Sekunden|

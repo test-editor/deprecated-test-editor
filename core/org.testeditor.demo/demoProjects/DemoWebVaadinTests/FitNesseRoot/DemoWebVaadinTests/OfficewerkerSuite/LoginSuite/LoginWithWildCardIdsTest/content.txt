@@ -1,0 +1,35 @@
+Dieser Test legt einen Aufwand im Officewerker an, überprüft die Anlage und löscht den Aufwand wieder.
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStartSzenario
+!|script|
+|Applikation Start Szenario|
+#
+# Maske: Officewerker Anmeldung
+-!|script|
+|gebe in das Feld|Mandant|den Wert|BüroArbeiter|ein|
+|gebe in das Feld|Name|den Wert|hugo|ein|
+|gebe in das Feld|Pwd|den Wert|Geheim|ein|
+|leere das Feld|loginMandant|
+|leere das Feld|loginPwd|
+|leere das Feld|loginName|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+# Maske: Officewerker Anmeldung
+-!|script|
+|gebe in das Feld|loginMandant|den Wert|offwrk|ein|
+|gebe in das Feld|loginName|den Wert|admin|ein|
+|gebe in das Feld|loginPwd|den Wert|#secret!|ein|
+|klicke auf|loginButton|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+# Maske: Officewerker Startseite
+-!|script|
+|klicke auf|Abmelden|
+# Maske: Officewerker Abfrage
+-!|script|
+|klicke auf|JaAbmelden|
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

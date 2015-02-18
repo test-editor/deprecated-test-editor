@@ -1,0 +1,12 @@
+Dieser Test ruft die Eingangsrechnungen auf und überprüft das Ergebnis.
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStartLoginSzenario
+!|script|
+|Applikation Start Login Szenario|
+#
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|akquinet|vorhanden ist|
+!include <DemoWebVaadinTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

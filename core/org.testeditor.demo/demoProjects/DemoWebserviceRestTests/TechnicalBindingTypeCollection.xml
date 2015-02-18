@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TechnicalBindingTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://testeditor.org/xsd_schema/v_1_1/TechnicalBindingTypeCollection.xsd"
+	schemaVersion="1.1">
+
+    <TechnicalBindingType id="Aufruf_Webservice_Get" name="Webservice aufrufen">
+        <actionPart position="1" type="TEXT" value="rufe den Webservice" />
+        <actionPart position="2" type="ARGUMENT"/>
+        <actionPart position="3" type="TEXT" value="auf" />
+    </TechnicalBindingType>
+
+	<TechnicalBindingType id="Überprüfung_Response_Anzahl" name="Response zählen">
+		<actionPart position="1" type="TEXT" value="überprüfe ob der Response" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="insgesamt" />
+		<actionPart position="4" type="ARGUMENT"/>
+		<actionPart position="5" type="TEXT" value="Mal vorhanden ist" />
+    </TechnicalBindingType>
+    
+    <TechnicalBindingType id="Überprüfung_Response" name="Response überprüfen">
+		<actionPart position="1" type="TEXT" value="überprüfe ob der Response" />
+		<actionPart position="2" type="ACTION_NAME" />
+		<actionPart position="3" type="TEXT" value="dem Wert" />
+		<actionPart position="4" type="ARGUMENT" />
+		<actionPart position="5" type="TEXT" value="entspricht" />
+	</TechnicalBindingType>
+		
+</TechnicalBindingTypes>

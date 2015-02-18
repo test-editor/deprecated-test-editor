@@ -1,0 +1,39 @@
+!include <DemoWebRapTests.TestSzenarien.StarteBrowserSzenario
+!|Starte Browser Szenario|
+|URL|
+|http://rap.eclipsesource.com/demo/release/rapdemo/examples#dialog|
+#
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_jface_questiondialog|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob der Text|Would you like to see the demo?|vorhanden ist|
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_button_yes|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Result: 0|vorhanden ist|
+|überprüfe ob der Text|Would you like to see the demo?|nicht vorhanden ist|
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_jface_questiondialog|
+# Maske: Allgemein Browser
+-!|script|
+|warte|1|Sekunden|
+|überprüfe ob der Text|Would you like to see the demo?|vorhanden ist|
+# Maske: Dialog Widgets
+-!|script|
+|klicke auf|dialog_button_no|
+# Maske: Allgemein Browser
+-!|script|
+|warte|2|Sekunden|
+|überprüfe ob der Text|Result: 1|vorhanden ist|
+|überprüfe ob der Text|Would you like to see the demo?|nicht vorhanden ist|
+!include <DemoWebRapTests.TestSzenarien.BeendeBrowserSzenario
+!|script|
+|Beende Browser Szenario|
+#

@@ -1,0 +1,5 @@
+!1 DemoEmpty
+
+
+
+!note Release ${FITNESSE_VERSION}

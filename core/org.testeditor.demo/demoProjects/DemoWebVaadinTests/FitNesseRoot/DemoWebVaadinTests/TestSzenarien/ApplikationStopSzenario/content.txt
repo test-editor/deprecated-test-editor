@@ -1,0 +1,4 @@
+!|scenario |ApplikationStopSzenario _||
+|note|Description: Dieses Szenario stoppt die Web-Applikation, der Browser wird wieder geschlossen.|
+|note| Maske: Allgemein Browser|
+|beende Browser|

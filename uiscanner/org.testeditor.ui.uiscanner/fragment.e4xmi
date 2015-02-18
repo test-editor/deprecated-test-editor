@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_VLEToA2FEeSdavYCpZ4Vkw">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_gCa3sA2FEeSdavYCpZ4Vkw" featurename="children" parentElementId="org.testeditor.ui.menu.config" positionInList="">
+    <elements xsi:type="menu:MenuSeparator" xmi:id="_O58ooEmCEeSRf4QMudaVIA"/>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_8PHhgA2GEeSoK_9oHyA2kA" elementId="org.testeditor.ui.uiscanner.starter1" label="Ui - Scanner (Web)" contributionURI="bundleclass://org.testeditor.ui.uiscanner/org.testeditor.ui.uiscanner.ui.UiscannerHandler"/>
+  </fragments>
+</fragment:ModelFragments>

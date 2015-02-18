@@ -1,0 +1,3 @@
+Name = user
+Passwort = password
+Login = login

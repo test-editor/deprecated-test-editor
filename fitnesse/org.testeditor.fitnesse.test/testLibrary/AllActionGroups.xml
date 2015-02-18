@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../org.testeditor.xmllibrary/resources/AllActionGroups.xsd"
+	schemaVersion="1.1">
+	<ActionGroup name="Anmeldung">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Name">Name</actionName>
+		</action>
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Passwort">Passwort</actionName>
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="LoginButton">LoginButton</actionName>
+		</action>
+		<action technicalBindingType="Warte_Sekunden" />
+	</ActionGroup>
+	<ActionGroup name="Willkommen">
+		<action technicalBindingType="Pruefe_Wert_vorhanden" />
+		<action technicalBindingType="Warte_Sekunden" />
+	</ActionGroup>
+	<ActionGroup name="Browser">
+		<action technicalBindingType="Starte_Browser">
+			<actionName locator="Firefox">Firefox</actionName>	
+		</action>
+		<action technicalBindingType="Navigiere_auf_Seite" />
+		<action technicalBindingType="Beende_Browser" />
+		<action technicalBindingType="Warte_Sekunden" />
+	</ActionGroup>
+	<ActionGroup name="Google">
+		<action technicalBindingType="Eingabe_Wert">
+			<actionName locator="Sucheingabe">Sucheingabe</actionName>		
+		</action>
+		<action technicalBindingType="Button_Druecken">
+			<actionName locator="Suchbutton">Suchbutton</actionName>
+		</action>
+		<action technicalBindingType="Pruefe_Wert_vorhanden" />
+	</ActionGroup>
+</ActionGroups>

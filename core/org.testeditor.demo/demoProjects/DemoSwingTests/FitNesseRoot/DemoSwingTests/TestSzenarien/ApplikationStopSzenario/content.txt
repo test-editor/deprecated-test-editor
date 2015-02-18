@@ -1,0 +1,4 @@
+!|scenario |ApplikationStopSzenario _||
+|note|Description: Stoppt die lokale Swing-Anwendung (AUT)|
+|note| Maske: Anwendung|
+|beende Anwendung|

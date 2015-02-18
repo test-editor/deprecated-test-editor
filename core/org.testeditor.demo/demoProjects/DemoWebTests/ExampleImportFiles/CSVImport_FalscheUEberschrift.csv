@@ -1,0 +1,9 @@
+ID;TextVorhanden;Name;NichtVorhanden;email;Land;Passwort
+1;erfolgreich;Max Mustermann;Login;Max@Mustermann.de;;maxi
+2;erfolgreich;Hans Mller;Name;Mller@firma.com;Australien;mllerman
+3;;Hans Mller;erfolgreich;;Australien;Siemens
+5;USA;Moxen;Login;Mox@USA.com;USA;chicago
+7;;;;Master@Admin.de;;
+8;erfolgreich;Hilde;Deutschland;;Schweden;swiz
+9;;Jan;erfolgreich;jan@web.de;Deutschland;admin
+15;;;;;;

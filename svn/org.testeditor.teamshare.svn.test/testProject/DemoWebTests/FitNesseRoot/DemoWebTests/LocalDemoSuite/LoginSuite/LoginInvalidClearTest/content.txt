@@ -1,0 +1,20 @@
+Dieser Test prüft auf auf einen ungültigen Benutzernamen der nach hineinschrieben wieder gelöscht wird.
+!include <DemoWebTests.TestSzenarien.BrowserStartSzenario
+!|script|
+|Browser Start Szenario|
+#
+# Maske: Allgemein Browser
+-!|script|
+|navigiere auf die Seite|http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html|
+# Maske: Lokale Anmeldung
+-!|script|
+|gebe in das Feld|user|den Wert|Max Mustermann|ein|
+|leere das Feld|user|
+|gebe in das Feld|password|den Wert|test|ein|
+|wähle in Feld|land|den Wert|USA|aus|
+|klicke auf|login|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob nicht der Text|war erfolgreich|vorhanden ist|
+|überprüfe ob der Text|Login|vorhanden ist|
+|beende Browser|

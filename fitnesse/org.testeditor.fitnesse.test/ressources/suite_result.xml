@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<suiteResults>
+	<FitNesseVersion>v20121220</FitNesseVersion>
+	<rootPath>LoginSuite</rootPath>
+	<pageHistoryReference>
+		<name>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidClearTest
+		</name>
+		<date>10/11/2013 15:12:13</date>
+		<pageHistoryLink>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidClearTest?pageHistory&amp;resultDate=20131011151213
+		</pageHistoryLink>
+		<counts>
+			<right>5</right>
+			<wrong>0</wrong>
+			<ignores>0</ignores>
+			<exceptions>10</exceptions>
+		</counts>
+		<runTimeInMillis>6281</runTimeInMillis>
+	</pageHistoryReference>
+	<pageHistoryReference>
+		<name>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidTest</name>
+		<date>10/11/2013 15:12:19</date>
+		<pageHistoryLink>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidTest?pageHistory&amp;resultDate=20131011151219
+		</pageHistoryLink>
+		<counts>
+			<right>13</right>
+			<wrong>0</wrong>
+			<ignores>0</ignores>
+			<exceptions>0</exceptions>
+		</counts>
+		<runTimeInMillis>8968</runTimeInMillis>
+	</pageHistoryReference>
+	<pageHistoryReference>
+		<name>DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest</name>
+		<date>10/11/2013 15:12:28</date>
+		<pageHistoryLink>DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest?pageHistory&amp;resultDate=20131011151228
+		</pageHistoryLink>
+		<counts>
+			<right>11</right>
+			<wrong>2</wrong>
+			<ignores>0</ignores>
+			<exceptions>0</exceptions>
+		</counts>
+		<runTimeInMillis>8374</runTimeInMillis>
+	</pageHistoryReference>
+	<finalCounts>
+		<right>1</right>
+		<wrong>1</wrong>
+		<ignores>0</ignores>
+		<exceptions>1</exceptions>
+	</finalCounts>
+	<totalRunTimeInMillis>24700</totalRunTimeInMillis>
+
+</suiteResults>
+

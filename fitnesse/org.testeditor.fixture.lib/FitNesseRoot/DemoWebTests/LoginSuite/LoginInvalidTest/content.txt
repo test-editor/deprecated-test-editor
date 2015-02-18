@@ -1,0 +1,25 @@
+'''Dieser Test überprüft das ein ungültiger Benutzers sich nicht anmelden kann.''' --------
+# Maske: Allgemein Browser
+-!|script|
+|starte Browser|Firefox|
+# Maske: Allgemein Browser
+-!|script|
+|navigiere auf die Seite|http://localhost:8082/files/demo/ExampleApplication/WebApplicationDe/index.html|
+# Maske: Anmeldung
+-!|script|
+|gebe in das Feld|Name|den Wert|Peter Mustermann|ein|
+# Maske: Anmeldung
+-!|script|
+|gebe in das Feld|Passwort|den Wert|test|ein|
+# Maske: Anmeldung
+-!|script|
+|klicke auf|Login|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob nicht der Text|Anmedung war erfolgreich|vorhanden ist|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|Login|vorhanden ist|
+# Maske: Allgemein Browser
+-!|script|
+|beende Browser|

@@ -1,0 +1,5 @@
+!|scenario |ApplikationStartSzenario _||
+|note|Description: Dieses Szenario startet die lokale Demo-Web-Applikation. Die Applikation ist bereits Bestandteil dieses Demo-Projektes, so dass keine Internet-Verbindung für die Ausführung notwendig ist. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.|
+|note| Maske: Allgemein Browser|
+|starte Browser|Firefox|
+|navigiere auf die Seite|http://localhost:${FITNESSE_PORT}/files/demo/ExampleApplication/WebApplicationDe/index.html|

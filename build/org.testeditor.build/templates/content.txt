@@ -1,0 +1,20 @@
+!*****> Preferences
+
+!define TIMEOUT {10000}
+!define TEST_SYSTEM {slim}
+
+!define classpath_fixtures {org.testeditor.fitnesse.web.fixture}
+
+
+!path @FIXTUREPATH@
+
+!define BROWSER_PATH {/Users/olaf/Development/Workspaces/testeditor/browser}
+
+!define LOGGING {@LOGGINGCONFIG@}
+!define COMMAND_PATTERN {java  -Dlog4j.configuration=file:${LOGGING} -cp %p %m -i org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction }
+
+!define ELEMENT_LISTE {@ELEMENTLISTE@}
+
+**********!
+
+!contents -R2 -g -p -f -h

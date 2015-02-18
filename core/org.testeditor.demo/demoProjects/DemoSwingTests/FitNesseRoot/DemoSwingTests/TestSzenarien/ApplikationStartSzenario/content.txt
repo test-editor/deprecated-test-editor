@@ -1,0 +1,4 @@
+!|scenario |ApplikationStartSzenario _||
+|note|Description: Startet die lokale Swing-Anwendung als zu testendes System (AUT)|
+|note| Maske: Anwendung|
+|starte Anwendung|de.akquinet.birthday.controller.EmployeeController|

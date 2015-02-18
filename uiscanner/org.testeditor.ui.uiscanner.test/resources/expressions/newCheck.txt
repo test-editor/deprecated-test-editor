@@ -1,0 +1,15 @@
+input=	((tagname = textarea) |
+		((tagname = input) & 
+		!
+		((type = radio) | 
+		(type = submit) | 
+		(type = reset) | 
+		(type = checkbox))
+		
+		));
+button=((tagname = button) | 
+		((tagname = input) & ((type = submit) |  (type = reset))) | 
+		((tagname = div) & (class % button)));
+radio=((tagname = radio) | ((tagname = input) & (type = radio)));
+select=(tagname = select);
+checkbox=((tagname = checkbox) | ((tagname = input) & (type = checkbox)));

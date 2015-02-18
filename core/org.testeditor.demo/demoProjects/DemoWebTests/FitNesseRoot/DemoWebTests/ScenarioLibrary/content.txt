@@ -1,0 +1,149 @@
+|import|
+|org.testeditor.fixture.web|
+
+!|Library|
+|org.testeditor.fixture.web.HtmlWebFixture|
+
+-!|script|
+|setTimeout|10|
+|setElementlist|${ELEMENT_LISTE}|
+
+'''HtmlWebFixture - Wert auswählen (Auswahl_Wert)'''
+!|scenario|wähle aus der Combobox|guiid|den Wert|text|aus|
+|selectOption;|@text|@guiid|
+
+'''HtmlWebFixture - Wert auslesen (Lese_Wert)'''
+!|scenario|lese aus dem Element|guiid|den Wert aus|
+|readValueOfElement;|@guiid|
+
+'''HtmlWebFixture - Besitzt das Element den Wert (Pruefe_Wert_In_Element)'''
+!|scenario|überprüfe ob das Element|guiid|den Wert|text|besitzt|
+|checkValueOfElement;|@text|@guiid|
+
+'''HtmlWebFixture - Wert selektieren (Selektiere_Wert)'''
+!|scenario|selektiere am Element|guiid|den Wert|text|
+|clickRadioButtonOrCheckBox;|@text|@guiid|
+
+'''HtmlWebFixture - überprüfe ob selektiert (Pruefe_Wert_Selektiert)'''
+!|scenario|überprüfe ob das Element|guiid|selektiert ist|
+|checkIsSelected;|@guiid|
+
+'''HtmlWebFixture - überprüfe ob nicht selektiert (Pruefe_Wert_Nicht_Selektiert)'''
+!|scenario|überprüfe ob das Element|guiid|nicht selektiert ist|
+|checkIsNotSelected;|@guiid|
+
+'''AbstractWebFixture - Attribut auslesen (Lese_Attribut)'''
+!|scenario|lese aus dem Element|guiid|das Attribut|attribut|aus|
+|readAttributeFromElement;|@attribut|@guiid|
+
+'''AbstractWebFixture - Browser starten (Starte_Browser)'''
+!|scenario|starte Browser|browser|
+|openBrowser;|@browser|
+
+'''AbstractWebFixture - Browser beenden (Beende_Browser)'''
+!|scenario|beende Browser|
+|closeBrowser;|
+
+'''AbstractWebFixture - Seite navigieren (Navigiere_auf_Seite)'''
+!|scenario|navigiere auf die Seite|url|
+|navigateToUrl;|@url|
+
+'''AbstractWebFixture - Ist Wert leer (Wert_Ist_Leer)'''
+!|scenario|ist der Wert|text|leer|
+|assertIsEmpty;|@text|
+
+'''AbstractWebFixture - Sind die Werte gleich (Werte_Sind_Gleich)'''
+!|scenario|sind die Werte|erste|und|zweite|gleich|
+|assertIsEqual;|@erste|@zweite|
+
+'''AbstractWebFixture - Sekunden warten (Warte_Sekunden)'''
+!|scenario|warte|wert|Sekunden|
+|waitSeconds;|@wert|
+
+'''AbstractWebFixture - Fenster wechseln (Wechsel_Fenster)'''
+!|scenario|wechsel zum Fenster|guiid|
+|switchToFrame;|@guiid|
+
+'''AbstractWebFixture - Element klicken (Klicke_Element)'''
+!|scenario|klicke auf|guiid|
+|clickElement;|@guiid|
+
+'''AbstractWebFixture - Wert leeren (Leere_Wert)'''
+!|scenario|leere das Feld|guiid|
+|clearElement;|@guiid|
+
+'''AbstractWebFixture - Wert eingeben (Eingabe_Wert)'''
+!|scenario|gebe in das Feld|guiid|den Wert|text|ein|
+|insertIntoField;|@text|@guiid|
+
+'''AbstractWebFixture - Element doppelt klicken (Klicke_Element_Doppelt)'''
+!|scenario|klicke doppelt auf|guiid|
+|doubleClickElement;|@guiid|
+
+'''AbstractWebFixture - Ist Text vorhanden (Pruefe_Text_Vorhanden)'''
+!|scenario|überprüfe ob der Text|text|vorhanden ist|
+|checkTextIsPresentOnPage;|@text|
+
+'''AbstractWebFixture - Ist Text nicht vorhanden (Pruefe_Text_Nicht_Vorhanden)'''
+!|scenario|überprüfe ob der Text|text|nicht vorhanden ist|
+|checkTextIsNotPresentOnPage;|@text|
+
+'''AbstractWebFixture - Maus bewegen (Bewege_Maus)'''
+!|scenario|bewege Maus zum Element|guiid|
+|moveMouseToElement;|@guiid|
+
+'''AbstractWebFixture - Ist Element inaktiv (Pruefe_Element_Inaktiv)'''
+!|scenario|überprüfe ob das Element|guiid|inaktiv ist|
+|checkElementIsInactive;|@guiid|
+
+'''AbstractWebFixture - Ist Element aktiv (Pruefe_Element_Aktiv)'''
+!|scenario|überprüfe ob das Element|guiid|aktiv ist|
+|checkElementIsActive;|@guiid|
+
+'''AbstractWebFixture - Ist Element nicht vorhanden (Pruefe_Element_Nicht_Vorhanden)'''
+!|scenario|überprüfe ob das Element|guiid|nicht vorhanden ist|
+|checkElementIsNotAvailable;|@guiid|
+
+'''AbstractWebFixture - Ist Element vorhanden (Pruefe_Element_Vorhanden)'''
+!|scenario|überprüfe ob das Element|guiid|vorhanden ist|
+|checkElementIsAvailable;|@guiid|
+
+'''AbstractWebFixture - Sind die Werte ungleich (Werte_Sind_Nicht_Gleich)'''
+!|scenario|sind die Werte|erste|und|zweite|ungleich|
+|assertIsNotEqual;|@erste|@zweite|
+
+'''AbstractWebFixture - Ist Wert nicht leer (Wert_Ist_Nicht_Leer)'''
+!|scenario|ist der Wert|text|nicht leer|
+|assertIsNotEmpty;|@text|
+
+'''AbstractWebFixture - Ist Wert nicht enthalten (Wert_Nicht_Enthalten)'''
+!|scenario|ist Wert|zweite|in|erste|nicht enthalten|
+|assertNotContains;|@erste|@zweite|
+
+'''AbstractWebFixture - Ist Wert enthalten (Wert_Enthalten)'''
+!|scenario|ist Wert|zweite|in|erste|enthalten|
+|assertContains;|@erste|@zweite|
+
+'''AbstractWebFixture - Ist Text am Element vorhanden (Pruefe_Text_In_Element)'''
+!|scenario|überprüfe ob am Element|guiid|der Text|text|vorhanden ist|
+|checkTextIsPresentOnElement;|@text|@guiid|
+
+'''AbstractWebFixture - Ist Text am Element nicht vorhanden (Pruefe_Text_Nicht_In_Element)'''
+!|scenario|überprüfe ob am Element|guiid|der Text|text|nicht vorhanden ist|
+|checkTextIsNotPresentOnElement;|@text|@guiid|
+
+'''AbstractWebFixture - Drücke Taste (Taste_Druecken)'''
+!|scenario|die Taste|taste|drücken|
+|pressSpecialKey;|@taste|
+
+'''AbstractWebFixture - Drücke Taste am Element (Taste_Druecken_Am_Element)'''
+!|scenario|am Element|guiid|die Taste|taste|drücken|
+|pressSpecialKeyOnElement;|@taste|@guiid|
+
+'''AbstractWebFixture - Beende Testausführung (Testausfuehrung_Beenden)'''
+!|scenario|beende die Testausführung|
+|stopTestExecution;|
+
+'''AbstractWebFixture - Seitenaufbau abwarten (Seitenaufbau_Abwarten)'''
+!|scenario|vollständigen Seitenaufbau abwarten|
+|waitForPage;|

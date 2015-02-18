@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<PageHistory>
+
+  
+  <Page>
+    <Name>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidClearTest</Name>
+            <TestResult>
+      <Date>Thu Nov 21 11:20:26 CET 2013</Date>
+      <ResultLink>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidClearTest?pageHistory&amp;resultDate=20131121112026&amp;format=xml</ResultLink>
+            <Pass>10</Pass>
+      <Fail>0</Fail>
+     </TestResult>
+        <TestResult>
+      <Date>Thu Nov 21 11:16:36 CET 2013</Date>
+      <ResultLink>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidClearTest?pageHistory&amp;resultDate=20131121111636&amp;format=xml</ResultLink>
+            <Pass>10</Pass>
+      <Fail>0</Fail>
+     </TestResult>
+        <TestResult>
+      <Date>Thu Nov 21 11:14:35 CET 2013</Date>
+      <ResultLink>DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidClearTest?pageHistory&amp;resultDate=20131121111435&amp;format=xml</ResultLink>
+            <Pass>0</Pass>
+      <Fail>2</Fail>
+     </TestResult>
+      </Page>
+
+  
+</PageHistory>
