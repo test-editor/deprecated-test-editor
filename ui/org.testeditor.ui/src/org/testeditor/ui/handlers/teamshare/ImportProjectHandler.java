@@ -56,7 +56,6 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareImportProjectWizardPage;
  * Workspace.
  * 
  */
-@SuppressWarnings("restriction")
 public class ImportProjectHandler {
 
 	@Inject
