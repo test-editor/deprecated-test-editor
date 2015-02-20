@@ -22,6 +22,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -96,6 +97,8 @@ public class TeamShareImportProjectWizardPage extends TeamShareWizardPage {
 		label.setText(translationService.translate("%wizard.label.importProjectName"));
 		projectNameText = new Text(innerComposite, SWT.NORMAL);
 		projectNameText.setText(projectName);
+		projectNameText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEAM_SHARE_IMPORT_PROJECTNAME);
 		projectNameText.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -124,6 +127,11 @@ public class TeamShareImportProjectWizardPage extends TeamShareWizardPage {
 		return projectName;
 	}
 
+	/**
+	 * 
+	 * @param projectName
+	 *            name of the project to be imported.
+	 */
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}

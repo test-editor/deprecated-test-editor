@@ -49,10 +49,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * Wizardpage for the TeamShareWizards.
  * 
- * @author llipinski
- * 
  */
-@SuppressWarnings("restriction")
 public abstract class TeamShareWizardPage extends WizardPage {
 
 	@Inject
@@ -306,7 +303,8 @@ public abstract class TeamShareWizardPage extends WizardPage {
 
 		for (Text text : inputWidgets) {
 
-			if (text.getData("org.eclipse.swtbot.widget.key").equals("wizard.share.project.url")
+			if (text.getData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY).equals(
+					"wizard.share.project.url")
 					&& !text.getText().isEmpty()) {
 				setPageComplete(true);
 				return;
@@ -345,7 +343,6 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 */
 	protected String getHintTextHeaderValue() {
 		return translate.translate("%wizard.teamShare.msgHead");
-
 	}
 
 	/**
@@ -375,7 +372,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	}
 
 	/**
-	 * Set a new teamShareConfig to allow reusage of the Wizard(Page)
+	 * Set a new teamShareConfig to allow reusage of the Wizard(Page).
 	 * 
 	 * @param teamShareConfig
 	 *            a teatShareConfig to use in the Wizard
@@ -445,6 +442,11 @@ public abstract class TeamShareWizardPage extends WizardPage {
 		return testProjectConfig;
 	}
 
+	/**
+	 * 
+	 * @param testProjectConfig
+	 *            used as model in this wizard page.
+	 */
 	public void setTestProjectConfig(TestProjectConfig testProjectConfig) {
 		this.testProjectConfig = testProjectConfig;
 	}
