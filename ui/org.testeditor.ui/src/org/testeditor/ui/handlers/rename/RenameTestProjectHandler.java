@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -27,6 +28,9 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.TestServerStarter;
+import org.testeditor.ui.constants.TestEditorConstants;
+import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
+import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.AbstractRenameTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.RenameTestProjectWizardPage;
@@ -107,5 +111,16 @@ public class RenameTestProjectHandler extends AbstractRenameHandler {
 	 */
 	@Override
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
+	}
+
+	@Override
+	@Execute
+	public boolean canExecute(IEclipseContext context) {
+		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
+				CanExecuteTestExplorerHandlerRules.class, context);
+		return super.canExecute(context)
+				& (rules.canExecuteOnTestProjectRule(explorer) & ((TestStructure) explorer.getSelection()
+						.getFirstElement()).getRootElement().getTestProjectConfig().getTeamShareConfig() == null);
 	}
 }

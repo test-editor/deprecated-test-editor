@@ -20,8 +20,7 @@ import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
- * 
- * @author dkuhlmann
+ * Wizard Page to confirm the revert operation.
  *
  */
 public class TeamShareRevertWizardPage extends TeamShareWizardPage {
