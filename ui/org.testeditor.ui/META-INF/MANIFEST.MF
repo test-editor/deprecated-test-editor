@@ -3,7 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Test Editor UI
 Bundle-SymbolicName: org.testeditor.ui;singleton:=true
 Bundle-Version: 1.8.0.qualifier
+Bundle-ClassPath: .
 Bundle-Activator: org.testeditor.ui.Activator
+Export-Package: org.testeditor.ui.constants,
+ org.testeditor.ui.handlers,
+ org.testeditor.ui.parts.testExplorer,
+ org.testeditor.ui.utilities
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
  org.eclipse.swt;bundle-version="3.100.1",
  org.eclipse.core.databinding;bundle-version="1.4.1",
@@ -28,7 +33,9 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
  org.eclipse.equinox.ds;bundle-version="1.4.100",
  org.eclipse.nebula.widgets.grid;bundle-version="[1.0.0.2014,1.0.0.HEAD)",
  org.tmatesoft.svnkit,
- org.testeditor.teamshare.svn
+ org.testeditor.teamshare.svn,
+ javax.annotation,
+ javax.inject
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.annotation;version="1.0.0",
  javax.inject;version="1.0.0",
@@ -45,8 +52,3 @@ Import-Package: javax.annotation;version="1.0.0",
  org.testeditor.core.services.interfaces,
  org.testeditor.core.util
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .
-Export-Package: org.testeditor.ui.constants,
- org.testeditor.ui.handlers,
- org.testeditor.ui.parts.testExplorer,
- org.testeditor.ui.utilities
