@@ -20,7 +20,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -45,9 +44,6 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 
 	@Inject
 	private TestEditorTranslationService translationService;
-
-	@Inject
-	private MApplication application;
 
 	@Inject
 	private TranslationService translate;
