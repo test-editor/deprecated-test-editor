@@ -22,6 +22,7 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
@@ -65,7 +66,8 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	 */
 	@Execute
 	public void execute(IEclipseContext context) {
-
+		EPartService partService = context.get(EPartService.class);
+		partService.saveAll(true);
 		// New Wizard
 		Wizard nwiz = new Wizard() {
 
