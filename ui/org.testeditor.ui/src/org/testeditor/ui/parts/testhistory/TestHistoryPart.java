@@ -102,13 +102,8 @@ public class TestHistoryPart {
 	@Optional
 	public void showTestHistory(
 			@UIEventTopic(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED) TestStructure testStructure) {
-
 		getTestHistoryPart().setTitle(testStructure.getName());
 		refreshHistoryTable(testStructure);
-		EPartService partService = context.get(EPartService.class);
-		MPart part = partService.findPart(ID);
-		partService.bringToTop(part);
-
 	}
 
 	/**
