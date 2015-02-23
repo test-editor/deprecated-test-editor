@@ -62,26 +62,27 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Execute
 	public void execute(IEclipseContext context) {
 		EPartService partService = context.get(EPartService.class);
-		partService.saveAll(true);
-		// New Wizard
-		Wizard nwiz = new Wizard() {
+		if (partService.saveAll(true)) {
+			// New Wizard
+			Wizard nwiz = new Wizard() {
 
-			@Override
-			public boolean performFinish() {
-				return true;
+				@Override
+				public boolean performFinish() {
+					return true;
+				}
+			};
+
+			// Add the new-page to the wizard
+			approveProjectPage = ContextInjectionFactory.make(TeamShareApproveWizardPage.class, context);
+
+			nwiz.addPage(approveProjectPage);
+
+			// Show the wizard...
+			WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
+
+			if (wizardDialog.open() == Window.OK) {
+				super.execute(context.get(IEventBroker.class));
 			}
-		};
-
-		// Add the new-page to the wizard
-		approveProjectPage = ContextInjectionFactory.make(TeamShareApproveWizardPage.class, context);
-
-		nwiz.addPage(approveProjectPage);
-
-		// Show the wizard...
-		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
-
-		if (wizardDialog.open() == Window.OK) {
-			super.execute(context.get(IEventBroker.class));
 		}
 	}
 
