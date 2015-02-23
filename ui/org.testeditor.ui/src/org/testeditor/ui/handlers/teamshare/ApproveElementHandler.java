@@ -37,7 +37,6 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareApproveWizardPage;
  * executes the approveElement-event.
  * 
  */
-@SuppressWarnings("restriction")
 public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ApproveElementHandler.class);
