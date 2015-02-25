@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.SWT;
@@ -55,6 +56,14 @@ public class TestLogView {
 		parent.setLayout(new GridLayout(1, false));
 		testLog = new Text(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
+	}
+
+	/**
+	 * Sets the Focus in the text widget of this view.
+	 */
+	@Focus
+	public void setFocus() {
+		testLog.setFocus();
 	}
 
 	/**
