@@ -33,7 +33,6 @@ import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.TestProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.reporting.TestExecutionProgressDialog;
@@ -97,24 +96,25 @@ public class RunTestHandler {
 				.getObject();
 		final TestStructure selectedTestStructure = (TestStructure) testExplorer.getSelection().getFirstElement();
 		try {
-			partService.saveAll(true);
-			LOGGER.info("Running Test: " + selectedTestStructure);
+			if (partService.saveAll(true)) {
+				LOGGER.info("Running Test: " + selectedTestStructure);
 
-			final TestStructureService testStructureService = testEditorPluginService
-					.getTestStructureServiceFor(selectedTestStructure.getRootElement().getTestProjectConfig()
-							.getTestServerID());
+				final TestStructureService testStructureService = testEditorPluginService
+						.getTestStructureServiceFor(selectedTestStructure.getRootElement().getTestProjectConfig()
+								.getTestServerID());
 
-			context.set("ActualTCService", testStructureService);
-			TestExecutionProgressDialog dlg = ContextInjectionFactory.make(TestExecutionProgressDialog.class, context);
+				context.set("ActualTCService", testStructureService);
+				TestExecutionProgressDialog dlg = ContextInjectionFactory.make(TestExecutionProgressDialog.class,
+						context);
 
-			testResult = dlg.executeTest(selectedTestStructure);
-			// refresh the icon depends on test result
-			protocolService.set(selectedTestStructure, testResult);
-			refreshTestStructureInTree(selectedTestStructure, testExplorer);
+				testResult = dlg.executeTest(selectedTestStructure);
+				// refresh the icon depends on test result
+				protocolService.set(selectedTestStructure, testResult);
+				refreshTestStructureInTree(selectedTestStructure, testExplorer);
 
-			// refresh refferredTestCaseViewer
-			eventBroker.send(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED, selectedTestStructure);
-
+				// refresh refferredTestCaseViewer
+				eventBroker.send(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED, selectedTestStructure);
+			}
 		} catch (InvocationTargetException e) {
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "System-Exception", e.getTargetException()
 					.getLocalizedMessage());
