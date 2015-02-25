@@ -20,8 +20,8 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
@@ -37,16 +37,12 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareApproveWizardPage;
  * executes the approveElement-event.
  * 
  */
-@SuppressWarnings("restriction")
 public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ApproveElementHandler.class);
 
 	@Inject
 	private TestEditorTranslationService translationService;
-
-	@Inject
-	private MApplication application;
 
 	@Inject
 	private TranslationService translate;
@@ -65,26 +61,28 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	 */
 	@Execute
 	public void execute(IEclipseContext context) {
+		EPartService partService = context.get(EPartService.class);
+		if (partService.saveAll(true)) {
+			// New Wizard
+			Wizard nwiz = new Wizard() {
 
-		// New Wizard
-		Wizard nwiz = new Wizard() {
+				@Override
+				public boolean performFinish() {
+					return true;
+				}
+			};
 
-			@Override
-			public boolean performFinish() {
-				return true;
+			// Add the new-page to the wizard
+			approveProjectPage = ContextInjectionFactory.make(TeamShareApproveWizardPage.class, context);
+
+			nwiz.addPage(approveProjectPage);
+
+			// Show the wizard...
+			WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
+
+			if (wizardDialog.open() == Window.OK) {
+				super.execute(context.get(IEventBroker.class));
 			}
-		};
-
-		// Add the new-page to the wizard
-		approveProjectPage = ContextInjectionFactory.make(TeamShareApproveWizardPage.class, context);
-
-		nwiz.addPage(approveProjectPage);
-
-		// Show the wizard...
-		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
-
-		if (wizardDialog.open() == Window.OK) {
-			super.execute(context.get(IEventBroker.class));
 		}
 	}
 
