@@ -105,6 +105,6 @@ public class SvnHelper {
 	 *            for main
 	 */
 	public static void main(String[] args) {
-		createLocalRepository("u:\\rep");
+		createLocalRepository("d:\\rep");
 	}
 }
