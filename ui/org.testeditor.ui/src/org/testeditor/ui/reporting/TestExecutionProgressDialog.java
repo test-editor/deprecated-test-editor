@@ -30,6 +30,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -243,7 +244,18 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 		// adding new button for closing the dialog on demand
 		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL, true);
 
-		detailsButton.addSelectionListener(new SelectionAdapter() {
+		detailsButton.addSelectionListener(getSwitchDetailSelectionListener());
+
+		super.createButtonsForButtonBar(parent);
+	}
+
+	/**
+	 * 
+	 * @return SelectionListener to switch the detailed log view in and out in
+	 *         the dialog.
+	 */
+	protected SelectionListener getSwitchDetailSelectionListener() {
+		return new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -261,9 +273,7 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 				TestExecutionProgressDialog.this.parent.getShell().layout();
 			}
-		});
-
-		super.createButtonsForButtonBar(parent);
+		};
 	}
 
 	/*
