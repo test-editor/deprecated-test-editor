@@ -1620,6 +1620,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			return Boolean.valueOf(bot.button(text, index).isEnabled()).toString();
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
+			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
 	}
@@ -1688,6 +1689,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			return Boolean.valueOf(bot.buttonWithId(locator).isEnabled()).toString();
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
+			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
 	}
