@@ -43,7 +43,7 @@ public final class CustomWidgetIdConstants {
 
 	public static final String ACTION_COMBO = "action.line.combo";
 	public static final String ACTION_TEXT = "action.line.text";
-	public static final String ACTION_LABLE = "action.line.lable";
+	public static final String ACTION_LABEL = "action.line.lable";
 
 	public static final String TEST_CASE_VIEW_TEXT = "test.case.view.text";
 	public static final String TEST_CASE_VIEW = "test.case.view";
@@ -65,6 +65,7 @@ public final class CustomWidgetIdConstants {
 
 	// key for the setData method at the widgets
 	public static final String TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY = "org.eclipse.swtbot.widget.key";
-	public static final Object TEAM_SHARE_IMPORT_PROJECTNAME = "wizard.shareProject.projectname";
+	public static final String TEAM_SHARE_IMPORT_PROJECTNAME = "wizard.shareProject.projectname";
+	public static final String RUN_TEST_CLOSE_BUTTON = "runtest.dialog.closebutton";
 
 }
