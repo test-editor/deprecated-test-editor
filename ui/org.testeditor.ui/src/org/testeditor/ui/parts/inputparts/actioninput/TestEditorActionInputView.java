@@ -558,7 +558,7 @@ public class TestEditorActionInputView extends TestEditorInputView {
 		ActionLineInputLabel actionelementLabel = new ActionLineInputLabel(actionLineInputComposite, SWT.NONE);
 		actionLineWidgets.add(actionelementLabel);
 		actionelementLabel.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-				CustomWidgetIdConstants.ACTION_LABLE + position);
+				CustomWidgetIdConstants.ACTION_LABEL + position);
 		actionelementLabel.setText(string);
 	}
 
