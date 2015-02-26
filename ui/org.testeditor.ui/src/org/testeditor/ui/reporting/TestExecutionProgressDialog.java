@@ -42,6 +42,7 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorFontConstants;
@@ -85,7 +86,7 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 	@Named("ActualTCService")
 	private TestStructureService testStructureService;
 
-	private static final Point DEFAULT_DIALOG_SIZE = new Point(500, 320);
+	private Point defaultDialogSize = new Point(500, 400);
 	private static final Point ENLARGED_DIALOG_SIZE = new Point(850, 600);
 
 	/**
@@ -145,16 +146,6 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 		} else {
 			return translationService.translate("%TestRuntimeSecond", second);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.ProgressMonitorDialog#getInitialSize()
-	 */
-	@Override
-	protected Point getInitialSize() {
-		return DEFAULT_DIALOG_SIZE;
 	}
 
 	@Override
@@ -236,6 +227,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 		// adding new button for closing the dialog on demand
 		closeButton = createButton(parent, IDialogConstants.CLOSE_ID, IDialogConstants.CLOSE_LABEL, true);
+		closeButton.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.RUN_TEST_CLOSE_BUTTON);
 		closeButton.setEnabled(false);
 
 		closeButton.addSelectionListener(new SelectionAdapter() {
@@ -258,10 +251,11 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 				if (logViewerComposite.getVisible()) {
 					logViewerComposite.setVisible(false);
 					detailsButton.setText(IDialogConstants.SHOW_DETAILS_LABEL);
-					TestExecutionProgressDialog.this.parent.getShell().setSize(DEFAULT_DIALOG_SIZE);
+					TestExecutionProgressDialog.this.parent.getShell().setSize(defaultDialogSize);
 				} else {
 					logViewerComposite.setVisible(true);
 					detailsButton.setText(IDialogConstants.HIDE_DETAILS_LABEL);
+					defaultDialogSize = TestExecutionProgressDialog.this.parent.getShell().getSize();
 					TestExecutionProgressDialog.this.parent.getShell().setSize(ENLARGED_DIALOG_SIZE);
 				}
 
