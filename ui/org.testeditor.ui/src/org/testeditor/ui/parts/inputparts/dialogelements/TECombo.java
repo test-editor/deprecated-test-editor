@@ -381,6 +381,7 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 	public void clearSelection() {
 		wrappedCombo.deselectAll();
 		wrappedCombo.clearSelection();
+		wrappedCombo.setText("");
 		wrappedCombo.redraw();
 	}
 
