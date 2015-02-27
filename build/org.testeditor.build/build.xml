@@ -32,6 +32,7 @@
               <!--	<jvmarg value="-DFIXTURE_JAR_PATH=${basedir}/../../fitnesse/org.testeditor.fixture.lib/fixture/"/> -->
         	<!-- diese Einstellung fuehrt zu der ausfuehrbaren Test-Editor Version und wird je nach Betriebssystem zusammengestellt -->
           <jvmarg value="-DPATH_TO_TESTEDITOR_AUT=${testEditorExecutable}"/>
+    	  <jvmarg value="-Daut.workspace.path=${user.home}/.testeditor_aut"/>
           <!-- Diese Einstellungen wurden aufgrund Lizenzrechtlicher Umbauten eingefuehrt [TE-1336] -->
           <jvmarg value="-DSWT_BOT_AGENT_BUNDLE_PATH=${basedir}/../../swtbot/org.testeditor.agent.swtbot"/>
           <jvmarg value="-DFIXTURE_LIB_BUNDLE_PATH=${basedir}/../../fixtures"/>
