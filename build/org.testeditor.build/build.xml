@@ -36,7 +36,7 @@
           <!-- Diese Einstellungen wurden aufgrund Lizenzrechtlicher Umbauten eingefuehrt [TE-1336] -->
           <jvmarg value="-DSWT_BOT_AGENT_BUNDLE_PATH=${basedir}/../../swtbot/org.testeditor.agent.swtbot"/>
           <jvmarg value="-DFIXTURE_LIB_BUNDLE_PATH=${basedir}/../../fitnesse/org.testeditor.fixture.lib/"/>
-    	 	<jvmarg value="-Dwaits.afterteststep=1"/>
+    	 	<jvmarg value="-Dwaits.afterteststep=0"/>
     	 </java>
     	<sleep seconds="5"/>
     </target>
