@@ -69,7 +69,7 @@
           Fixing for the Operating System of the Buildserver the AUT Path in the FitNesse Server. 
          ================================= -->
 	<target name="correctPathToExecutableOfEditorOnWindows" depends="osCheck" if="windowsos">
-		<property name="testEditorExecutable" location="${basedir}/../../../../TestEditor-FitNesse-Tests/workspace/jreproduct/org.testeditor.jre.product/target/products/TestEditor_JRE/win32/win32/x86/testeditor.exe" />
+		<property name="testEditorExecutable" location="${basedir}/../../../../../TestEditor-FitNesse-Tests/workspace/jreproduct/org.testeditor.jre.product/target/products/TestEditor_JRE/win32/win32/x86/testeditor.exe" />
 		<echo>Windows detected</echo>
 	</target>
 
