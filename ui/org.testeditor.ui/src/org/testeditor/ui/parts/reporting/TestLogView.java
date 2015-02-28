@@ -16,10 +16,11 @@ import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 
 /**
- * Viewpart to display the test log of the last run.
+ * View part to display the test log of the last run.
  *
  */
 public class TestLogView {
@@ -76,6 +77,8 @@ public class TestLogView {
 			String logData = testStructureService.getLogData(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
+			testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+					CustomWidgetIdConstants.TESTLOG_TEXT);
 		} catch (SystemException e) {
 			LOGGER.error("Reading Testlog", e);
 		}

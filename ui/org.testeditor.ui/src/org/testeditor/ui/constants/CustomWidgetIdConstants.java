@@ -67,5 +67,6 @@ public final class CustomWidgetIdConstants {
 	public static final String TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY = "org.eclipse.swtbot.widget.key";
 	public static final String TEAM_SHARE_IMPORT_PROJECTNAME = "wizard.shareProject.projectname";
 	public static final String RUN_TEST_CLOSE_BUTTON = "runtest.dialog.closebutton";
+	public static final String TESTLOG_TEXT = "testlogview.text";
 
 }
