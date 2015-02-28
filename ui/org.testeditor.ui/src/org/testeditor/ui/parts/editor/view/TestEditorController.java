@@ -1061,7 +1061,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				testEditViewArea.setCursor(newCursorPositionInView, cursorAtLineEnd);
 			}
 		} catch (SystemException e) {
-
 			LOGGER.error("paste TestComponents:: FAILED", e);
 		}
 	}
