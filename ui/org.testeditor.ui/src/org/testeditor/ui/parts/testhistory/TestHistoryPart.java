@@ -28,6 +28,7 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -35,6 +36,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
@@ -286,6 +288,13 @@ public class TestHistoryPart {
 			testStructureService.clearHistory(testStructure);
 		} catch (SystemException e) {
 			LOGGER.error(e.getMessage());
+			final String errorMessage = e.getCause().getMessage();
+			Display.getCurrent().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", errorMessage);
+				}
+			});
 		}
 		testStructure = null;
 	}
