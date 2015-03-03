@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.inputparts;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.PopupDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -40,15 +39,13 @@ public class TestEditorInputTestFlowPopupDialog extends PopupDialog {
 	 * 
 	 * @param titleText
 	 *            of the Dialog
-	 * @param context
-	 *            EclipseContext
 	 * @param testFlowController
 	 *            TestFlowController
 	 * @param styledText
 	 *            to work with
 	 */
-	public TestEditorInputTestFlowPopupDialog(String titleText, IEclipseContext context,
-			ITestEditorController testFlowController, StyledText styledText) {
+	public TestEditorInputTestFlowPopupDialog(String titleText, ITestEditorController testFlowController,
+			StyledText styledText) {
 		super(Display.getCurrent().getActiveShell(), SWT.POP_UP, true, false, false, true, true, titleText, "");
 		this.testFlow = testFlowController.getTestFlow();
 		this.styledText = styledText;

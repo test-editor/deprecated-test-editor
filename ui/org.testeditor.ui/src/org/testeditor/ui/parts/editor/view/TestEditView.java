@@ -393,7 +393,8 @@ public class TestEditView extends TestEditorViewBasis {
 	 * disposes the popupDialogDescription.
 	 */
 	private void disposePopupDialogDescription() {
-		if (popupDialogDescription != null && !popupDialogDescription.getShell().isDisposed()) {
+		if (popupDialogDescription != null && popupDialogDescription.getShell() != null
+				&& !popupDialogDescription.getShell().isDisposed()) {
 			popupDialogDescription.getShell().dispose();
 		}
 	}
@@ -402,7 +403,8 @@ public class TestEditView extends TestEditorViewBasis {
 	 * Disposes the PopupDialogAction.
 	 */
 	private void disposePopupDialogAction() {
-		if (popupDialogAction != null && !popupDialogAction.getShell().isDisposed()) {
+		if (popupDialogAction != null && popupDialogAction.getShell() != null
+				&& !popupDialogAction.getShell().isDisposed()) {
 			popupDialogAction.getShell().dispose();
 		}
 	}

@@ -42,7 +42,7 @@ public class TestEditorDescriptionInputPopupDialog extends TestEditorInputTestFl
 	 */
 	public TestEditorDescriptionInputPopupDialog(String titleText, IEclipseContext context,
 			ITestEditorController testCaseController, StyledText styledText) {
-		super(titleText, context, testCaseController, styledText);
+		super(titleText, testCaseController, styledText);
 		this.context = context;
 	}
 
