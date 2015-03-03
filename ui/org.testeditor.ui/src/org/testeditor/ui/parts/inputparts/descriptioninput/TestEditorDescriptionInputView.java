@@ -39,7 +39,6 @@ import org.testeditor.ui.parts.inputparts.TestEditorInputView;
 /**
  * Description Area is the UI of a TestCase Description used in the Testeditor.
  * 
- * @author Lothar Lipinski
  * 
  */
 public class TestEditorDescriptionInputView extends TestEditorInputView {
@@ -310,8 +309,8 @@ public class TestEditorDescriptionInputView extends TestEditorInputView {
 				if (testComponent != null) {
 					int selectedLine = getTestCaseController().getChangePosition(getAddMode());
 					int cursorPos = descriptionText.getSelection().x;
-					eventBroker.post(TestEditorEventConstants.CACHE_TEST_COMPONENT_TEMPORARY, new TestEditorInputObject(testFlow,
-							testComponent, selectedLine, cursorPos, getAddMode()));
+					eventBroker.post(TestEditorEventConstants.CACHE_TEST_COMPONENT_TEMPORARY,
+							new TestEditorInputObject(testFlow, testComponent, selectedLine, cursorPos, getAddMode()));
 				}
 			}
 		}
