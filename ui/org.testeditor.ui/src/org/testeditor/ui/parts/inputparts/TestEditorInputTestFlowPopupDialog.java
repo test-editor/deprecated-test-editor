@@ -20,19 +20,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.model.teststructure.TestFlow;
+import org.testeditor.ui.parts.editor.ITestEditorController;
 
 /**
  * 
  * Popup Dialog to edit the content of the actual line in the Testeditor.
  * 
- * @author karsten
  */
 public class TestEditorInputTestFlowPopupDialog extends PopupDialog {
 
-	private IEclipseContext context;
 	private TestFlow testFlow;
 
 	private StyledText styledText;
+
+	private ITestEditorController testFlowController;
 
 	/**
 	 * Constructs the PopupDialog for editing a TestCase line.
@@ -41,17 +42,17 @@ public class TestEditorInputTestFlowPopupDialog extends PopupDialog {
 	 *            of the Dialog
 	 * @param context
 	 *            EclipseContext
-	 * @param testFlow
-	 *            TestFlow
+	 * @param testFlowController
+	 *            TestFlowController
 	 * @param styledText
 	 *            to work with
 	 */
-	public TestEditorInputTestFlowPopupDialog(String titleText, IEclipseContext context, TestFlow testFlow,
-			StyledText styledText) {
+	public TestEditorInputTestFlowPopupDialog(String titleText, IEclipseContext context,
+			ITestEditorController testFlowController, StyledText styledText) {
 		super(Display.getCurrent().getActiveShell(), SWT.POP_UP, true, false, false, true, true, titleText, "");
-		this.context = context;
-		this.testFlow = testFlow;
+		this.testFlow = testFlowController.getTestFlow();
 		this.styledText = styledText;
+		this.testFlowController = testFlowController;
 	}
 
 	@Override
@@ -60,8 +61,17 @@ public class TestEditorInputTestFlowPopupDialog extends PopupDialog {
 		return area;
 	}
 
+	/**
+	 * 
+	 * @return ITestEditorController.
+	 */
+	public ITestEditorController getTestCaseController() {
+		return testFlowController;
+	}
+
 	@Override
 	public boolean close() {
+		getTestCaseController().removePopupEditingControllers();
 		return super.close();
 	}
 
@@ -76,14 +86,6 @@ public class TestEditorInputTestFlowPopupDialog extends PopupDialog {
 	@Override
 	protected Point getDefaultSize() {
 		return new Point(400, 400);
-	}
-
-	/**
-	 * 
-	 * @return IEclipseContext.
-	 */
-	public IEclipseContext getContext() {
-		return context;
 	}
 
 	/**
