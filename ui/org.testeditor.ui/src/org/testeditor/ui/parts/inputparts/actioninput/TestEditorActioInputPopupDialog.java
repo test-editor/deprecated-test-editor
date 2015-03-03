@@ -17,15 +17,17 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.testeditor.ui.parts.editor.ITestEditorController;
-import org.testeditor.ui.parts.inputparts.TestEditorInputPopupDialog;
+import org.testeditor.ui.parts.inputparts.TestEditorInputTestFlowPopupDialog;
 
 /**
  * 
  * specialize TestEditorInputPopupDialog for the input of an action.
  * 
- * @author llipinski
  */
-public class TestEditorActioInputPopupDialog extends TestEditorInputPopupDialog {
+public class TestEditorActioInputPopupDialog extends TestEditorInputTestFlowPopupDialog {
+
+	private IEclipseContext context;
+
 	/**
 	 * constuctor.
 	 * 
@@ -41,12 +43,13 @@ public class TestEditorActioInputPopupDialog extends TestEditorInputPopupDialog 
 	public TestEditorActioInputPopupDialog(String titleText, IEclipseContext context,
 			ITestEditorController testCaseController, StyledText styledText) {
 		super(titleText, context, testCaseController, styledText);
+		this.context = context;
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		IEclipseContext popUpContext = getContext().createChild();
+		IEclipseContext popUpContext = context.createChild();
 		popUpContext.set(Composite.class, area);
 
 		TestEditorActionInputController popupController = ContextInjectionFactory.make(
@@ -56,4 +59,5 @@ public class TestEditorActioInputPopupDialog extends TestEditorInputPopupDialog 
 		getTestCaseController().setActionControllerForPopupEditing(popupController);
 		return area;
 	}
+
 }
