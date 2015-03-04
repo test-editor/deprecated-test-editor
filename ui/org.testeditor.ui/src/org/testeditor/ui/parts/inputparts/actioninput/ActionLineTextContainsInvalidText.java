@@ -14,7 +14,6 @@ package org.testeditor.ui.parts.inputparts.actioninput;
 /**
  * checks that their are none of the invalideChars in the given text.
  * 
- * @author llipinski
  * 
  */
 public class ActionLineTextContainsInvalidText {
