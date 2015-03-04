@@ -42,6 +42,9 @@ public class AgentApplication implements IApplication {
 				TestableObject.class);
 		testableObject = Activator.getContext().getService(serviceReference);
 		teAgentServer = new TEAgentServer(testableObject);
+		ServiceReference<E4CallBackService> e4CallBackServiceReference = Activator.getContext().getServiceReference(
+				E4CallBackService.class);
+		teAgentServer.setEclipseContext(Activator.getContext().getService(e4CallBackServiceReference).getContext());
 		testableObject.setTestHarness(teAgentServer);
 
 		teAgentServer.start();

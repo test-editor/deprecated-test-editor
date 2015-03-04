@@ -21,7 +21,6 @@ import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -36,7 +35,6 @@ import org.testeditor.ui.parts.inputparts.actioninput.IActionLineInputWidget;
  * This class is a wrapper around the SWT.Combo it implements
  * IActionLineInputWidget. So there are less instanceof operations necessary.
  * 
- * @author llipinski
  */
 
 public class TECombo extends ActionLineTextContainsInvalidText implements IActionLineInputWidget {
@@ -72,15 +70,6 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 	 */
 	public TECombo(Composite parent, int style, String eventTopic, IEventBroker eventBroker) {
 		wrappedCombo = new Combo(parent, style);
-		wrappedCombo.addModifyListener(new ModifyListener() {
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (getText() != "") {
-					select(indexOf(getText()));
-				}
-			}
-		});
 		this.eventTopic = eventTopic;
 		this.eventBroker = eventBroker;
 	}
@@ -210,10 +199,10 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 
 	/**
 	 * wrapper around the method select(int) from the private SWT.Combo.
-	 * 
+	 *
 	 * @param sel
 	 *            the selection
-	 * 
+	 *
 	 */
 	public void select(int sel) {
 		wrappedCombo.select(sel);
