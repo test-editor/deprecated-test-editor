@@ -6,7 +6,10 @@ Bundle-Version: 1.8.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.equinox.app,
  org.eclipse.core.runtime,
- org.eclipse.swt;bundle-version="3.102.0"
+ org.eclipse.swt;bundle-version="3.102.0",
+ org.eclipse.e4.core.contexts,
+ org.eclipse.e4.ui.model.workbench;bundle-version="1.0.1",
+ org.eclipse.e4.ui.workbench;bundle-version="1.0.2"
 Bundle-Activator: org.testeditor.agent.swtbot.Activator
 Import-Package: org.eclipse.jface.bindings.keys,
  org.eclipse.ui.testing
@@ -16,3 +19,4 @@ Bundle-ClassPath: .,
  lib/org.apache.log4j_1.2.15.v201012070815.jar,
  lib/org.hamcrest.library_1.3.0.v201305281000.jar,
  lib/org.eclipse.swtbot.swt.finder_2.2.1.201402241301.jar
+Service-Component: OSGI-INF/e4callback.xml

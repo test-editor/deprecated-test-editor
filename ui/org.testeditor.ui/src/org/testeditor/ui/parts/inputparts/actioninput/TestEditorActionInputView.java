@@ -44,7 +44,6 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * this class represented the editor for the input and change of test-actions
  * and -descriptions.
  * 
- * @author llipinski
  */
 @Creatable
 public class TestEditorActionInputView extends TestEditorInputView {
