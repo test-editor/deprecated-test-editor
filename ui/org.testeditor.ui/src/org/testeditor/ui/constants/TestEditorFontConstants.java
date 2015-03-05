@@ -11,18 +11,21 @@
  *******************************************************************************/
 package org.testeditor.ui.constants;
 
+import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
+import org.testeditor.ui.handlers.OpenTestStructureHandler;
 
 /**
  * 
  * creates all fonts for the TestEditorView and distribute them.
  * 
- * @author llipinski
  */
 
 public final class TestEditorFontConstants {
+
 	public static final Font FONT_NORMAL = getFont(SWT.NORMAL);
 	public static final Font FONT_UNDERLINE = getFont(SWT.NORMAL | SWT.UNDERLINE_SINGLE);
 	public static final Font FONT_ITALIC = getFont(SWT.ITALIC);
@@ -56,9 +59,15 @@ public final class TestEditorFontConstants {
 	 * @return the font.
 	 */
 	private static Font getFont(int style) {
-		String systemFontName = getDisplay().getSystemFont().getFontData()[0].getName();
-		int systemFontHeight = getDisplay().getSystemFont().getFontData()[0].getHeight();
-		return new Font(getDisplay(), systemFontName, systemFontHeight, style);
+		try {
+			String systemFontName = getDisplay().getSystemFont().getFontData()[0].getName();
+			int systemFontHeight = getDisplay().getSystemFont().getFontData()[0].getHeight();
+			return new Font(getDisplay(), systemFontName, systemFontHeight, style);
+		} catch (SWTException e) {
+			Logger logger = Logger.getLogger(OpenTestStructureHandler.class);
+			logger.error("Can't create shared font", e);
+		}
+		return null;
 	}
 
 	/**
