@@ -196,7 +196,15 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Optional
 	public void reloadAndRefresh(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED) String data) {
-		loadAndRerender();
+		if (mpart.isDirty()) {
+			if (MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
+					translationService.translate("%testeditor.dirty.replacetitle"),
+					translationService.translate("%testeditor.dirty.replacequestion"))) {
+				loadAndRerender();
+			}
+		} else {
+			loadAndRerender();
+		}
 	}
 
 	/**
