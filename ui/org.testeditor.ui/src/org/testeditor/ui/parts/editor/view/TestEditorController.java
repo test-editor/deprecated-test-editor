@@ -197,9 +197,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public void reloadAndRefresh(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED) String data) {
 		if (mpart.isDirty()) {
-			if (MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
-					translationService.translate("%testeditor.dirty.replacetitle"),
-					translationService.translate("%testeditor.dirty.replacequestion"))) {
+			if (userWantsToReplaceContent()) {
 				loadAndRerender();
 			}
 		} else {
@@ -208,9 +206,20 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	}
 
 	/**
+	 * Ask user about replacing the unsaved content of the editor.
+	 * 
+	 * @return true if the user accepts the replacement.
+	 */
+	protected boolean userWantsToReplaceContent() {
+		return MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
+				translationService.translate("%testeditor.dirty.replacetitle"),
+				translationService.translate("%testeditor.dirty.replacequestion"));
+	}
+
+	/**
 	 * reload the TestStructure from the content.txt and refresh the StyleText.
 	 */
-	private void loadAndRerender() {
+	protected void loadAndRerender() {
 		if (getTestStructure() != null) {
 			TestFlow foundTestStructure = findTestStructureByFullName(getTestStructure().getFullName());
 			if (foundTestStructure == null) {

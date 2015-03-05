@@ -16,12 +16,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -37,7 +38,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.event.EventHandler;
@@ -1007,15 +1007,63 @@ public class TestEditorControllerTest {
 
 	/**
 	 * 
-	 * Test the lookup for the Test.
-	 * 
 	 * @throws Exception
-	 *             for Test
 	 */
 	@Test
-	@Ignore
-	public void testFindTestStructureByName() throws Exception {
-		fail("TODO");
+	public void testReloadAndRefresh() {
+		final Map<String, Boolean> testCtrl = new HashMap<String, Boolean>();
+		testCtrl.put("dirty", false);
+		MPartAdapter partAdapter = new MPartAdapter() {
+			@Override
+			public boolean isDirty() {
+				return testCtrl.get("dirty");
+			}
+		};
+		TestEditorController ctrl = new TestEditorController(partAdapter) {
+			@Override
+			protected boolean userWantsToReplaceContent() {
+				return testCtrl.get("userSays");
+			}
+
+			@Override
+			public String getInvalidChars() {
+				return null;
+			}
+
+			@Override
+			protected List<TestDescription> createDescriptionsArray(List<String> newLines) {
+				return null;
+			}
+
+			@Override
+			public void setActionGroup(String mask, String actionName, ArrayList<String> inputLineParts,
+					ArrayList<Argument> arguments, int selectedLine, boolean changeMode) {
+
+			}
+
+			@Override
+			protected TestActionGroup createUnparsedActionLine(String mask, List<String> inputTexts) {
+				return null;
+			}
+
+			@Override
+			protected void loadAndRerender() {
+				testCtrl.put("loadRender", true);
+			}
+
+		};
+		ctrl.reloadAndRefresh("");
+		assertTrue(testCtrl.containsKey("loadRender"));
+		testCtrl.remove("loadRender");
+		testCtrl.put("userSays", true);
+		testCtrl.put("dirty", true);
+		ctrl.reloadAndRefresh("");
+		assertTrue(testCtrl.containsKey("loadRender"));
+		testCtrl.remove("loadRender");
+		testCtrl.put("userSays", false);
+		testCtrl.put("dirty", true);
+		ctrl.reloadAndRefresh("");
+		assertFalse(testCtrl.containsKey("loadRender"));
 	}
 
 	/**
