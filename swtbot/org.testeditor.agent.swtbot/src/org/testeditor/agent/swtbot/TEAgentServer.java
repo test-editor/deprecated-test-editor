@@ -29,9 +29,6 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.swt.custom.StyledText;
@@ -80,8 +77,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	private PrintWriter out;
 
 	private static final int SERVER_PORT = 9090;
-
-	private IEclipseContext context;
 
 	/**
 	 * @param testableObject
@@ -1697,30 +1692,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
-	}
-
-	/**
-	 * Closes a view Part.
-	 * 
-	 * @param locator
-	 *            to identify the view part.
-	 * @return true on successfully closing the view part.
-	 */
-	private String closeView(String locator) {
-		EPartService partService = context.get(EPartService.class);
-		MPart part = partService.findPart(locator);
-		partService.hidePart(part);
-		return "";
-	}
-
-	/**
-	 * 
-	 * @param context
-	 *            Eclipse Context of the e4 Application under Test.
-	 */
-	public void setEclipseContext(IEclipseContext context) {
-		LOGGER.info("Application Context in Agent Server registered.");
-		this.context = context;
 	}
 
 }
