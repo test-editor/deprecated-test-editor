@@ -16,6 +16,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.parts.editor.ITestEditorController;
 import org.testeditor.ui.parts.inputparts.TestEditorInputTestFlowPopupDialog;
 
@@ -44,6 +45,8 @@ public class TestEditorDescriptionInputPopupDialog extends TestEditorInputTestFl
 			ITestEditorController testCaseController, StyledText styledText) {
 		super(titleText, testCaseController, styledText);
 		this.context = context;
+		styledText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEST_CASE_VIEW_TEXT);
 	}
 
 	@Override
