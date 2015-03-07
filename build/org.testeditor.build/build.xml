@@ -25,7 +25,7 @@
     	      <arg value="${testPath}" />
     	      <arg value="-p"/>
     	      <arg value="${port}"/>
-        	<jvmarg value="-DSLIM_CMD_VAR_LOG4J_RELATIV_PATH=-Daut.workspace.path=${user.home}/.testeditor_aut/.metadata/log4j.xml"/>
+        	<jvmarg value="-DSLIM_CMD_VAR_LOG4J_RELATIV_PATH=${user.home}/.testeditor_aut/.metadata/log4j.xml"/>
     	 	   <!-- Die APPLICATION_WORK Variable zeigt auf das frisch ausgecheckte Test-Editor Tests Verzeichnis-->
     	 	<jvmarg value="-DAPPLICATION_WORK=${basedir}/../../../"/>
           <!-- Diese Einstellungen werden ab Version 1.6.2 nicht mehr benoetigt-->
