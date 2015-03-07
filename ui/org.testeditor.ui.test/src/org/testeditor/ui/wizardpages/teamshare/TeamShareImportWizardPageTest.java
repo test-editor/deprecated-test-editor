@@ -24,6 +24,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -77,6 +79,7 @@ public class TeamShareImportWizardPageTest {
 		context.set(Shell.class, null);
 		context.set(TestEditorTranslationService.class, getTestEditorTranslationServiceMock());
 		context.set(TestEditorPlugInService.class, getTestEditorPluginServiceMock());
+		context.set(TestProjectService.class, new TestProjectServiceAdapter());
 		context.set(TranslationService.class, getTranslationService());
 		return context;
 	}
@@ -116,5 +119,5 @@ public class TeamShareImportWizardPageTest {
 	private TestEditorPlugInService getTestEditorPluginServiceMock() {
 		return new TestEditorPluginServiceMock();
 	}
-	
+
 }
