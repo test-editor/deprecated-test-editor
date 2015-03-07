@@ -111,4 +111,9 @@ public class TestProjectServiceAdapter implements TestProjectService {
 
 	}
 
+	@Override
+	public boolean existsProjectWithName(String projectName) {
+		return false;
+	}
+
 }

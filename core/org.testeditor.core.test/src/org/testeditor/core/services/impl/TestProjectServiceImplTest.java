@@ -489,6 +489,20 @@ public class TestProjectServiceImplTest {
 	}
 
 	/**
+	 * Tests if an project is in the list.
+	 */
+	@Test
+	public void testExistsProjectWithName() {
+		TestProject tp = new TestProject();
+		tp.setName("MyTp");
+		List<TestProject> tpList = new ArrayList<TestProject>();
+		tpList.add(tp);
+		TestProjectServiceImpl testProjectService = getTestProjectImplMockWithProjects(tpList);
+		assertTrue(testProjectService.existsProjectWithName("MyTp"));
+		assertFalse(testProjectService.existsProjectWithName("AnotherTp"));
+	}
+
+	/**
 	 * Cleans existing projects in the Workspace.
 	 * 
 	 * @throws Exception

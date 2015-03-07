@@ -22,6 +22,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -29,13 +30,14 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * WizardPage for the import of projects.
  * 
- * @author llipinski
- * 
  */
 public class TeamShareImportProjectWizardPage extends TeamShareWizardPage {
 
 	@Inject
 	private TestEditorTranslationService translationService;
+	@Inject
+	private TestProjectService testProjectService;
+
 	private Text projectNameText;
 	private String projectName = "";
 
@@ -116,7 +118,11 @@ public class TeamShareImportProjectWizardPage extends TeamShareWizardPage {
 	 */
 	protected void validatePageAndSetComplete() {
 		super.validatePageAndSetComplete();
-		setPageComplete(isPageComplete() && !projectName.isEmpty());
+		boolean existsProjectWithName = testProjectService.existsProjectWithName(projectName);
+		if (existsProjectWithName) {
+			setErrorMessage(translationService.translate("%wizard.team.error.projectexists"));
+		}
+		setPageComplete(isPageComplete() && !projectName.isEmpty() && !existsProjectWithName);
 	}
 
 	/**

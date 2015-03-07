@@ -1124,4 +1124,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Override
+	public boolean existsProjectWithName(String projectName) {
+		return getProjectWithName(projectName) != null;
+	}
+
 }
