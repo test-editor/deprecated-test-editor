@@ -136,7 +136,8 @@ public interface TestProjectService extends TestStructureTreeInputService {
 	 * @param testProjectName
 	 *            of the Project searched for.
 	 * 
-	 * @return TestProject with the given name in the project list.
+	 * @return TestProject with the given name in the project list. If there is
+	 *         no project with the name the value is null.
 	 */
 	TestProject getProjectWithName(String testProjectName);
 
@@ -174,5 +175,14 @@ public interface TestProjectService extends TestStructureTreeInputService {
 	 *             on io error loading project configuration.
 	 */
 	void refreshTestProjectFromFileSystem(TestProject testProject) throws SystemException;
+
+	/**
+	 * Checks if an project with the given name already exists.
+	 * 
+	 * @param projectName
+	 *            name to to check.
+	 * @return true if a project with that name already exists other wise false.
+	 */
+	boolean existsProjectWithName(String projectName);
 
 }
