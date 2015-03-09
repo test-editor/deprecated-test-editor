@@ -3,5 +3,6 @@
    <implementation class="org.testeditor.teamshare.svn.SVNTeamShareService"/>
    <service>
       <provide interface="org.testeditor.core.services.interfaces.TeamShareService"/>
+      <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
 </scr:component>
