@@ -19,7 +19,11 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
 import org.testeditor.core.model.team.TeamChange;
@@ -65,7 +69,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * 
  */
 @SuppressWarnings("restriction")
-public class SVNTeamShareService implements TeamShareService {
+public class SVNTeamShareService implements TeamShareService, IContextFunction {
 
 	// SVNException: svn: E175002: connection refused by the server
 	private static final int CONNECTION_REFUSED = 175002;
@@ -83,6 +87,8 @@ public class SVNTeamShareService implements TeamShareService {
 	private StringBuilder svnStatus;
 
 	private ProgressListener listener;
+
+	private IEventBroker eventBroker;
 
 	static {
 
@@ -667,6 +673,9 @@ public class SVNTeamShareService implements TeamShareService {
 			TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
 		testProject.getTestProjectConfig().setTeamShareConfig(null);
 		deleteSvnMetaData(testProject);
+		if (eventBroker != null) {
+			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED, testProject.getFullName());
+		}
 	}
 
 	/**
@@ -806,6 +815,14 @@ public class SVNTeamShareService implements TeamShareService {
 			String message = substitudeSVNException(e, translationService);
 			throw new SystemException(message, e);
 		}
+	}
+
+	@Override
+	public Object compute(IEclipseContext context, String contextKey) {
+		if (eventBroker == null) {
+			eventBroker = context.get(IEventBroker.class);
+		}
+		return this;
 	}
 
 }

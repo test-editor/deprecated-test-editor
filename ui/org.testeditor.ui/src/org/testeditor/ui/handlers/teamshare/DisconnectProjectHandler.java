@@ -21,7 +21,6 @@ import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.e4.ui.services.IServiceConstants;
-import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -35,7 +34,6 @@ import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareDisconnectProjectWizardPage;
 
 /**
@@ -46,19 +44,14 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareDisconnectProjectWizardP
  * configuration in the TestExplorer tree.
  * 
  */
-@SuppressWarnings("restriction")
 public class DisconnectProjectHandler {
 
 	@Inject
 	private TestEditorPlugInService plugInService;
 	@Inject
-	private TestEditorTranslationService translationService;
-	@Inject
 	private TestProjectService testProjectService;
 	@Inject
 	private TranslationService translate;
-	@Inject
-	private EventBroker eventBroker;
 
 	@Inject
 	private TeamShareConfigurationService teamShareConfigurationService;
@@ -126,7 +119,7 @@ public class DisconnectProjectHandler {
 			try {
 				disconnectProject(testProject);
 			} catch (SystemException e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.error(e.getMessage(), e);
 			}
 			testExplorer.refreshTreeInput();
 		}
@@ -141,16 +134,12 @@ public class DisconnectProjectHandler {
 	 *             if the storing of the configuration or the teamsharing fails.
 	 */
 	private void disconnectProject(TestProject testProject) throws SystemException {
-
 		try {
 			getTeamService(testProject).disconnect(testProject, translate, teamShareConfigurationService);
 			testProjectService.storeProjectConfig(testProject, testProject.getTestProjectConfig());
-			// eventBroker.send(TestEditorEventConstants.PROJECT_TEAM_DISCONNECT,
-			// testProject);
 		} catch (Exception e) {
-			throw e;
+			throw new SystemException(e.getLocalizedMessage(), e);
 		}
-
 	}
 
 	/**
@@ -159,9 +148,9 @@ public class DisconnectProjectHandler {
 	 * @return the teamShareService
 	 */
 	private TeamShareService getTeamService(TestProject testProject) {
-
 		String id = testProject.getTestProjectConfig().getTeamShareConfig().getId();
 		TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
 		return teamService;
 	}
+
 }

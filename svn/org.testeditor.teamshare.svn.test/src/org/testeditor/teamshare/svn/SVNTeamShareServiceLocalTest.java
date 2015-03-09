@@ -1153,8 +1153,20 @@ public class SVNTeamShareServiceLocalTest {
 	}
 
 	/**
+	 * Test the disconnect operation of a shared project.
 	 * 
-	 * @return mockuo for TeamShareConfigurationService.
+	 * @throws Exception
+	 */
+	@Test
+	public void testDisconnectProject() throws Exception {
+		TestProject testProject = createTestProject(System.getProperty("java.io.tmpdir") + File.separator
+				+ "disconnectPrj", "", "");
+		teamService.disconnect(testProject, translationService, getTeamShareConfigurationServiceMock());
+	}
+
+	/**
+	 * 
+	 * @return mock for TeamShareConfigurationService.
 	 */
 	private TeamShareConfigurationService getTeamShareConfigurationServiceMock() {
 		return new TeamShareConfigurationService() {
