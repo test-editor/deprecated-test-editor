@@ -673,6 +673,10 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
 		testProject.getTestProjectConfig().setTeamShareConfig(null);
 		deleteSvnMetaData(testProject);
+		List<TestStructure> childrenWithScenarios = testProject.getAllTestChildrenWithScenarios();
+		for (TestStructure testStructure : childrenWithScenarios) {
+			testStructure.setTeamChangeType(TeamChangeType.NONE);
+		}
 		if (eventBroker != null) {
 			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED, testProject.getFullName());
 		}
