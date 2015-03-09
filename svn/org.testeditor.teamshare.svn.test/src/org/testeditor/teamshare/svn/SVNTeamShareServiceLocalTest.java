@@ -43,6 +43,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
+import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -1156,12 +1157,21 @@ public class SVNTeamShareServiceLocalTest {
 	 * Test the disconnect operation of a shared project.
 	 * 
 	 * @throws Exception
+	 *             on SVN error.
 	 */
 	@Test
 	public void testDisconnectProject() throws Exception {
 		TestProject testProject = createTestProject(System.getProperty("java.io.tmpdir") + File.separator
 				+ "disconnectPrj", "", "");
+		TestSuite testSuite = new TestSuite();
+		testSuite.setTeamChangeType(TeamChangeType.ADD);
+		testProject.addChild(testSuite);
+		TestCase testCase = new TestCase();
+		testSuite.setTeamChangeType(TeamChangeType.MOVED);
+		testSuite.addChild(testCase);
 		teamService.disconnect(testProject, translationService, getTeamShareConfigurationServiceMock());
+		assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
+		assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
 	}
 
 	/**
