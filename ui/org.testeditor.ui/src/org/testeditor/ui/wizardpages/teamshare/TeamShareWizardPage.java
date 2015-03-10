@@ -119,6 +119,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 		// Required to avoid an error in the system
 		setControl(parent);
 
+		validatePageAndSetComplete();
 	}
 
 	/**
