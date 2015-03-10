@@ -108,7 +108,6 @@ public final class IconConstants {
 	 * @return the arrow-cursor
 	 */
 	private static Cursor getCursorArrow() {
-
 		return new Cursor(Display.getCurrent(), SWT.CURSOR_ARROW);
 	}
 
