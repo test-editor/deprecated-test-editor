@@ -115,7 +115,6 @@ public final class IconConstants {
 	 * Don't create objects of this constants class.
 	 */
 	private IconConstants() {
-
 	}
 
 	/**
