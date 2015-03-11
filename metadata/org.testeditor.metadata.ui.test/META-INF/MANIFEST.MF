@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Metadata UI Test
-Bundle-SymbolicName: org.testeditor.metadata.ui.test
-Bundle-Version: 1.0.0
-Fragment-Host: org.testeditor.metadata.ui;bundle-version="1.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit;bundle-version="4.11.0"
-Import-Package: org.osgi.framework;version="1.7.0"
