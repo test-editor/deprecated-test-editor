@@ -64,6 +64,7 @@ import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.teamshare.svn.TeamShareStatus;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -169,6 +170,19 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			String message = translationService.translate("%editController.ErrorStoringTestFlow");
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), message, e.getLocalizedMessage());
 			LOGGER.error("Error storing Testcase :: FAILED", e);
+		}
+		updateTeamStateInformation();
+	}
+
+	/**
+	 * if the current structure is child of a team shared project, it updates
+	 * the Team modification information of the object in the test project.
+	 */
+	private void updateTeamStateInformation() {
+		TestProject testProject = getTestStructure().getRootElement();
+		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
+			TeamShareStatus shareState = new TeamShareStatus(eventBroker);
+			shareState.setSVNStatusForProject(testProject);
 		}
 	}
 

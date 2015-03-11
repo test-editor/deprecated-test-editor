@@ -21,7 +21,6 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
@@ -29,11 +28,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
-import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.util.TestProtocolService;
-import org.testeditor.teamshare.svn.TeamShareStatus;
-import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 
@@ -46,9 +42,6 @@ public class SaveHandler {
 
 	@Inject
 	private TestProtocolService testProtocolService;
-
-	@Inject
-	private IEventBroker eventBroker;
 
 	/**
 	 * Checks that the dirty Editor is on Top.
@@ -114,16 +107,6 @@ public class SaveHandler {
 				}
 
 			});
-			if (activeDirtyPart.getObject() instanceof ITestStructureEditor) {
-				TestProject testProject = ((ITestStructureEditor) activeDirtyPart.getObject()).getTestStructure()
-						.getRootElement();
-				if (testProject.getTestProjectConfig().isTeamSharedProject()) {
-
-					TeamShareStatus shareState = new TeamShareStatus(eventBroker);
-					shareState.setSVNStatusForProject(testProject);
-
-				}
-			}
 			refreshNodeIcon(partService);
 
 		}
