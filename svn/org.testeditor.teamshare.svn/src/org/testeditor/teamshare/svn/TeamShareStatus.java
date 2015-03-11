@@ -37,7 +37,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * has been changed and till yet not approved.
  * 
  * @author dkuhlmann
- *
+ * 
  */
 public class TeamShareStatus {
 
@@ -121,23 +121,29 @@ public class TeamShareStatus {
 						final SVNTeamShareService teamShareService = new SVNTeamShareService();
 						SVNClientManager clientManager = getSVNClientManager();
 						try {
-							clientManager.getStatusClient().doStatus(file, true, false, true, false,
-									new ISVNStatusHandler() {
 
-										@Override
-										public void handleStatus(SVNStatus status) throws SVNException {
-											SVNStatusType statusType = status.getContentsStatus();
+							clientManager.getStatusClient().doStatus(file, true, true, true, true,
 
-											if (statusType != SVNStatusType.STATUS_NONE
-													&& statusType != SVNStatusType.STATUS_NORMAL
-													&& statusType != SVNStatusType.STATUS_IGNORED) {
-												String fullName = teamShareService.convertFileToFullname(
-														status.getFile(), testProject);
-												fileList.put(fullName, getTeamChangeTypeFromSVNStatusType(statusType));
-											}
+							new ISVNStatusHandler() {
+
+								@Override
+								public void handleStatus(SVNStatus status) throws SVNException {
+									SVNStatusType statusType = status.getCombinedNodeAndContentsStatus();
+
+									if (statusType != SVNStatusType.STATUS_NONE
+											&& statusType != SVNStatusType.STATUS_NORMAL
+											&& statusType != SVNStatusType.STATUS_IGNORED) {
+										String fullName = teamShareService.convertFileToFullname(status.getFile(),
+												testProject);
+										if (SVNStatusType.STATUS_DELETED == statusType) {
+											fileList.put(fullName.substring(0, fullName.lastIndexOf(".")),
+													TeamChangeType.MODIFY);
 										}
+										fileList.put(fullName, getTeamChangeTypeFromSVNStatusType(statusType));
+									}
+								}
 
-									});
+							});
 						} catch (SVNException e) {
 							LOGGER.error("Could not read the SVNStatus from Project: " + testProject.getName()
 									+ "\n error: " + e.getMessage());
