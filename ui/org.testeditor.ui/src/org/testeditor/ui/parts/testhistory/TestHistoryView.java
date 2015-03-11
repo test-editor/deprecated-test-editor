@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testhistory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
-import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -35,8 +34,6 @@ public class TestHistoryView {
 
 	@Inject
 	private TestEditorTranslationService translationService;
-	@Inject
-	private IEclipseContext context;
 
 	private TableViewer tableViewer;
 	private Composite mainComposite;
@@ -49,6 +46,7 @@ public class TestHistoryView {
 	 * @param parent
 	 *            the parent {@link Composite}
 	 */
+	@PostConstruct
 	public void createUi(Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -68,7 +66,6 @@ public class TestHistoryView {
 		compositeForTable.setLayoutData(gd);
 		createHistoryTable(compositeForTable);
 		mainComposite.setVisible(false);
-		context.set(TestEditorConstants.TEST_HISTORY_VIEW, this);
 	}
 
 	/**

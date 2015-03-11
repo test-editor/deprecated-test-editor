@@ -52,7 +52,10 @@ import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
- * Controller for the TestHistory-Part.
+ * 
+ * Part in the Application model to represent the TestHistory ViewPart. This
+ * class contains the controller for the TestHistory-Part. UI elements are build
+ * in <code>TestHistoryView</code>.
  * 
  * 
  */
@@ -71,10 +74,12 @@ public class TestHistoryPart {
 	@Inject
 	private TestEditorTranslationService translationService;
 
-	private TestHistoryView testHistoryPart;
+	private TestHistoryView testHistoryView;
 	private ArrayList<Button> buttonArray = new ArrayList<Button>();
 
 	private TestStructure testStructure;
+
+	private List<TestResult> testHistory;
 
 	/**
 	 * Consumes the event of deleted Teststructues to remove ui informations on
@@ -90,6 +95,8 @@ public class TestHistoryPart {
 		if (testStructure != null) {
 			if (testStructureFullname.equals(testStructure.getFullName())) {
 				clearView();
+				testStructure = null;
+				testHistory = null;
 			}
 		}
 	}
@@ -122,7 +129,7 @@ public class TestHistoryPart {
 			clearButtonArray();
 			getTestHistoryPart().clearTable();
 
-			List<TestResult> testHistory = null;
+			testHistory = null;
 			try {
 				TestStructureService testStructureService = testEditorPlugInService
 						.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig()
@@ -168,10 +175,7 @@ public class TestHistoryPart {
 		final TestProjectConfig testProjectConfig = testStructure.getRootElement().getTestProjectConfig();
 
 		TableItem item = new TableItem(tableViewer.getTable(), SWT.NONE);
-		String formatedDateString = format(testResult.getResultDate());
-		String error = translationService.translate("%error");
-		item.setText(new String[] { "", formatedDateString,
-				"Ok: " + testResult.getRight() + " " + error + ": " + testResult.getWrong(), "" });
+		item.setText(getResultSummaryRowFrom(testResult));
 
 		if (testResult.isSuccessfully()) {
 			item.setImage(0, IconConstants.ICON_TESTCASE_SUCCESSED);
@@ -204,6 +208,21 @@ public class TestHistoryPart {
 		editor.minimumWidth = 30;
 		editor.setEditor(button, item, 3);
 		editor.layout();
+	}
+
+	/**
+	 * Extracts Summary String from TestResult to be used in the table.
+	 * 
+	 * @param testResult
+	 *            as data for the extraction.
+	 * @return string array used in the table.
+	 */
+	public String[] getResultSummaryRowFrom(TestResult testResult) {
+		String formatedDateString = format(testResult.getResultDate());
+		String error = translationService.translate("%error");
+		String[] row = new String[] { "", formatedDateString,
+				"Ok: " + testResult.getRight() + ";\t " + error + ": " + testResult.getWrong(), "" };
+		return row;
 	}
 
 	/**
@@ -246,9 +265,7 @@ public class TestHistoryPart {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		setTestHistoryPart(ContextInjectionFactory.make(TestHistoryView.class, context));
-		getTestHistoryPart().createUi(parent);
-
+		this.testHistoryView = ContextInjectionFactory.make(TestHistoryView.class, context);
 	}
 
 	/**
@@ -256,17 +273,7 @@ public class TestHistoryPart {
 	 * @return the testHistoryPart
 	 */
 	private TestHistoryView getTestHistoryPart() {
-		return testHistoryPart;
-	}
-
-	/**
-	 * set the local variable {@link TestHistoryView}.
-	 * 
-	 * @param testHistoryPart
-	 *            TestHistoryPart
-	 */
-	private void setTestHistoryPart(TestHistoryView testHistoryPart) {
-		this.testHistoryPart = testHistoryPart;
+		return testHistoryView;
 	}
 
 	/**
@@ -296,22 +303,25 @@ public class TestHistoryPart {
 				}
 			});
 		}
-		testStructure = null;
 	}
 
 	/**
+	 * Checks that the view has a test structure which has a test history.
 	 * 
 	 * @return true, if the testStructure is not null
 	 */
-	public boolean canExecute() {
-		return testStructure != null;
+	public boolean containsTestHistory() {
+		if (testStructure != null && testHistory != null) {
+			return testHistory.size() > 0;
+		}
+		return false;
 	}
 
 	/**
 	 * clears the view.
 	 */
 	public void clearView() {
-		testHistoryPart.clearHistory();
+		testHistoryView.clearHistory();
 	}
 
 }
