@@ -34,7 +34,6 @@ public class ClearTestHistoryHandler {
 		MPart activePart = partService.getActivePart();
 		if (activePart.getObject() != null && activePart.getElementId().equals(TestHistoryPart.ID)) {
 			((TestHistoryPart) activePart.getObject()).clearHistory();
-
 		}
 	}
 
@@ -52,7 +51,7 @@ public class ClearTestHistoryHandler {
 				TestHistoryPart testHistoryController = (TestHistoryPart) mPart.getObject();
 
 				if (testHistoryController != null) {
-					return testHistoryController.canExecute();
+					return testHistoryController.containsTestHistory();
 				}
 			}
 		}
