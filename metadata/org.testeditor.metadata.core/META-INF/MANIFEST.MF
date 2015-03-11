@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Metadata Core
-Bundle-SymbolicName: org.testeditor.metadata.core
-Bundle-Version: 1.8.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
