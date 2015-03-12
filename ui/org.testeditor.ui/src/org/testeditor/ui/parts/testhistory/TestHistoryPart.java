@@ -92,12 +92,10 @@ public class TestHistoryPart {
 	@Optional
 	public void onTestSturctureRenamedEvent(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_HISTORY_DELETED) String testStructureFullname) {
-		if (testStructure != null) {
-			if (testStructureFullname.equals(testStructure.getFullName())) {
-				clearView();
-				testStructure = null;
-				testHistory = null;
-			}
+		if (testStructure != null && testStructureFullname.equals(testStructure.getFullName())) {
+			clearView();
+			testStructure = null;
+			testHistory = null;
 		}
 	}
 
