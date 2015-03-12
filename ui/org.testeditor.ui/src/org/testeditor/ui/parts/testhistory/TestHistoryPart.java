@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
+import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestType;
@@ -111,6 +112,22 @@ public class TestHistoryPart {
 			@UIEventTopic(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED) TestStructure testStructure) {
 		getTestHistoryPart().setTitle(testStructure.getName());
 		refreshHistoryTable(testStructure);
+	}
+
+	/**
+	 * Retrieves the active editor event and loads the history for the Testcase
+	 * in the editor.
+	 * 
+	 * @param aTestStructure
+	 *            to be used in the history view.
+	 */
+	@Inject
+	@Optional
+	public void onActiveEditorChanged(
+			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
+		if (aTestStructure instanceof TestCase) {
+			showTestHistory(aTestStructure);
+		}
 	}
 
 	/**
@@ -288,8 +305,7 @@ public class TestHistoryPart {
 	 */
 	public void clearHistory() {
 		try {
-			TestStructureService testStructureService = testEditorPlugInService
-					.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig().getTestServerID());
+			TestStructureService testStructureService = getTestStructureService(testStructure);
 			testStructureService.clearHistory(testStructure);
 		} catch (SystemException e) {
 			LOGGER.error(e.getMessage());
@@ -301,6 +317,18 @@ public class TestHistoryPart {
 				}
 			});
 		}
+	}
+
+	/**
+	 * 
+	 * @param aTestStructure
+	 *            used to identify the correct service.
+	 * 
+	 * @return the TestStructureService used for teststructure.
+	 */
+	private TestStructureService getTestStructureService(TestStructure aTestStructure) {
+		return testEditorPlugInService.getTestStructureServiceFor(aTestStructure.getRootElement()
+				.getTestProjectConfig().getTestServerID());
 	}
 
 	/**

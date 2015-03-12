@@ -27,7 +27,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
@@ -46,7 +48,7 @@ public class TestLogView {
 	private static final Logger LOGGER = Logger.getLogger(TestLogView.class);
 
 	@Inject
-	private TestStructureService testStructureService;
+	private TestEditorPlugInService testEditorPlugInService;
 
 	/**
 	 * Default Constructor of the TestLogView.
@@ -87,6 +89,8 @@ public class TestLogView {
 	 */
 	public void setTestStructure(TestStructure testStructure) {
 		try {
+			TestStructureService testStructureService = testEditorPlugInService
+					.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig().getTestServerID());
 			String logData = testStructureService.getLogData(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
@@ -119,4 +123,25 @@ public class TestLogView {
 		setTestStructure(testStructure);
 	}
 
+	/**
+	 * Retrieves the active editor event and loads the log for the Testcase in
+	 * the editor.
+	 * 
+	 * @param aTestStructure
+	 *            to be used in the testlog view.
+	 */
+	@Inject
+	@Optional
+	public void onActiveEditorChanged(
+			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
+		TestStructureService testStructureService = testEditorPlugInService.getTestStructureServiceFor(aTestStructure
+				.getRootElement().getTestProjectConfig().getTestServerID());
+		try {
+			if ((aTestStructure instanceof TestCase) && testStructureService.hasLogData(aTestStructure)) {
+				onTestExecutionShowTestLogForLastRun(aTestStructure);
+			}
+		} catch (SystemException e) {
+			LOGGER.error("Can't change Testlog to " + aTestStructure, e);
+		}
+	}
 }
