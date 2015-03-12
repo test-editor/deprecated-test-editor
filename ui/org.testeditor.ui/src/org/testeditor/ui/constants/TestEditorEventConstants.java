@@ -34,9 +34,6 @@ public final class TestEditorEventConstants {
 	public static final String CACHE_TEST_COMPONENT_OF_PART_TEMPORARY = "cache_test_component_of_part_temporary"; // initialize
 	public static final String GET_FOCUS_ON_INPUT_PART = "get_focus_on_input_part";
 
-	// TODO This is used as a commando and not an event.
-	public static final String EXPLORER_SELECT_TEST_STRUCTURE = "explorer_select_test_structure";
-
 	public static final String REFRESH_TEST_FLOW_VIEW = "refresh_test_flow_view";
 
 	public static final String REFRESH_TESTFLOW_VIEWS_TO_PROJECT = "refresh_all_testflow_views_of_project";

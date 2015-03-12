@@ -377,7 +377,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();
-		linkTestExplorerWithEditor();
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
 
 		wireUpToolBoxControllerWithEditorController();
 
@@ -728,7 +728,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Focus
 	public void setFocus(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 		shell.setDefaultButton(null);
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testFlow);
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
 		if (!hasFocus) {
 			hasFocus = true;
 			connectActionInputController();
@@ -797,14 +797,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 						inputObjectWithAction.getCursorPosInLine());
 			}
 		}
-	}
-
-	/**
-	 * Links the selection of the <code>TestExplorer</code> with the
-	 * <code>TestFlow</code> of this Editor.
-	 */
-	protected void linkTestExplorerWithEditor() {
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testFlow);
 	}
 
 	/**

@@ -19,13 +19,11 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.constants.TestEditorEventConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 
 /**
  * special TestExplorer for the junitTest.
- * 
- * @author llipinski
  * 
  */
 public class TestExplorerMock extends TestExplorer implements EventHandler {
@@ -51,7 +49,7 @@ public class TestExplorerMock extends TestExplorer implements EventHandler {
 	 *            the monitorMap
 	 */
 	public void shareMonitorMap(Map<String, Boolean> monitor) {
-		eventBroker.subscribe(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, this);
+		eventBroker.subscribe(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, this);
 		this.monitor = monitor;
 	}
 
