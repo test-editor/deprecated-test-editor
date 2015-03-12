@@ -596,20 +596,33 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 	@Override
 	public void setDescription(int selectedLine, List<String> newLines, boolean changeMode) {
+
 		int position = selectedLine;
 
 		List<TestDescription> descriptions = createDescriptionsArray(newLines);
 
+		// TODO this code will be used only in test
 		if (changeMode && !testFlow.getTestComponents().isEmpty()) {
 			testFlow.setLine(position, descriptions.get(0));
 			position++;
 			descriptions.remove(0);
 		}
+
 		if (!descriptions.isEmpty()) {
+
+			// starting new testflow
 			if (testFlow.getTestComponents().isEmpty() || position == -1) {
 				position = testFlow.getSize();
 			}
-			testFlow.getTestComponents().addAll(position, descriptions);
+
+			// description will never insert in row position 0 in case of
+			// scenario
+			if (position == 0 && !testFlow.getTestComponents().isEmpty() && testFlow instanceof TestScenario) {
+				testFlow.getTestComponents().addAll(position + 1, descriptions);
+			} else {
+				testFlow.getTestComponents().addAll(position, descriptions);
+			}
+
 		}
 	}
 
