@@ -138,15 +138,17 @@ public class TeamShareStatus {
 										if (SVNStatusType.STATUS_DELETED == statusType) {
 											fileList.put(fullName.substring(0, fullName.lastIndexOf(".")),
 													TeamChangeType.MODIFY);
+										} else {
+											fileList.put(fullName, getTeamChangeTypeFromSVNStatusType(statusType));
 										}
-										fileList.put(fullName, getTeamChangeTypeFromSVNStatusType(statusType));
+
 									}
 								}
 
 							});
-						} catch (SVNException e) {
+						} catch (Exception e) {
 							LOGGER.error("Could not read the SVNStatus from Project: " + testProject.getName()
-									+ "\n error: " + e.getMessage());
+									+ "\n error: " + e.getMessage(), e);
 						}
 					}
 					return fileList;
