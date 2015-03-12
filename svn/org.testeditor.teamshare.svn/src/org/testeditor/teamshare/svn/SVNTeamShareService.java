@@ -534,6 +534,8 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			LOGGER.error(e);
 			throw new SystemException(e.getMessage());
 		}
+		TeamShareStatus teamShareStatus = new TeamShareStatus(eventBroker);
+		teamShareStatus.setSVNStatusForProject(testStructure.getRootElement());
 	}
 
 	@Override
