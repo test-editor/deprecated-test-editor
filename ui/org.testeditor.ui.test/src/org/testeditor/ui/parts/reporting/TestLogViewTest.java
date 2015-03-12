@@ -65,7 +65,7 @@ public class TestLogViewTest {
 	}
 
 	/**
-	 * Setup the objects fot the test.
+	 * Setup ui object for the test.
 	 */
 	@Before
 	public void setUp() {
@@ -73,7 +73,7 @@ public class TestLogViewTest {
 	}
 
 	/**
-	 * Cleanups ressources after test.
+	 * Cleanups resources after test.
 	 */
 	@After
 	public void tearDown() {
