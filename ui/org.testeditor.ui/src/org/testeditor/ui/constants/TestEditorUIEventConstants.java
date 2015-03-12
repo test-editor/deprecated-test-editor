@@ -83,6 +83,8 @@ public final class TestEditorUIEventConstants {
 	 */
 	public static final String PROJECT_TEAM_SHARED = "project_team_shared";
 
+	public static final String ACTIVE_TESTFLOW_EDITOR_CHANGED = "testflow/active_in_editor";
+
 	/**
 	 * Private constructor to avoid instances of this class.
 	 */
