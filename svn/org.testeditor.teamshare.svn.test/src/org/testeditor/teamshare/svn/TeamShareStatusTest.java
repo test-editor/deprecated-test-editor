@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.teamshare.svn;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -20,7 +21,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -428,6 +428,60 @@ public class TeamShareStatusTest {
 		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
 		assertTrue(TeamChangeType.NONE == testSuite.getTeamChangeType());
 		assertTrue(TeamChangeType.NONE == testCase.getTeamChangeType());
+	}
+
+	/**
+	 * 
+	 * This test creates a {@link TestProject}, creates and add a new
+	 * {@link TestSuite} and {@link TestCase} to the TestProject and shares the
+	 * TestProject on a local repository. Deletes the TestCase. Checks if the
+	 * SVN state has changed and has been set in the TestProject and TestSuite
+	 * correctly.
+	 * 
+	 * @throws IOException
+	 *             IO failure
+	 * @throws SVNException
+	 *             SVN failure
+	 * @throws SystemException
+	 *             System failure
+	 * @throws InterruptedException
+	 *             InterruptedException
+	 */
+	@Test
+	public void testStatusOnTestCaseDeleted() throws IOException, SVNException, SystemException, InterruptedException {
+		String testSuiteName = "SuiteSvn";
+		String testCaseName = "CaseSvn";
+		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+
+		// Add new Testpage
+		SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testSuiteName);
+		TestSuite testSuite = new TestSuite();
+		testSuite.setName(testSuiteName);
+		testProject.addChild(testSuite);
+
+		// Add new Testpage
+		SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testSuiteName, testCaseName);
+		TestCase testCase = new TestCase();
+		testCase.setName(testCaseName);
+		testSuite.addChild(testCase);
+
+		teamService.share(testProject, translationService, "");
+
+		assertEquals(TeamChangeType.NONE, testProject.getTeamChangeType());
+		assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
+		assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
+
+		teamService.doDelete(testCase, translationService);
+		testSuite.removeChild(testCase);
+
+		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
+		teamShareStatus.setSVNStatusForProject(testProject);
+		while (!teamShareStatus.isFinish()) {
+			LOGGER.debug("Wait for thread ends");
+		}
+		assertEquals(TeamChangeType.MODIFY, testProject.getTeamChangeType());
+		assertEquals(TeamChangeType.MODIFY, testSuite.getTeamChangeType());
+
 	}
 
 }
