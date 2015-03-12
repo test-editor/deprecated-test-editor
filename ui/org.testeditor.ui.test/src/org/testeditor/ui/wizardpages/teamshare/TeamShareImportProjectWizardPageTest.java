@@ -12,6 +12,8 @@
 package org.testeditor.ui.wizardpages.teamshare;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
@@ -30,10 +32,10 @@ import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
- * tests the TeamShareImportWizardPage.
+ * Tests the TeamShareImportProjectWizardPage.
  * 
  */
-public class TeamShareImportWizardPageTest {
+public class TeamShareImportProjectWizardPageTest {
 
 	private Shell shell;
 	private Composite composite;
@@ -71,6 +73,25 @@ public class TeamShareImportWizardPageTest {
 	}
 
 	/**
+	 * Tests the error message for the project name.
+	 */
+	@Test
+	public void testCheckErrorMessage() {
+		TeamShareImportProjectWizardPage testPage = ContextInjectionFactory.make(
+				TeamShareImportProjectWizardPage.class, getContext());
+		testPage.createControl(composite);
+		testPage.setProjectName("Foo");
+		testPage.validatePageAndSetComplete();
+		assertNull(testPage.getErrorMessage());
+		testPage.setProjectName("ExistingProject");
+		testPage.validatePageAndSetComplete();
+		assertNotNull(testPage.getErrorMessage());
+		testPage.setProjectName("Foo");
+		testPage.validatePageAndSetComplete();
+		assertNull(testPage.getErrorMessage());
+	}
+
+	/**
 	 * 
 	 * @return the IEclipseContext for the test.
 	 */
@@ -79,7 +100,12 @@ public class TeamShareImportWizardPageTest {
 		context.set(Shell.class, null);
 		context.set(TestEditorTranslationService.class, getTestEditorTranslationServiceMock());
 		context.set(TestEditorPlugInService.class, getTestEditorPluginServiceMock());
-		context.set(TestProjectService.class, new TestProjectServiceAdapter());
+		context.set(TestProjectService.class, new TestProjectServiceAdapter() {
+			@Override
+			public boolean existsProjectWithName(String projectName) {
+				return "ExistingProject".equals(projectName);
+			}
+		});
 		context.set(TranslationService.class, getTranslationService());
 		return context;
 	}
