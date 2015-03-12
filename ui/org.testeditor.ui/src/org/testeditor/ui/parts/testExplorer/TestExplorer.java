@@ -45,7 +45,7 @@ import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.teamshare.svn.TeamShareStatus;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.constants.TestEditorEventConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.editor.view.TestEditorTestCaseController;
@@ -194,7 +194,7 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	public void setSelectionOn(
-			@UIEventTopic(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE) TestStructure testStructure) {
+			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure testStructure) {
 		if (testStructureTree != null) {
 			testStructureTree.selectTestStructure(testStructure);
 		}
