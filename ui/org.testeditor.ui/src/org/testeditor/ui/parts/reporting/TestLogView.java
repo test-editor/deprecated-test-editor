@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -137,7 +136,7 @@ public class TestLogView {
 		TestStructureService testStructureService = testEditorPlugInService.getTestStructureServiceFor(aTestStructure
 				.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
-			if ((aTestStructure instanceof TestCase) && testStructureService.hasLogData(aTestStructure)) {
+			if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasLogData(aTestStructure)) {
 				onTestExecutionShowTestLogForLastRun(aTestStructure);
 			}
 		} catch (SystemException e) {
