@@ -212,9 +212,7 @@ public class TeamShareStatus {
 	 * @return a new {@link SVNClientManager};
 	 */
 	private SVNClientManager getSVNClientManager() {
-		String userName = "";
-		String password = "";
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(userName, password);
+		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager();
 		return SVNClientManager.newInstance(null, authManager);
 	}
 
