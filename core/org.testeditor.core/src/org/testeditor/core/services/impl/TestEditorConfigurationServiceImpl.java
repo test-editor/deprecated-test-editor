@@ -209,7 +209,9 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 		if (key != null && !key.isEmpty() && System.getProperty(key) != null) {
 			IEclipsePreferences node = InstanceScope.INSTANCE.getNode(ID_TE_PROPERTIES);
 			node.remove(key);
-			System.clearProperty(SLIM_CMD_PREFIX + key);
+			if (System.clearProperty(key) == null) {
+				System.clearProperty(SLIM_CMD_PREFIX + key);
+			}
 		}
 	}
 
