@@ -61,6 +61,7 @@ public class TestHistoryView {
 		nameOfTestHistory.setText(translationService.translate("%label.testhistory.of"));
 		nameOfTestHistory.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.TEST_HISTORY_LABEL);
+		nameOfTestHistory.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL));
 		Composite compositeForTable = new Composite(mainComposite, SWT.NONE);
 		compositeForTable.setLayout(new FillLayout(SWT.NONE));
 		compositeForTable.setLayoutData(gd);
@@ -129,7 +130,7 @@ public class TestHistoryView {
 	protected void setTitle(String name) {
 		if (!nameOfTestHistory.isDisposed()) {
 			nameOfTestHistory.setText(translationService.translate("%label.testhistory.of") + ": " + name);
-			nameOfTestHistory.pack();
+			nameOfTestHistory.getParent().layout(true, true);
 			nameOfTestHistory.setVisible(true);
 		}
 	}
@@ -139,8 +140,6 @@ public class TestHistoryView {
 	 * filling the table.
 	 */
 	protected void setVisible() {
-		mainComposite.redraw();
-		mainComposite.getParent().redraw();
 		mainComposite.setVisible(true);
 	}
 

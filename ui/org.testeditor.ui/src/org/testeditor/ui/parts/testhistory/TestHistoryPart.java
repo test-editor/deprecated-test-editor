@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
-import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestType;
@@ -125,7 +124,7 @@ public class TestHistoryPart {
 	@Optional
 	public void onActiveEditorChanged(
 			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
-		if (aTestStructure instanceof TestCase) {
+		if (aTestStructure.isExecutableTestStructure()) {
 			showTestHistory(aTestStructure);
 		}
 	}
@@ -161,7 +160,6 @@ public class TestHistoryPart {
 			}
 			packColumns(getTestHistoryPart().getTableViewer().getTable());
 			getTestHistoryPart().setVisible();
-
 		}
 
 	}
