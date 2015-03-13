@@ -15,13 +15,11 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.constants.TestEditorEventConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 
 /**
  * special {@link MouseAdapter} to create a event for the selection in the tree,
  * if a component in the middle part is selected.
- * 
- * @author llipinski
  * 
  */
 public class TestEditorInputPartMouseAdapter extends MouseAdapter {
@@ -44,11 +42,11 @@ public class TestEditorInputPartMouseAdapter extends MouseAdapter {
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testStructure);
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testStructure);
 	}
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testStructure);
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testStructure);
 	}
 }

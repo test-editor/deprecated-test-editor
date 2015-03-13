@@ -46,7 +46,7 @@ public class TestEditorDescriptionInputPopupDialog extends TestEditorInputTestFl
 		super(titleText, testCaseController, styledText);
 		this.context = context;
 		styledText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-				CustomWidgetIdConstants.TEST_CASE_VIEW_TEXT);
+				CustomWidgetIdConstants.CREATE_DESCRIPTION_TEXT);
 	}
 
 	@Override
