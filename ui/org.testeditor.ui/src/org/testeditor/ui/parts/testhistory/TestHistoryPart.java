@@ -235,8 +235,11 @@ public class TestHistoryPart {
 	public String[] getResultSummaryRowFrom(TestResult testResult) {
 		String formatedDateString = format(testResult.getResultDate());
 		String error = translationService.translate("%error");
-		String[] row = new String[] { "", formatedDateString,
-				"Ok: " + testResult.getRight() + ";\t " + error + ": " + testResult.getWrong(), "" };
+		String[] row = new String[] {
+				"",
+				formatedDateString,
+				"Ok: " + testResult.getRight() + ";\t " + error + ": "
+						+ (testResult.getWrong() + testResult.getException()), "" };
 		return row;
 	}
 

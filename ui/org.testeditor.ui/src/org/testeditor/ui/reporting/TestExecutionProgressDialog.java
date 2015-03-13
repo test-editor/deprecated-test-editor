@@ -112,12 +112,9 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 	private String generateTestResult() {
 		StringBuilder sb = new StringBuilder("");
 
-		if (testResult.isSuite()) {
-			sb.append(translationService.translate("%SuiteResultMessage", testResult.getRight(), testResult.getWrong()
-					+ testResult.getException()));
-		} else {
-			sb.append(translationService.translate("%TestResultMessage", testResult.getRight(), testResult.getWrong()));
-		}
+		String messageKey = testResult.isSuite() ? "%SuiteResultMessage" : "%TestResultMessage";
+		sb.append(translationService.translate(messageKey, testResult.getRight(),
+				testResult.getWrong() + testResult.getException()));
 
 		String runTimeHr = getHumanReadableFormatedRuntime(testResult.getRunTimesSec());
 		sb.append("\n").append(runTimeHr);
