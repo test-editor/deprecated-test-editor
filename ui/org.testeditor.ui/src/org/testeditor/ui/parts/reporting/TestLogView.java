@@ -21,11 +21,11 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -43,7 +43,7 @@ public class TestLogView {
 	public static final String ID = "org.testeditor.ui.parts.reporting.TestLogView";
 
 	private MPart part;
-	private Text testLog;
+	private StyledText testLog;
 
 	private static final Logger LOGGER = Logger.getLogger(TestLogView.class);
 
@@ -70,7 +70,7 @@ public class TestLogView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
-		testLog = new Text(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		testLog = new StyledText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
