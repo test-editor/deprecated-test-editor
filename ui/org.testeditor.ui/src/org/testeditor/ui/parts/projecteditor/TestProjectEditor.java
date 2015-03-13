@@ -654,7 +654,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 */
 	@Focus
 	public void onFocus(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testProject);
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testProject);
 		shell.setDefaultButton(null);
 		if (!hasFocus) {
 			hasFocus = true;

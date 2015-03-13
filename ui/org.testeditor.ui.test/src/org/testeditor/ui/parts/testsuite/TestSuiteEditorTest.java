@@ -54,7 +54,7 @@ import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
-import org.testeditor.ui.constants.TestEditorEventConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.mocks.EventBrokerMock;
 import org.testeditor.ui.mocks.TestExplorerMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -367,7 +367,7 @@ public class TestSuiteEditorTest {
 
 			@Override
 			public boolean send(String topic, Object data) {
-				if (topic.equals(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE)) {
+				if (topic.equals(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED)) {
 					myEventHandler.handleEvent(null);
 				}
 				return false;
