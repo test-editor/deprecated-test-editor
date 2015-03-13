@@ -64,6 +64,7 @@ import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.teamshare.svn.TeamShareStatus;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -169,6 +170,19 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			String message = translationService.translate("%editController.ErrorStoringTestFlow");
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), message, e.getLocalizedMessage());
 			LOGGER.error("Error storing Testcase :: FAILED", e);
+		}
+		updateTeamStateInformation();
+	}
+
+	/**
+	 * if the current structure is child of a team shared project, it updates
+	 * the Team modification information of the object in the test project.
+	 */
+	private void updateTeamStateInformation() {
+		TestProject testProject = getTestStructure().getRootElement();
+		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
+			TeamShareStatus shareState = new TeamShareStatus(eventBroker);
+			shareState.setSVNStatusForProject(testProject);
 		}
 	}
 
@@ -363,7 +377,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();
-		linkTestExplorerWithEditor();
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
 
 		wireUpToolBoxControllerWithEditorController();
 
@@ -582,20 +596,33 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 	@Override
 	public void setDescription(int selectedLine, List<String> newLines, boolean changeMode) {
+
 		int position = selectedLine;
 
 		List<TestDescription> descriptions = createDescriptionsArray(newLines);
 
+		// TODO this code will be used only in test
 		if (changeMode && !testFlow.getTestComponents().isEmpty()) {
 			testFlow.setLine(position, descriptions.get(0));
 			position++;
 			descriptions.remove(0);
 		}
+
 		if (!descriptions.isEmpty()) {
+
+			// starting new testflow
 			if (testFlow.getTestComponents().isEmpty() || position == -1) {
 				position = testFlow.getSize();
 			}
-			testFlow.getTestComponents().addAll(position, descriptions);
+
+			// description will never insert in row position 0 in case of
+			// scenario
+			if (position == 0 && !testFlow.getTestComponents().isEmpty() && testFlow instanceof TestScenario) {
+				testFlow.getTestComponents().addAll(position + 1, descriptions);
+			} else {
+				testFlow.getTestComponents().addAll(position, descriptions);
+			}
+
 		}
 	}
 
@@ -701,7 +728,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Focus
 	public void setFocus(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 		shell.setDefaultButton(null);
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testFlow);
+		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
 		if (!hasFocus) {
 			hasFocus = true;
 			connectActionInputController();
@@ -770,14 +797,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 						inputObjectWithAction.getCursorPosInLine());
 			}
 		}
-	}
-
-	/**
-	 * Links the selection of the <code>TestExplorer</code> with the
-	 * <code>TestFlow</code> of this Editor.
-	 */
-	protected void linkTestExplorerWithEditor() {
-		eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testFlow);
 	}
 
 	/**

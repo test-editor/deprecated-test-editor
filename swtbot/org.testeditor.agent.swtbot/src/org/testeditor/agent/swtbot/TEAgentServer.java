@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
@@ -290,11 +291,15 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @see org.eclipse.swtbot.swt.finder.keyboard.Keystrokes
 	 */
 	public String pressShortcutOfStyledText(final String id, String keyStrokeAsString) {
-		SWTBotStyledText styledTextWithId = bot.styledTextWithId(id);
 		try {
+			SWTBotStyledText styledTextWithId = bot.styledTextWithId(id);
 			styledTextWithId.pressShortcut(KeyStroke.getInstance(keyStrokeAsString));
 		} catch (ParseException e) {
 			LOGGER.error("Key " + keyStrokeAsString + " couldn't be paresd!", e);
+			return e.getMessage();
+		} catch (WidgetNotFoundException e) {
+			LOGGER.error("Widget not found " + id, e);
+			analyzeWidgets();
 			return e.getMessage();
 		}
 
