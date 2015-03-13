@@ -71,6 +71,7 @@ public class TestLogView {
 		parent.setLayout(new GridLayout(1, false));
 		testLog = new Text(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
+		testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY, CustomWidgetIdConstants.TESTLOG_TEXT);
 	}
 
 	/**
@@ -93,8 +94,6 @@ public class TestLogView {
 			String logData = testStructureService.getLogData(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
-			testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-					CustomWidgetIdConstants.TESTLOG_TEXT);
 		} catch (SystemException e) {
 			LOGGER.error("Reading Testlog", e);
 			final String errorMessage = e.getCause().getMessage();
