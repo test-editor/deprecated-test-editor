@@ -24,13 +24,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.testeditor.metadata.ui.parts.MetaDataAdminView;
+import org.testeditor.metadata.ui.parts.MetaDataTaggingView;
 
 /**
  * 
  * Integration test for AdministrationView.
  * 
  */
-public class AdministrationViewInTest {
+public class MetaDataViewsInTest {
 
 	private Shell shell;
 
@@ -41,13 +43,31 @@ public class AdministrationViewInTest {
 	 *             on creation problem.
 	 */
 	@Test
-	public void testViewCreation() throws Exception {
+	public void testAdminViewCreation() throws Exception {
 		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
 		IEclipseContext context = EclipseContextFactory.getServiceContext(bundleContext);
 		context.set(Composite.class, shell);
 		context.set(TranslationService.class, new TranslationService() {
 		});
-		AdministrationView view = ContextInjectionFactory.make(AdministrationView.class, context);
+		MetaDataAdminView view = ContextInjectionFactory.make(MetaDataAdminView.class, context);
+		Assert.assertNotNull(view);
+
+	}
+
+	/**
+	 * Test that the View is createable.
+	 * 
+	 * @throws Exception
+	 *             on creation problem.
+	 */
+	@Test
+	public void testTaggingViewCreation() throws Exception {
+		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		IEclipseContext context = EclipseContextFactory.getServiceContext(bundleContext);
+		context.set(Composite.class, shell);
+		context.set(TranslationService.class, new TranslationService() {
+		});
+		MetaDataTaggingView view = ContextInjectionFactory.make(MetaDataTaggingView.class, context);
 		Assert.assertNotNull(view);
 
 	}
