@@ -27,7 +27,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -72,6 +71,7 @@ public class TestLogView {
 		parent.setLayout(new GridLayout(1, false));
 		testLog = new StyledText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
+		testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY, CustomWidgetIdConstants.TESTLOG_TEXT);
 	}
 
 	/**
@@ -94,8 +94,6 @@ public class TestLogView {
 			String logData = testStructureService.getLogData(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
-			testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-					CustomWidgetIdConstants.TESTLOG_TEXT);
 		} catch (SystemException e) {
 			LOGGER.error("Reading Testlog", e);
 			final String errorMessage = e.getCause().getMessage();
@@ -137,7 +135,7 @@ public class TestLogView {
 		TestStructureService testStructureService = testEditorPlugInService.getTestStructureServiceFor(aTestStructure
 				.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
-			if ((aTestStructure instanceof TestCase) && testStructureService.hasLogData(aTestStructure)) {
+			if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasLogData(aTestStructure)) {
 				onTestExecutionShowTestLogForLastRun(aTestStructure);
 			}
 		} catch (SystemException e) {
