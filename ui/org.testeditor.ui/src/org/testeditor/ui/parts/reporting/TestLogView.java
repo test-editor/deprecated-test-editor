@@ -113,6 +113,13 @@ public class TestLogView {
 		}
 	}
 
+	/**
+	 * Creates Style Ranges for a basic syntax highlighting.
+	 * 
+	 * @param logData
+	 *            text to be styled.
+	 * @return array with styled ranges.
+	 */
 	private StyleRange[] getStyleRanges(String logData) {
 		List<StyleRange> styleRanges = new ArrayList<StyleRange>();
 		String[] strings = logData.split("\n");
