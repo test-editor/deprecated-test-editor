@@ -23,6 +23,9 @@ import org.eclipse.swt.widgets.Display;
 public final class ColorConstants {
 
 	public static final Color COLOR_BLUE = getColor(SWT.COLOR_BLUE);
+	public static final Color COLOR_CYAN = getColor(SWT.COLOR_CYAN);
+	public static final Color COLOR_GRAY = getColor(SWT.COLOR_GRAY);
+	public static final Color COLOR_DARK_GRAY = getColor(SWT.COLOR_DARK_GRAY);
 	public static final Color COLOR_DARK_GREEN = getColor(SWT.COLOR_DARK_GREEN);
 	public static final Color COLOR_BACKROUND_NORMAL = getColor(SWT.COLOR_WHITE);
 	public static final Color COLOR_SELECTED = getColor(225, 236, 255);
@@ -93,6 +96,9 @@ public final class ColorConstants {
 		COLOR_SELECTED.dispose();
 		COLOR_WHITE.dispose();
 		COLOR_YELLOW.dispose();
-
+		COLOR_GRAY.dispose();
+		COLOR_DARK_GRAY.dispose();
+		COLOR_DARK_GREEN.dispose();
+		COLOR_CYAN.dispose();
 	}
 }
