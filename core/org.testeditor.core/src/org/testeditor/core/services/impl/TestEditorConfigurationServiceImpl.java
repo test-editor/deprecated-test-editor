@@ -40,7 +40,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	private static final String ID_CONFIGURATION = "org.testeditor.config.service.configinternal";
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
-	private static final String CURRENT_WS_VERSION = "1.0.3";
+	private static final String CURRENT_WS_VERSION = "1.0.4";
 
 	/**
 	 * Described in Bug TE-760 and TE-1038 it doesn't work on all operating
