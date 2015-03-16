@@ -53,7 +53,7 @@ public class TestEditorTestScenarioController extends TestEditorController imple
 	@Inject
 	private IEclipseContext context;
 
-	private static final String INVALID_CHARS = "{}";
+	private static final String INVALID_CHARS = "";
 
 	/**
 	 * 
