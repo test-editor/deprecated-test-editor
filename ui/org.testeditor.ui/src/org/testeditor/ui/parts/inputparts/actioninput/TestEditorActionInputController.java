@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.di.Focus;
@@ -56,11 +57,11 @@ import org.testeditor.ui.parts.inputparts.dialogelements.TECombo;
  * 
  * this class is the controller for the edit view part.
  * 
- * @author llipinski
  */
 public class TestEditorActionInputController extends AbstractTestEditorInputPartController {
 
 	public static final String ID = "org.testeditor.ui.partdescriptor.testStructureEditor";
+	private static final Logger LOGGER = Logger.getLogger(TestEditorActionInputController.class);
 	@Inject
 	private IEclipseContext context;
 	@Inject
@@ -434,7 +435,8 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 		if (testEditorController == null) {
 			editArea.cleanActionCombobox();
 			editArea.cleanActionGroupCombobox();
-		} else if (!editArea.newTestEditorController(testEditorController)) {
+		} else {
+			LOGGER.trace("Drop and rebuild masks and steps of Teststep view");
 			cleanViewsSynchron();
 			editArea.setTestEditorController(testEditorController);
 			putActionGroupNamesInCombobox();
