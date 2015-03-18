@@ -98,7 +98,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	 */
 	public void setTestCaseController(ITestEditorController testEditorController) {
 		this.testEditorController = testEditorController;
-		if (!editArea.newTestEditorController(testEditorController)) {
+		if (!editArea.isNewTestEditorController(testEditorController)) {
 			if (testScenarioTreeInput == null
 					|| testScenarioTreeInput != null
 					&& (testScenarioTreeInput.getTestProject() == null || !testScenarioTreeInput.getTestProject()
