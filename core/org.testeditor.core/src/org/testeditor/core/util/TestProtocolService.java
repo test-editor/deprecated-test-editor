@@ -140,7 +140,7 @@ public class TestProtocolService implements IContextFunction {
 				String testStructureName = (String) event.getProperty("org.eclipse.e4.data");
 				TestStructure toBeRemoved = null;
 				for (TestStructure ts : protocolMap.keySet()) {
-					if (ts.getFullName().equals(testStructureName)) {
+					if (ts.getFullName().startsWith(testStructureName)) {
 						toBeRemoved = ts;
 					}
 				}
