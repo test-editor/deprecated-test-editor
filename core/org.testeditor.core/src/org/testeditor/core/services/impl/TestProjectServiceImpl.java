@@ -50,6 +50,7 @@ import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.ConfigurationTemplateWriter;
 import org.testeditor.core.util.FileLocatorService;
+import org.testeditor.core.util.FileUtils;
 
 /**
  * 
@@ -350,7 +351,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 		try {
 			File destFile = new File(wsDir.getAbsolutePath() + File.separator + demoProjectDir.getName());
-			copyFolder(demoProjectDir, destFile);
+			FileUtils.copyFolder(demoProjectDir, destFile);
 			copyWebDemoAUT(demoProjectDir, wsDir, destFile);
 		} catch (IOException e) {
 			LOGGER.trace("Error while copy the Project " + demoProjectDir.getName(), e);
@@ -379,42 +380,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 					+ "FitNesseRoot" + File.separator + "files";
 			LOGGER.info("Creating Projectfiles in " + projectPath);
 
-			copyFolder(fitNesseFilesDir, new File(projectPath));
+			FileUtils.copyFolder(fitNesseFilesDir, new File(projectPath));
 		}
 	}
 
-	/**
-	 * copies the directories.
-	 * 
-	 * @param src
-	 *            source-directory
-	 * @param dest
-	 *            destination-directory
-	 * @throws IOException
-	 *             IOException
-	 */
-	private void copyFolder(File src, File dest) throws IOException {
-		if (src.isDirectory()) {
-			// if directory not exists, create it
-			if (!dest.exists() && dest.mkdir()) {
-				LOGGER.info("Directory copied from " + src + "  to " + dest);
-			}
-
-			// list all the directory contents
-			String[] files = src.list();
-
-			for (String file : files) {
-				// construct the src and dest file structure
-				File srcFile = new File(src, file);
-				File destFile = new File(dest, file);
-				// recursive copy
-				copyFolder(srcFile, destFile);
-			}
-		} else {
-			Files.copy(src.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			LOGGER.debug("File copied from " + src + " to " + dest);
-		}
-	}
 
 	@Override
 	public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
@@ -738,7 +707,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			File wsDir = Platform.getLocation().toFile();
 			File destDir = new File(wsDir.getAbsoluteFile() + File.separator + nameNewProject);
 			// copy of the DemoEmpty-project to a new project
-			copyFolder(sourceFile, destDir);
+			FileUtils.copyFolder(sourceFile, destDir);
 
 			// rename the directory
 			// */<projectName>/FitNesseRoot/DemoWebTests to
