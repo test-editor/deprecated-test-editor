@@ -234,12 +234,14 @@ public class TestHistoryPart {
 	 */
 	public String[] getResultSummaryRowFrom(TestResult testResult) {
 		String formatedDateString = format(testResult.getResultDate());
-		String error = translationService.translate("%error");
-		String[] row = new String[] {
-				"",
-				formatedDateString,
-				"Ok: " + testResult.getRight() + ";\t " + error + ": "
-						+ (testResult.getWrong() + testResult.getException()), "" };
+
+		String right = translationService.translate("%test.history.right") + ":" + testResult.getRight();
+		String wrong = translationService.translate("%test.history.wrong") + ":" + testResult.getWrong();
+		String ignored = translationService.translate("%test.history.ignored") + ":" + testResult.getIgnored();
+		String exception = translationService.translate("%test.history.exception") + ":" + testResult.getException();
+
+		String[] row = new String[] { "", formatedDateString,
+				right + "; " + wrong + "; " + ignored + "; " + exception, "" };
 		return row;
 	}
 
