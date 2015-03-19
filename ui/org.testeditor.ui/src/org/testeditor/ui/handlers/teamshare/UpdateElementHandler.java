@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers.teamshare;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
@@ -22,8 +20,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.team.TeamChange;
-import org.testeditor.core.model.team.TeamChangeType;
-import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -49,18 +45,8 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			List<TeamChange> changes = getTeamService(testStructure).update(testStructure, translate);
+			getTeamService(testStructure).update(testStructure, translate);
 			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE;
-			for (TeamChange teamChange : changes) {
-				if (teamChange.getTeamChangeType() == TeamChangeType.DELETE) {
-					TestStructure structure = lookUpTestStructureFrom(teamChange);
-					LOGGER.trace("SVN deleted Object found: " + structure.getFullName() + " with type: "
-							+ structure.getClass());
-					if (structure != null && !(structure instanceof TestProject)) {
-						eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED;
-					}
-				}
-			}
 			eventBroker.post(eventTopic, testStructure.getFullName());
 		} catch (final SystemException e) {
 			LOGGER.error(e.getMessage(), e);

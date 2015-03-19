@@ -124,8 +124,10 @@ public class TestHistoryPart {
 	@Optional
 	public void onActiveEditorChanged(
 			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
-		if (aTestStructure.isExecutableTestStructure()) {
-			showTestHistory(aTestStructure);
+		if (aTestStructure != null) {
+			if (aTestStructure.isExecutableTestStructure()) {
+				showTestHistory(aTestStructure);
+			}
 		}
 	}
 
