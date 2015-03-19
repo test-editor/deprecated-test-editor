@@ -367,6 +367,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("revisionNumber: " + revisionNumber);
 			}
+
+			revertMemoryModel(testStructure);
+
 			SVNStatusClient statusClient = clientManager.getStatusClient();
 			List<String> conflicts = checkWcState(statusClient, checkoutFile, revisionNumber);
 
@@ -762,7 +765,6 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			Collection<String> changeList = new ArrayList<String>();
 			File[] filesToReverted = new File[1];
 			filesToReverted[0] = fileToRevert;
-			SVNStatusClient statusClient = clientManager.getStatusClient();
 			String status = getStatus(testStructure, translationService);
 			String[] splits = status.split("\n");
 
