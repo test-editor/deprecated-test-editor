@@ -22,6 +22,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MDirectToolItem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -55,6 +56,8 @@ public class TestLogView {
 	@Inject
 	private TestEditorPlugInService testEditorPlugInService;
 
+	private TestStructure testStructure;
+
 	/**
 	 * Default Constructor of the TestLogView.
 	 * 
@@ -76,6 +79,7 @@ public class TestLogView {
 	public void postConstruct(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 		testLog = new StyledText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		testLog.setEditable(false);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
 		testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY, CustomWidgetIdConstants.TESTLOG_TEXT);
 	}
@@ -94,13 +98,16 @@ public class TestLogView {
 	 *            which last log should be displayed.
 	 */
 	public void setTestStructure(TestStructure testStructure) {
+		this.testStructure = testStructure;
 		try {
 			TestStructureService testStructureService = testEditorPlugInService
 					.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig().getTestServerID());
 			String logData = testStructureService.getLogData(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
-			testLog.setStyleRanges(getStyleRanges(logData));
+			if (ishHighlightLogEnabled()) {
+				testLog.setStyleRanges(getStyleRanges(logData));
+			}
 		} catch (SystemException e) {
 			LOGGER.error("Reading Testlog", e);
 			final String errorMessage = e.getCause().getMessage();
@@ -120,7 +127,7 @@ public class TestLogView {
 	 *            text to be styled.
 	 * @return array with styled ranges.
 	 */
-	private StyleRange[] getStyleRanges(String logData) {
+	protected StyleRange[] getStyleRanges(String logData) {
 		List<StyleRange> styleRanges = new ArrayList<StyleRange>();
 		String[] strings = logData.split("\n");
 		int start = 0;
@@ -191,5 +198,25 @@ public class TestLogView {
 		} catch (SystemException e) {
 			LOGGER.error("Can't change Testlog to " + aTestStructure, e);
 		}
+	}
+
+	/**
+	 * Checks the state of the highlight switch button.
+	 * 
+	 * @return true if the button is selected other wise false.
+	 */
+	public boolean ishHighlightLogEnabled() {
+		if (part.getToolbar() != null && part.getToolbar().getChildren().size() > 0) {
+			MDirectToolItem element = (MDirectToolItem) part.getToolbar().getChildren().get(0);
+			return element.isSelected();
+		}
+		return false;
+	}
+
+	/**
+	 * Refresh the logviewer.
+	 */
+	public void refreshView() {
+		setTestStructure(testStructure);
 	}
 }
