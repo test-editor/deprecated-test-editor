@@ -100,7 +100,7 @@ public class TestHistoryPartTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
 		testResult.setResultDate(sdf.parse("12.10.1970"));
 		String[] resultSummaryRowFrom = historyPart.getResultSummaryRowFrom(testResult);
-		assertEquals("Ok: 3;	 : 1", resultSummaryRowFrom[2]);
+		assertEquals(":3; :1; :-1; :0", resultSummaryRowFrom[2]);
 	}
 
 	/**
