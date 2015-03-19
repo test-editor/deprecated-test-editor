@@ -11,6 +11,9 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.reporting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -21,15 +24,18 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 
@@ -42,7 +48,7 @@ public class TestLogView {
 	public static final String ID = "org.testeditor.ui.parts.reporting.TestLogView";
 
 	private MPart part;
-	private Text testLog;
+	private StyledText testLog;
 
 	private static final Logger LOGGER = Logger.getLogger(TestLogView.class);
 
@@ -69,7 +75,7 @@ public class TestLogView {
 	@PostConstruct
 	public void postConstruct(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
-		testLog = new Text(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		testLog = new StyledText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
 		testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY, CustomWidgetIdConstants.TESTLOG_TEXT);
 	}
@@ -94,6 +100,7 @@ public class TestLogView {
 			String logData = testStructureService.getLogData(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
+			testLog.setStyleRanges(getStyleRanges(logData));
 		} catch (SystemException e) {
 			LOGGER.error("Reading Testlog", e);
 			final String errorMessage = e.getCause().getMessage();
@@ -104,6 +111,49 @@ public class TestLogView {
 				}
 			});
 		}
+	}
+
+	/**
+	 * Creates Style Ranges for a basic syntax highlighting.
+	 * 
+	 * @param logData
+	 *            text to be styled.
+	 * @return array with styled ranges.
+	 */
+	private StyleRange[] getStyleRanges(String logData) {
+		List<StyleRange> styleRanges = new ArrayList<StyleRange>();
+		String[] strings = logData.split("\n");
+		int start = 0;
+		for (String string : strings) {
+			boolean createStyle = false;
+			Color textColor = null;
+			if (string.contains("TRACE")) {
+				createStyle = true;
+				textColor = ColorConstants.COLOR_DARK_GREEN;
+			}
+			if (string.contains("DEBUG")) {
+				createStyle = true;
+				textColor = ColorConstants.COLOR_BLUE;
+			}
+			if (string.contains("ERROR")) {
+				createStyle = true;
+				textColor = ColorConstants.COLOR_RED;
+			}
+			if (string.contains("INFO")) {
+				createStyle = true;
+				textColor = ColorConstants.COLOR_DARK_GRAY;
+			}
+			if (createStyle) {
+				StyleRange style = new StyleRange();
+				style.foreground = textColor;
+				style.start = start;
+				style.length = string.length();
+				styleRanges.add(style);
+			}
+
+			start = start + string.length() + 1;
+		}
+		return styleRanges.toArray(new StyleRange[] {});
 	}
 
 	/**
