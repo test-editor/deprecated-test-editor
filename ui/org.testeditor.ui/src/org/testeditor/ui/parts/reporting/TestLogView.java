@@ -189,14 +189,17 @@ public class TestLogView {
 	@Optional
 	public void onActiveEditorChanged(
 			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
-		TestStructureService testStructureService = testEditorPlugInService.getTestStructureServiceFor(aTestStructure
-				.getRootElement().getTestProjectConfig().getTestServerID());
-		try {
-			if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasLogData(aTestStructure)) {
-				onTestExecutionShowTestLogForLastRun(aTestStructure);
+		if (aTestStructure != null) {
+			TestStructureService testStructureService = testEditorPlugInService
+					.getTestStructureServiceFor(aTestStructure.getRootElement().getTestProjectConfig()
+							.getTestServerID());
+			try {
+				if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasLogData(aTestStructure)) {
+					onTestExecutionShowTestLogForLastRun(aTestStructure);
+				}
+			} catch (SystemException e) {
+				LOGGER.error("Can't change Testlog to " + aTestStructure, e);
 			}
-		} catch (SystemException e) {
-			LOGGER.error("Can't change Testlog to " + aTestStructure, e);
 		}
 	}
 
