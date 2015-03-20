@@ -727,6 +727,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Override
 	@Focus
 	public void setFocus(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
+		// TODO why is this needed.
 		shell.setDefaultButton(null);
 		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
 		if (!hasFocus) {

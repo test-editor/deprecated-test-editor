@@ -71,7 +71,9 @@ public class TestProjectServiceImplTest {
 	public void testLookUpForRequiredBundels() throws Exception {
 		TestProjectServiceImpl service = (TestProjectServiceImpl) ServiceLookUpForTest
 				.getService(TestProjectService.class);
-		assertTrue("Demo Bundle exists", new File(service.findBundleFile("org.testeditor.demo")).exists());
+		assertTrue("Demo Bundle exists",
+				new File(service.findBundleFile("org.testeditor.demo"))
+						.exists());
 	}
 
 	/**
@@ -79,12 +81,16 @@ public class TestProjectServiceImplTest {
 	 */
 	@Test
 	public void testGetPropertiesFromConfigWithTeamShareLocalAndRemote() {
-		FrameworkUtil.getBundle(getClass()).getBundleContext()
-				.registerService(TeamShareConfigurationService.class, getTeamServiceConfigurationMock(), null);
+		FrameworkUtil
+				.getBundle(getClass())
+				.getBundleContext()
+				.registerService(TeamShareConfigurationService.class,
+						getTeamServiceConfigurationMock(), null);
 		TestProjectConfig projectConfig = new TestProjectConfig();
 		TestProjectServiceImpl service = (TestProjectServiceImpl) ServiceLookUpForTest
 				.getService(TestProjectService.class);
-		assertNotNull("Expect Properties on null value by teamshare", service.getPropertiesFrom(projectConfig));
+		assertNotNull("Expect Properties on null value by teamshare",
+				service.getPropertiesFrom(projectConfig));
 		projectConfig.setTeamShareConfig(new TeamShareConfig() {
 
 			@Override
@@ -92,8 +98,11 @@ public class TestProjectServiceImplTest {
 				return "myTeamId";
 			}
 		});
-		assertEquals("Expect Team ID in Properties", "myTeamId",
-				service.getPropertiesFrom(projectConfig).getProperty(TestEditorPlugInService.TEAMSHARE_ID));
+		assertEquals(
+				"Expect Team ID in Properties",
+				"myTeamId",
+				service.getPropertiesFrom(projectConfig).getProperty(
+						TestEditorPlugInService.TEAMSHARE_ID));
 	}
 
 	/**
@@ -112,10 +121,14 @@ public class TestProjectServiceImplTest {
 		for (File file : demoProjects) {
 			demoProjectNames.add(file.getName());
 		}
-		assertTrue("Expecting a demo project:", demoProjectNames.contains("DemoWebTests"));
-		assertTrue("Expecting a demo project:", demoProjectNames.contains("DemoWebRapTests"));
-		assertTrue("Expecting a demo project:", demoProjectNames.contains("DemoSwingTests"));
-		assertFalse("Expecting DemoEmpty not in the List of DemoProjects.", demoProjectNames.contains("DemoEmpty"));
+		assertTrue("Expecting a demo project:",
+				demoProjectNames.contains("DemoWebTests"));
+		assertTrue("Expecting a demo project:",
+				demoProjectNames.contains("DemoWebRapTests"));
+		assertTrue("Expecting a demo project:",
+				demoProjectNames.contains("DemoSwingTests"));
+		assertFalse("Expecting DemoEmpty not in the List of DemoProjects.",
+				demoProjectNames.contains("DemoEmpty"));
 	}
 
 	/**
@@ -126,7 +139,8 @@ public class TestProjectServiceImplTest {
 		return new TeamShareConfigurationService() {
 
 			@Override
-			public String getTranslatedHumanReadablePlugInName(TranslationService translationService) {
+			public String getTranslatedHumanReadablePlugInName(
+					TranslationService translationService) {
 				return null;
 			}
 
@@ -141,7 +155,8 @@ public class TestProjectServiceImplTest {
 			}
 
 			@Override
-			public Map<String, String> getAsProperties(TeamShareConfig teamShareConfig) {
+			public Map<String, String> getAsProperties(
+					TeamShareConfig teamShareConfig) {
 				return new HashMap<String, String>();
 			}
 
@@ -151,7 +166,8 @@ public class TestProjectServiceImplTest {
 			}
 
 			@Override
-			public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
+			public TeamShareConfig createTeamShareConfigFrom(
+					Properties properties) {
 				return new TeamShareConfig() {
 
 					@Override
@@ -176,17 +192,24 @@ public class TestProjectServiceImplTest {
 	 *             on storing the configuration after a migration
 	 */
 	@Test
-	public void testGetProjectConfigWithTeamShareOptionFromProperties() throws IOException {
-		FrameworkUtil.getBundle(getClass()).getBundleContext()
-				.registerService(TeamShareConfigurationService.class, getTeamServiceConfigurationMock(), null);
+	public void testGetProjectConfigWithTeamShareOptionFromProperties()
+			throws IOException {
+		FrameworkUtil
+				.getBundle(getClass())
+				.getBundleContext()
+				.registerService(TeamShareConfigurationService.class,
+						getTeamServiceConfigurationMock(), null);
 		Properties props = new Properties();
 		props.put(TestEditorPlugInService.TEAMSHARE_ID, "myTeamId");
 		props.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);
 		TestProjectServiceImpl service = (TestProjectServiceImpl) ServiceLookUpForTest
 				.getService(TestProjectService.class);
-		TestProjectConfig testProjectConfig = service.getTestProjectConfigFrom(props, PROJECT_NAME);
-		assertTrue("Expect Testproject has team support", testProjectConfig.isTeamSharedProject());
-		assertNotNull("Expect a TeamShare Config in the Testproject", testProjectConfig.getTeamShareConfig());
+		TestProjectConfig testProjectConfig = service.getTestProjectConfigFrom(
+				props, PROJECT_NAME);
+		assertTrue("Expect Testproject has team support",
+				testProjectConfig.isTeamSharedProject());
+		assertNotNull("Expect a TeamShare Config in the Testproject",
+				testProjectConfig.getTeamShareConfig());
 	}
 
 	/**
@@ -196,8 +219,9 @@ public class TestProjectServiceImplTest {
 	public void testGetTestProjectConfigFromVersion1dot2() {
 		TestProjectServiceImpl projectService = new TestProjectServiceImpl();
 		Properties properties = new Properties();
-		TestProjectConfig projectConfig = projectService.getTestProjectConfigFromVersion1dot2(new TestProjectConfig(),
-				properties);
+		TestProjectConfig projectConfig = projectService
+				.getTestProjectConfigFromVersion1dot2(new TestProjectConfig(),
+						properties);
 		assertNotNull("Project Config ", projectConfig);
 		assertEquals("fitnesse_based_1.2", projectConfig.getTestServerID());
 	}
@@ -213,8 +237,10 @@ public class TestProjectServiceImplTest {
 		TestProjectServiceImpl service = getTestProjectServiceImplMock();
 		service.activate(null);
 		assertEquals("One Project expected", 1, service.getProjects().size());
-		assertEquals("Project user acceptance test expected", "AkzeptanzTests", service.getProjects().get(0).getName());
-		assertNotNull("Project Config loaded", service.getProjects().get(0).getTestProjectConfig());
+		assertEquals("Project user acceptance test expected", "AkzeptanzTests",
+				service.getProjects().get(0).getName());
+		assertNotNull("Project Config loaded", service.getProjects().get(0)
+				.getTestProjectConfig());
 	}
 
 	/**
@@ -230,8 +256,10 @@ public class TestProjectServiceImplTest {
 		projectConfig.setPathToTestFiles("./");
 		TestProjectServiceImpl service = new TestProjectServiceImpl();
 		Properties properties = service.getPropertiesFrom(projectConfig);
-		TestProjectConfig cfgAfterStoring = service.getTestProjectConfigFrom(properties, PROJECT_NAME);
-		assertEquals("TestProjectConfig equals the loaded one.", projectConfig, cfgAfterStoring);
+		TestProjectConfig cfgAfterStoring = service.getTestProjectConfigFrom(
+				properties, PROJECT_NAME);
+		assertEquals("TestProjectConfig equals the loaded one.", projectConfig,
+				cfgAfterStoring);
 	}
 
 	/**
@@ -246,8 +274,10 @@ public class TestProjectServiceImplTest {
 		Properties properties = new Properties();
 		properties.put(TestProjectService.VERSION_TAG, "0.0");
 		TestProjectServiceImpl service = new TestProjectServiceImpl();
-		TestProjectConfig testProjectConfigFrom = service.getTestProjectConfigFrom(properties, PROJECT_NAME);
-		assertEquals(TestProjectService.UNSUPPORTED_CONFIG_VERSION, testProjectConfigFrom.getProjectConfigVersion());
+		TestProjectConfig testProjectConfigFrom = service
+				.getTestProjectConfigFrom(properties, PROJECT_NAME);
+		assertEquals(TestProjectService.UNSUPPORTED_CONFIG_VERSION,
+				testProjectConfigFrom.getProjectConfigVersion());
 	}
 
 	/**
@@ -276,7 +306,8 @@ public class TestProjectServiceImplTest {
 			}
 		};
 		TestProject project = service.getProjectWithName("MyTestProject");
-		assertEquals("Expecting project found.", "MyTestProject", project.getName());
+		assertEquals("Expecting project found.", "MyTestProject",
+				project.getName());
 	}
 
 	/**
@@ -331,7 +362,8 @@ public class TestProjectServiceImplTest {
 		list.add(tp);
 		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
 
-		assertNotNull(service.findTestStructureByFullName("Hello.TestSuite.TestCase"));
+		assertNotNull(service
+				.findTestStructureByFullName("Hello.TestSuite.TestCase"));
 		assertNotNull(service.findTestStructureByFullName("Hello.TestSuite"));
 	}
 
@@ -353,8 +385,10 @@ public class TestProjectServiceImplTest {
 		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
 		assertNotNull(service.findTestStructureByFullName("FirstName.TestCase"));
 		service.renameTestproject(tp, "SecondName");
-		TestStructure firstNameTP = service.findTestStructureByFullName("FirstName.TestCase");
-		TestStructure secondNameTP = service.findTestStructureByFullName("SecondName.TestCase");
+		TestStructure firstNameTP = service
+				.findTestStructureByFullName("FirstName.TestCase");
+		TestStructure secondNameTP = service
+				.findTestStructureByFullName("SecondName.TestCase");
 		assertNotNull(firstNameTP);
 		assertNotNull(secondNameTP);
 		assertSame(firstNameTP, secondNameTP);
@@ -376,10 +410,13 @@ public class TestProjectServiceImplTest {
 		service.renameTestproject(tp, "myname");
 		tp.setName("TestPrj");
 		service.renameTestproject(tp, "myname");
-		assertNull(service.containsFullNameRenamedElements("SecondProject.TestPath"));
+		assertNull(service
+				.containsFullNameRenamedElements("SecondProject.TestPath"));
 		assertNull(service.containsFullNameRenamedElements("myname.TestPath"));
-		assertEquals("FirstName", service.containsFullNameRenamedElements("FirstName.TestPath"));
-		assertEquals("TestPrj", service.containsFullNameRenamedElements("TestPrj.TestPath"));
+		assertEquals("FirstName",
+				service.containsFullNameRenamedElements("FirstName.TestPath"));
+		assertEquals("TestPrj",
+				service.containsFullNameRenamedElements("TestPrj.TestPath"));
 	}
 
 	/**
@@ -406,7 +443,8 @@ public class TestProjectServiceImplTest {
 	 *             on IO Error.
 	 */
 	@Test
-	public void testReplaceInReloadTestProjectWithNameOnExistingList() throws Exception {
+	public void testReplaceInReloadTestProjectWithNameOnExistingList()
+			throws Exception {
 		List<TestProject> list = new ArrayList<TestProject>();
 		TestProject tp = new TestProject();
 		tp.setName("MyPrj");
@@ -425,7 +463,8 @@ public class TestProjectServiceImplTest {
 	 */
 	@Test
 	public void testCreateAndConfigureDemoProjects() throws Exception {
-		TestProjectService service = ServiceLookUpForTest.getService(TestProjectService.class);
+		TestProjectService service = ServiceLookUpForTest
+				.getService(TestProjectService.class);
 		service.reloadProjectList();
 		List<File> demoProjectsDirs = new ArrayList<File>();
 		for (File file : service.getDemoProjects()) {
@@ -434,10 +473,13 @@ public class TestProjectServiceImplTest {
 			}
 		}
 		service.createAndConfigureDemoProjects(demoProjectsDirs);
-		assertTrue("Expecting DemoWebtests",
-				new File(Platform.getLocation().toFile() + File.separator + "DemoWebTests").exists());
-		assertTrue("Expecting DemoWebtests with config.tpr.", new File(Platform.getLocation().toFile() + File.separator
-				+ "DemoWebTests" + File.separator + "config.tpr").exists());
+		assertTrue("Expecting DemoWebtests", new File(Platform.getLocation()
+				.toFile() + File.separator + "DemoWebTests").exists());
+		assertTrue("Expecting DemoWebtests with config.tpr.", new File(Platform
+				.getLocation().toFile()
+				+ File.separator
+				+ "DemoWebTests"
+				+ File.separator + "config.tpr").exists());
 	}
 
 	/**
@@ -449,12 +491,16 @@ public class TestProjectServiceImplTest {
 	 */
 	@Test
 	public void testCreateNewProject() throws Exception {
-		TestProjectService service = ServiceLookUpForTest.getService(TestProjectService.class);
+		TestProjectService service = ServiceLookUpForTest
+				.getService(TestProjectService.class);
 		service.reloadProjectList();
-		assertTrue("Empty Project list expected.", service.getProjects().isEmpty());
+		assertTrue("Empty Project list expected.", service.getProjects()
+				.isEmpty());
 		TestProject testProject = service.createNewProject("MyDemo");
-		assertTrue("Expecting Project in List.", service.getProjects().contains(testProject));
-		assertNotNull("Expecting Project with config.", testProject.getTestProjectConfig());
+		assertTrue("Expecting Project in List.", service.getProjects()
+				.contains(testProject));
+		assertNotNull("Expecting Project with config.",
+				testProject.getTestProjectConfig());
 	}
 
 	/**
@@ -465,12 +511,15 @@ public class TestProjectServiceImplTest {
 	 */
 	@Test
 	public void testRenameProject() throws Exception {
-		TestProjectService service = ServiceLookUpForTest.getService(TestProjectService.class);
+		TestProjectService service = ServiceLookUpForTest
+				.getService(TestProjectService.class);
 		service.reloadProjectList();
 		TestProject testProject = service.createNewProject("MyDemo");
-		assertTrue("Expecting Project in List.", service.getProjects().contains(testProject));
+		assertTrue("Expecting Project in List.", service.getProjects()
+				.contains(testProject));
 		service.renameTestproject(testProject, "RenamedProject");
-		assertEquals("Expect Lookup with renamed name.", testProject, service.getProjectWithName("RenamedProject"));
+		assertEquals("Expect Lookup with renamed name.", testProject,
+				service.getProjectWithName("RenamedProject"));
 	}
 
 	/**
@@ -480,12 +529,15 @@ public class TestProjectServiceImplTest {
 	 */
 	@Test
 	public void testDeleteProject() throws Exception {
-		TestProjectService service = ServiceLookUpForTest.getService(TestProjectService.class);
+		TestProjectService service = ServiceLookUpForTest
+				.getService(TestProjectService.class);
 		service.reloadProjectList();
 		TestProject testProject = service.createNewProject("MyDemo");
-		assertTrue("Expecting Project in List.", service.getProjects().contains(testProject));
+		assertTrue("Expecting Project in List.", service.getProjects()
+				.contains(testProject));
 		service.deleteProject(testProject);
-		assertTrue("Empty Project list expected.", service.getProjects().isEmpty());
+		assertTrue("Empty Project list expected.", service.getProjects()
+				.isEmpty());
 	}
 
 	/**
@@ -513,20 +565,24 @@ public class TestProjectServiceImplTest {
 		File wsDir = Platform.getLocation().toFile();
 		for (File file : wsDir.listFiles()) {
 			if (file.isDirectory() && !file.getName().startsWith(".")) {
-				Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
-					@Override
-					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-						Files.delete(file);
-						return FileVisitResult.CONTINUE;
-					}
+				Files.walkFileTree(file.toPath(),
+						new SimpleFileVisitor<Path>() {
+							@Override
+							public FileVisitResult visitFile(Path file,
+									BasicFileAttributes attrs)
+									throws IOException {
+								Files.delete(file);
+								return FileVisitResult.CONTINUE;
+							}
 
-					@Override
-					public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-						Files.delete(dir);
-						return FileVisitResult.CONTINUE;
-					}
+							@Override
+							public FileVisitResult postVisitDirectory(Path dir,
+									IOException exc) throws IOException {
+								Files.delete(dir);
+								return FileVisitResult.CONTINUE;
+							}
 
-				});
+						});
 
 			}
 		}
@@ -539,12 +595,15 @@ public class TestProjectServiceImplTest {
 	 *             on io problems.
 	 */
 	private void createProjectInFileSystem() throws IOException {
-		File prjDir = new File(Platform.getLocation().toFile() + File.separator + "MyPrj");
+		File prjDir = new File(Platform.getLocation().toFile() + File.separator
+				+ "MyPrj");
 		if (prjDir.mkdir()) {
 			Properties props = new Properties();
 			props.put(TestEditorPlugInService.TEAMSHARE_ID, "myTeamId");
-			props.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);
-			FileOutputStream stream = new FileOutputStream(new File(prjDir + File.separator + "config.tpr"));
+			props.put(TestProjectService.VERSION_TAG,
+					TestProjectService.VERSION1_2);
+			FileOutputStream stream = new FileOutputStream(new File(prjDir
+					+ File.separator + "config.tpr"));
 			try {
 				props.store(stream, "Test");
 			} finally {
@@ -560,7 +619,8 @@ public class TestProjectServiceImplTest {
 	 *            list of projects
 	 * @return TestProjectSvericeImpl
 	 */
-	private TestProjectServiceImpl getTestProjectImplMockWithProjects(final List<TestProject> projectList) {
+	private TestProjectServiceImpl getTestProjectImplMockWithProjects(
+			final List<TestProject> projectList) {
 		return new TestProjectServiceImpl() {
 			@Override
 			public List<TestProject> getProjects() {
@@ -568,8 +628,8 @@ public class TestProjectServiceImplTest {
 			}
 
 			@Override
-			protected void renameProjectInFileSystem(String newName, String oldName) throws SystemException,
-					IOException {
+			protected void renameProjectInFileSystem(String newName,
+					String oldName) throws SystemException, IOException {
 				getProject(oldName).setName(newName);
 			}
 		};
@@ -583,11 +643,12 @@ public class TestProjectServiceImplTest {
 		return new TestProjectServiceImpl() {
 			@Override
 			protected File[] getWorkspaceDirectories() {
-				return new File[] { new File(".meta"), getTestProjectMockFile() };
+				return new File[] { new File(".meta"), getTestProjectMockFile(),new File("NoTestProject") };
 			}
 
 			@Override
-			public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
+			public TestProjectConfig getProjectConfigFor(TestProject testProject)
+					throws SystemException {
 				return new TestProjectConfig();
 			}
 		};
@@ -605,6 +666,11 @@ public class TestProjectServiceImplTest {
 			@Override
 			public boolean isDirectory() {
 				return true;
+			}
+
+			@Override
+			public String[] list() {
+				return new String[] { "config.tpr" };
 			}
 		};
 	}
