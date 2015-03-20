@@ -7,7 +7,7 @@
 
 	<groupId>org.testeditor</groupId>
 	<artifactId>JREProduct</artifactId>
-	<version>1.7.1</version>
+	<version>1.7.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Test Editor JRE Product</name>
