@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/descriptor/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_XMxlcMMbEeSGFPec5RoUYg">
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/descriptor/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_XMxlcMMbEeSGFPec5RoUYg">
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_KbaWUMMcEeSGFPec5RoUYg" featurename="children" parentElementId="org.testeditor.ui.menu.config">
-    <elements xsi:type="menu:HandledMenuItem" xmi:id="_iCbcMMgEEeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.directmenuitem.metadata" visible="false" label="** Metadaten pflegen ***" iconURI="platform:/plugin/org.testeditor.metadata.ui/icons/metadata.png" command="_X3uqIMgBEeSuq6r_RthKeA"/>
-    <elements xsi:type="menu:DirectMenuItem" xmi:id="_S8JSMMgHEeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.directmenuitem.metadata" label="Metadaten Pflegen" iconURI="platform:/plugin/org.testeditor.metadata.ui/icons/metadata.png" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.handler.OpenMetaDataAdminHandler"/>
+    <elements xsi:type="menu:DirectMenuItem" xmi:id="_266VsMMcEeSGFPec5RoUYg" elementId="org.testeditor.metadata.ui.directmenuitem.metadata" label="**Metadaten pflegen**" iconURI=""/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_e7xKEMMeEeSGFPec5RoUYg" featurename="descriptors" parentElementId="org.eclipse.e4.ide.application">
-    <elements xsi:type="basic:PartDescriptor" xmi:id="_lC_nAMMeEeSGFPec5RoUYg" elementId="org.testeditor.metadata.ui.taggingview" label="Metadata Tagging" iconURI="platform:/plugin/org.testeditor.metadata.ui/icons/metadata.png" category="metadata" closeable="true" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.parts.MetaDataTaggingView"/>
-    <elements xsi:type="basic:PartDescriptor" xmi:id="_WwZdYMf7EeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.parts.MetaDataAdminView" label="Metadata Administration" iconURI="platform:/plugin/org.testeditor.metadata.ui/icons/metadata.png" category="metadata" closeable="true" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.parts.MetaDataAdminView"/>
-  </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_n8lVMMf-EeSuq6r_RthKeA" featurename="handlers" parentElementId="org.eclipse.e4.ide.application">
-    <elements xsi:type="commands:Handler" xmi:id="__63TQMf-EeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.handler.openMetaDataTagging" command="_6lyaEMgAEeSuq6r_RthKeA"/>
-    <elements xsi:type="commands:Handler" xmi:id="_Kcel8MgBEeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.handler.openMetaDataAdmin" command="_X3uqIMgBEeSuq6r_RthKeA"/>
-  </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_01U3UMgAEeSuq6r_RthKeA" featurename="commands" parentElementId="org.eclipse.e4.ide.application">
-    <elements xsi:type="commands:Command" xmi:id="_6lyaEMgAEeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.command.openMetaDataTagging" commandName="org.testeditor.metadata.ui.command.openMetaDataTagging"/>
-    <elements xsi:type="commands:Command" xmi:id="_X3uqIMgBEeSuq6r_RthKeA" elementId="org.testeditor.metadata.ui.command.openMetaDataAdmin" commandName="org.testeditor.metadata.ui.command.openMetaDataAdmin"/>
+    <elements xsi:type="basic:PartDescriptor" xmi:id="_lC_nAMMeEeSGFPec5RoUYg" elementId="org.testeditor.metadata.ui.adminview" label="Metadata Administration" closeable="true"/>
   </fragments>
 </fragment:ModelFragments>
