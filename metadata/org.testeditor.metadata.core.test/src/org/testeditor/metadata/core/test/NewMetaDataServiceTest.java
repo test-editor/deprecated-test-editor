@@ -43,7 +43,7 @@ import org.testeditor.metadata.core.model.MetaDataValueList;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class MetaDataServiceTest {
+public class NewMetaDataServiceTest {
 
 	TestProject project;
 	MetaDataStore testStore;
@@ -205,30 +205,6 @@ public class MetaDataServiceTest {
 	}
 
 	@Test
-	public void testSaveCreateNewValue() throws Exception {
-		MetaDataService service = getService();
-		// TODO: project = null
-		MetaDataStore store = service.getMetaDataStore(project);
-		store.setProject(project);
-		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
-		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
-		MetaDataValue newValue = store.createNewValue("1", "Hallo", store.getList().get(0));
-		newMetaDataValues.add(newValue);
-		toBeSavedMetaDataList.setDescription("TEST");
-		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
-		toBeSavedMetaDataList.setName("Hallo");
-
-		store.getList().add(toBeSavedMetaDataList);
-		service.saveLists(store);
-
-	}
-
-	// @Test
-	// public void testCreateDuplicateValue() {
-	//
-	// }
-
-	@Test
 	public void testGetAllMetaDataList() throws IOException {
 		MetaDataService service = getService();
 		MetaDataStore storeFromXml = service.getMetaDataStore(project);
@@ -238,47 +214,56 @@ public class MetaDataServiceTest {
 		assertTrue(testStore.getList().containsAll(storeFromXml.getList()));
 	}
 
+	// TODO: Folgende Methode und removeValue()
 	@Test
-	public void testSaveAddMetaDataList() throws Exception {
-
+	public void testSaveAddNewMetaDataValue() throws Exception {
 		MetaDataService service = getService();
+		MetaDataStore store = service.getMetaDataStore(project);
 
 		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
-		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
-		MetaDataValue value = new MetaDataValue();
-		value.setId(5);
-		value.setKey("TEST key");
-		value.setValue("TEST value");
-		value.setParent(toBeSavedMetaDataList);
-		newMetaDataValues.add(value);
-		toBeSavedMetaDataList.setName("TEST name");
-		toBeSavedMetaDataList.setDescription("TEST description");
-		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
+		toBeSavedMetaDataList.setName("Gevo");
 
-		// TODO: Auslagern
-		MetaDataStore toBeUpdatedstore = service.getMetaDataStore(project);
-		List<MetaDataValueList> toBeUpdatedList = toBeUpdatedstore.getList();
-
-		for (MetaDataValueList metaDataValueList : toBeUpdatedList) {
-			if (toBeSavedMetaDataList.getName().equals(metaDataValueList.getName())) {
-				throw new Exception("Eine MetaDataList mit dem ShortName '" + toBeSavedMetaDataList.getName()
-						+ "' ist bereits vorhanden.");
+		List<MetaDataValueList> listFromXML = store.getList();
+		for (MetaDataValueList metaDataValueList : listFromXML) {
+			if (metaDataValueList.getName().equals(toBeSavedMetaDataList.getName())) {
+				MetaDataValue newValue = store.createNewValue("1", "Hallo", metaDataValueList);
+				metaDataValueList.getMetaDataValues().add(newValue);
 			}
 		}
 
-		toBeUpdatedstore.getList().add(toBeSavedMetaDataList);
-		service.saveLists(toBeUpdatedstore);
+		service.saveLists(store);
+		MetaDataStore storeFromXml = service.getMetaDataStore(project);
 
-		MetaDataStore updatedStore = service.getMetaDataStore(toBeUpdatedstore.getProject());
-		List<MetaDataValueList> updatedListWithAddedElement = updatedStore.getList();
-		assertEquals(updatedListWithAddedElement.size(), toBeUpdatedstore.getList().size());
-		assertTrue(updatedListWithAddedElement.contains(toBeSavedMetaDataList));
+		assertEquals(storeFromXml.getList().size(), store.getList().size());
+		assertEquals(storeFromXml.getId(), store.getId());
+	}
+
+	@Test
+	public void testSaveAddNewMetaDataValueList() throws Exception {
+		MetaDataService service = getService();
+		MetaDataStore store = service.getMetaDataStore(project);
+
+		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
+		toBeSavedMetaDataList.setDescription("TEST");
+		toBeSavedMetaDataList.setName("Hallo");
+		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
+		MetaDataValue newValue = store.createNewValue("1", "Hallo", toBeSavedMetaDataList);
+		newMetaDataValues.add(newValue);
+		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
+
+		store.getList().add(toBeSavedMetaDataList);
+		service.saveLists(store);
+
+		MetaDataStore storeFromXml = service.getMetaDataStore(project);
+
+		assertEquals(storeFromXml.getList().size(), store.getList().size());
+		assertEquals(storeFromXml.getId(), store.getId());
+		assertTrue(storeFromXml.getList().contains(toBeSavedMetaDataList));
 
 	}
 
 	@Test
-	public void testSaveRemoveMetaDataList() throws Exception {
-
+	public void testSaveRemoveMetaDataValueList() throws Exception {
 		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
 		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
 		MetaDataValue value = new MetaDataValue();
@@ -291,126 +276,52 @@ public class MetaDataServiceTest {
 		toBeSavedMetaDataList.setDescription("TEST description");
 		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
 
-		MetaDataService service = new MetaDataServiceImpl();
+		MetaDataService service = getService();
 		MetaDataStore toBeUpdatedstore = service.getMetaDataStore(project);
-
 		toBeUpdatedstore.getList().remove(toBeSavedMetaDataList);
 		service.saveLists(toBeUpdatedstore);
 
 		MetaDataStore updatedStore = service.getMetaDataStore(toBeUpdatedstore.getProject());
 		List<MetaDataValueList> updatedListWithAddedElement = updatedStore.getList();
 		assertEquals(updatedListWithAddedElement.size(), toBeUpdatedstore.getList().size());
+		assertEquals(updatedStore.getId(), toBeUpdatedstore.getId());
 		assertFalse(updatedListWithAddedElement.contains(toBeSavedMetaDataList));
-
 	}
 
-	@Test
-	// TODO?
-	public void testSaveListWithExistingElement() throws Exception {
-		testMetaDataTags = new MetaDataTagList();
-		testMetaDataTags.setTestcase(testCase);
+	@Test(expected = RuntimeException.class)
+	public void testCreateDuplicateValue() throws Exception {
+		MetaDataService service = getService();
+		MetaDataStore store = service.getMetaDataStore(project);
+		store.setProject(project);
 
-		MetaDataTag metaDataTag = new MetaDataTag();
-		MetaDataValue value = new MetaDataValue();
-		value.setKey("2");
-		value.setValue("Antrag speichern.");
-		metaDataTag.setMetaDataValue(value);
+		MetaDataValueList parentList = store.getList().get(2);
+		List<MetaDataValue> alreadyExsistingMetaDataValues = new ArrayList<>();
+		MetaDataValue alreadyExsistingValue = store.createNewValue("1", "Antrag speichern.", parentList);
+		alreadyExsistingMetaDataValues.add(alreadyExsistingValue);
+
+		service.saveLists(store);
 	}
+
+	// TODO: public void testCreateValueWithSameId()
+	// TODO: Testen, ob Liste bereits vorhanden (name muss eindeutig sein)
+	// TODO: Testen, ob Parent mit der angegebenen Liste identisch ist
 
 	@Test
 	public void testGetMetaDataTags() {
-
-		MetaDataService service = new MetaDataServiceImpl();
+		// TODO: MetaDataValue wird nicht übergeben aus der xml..
+		// Grund: Diese werden nicht in XML erzeugt. Daher mit Hilfe des Keys
+		// passend aus dem Store suchen und zurückgeben?
+		MetaDataService service = getService();
 		MetaDataTagList metaDataTagListFromXml = service.getTags(testCase);
 
 		assertEquals(testMetaDataTags.getTags().size(), metaDataTagListFromXml.getTags().size());
 		assertTrue(testMetaDataTags.getTags().containsAll(metaDataTagListFromXml.getTags()));
 	}
 
-	/*
-	 * TODO
-	 * 
-	 * @Test public void testGetEmptyMetaDataTagList() throws IOException,
-	 * SystemException { TestProjectService projectService =
-	 * (TestProjectService) ServiceLookUpForTest
-	 * .getService(TestProjectService.class); TestProject testProject =
-	 * projectService.createNewProject("projectWithoutFile");
-	 * org.testeditor.core.model.teststructure.TestSuite testSuite = new
-	 * org.testeditor.core.model.teststructure.TestSuite();
-	 * testSuite.setName("testSuiteWithoutFile");
-	 * testProject.addChild(testSuite); TestCase testCaseWithoutFile = new
-	 * TestCase(); testCaseWithoutFile.setName("testCaseWithoutFile");
-	 * testSuite.addChild(testCase);
-	 * 
-	 * MetaDataService service = new MetaDataServiceImpl(); MetaDataTagList
-	 * metaDataTagListFromXml = service.getTags(testCaseWithoutFile);
-	 * metaDataTagListFromXml.setTestcase(testCaseWithoutFile);
-	 * 
-	 * assertTrue(metaDataTagListFromXml.getTags().isEmpty());
-	 * 
-	 * }
-	 */
+	// TODO: Add & Remove Tags
 
-	@Test
-	public void testSaveAddMetaDataTag() throws Exception {
-
-		MetaDataService service = new MetaDataServiceImpl();
-
-		List<MetaDataTag> toBeSavedMetaDataTags = new ArrayList<>();
-		MetaDataTag toBeSavedMetaDataTag = new MetaDataTag();
-		MetaDataValue newValue = new MetaDataValue();
-		newValue.setKey("new key");
-		newValue.setValue("new value");
-		toBeSavedMetaDataTag.setMetaDataValue(newValue);
-		toBeSavedMetaDataTags.add(toBeSavedMetaDataTag);
-
-		MetaDataTagList toBeUpdatedList = service.getTags(testCase);
-		toBeUpdatedList.setTestcase(testCase);
-		List<MetaDataTag> toBeUpdatedTags = toBeUpdatedList.getTags();
-
-		// TODO: Auslagern
-		for (MetaDataTag metaDataTag : toBeUpdatedTags) {
-			if (toBeSavedMetaDataTag.getMetaDataValue().getValue().equals(metaDataTag.getMetaDataValue().getValue())) {
-				throw new Exception("Es existiert bereits ein MetaDataTag mit folgenden MetaDataValues: '"
-						+ toBeSavedMetaDataTag.getMetaDataValue().getKey() + "' & '"
-						+ toBeSavedMetaDataTag.getMetaDataValue().getValue() + "'.");
-			}
-		}
-
-		toBeUpdatedList.getTags().addAll(toBeSavedMetaDataTags);
-		service.saveTags(toBeUpdatedList);
-
-		MetaDataTagList updatedListWithAddedTags = service.getTags(testCase);
-		assertEquals(toBeUpdatedList.getTags().size(), updatedListWithAddedTags.getTags().size());
-		assertTrue(updatedListWithAddedTags.getTags().containsAll(toBeUpdatedList.getTags()));
-
-	}
-
-	@Test
-	public void testSaveRemoveMetaDataTag() throws Exception {
-
-		MetaDataService service = new MetaDataServiceImpl();
-
-		List<MetaDataTag> toBeSavedMetaDataTags = new ArrayList<>();
-		MetaDataTag toBeSavedMetaDataTag = new MetaDataTag();
-		MetaDataValue newValue = new MetaDataValue();
-		newValue.setKey("new key");
-		newValue.setValue("new value");
-		toBeSavedMetaDataTag.setMetaDataValue(newValue);
-		toBeSavedMetaDataTags.add(toBeSavedMetaDataTag);
-
-		MetaDataTagList toBeUpdatedList = service.getTags(testCase);
-		toBeUpdatedList.setTestcase(testCase);
-		toBeUpdatedList.getTags().remove(toBeSavedMetaDataTags);
-		service.saveTags(toBeUpdatedList);
-
-		MetaDataTagList updatedListWithAddedTags = service.getTags(testCase);
-		assertEquals(toBeUpdatedList.getTags().size(), updatedListWithAddedTags.getTags().size());
-		assertFalse(updatedListWithAddedTags.getTags().containsAll(toBeSavedMetaDataTags));
-	}
-
-	// TODO: Funktioniert nicht (mehr) - MetaDataOrdner und Technical Bindings
-	// löschen...
+	// TODO: Funktioniert nicht (mehr) -> MetaDataOrdner und Technical Bindings
+	// löschen..?
 	// @After
 	// public void deleteProject() {
 	//

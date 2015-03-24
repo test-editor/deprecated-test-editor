@@ -20,7 +20,7 @@ import org.testeditor.metadata.core.model.MetaDataTagList;
 
 public interface MetaDataService {
 
-	MetaDataStore getAllMetaDataLists(TestProject testProject);
+	MetaDataStore getMetaDataStore(TestProject testProject);
 
 	public void saveLists(MetaDataStore store) throws Exception;
 
