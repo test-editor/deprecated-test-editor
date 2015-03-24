@@ -45,23 +45,19 @@ public class MetaDataServiceImpl implements MetaDataService {
 	}
 
 	@Override
-	public MetaDataStore getAllMetaDataLists(TestProject testProject) {
+	public MetaDataStore getMetaDataStore(TestProject testProject) {
 
 		File metaDataFile = getMetaDataFile(testProject);
 		MetaDataStore store = new MetaDataStore();
-		store.setProject(testProject);
-
 		if (metaDataFile.exists()) {
 			Object fromXML = xStream.fromXML(metaDataFile);
 
 			if (fromXML instanceof MetaDataStore) {
-				store.getList().addAll(((MetaDataStore) fromXML).getList());
-				return store;
+				store = ((MetaDataStore) fromXML);
 			}
-
 		}
+		store.setProject(testProject);
 		return store;
-
 	}
 
 	@Override
@@ -77,15 +73,16 @@ public class MetaDataServiceImpl implements MetaDataService {
 	public MetaDataTagList getTags(TestStructure testcase) {
 
 		File xmlTagFile = getTagFile(testcase);
+		MetaDataTagList tags = new MetaDataTagList();
 
 		if (xmlTagFile.exists()) {
 			Object fromXML = xStream.fromXML(xmlTagFile);
 			if (fromXML instanceof MetaDataTagList) {
-				return (MetaDataTagList) fromXML;
+				tags = (MetaDataTagList) fromXML;
 			}
 		}
 
-		MetaDataTagList tags = new MetaDataTagList();
+		tags.setTestcase(testcase);
 		return tags;
 
 	}
