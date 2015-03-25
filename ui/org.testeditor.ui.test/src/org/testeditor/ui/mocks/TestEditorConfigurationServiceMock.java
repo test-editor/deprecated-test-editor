@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.mocks;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.osgi.service.prefs.BackingStoreException;
@@ -51,6 +52,10 @@ public class TestEditorConfigurationServiceMock implements TestEditorConfigurati
 	@Override
 	public boolean isResetApplicationState() {
 		return false;
+	}
+
+	@Override
+	public void initializeSystemProperties() throws IOException {
 	}
 
 }
