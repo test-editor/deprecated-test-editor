@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
-	<classpathentry exported="true" kind="lib" path="lib/fitnesse.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/fitnesse-20121220_Build_20140417.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
