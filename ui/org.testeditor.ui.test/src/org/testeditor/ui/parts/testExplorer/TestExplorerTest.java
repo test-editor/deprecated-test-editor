@@ -34,9 +34,8 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
-import org.eclipse.e4.ui.model.application.ui.menu.MPopupMenu;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -200,10 +199,10 @@ public class TestExplorerTest {
 		EMenuService service = new EMenuService() {
 
 			@Override
-			public MPopupMenu registerContextMenu(Object parent, String menuId) {
+			public boolean registerContextMenu(Object parent, String menuId) {
 				assertEquals("org.testeditor.ui.popupmenu", menuId);
 				checkup.add(parent);
-				return null;
+				return true;
 			}
 		};
 		testExplorer.createUi(shell, service);

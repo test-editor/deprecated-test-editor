@@ -150,11 +150,11 @@ public class TestProject extends TestCompositeStructure {
 	/**
 	 * @return the Root of all TestScenarios.
 	 */
-	public TestStructure getScenarioRoot() {
+	public ScenarioSuite getScenarioRoot() {
 		List<TestStructure> list = getTestChildren();
 		for (TestStructure testStructure : list) {
 			if (testStructure instanceof ScenarioSuite) {
-				return testStructure;
+				return (ScenarioSuite) testStructure;
 			}
 		}
 		return null;
