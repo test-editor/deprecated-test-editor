@@ -27,9 +27,9 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.OpenEvent;
@@ -84,7 +84,6 @@ public class TestExplorer {
 	 * @param service
 	 *            service object used to register the popup-menu
 	 */
-	@SuppressWarnings("restriction")
 	@PostConstruct
 	public void createUi(Composite parent, EMenuService service) {
 		testStructureTree = ContextInjectionFactory.make(TestStructureTree.class, context);

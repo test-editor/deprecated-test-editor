@@ -316,4 +316,8 @@ public class MPartAdapter implements MPart {
 		return null;
 	}
 
+	@Override
+	public void updateLocalization() {
+	}
+
 }
