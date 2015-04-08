@@ -276,9 +276,8 @@ public class Action extends AbstractAction {
 	 */
 	@Override
 	public String getNameOfAction() {
-		String nameOfAction = "";
-		nameOfAction = getActionName();
-		if (nameOfAction != "") {
+		String nameOfAction = getActionName();
+		if (!nameOfAction.equals("")) {
 			return nameOfAction;
 		}
 		int keyPos = 0;
