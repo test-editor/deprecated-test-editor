@@ -55,9 +55,6 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.testing.ITestHarness;
 import org.eclipse.ui.testing.TestableObject;
 import org.hamcrest.Matcher;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.FrameworkUtil;
 
 /**
  * 
@@ -109,14 +106,11 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * Stops the Application by telling the Workbench that the test is Finished.
 	 */
 	public void stopApplication() {
-		testableObject.testingFinished();
-		LOGGER.info(">>>> Stopping AUT");
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-		try {
-			bundle.getBundleContext().getBundle(0).stop();
-		} catch (BundleException e) {
-			LOGGER.error("AUT Shutdown failed", e);
+		if (Display.getCurrent() != null && !Display.getCurrent().isDisposed()) {
+			testableObject.testingFinished();
 		}
+		LOGGER.info(">>>> Stopping AUT");
+		bot.activeShell().close();
 	}
 
 	/**
@@ -780,7 +774,13 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
-			return "ERROR " + e.getMessage();
+			StringBuffer sb = new StringBuffer();
+			sb.append("ERROR ").append(e.getMessage());
+			StackTraceElement[] trace = e.getStackTrace();
+			for (StackTraceElement stackTraceElement : trace) {
+				sb.append("\n").append(stackTraceElement.toString());
+			}
+			return sb.toString();
 		}
 		return Boolean.toString(true);
 
