@@ -418,7 +418,7 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 	 */
 	public void fireSelectionChangeEvent() {
 		if (!eventTopic.equalsIgnoreCase("")) {
-			eventBroker.send(eventTopic, this);
+			eventBroker.send(eventTopic, this.getText());
 		}
 	}
 
