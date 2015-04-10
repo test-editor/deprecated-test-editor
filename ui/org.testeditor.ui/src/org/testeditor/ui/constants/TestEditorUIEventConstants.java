@@ -86,6 +86,12 @@ public final class TestEditorUIEventConstants {
 	public static final String ACTIVE_TESTFLOW_EDITOR_CHANGED = "testflow/active_in_editor";
 
 	/**
+	 * events will be fired in actiongroup / action combobox if content modified
+	 */
+	public static final String ACTION_GROUP_COMBO_MODIFIED = "action_group_combo_modified";
+	public static final String ACTIONS_COMBO_MODIFIED = "actions_combo_modified";
+
+	/**
 	 * Private constructor to avoid instances of this class.
 	 */
 	private TestEditorUIEventConstants() {
