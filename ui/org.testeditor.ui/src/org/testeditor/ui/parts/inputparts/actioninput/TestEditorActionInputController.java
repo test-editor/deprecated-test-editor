@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.events.ModifyEvent;
@@ -47,6 +48,7 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.ui.constants.TestEditorEventConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.editor.ITestEditorController;
 import org.testeditor.ui.parts.editor.view.TestEditorController;
 import org.testeditor.ui.parts.editor.view.handler.TestEditorInputObject;
@@ -125,7 +127,10 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 	 * @param actionGroupName
 	 *            name of the actionGroup
 	 */
-	void createComboboxActionSelection(String actionGroupName) {
+	@Inject
+	@Optional
+	void createComboboxActionSelection(
+			@UIEventTopic(TestEditorUIEventConstants.ACTION_GROUP_COMBO_MODIFIED) String actionGroupName) {
 		if (comboboxActionSelectionListener == null) {
 			addSelectionListenerToActionCombobox();
 		}
@@ -173,7 +178,10 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 	 * @param technicalBindingType
 	 *            name of the {@link TechnicalBindingType}
 	 */
-	public void createActionLineInputArea(String technicalBindingType) {
+	@Inject
+	@Optional
+	public void createActionLineInputArea(
+			@UIEventTopic(TestEditorUIEventConstants.ACTIONS_COMBO_MODIFIED) String technicalBindingType) {
 		String maske = editArea.getComboActionGroup().getText();
 		createActionLineInputArea(maske, technicalBindingType);
 	}
