@@ -104,13 +104,18 @@ public class TEAgentServer extends Thread implements ITestHarness {
 
 	/**
 	 * Stops the Application by telling the Workbench that the test is Finished.
+	 * SWTBot tries to close the active window. If there is no active window,
+	 * the JVM will be terminated.
 	 */
 	public void stopApplication() {
 		if (Display.getCurrent() != null && !Display.getCurrent().isDisposed()) {
 			testableObject.testingFinished();
+			LOGGER.info(">>>> Stopping AUT");
+			bot.activeShell().close();
+		} else {
+			LOGGER.info(">>>> Terminating AUT");
+			System.exit(0);
 		}
-		LOGGER.info(">>>> Stopping AUT");
-		bot.activeShell().close();
 	}
 
 	/**
@@ -768,7 +773,15 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " ...");
 			}
-			bot.button(text).click();
+			SWTBotButton button = bot.button(text);
+			LOGGER.trace("Found button " + button);
+			try {
+				// There is a Try catch for index out bound exeption, to ignore
+				// the event notification error in swtbot.
+				button.click();
+			} catch (IndexOutOfBoundsException e) {
+				LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
+			}
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " clicked");
 			}
