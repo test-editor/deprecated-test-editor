@@ -9,7 +9,7 @@
      ====================================================================== -->
 <project name="manageFitnesse" default="shutdownFitnesse" basedir=".">
 	
-	<property name="fitnesse_jar" location="${basedir}/../../fitnesse/org.testeditor.fitnesse/lib/fitnesse.jar" />
+	<property name="fitnesse_jar" location="${basedir}/../../fitnesse/org.testeditor.fixture.lib/lib/fitnesse-20121220_Build_20140417.jar" />
 	<property name="testPath" location="${basedir}/../../../TestEditorTests" />
 	<property name="port" value="9234"/>
 	
