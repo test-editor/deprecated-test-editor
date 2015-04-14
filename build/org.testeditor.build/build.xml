@@ -27,7 +27,7 @@
     	      <arg value="${port}"/>
         	<jvmarg value="-DSLIM_CMD_VAR_LOG4J_RELATIV_PATH=${basedir}/../../swtbot/org.testeditor.agent.swtbot/log4j.xml"/>
     	 	   <!-- Die APPLICATION_WORK Variable zeigt auf das frisch ausgecheckte Test-Editor Tests Verzeichnis-->
-    	 	<jvmarg value="-DAPPLICATION_WORK=${basedir}/../../../"/>
+    	 	<jvmarg value="-DAPPLICATION_WORK=${basedir}/../../../TestEditorTests"/>
           <!-- Diese Einstellungen werden ab Version 1.6.2 nicht mehr benoetigt-->
               <!--	<jvmarg value="-DFIXTURE_JAR_PATH=${basedir}/../../fitnesse/org.testeditor.fixture.lib/fixture/"/> -->
         	<!-- diese Einstellung fuehrt zu der ausfuehrbaren Test-Editor Version und wird je nach Betriebssystem zusammengestellt -->
