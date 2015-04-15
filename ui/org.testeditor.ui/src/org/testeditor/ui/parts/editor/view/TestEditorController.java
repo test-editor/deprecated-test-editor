@@ -552,7 +552,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		if (mpart != null) {
 			mpart.setDirty(true);
 		}
-		compositeForView.layout(true);
 	}
 
 	/**
