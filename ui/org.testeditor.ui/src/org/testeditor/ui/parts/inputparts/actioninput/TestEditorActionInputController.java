@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.events.ModifyEvent;
@@ -74,6 +75,9 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 	private String lastSelectedMask = "";
 
 	private SelectionListener comboboxActionSelectionListener;
+
+	@Inject
+	private IEventBroker eventBroker;
 
 	/**
 	 * this method is called when this part gets the focus. This method is
@@ -183,6 +187,9 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 	public void createActionLineInputArea(
 			@UIEventTopic(TestEditorUIEventConstants.ACTIONS_COMBO_MODIFIED) String technicalBindingType) {
 		String maske = editArea.getComboActionGroup().getText();
+		if (maske.equals("")) {
+			throw new IllegalStateException("No ActionGroup (Mask) selected.");
+		}
 		createActionLineInputArea(maske, technicalBindingType);
 	}
 
@@ -194,7 +201,7 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 	 * @param technicalBindingType
 	 *            name of the {@link TechnicalBindingType}
 	 */
-	private void createActionLineInputArea(String maske, String technicalBindingType) {
+	protected void createActionLineInputArea(String maske, String technicalBindingType) {
 		ActionGroup actionGroup = actionGroupService.getActionGroup(editArea.getTestCaseController().getTestFlow()
 				.getRootElement(), maske);
 		LinkedList<ArrayList<String>> parameterList = new LinkedList<ArrayList<String>>();
@@ -621,10 +628,8 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 
 				TestActionGroup testComponent = actionGroupService.createTestActionGroup(testFlow.getRootElement(),
 						mask, inputTexts, arguments);
-				getEventBroker().post(
-						TestEditorEventConstants.CACHE_TEST_COMPONENT_TEMPORARY,
-						new TestEditorInputObject(testFlow, testComponent, selectedLineInTestCase, cursorPosInLine,
-								editArea.getAddMode()));
+				eventBroker.post(TestEditorEventConstants.CACHE_TEST_COMPONENT_TEMPORARY, new TestEditorInputObject(
+						testFlow, testComponent, selectedLineInTestCase, cursorPosInLine, editArea.getAddMode()));
 			}
 		}
 	}

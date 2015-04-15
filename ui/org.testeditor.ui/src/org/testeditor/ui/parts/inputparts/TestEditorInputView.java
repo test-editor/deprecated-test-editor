@@ -13,6 +13,7 @@ package org.testeditor.ui.parts.inputparts;
 
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -28,6 +29,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  */
 public abstract class TestEditorInputView {
 
+	@Inject
+	@Optional
 	private ITestEditorController testCaseController;
 	private Composite editComposite;
 	private Button commitButton;
