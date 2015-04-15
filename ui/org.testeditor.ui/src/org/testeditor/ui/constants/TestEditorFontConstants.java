@@ -60,9 +60,11 @@ public final class TestEditorFontConstants {
 	 */
 	private static Font getFont(int style) {
 		try {
-			String systemFontName = getDisplay().getSystemFont().getFontData()[0].getName();
-			int systemFontHeight = getDisplay().getSystemFont().getFontData()[0].getHeight();
-			return new Font(getDisplay(), systemFontName, systemFontHeight, style);
+			if (getDisplay().getThread() == Thread.currentThread()) {
+				String systemFontName = getDisplay().getSystemFont().getFontData()[0].getName();
+				int systemFontHeight = getDisplay().getSystemFont().getFontData()[0].getHeight();
+				return new Font(getDisplay(), systemFontName, systemFontHeight, style);
+			}
 		} catch (SWTException e) {
 			Logger logger = Logger.getLogger(OpenTestStructureHandler.class);
 			logger.error("Can't create shared font", e);

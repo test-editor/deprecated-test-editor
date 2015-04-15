@@ -28,10 +28,8 @@ import org.testeditor.core.services.interfaces.ActionGroupService;
 /**
  * a mockup for the ActionGroupService.
  * 
- * @author llipinski
- * 
  */
-public class TestActionGroupServiceAdapter implements ActionGroupService {
+public class ActionGroupServiceAdapter implements ActionGroupService {
 
 	@Override
 	public List<ActionGroup> getActionGroups(TestProject testProject) {

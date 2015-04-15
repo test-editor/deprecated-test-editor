@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.swt.widgets.Composite;
@@ -35,6 +36,8 @@ public class TestEditorDescriptionInputController extends AbstractTestEditorInpu
 
 	@Inject
 	private IEclipseContext context;
+	@Inject
+	private IEventBroker eventBroker;
 
 	private TestEditorDescriptionInputView editArea;
 
@@ -191,7 +194,7 @@ public class TestEditorDescriptionInputController extends AbstractTestEditorInpu
 	@Override
 	public void cacheInput(@UIEventTopic(TestEditorEventConstants.CACHE_TEST_COMPONENT_OF_PART_TEMPORARY) Object obj) {
 		if (editArea != null) {
-			editArea.cacheInput(getEventBroker());
+			editArea.cacheInput(eventBroker);
 		}
 
 	}
