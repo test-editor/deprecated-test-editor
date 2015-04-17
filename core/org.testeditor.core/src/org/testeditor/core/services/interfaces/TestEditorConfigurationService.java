@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.osgi.service.prefs.BackingStoreException;
@@ -98,5 +99,15 @@ public interface TestEditorConfigurationService {
 	 * @return state of the Application reset.
 	 */
 	boolean isResetApplicationState();
+
+	/**
+	 * Initializes the System Properties of the Applications. They are used by
+	 * the test engine in a new jvm. It sets the path to the system fixtures and
+	 * the workspace location.
+	 * 
+	 * @throws IOException
+	 *             on file access.
+	 */
+	void initializeSystemProperties() throws IOException;
 
 }
