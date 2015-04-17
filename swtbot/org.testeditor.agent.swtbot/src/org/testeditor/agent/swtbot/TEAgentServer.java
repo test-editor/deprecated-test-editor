@@ -31,10 +31,14 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
@@ -42,6 +46,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
+import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -49,6 +54,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -1255,6 +1261,47 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * Select a string in a auto complete widget.
+	 * 
+	 * @param item
+	 *            that is selected
+	 * @return true on success.
+	 */
+	public String selectElementInAtuocompleteWidget(final String item) {
+		try {
+			SWTBotShell shell = bot.shell("", bot.activeShell().widget);
+			shell.activate();
+			final Table table = (Table) bot.widget(WidgetMatcherFactory.widgetOfType(Table.class), shell.widget);
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					TableItem[] items = table.getItems();
+					TableItem workOn = null;
+					for (int i = 0; i < items.length; i++) {
+						TableItem tableItem = table.getItem(i);
+						if (tableItem.getText().equals(item)) {
+							workOn = tableItem;
+							bot.table().click(i, 0);
+						}
+					}
+					if (workOn != null) {
+						Event event = new Event();
+						event.type = SWT.Selection;
+						event.widget = table;
+						event.item = workOn;
+						table.notifyListeners(SWT.Selection, event);
+						table.notifyListeners(SWT.DefaultSelection, event);
+					}
+				}
+			});
+			return Boolean.toString(true);
+		} catch (Exception e) {
+			LOGGER.error("ERROR selecting " + item + " in autocomplete widget. " + e.getMessage(), e);
+			return "ERROR selcting " + item + " in autocomplete widget. " + e.getMessage();
+		}
+	}
+
+	/**
 	 * Checks for widget text and returns true if text was found.
 	 * 
 	 * @param text
@@ -1501,6 +1548,10 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								String[] splitCommand = command.split(";");
 								String expectedCount = splitCommand[1];
 								out.println(countProjectsEquals(expectedCount));
+							} else if (methodName.equals("selectElementInAtuocompleteWidget")) {
+								String[] splitCommand = command.split(";");
+								String item = splitCommand[1];
+								out.println(selectElementInAtuocompleteWidget(item));
 							} else if (methodName.equals("countChildrenEquals")) {
 								String[] splitCommand = command.split(";");
 								String expectedCount = splitCommand[2];
