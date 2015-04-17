@@ -46,6 +46,7 @@ import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
@@ -411,14 +412,27 @@ public class TEAgentServer extends Thread implements ITestHarness {
 				bot.textWithId(id).setText(text);
 			} else {
 				LOGGER.trace("Trying styled text Widget by id: " + id + " not found: ");
-				bot.styledTextWithId(id).setFocus();
-				bot.styledTextWithId(id).setText(text);
+				SWTBotStyledText styledText = null;
+				try {
+					styledText = bot.styledTextWithId(id);
+					styledText.setFocus();
+					styledText.setText(text);
+				} catch (Exception e) {
+					LOGGER.error("Widget by id: " + id + " not found: ");
+				}
+				if (styledText == null) {
+					LOGGER.trace("Trying comboBox Widget by id: " + id);
+					SWTBotCombo combo = bot.comboBoxWithId(id);
+					combo.setFocus();
+					combo.typeText(text);
+				}
 			}
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("setTextById: text was set");
 			}
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
+			LOGGER.error(analyzeWidgets());
 			return "ERROR " + e.getMessage();
 		}
 		return Boolean.toString(true);
