@@ -13,7 +13,9 @@ package org.testeditor.ui.parts.inputparts.actioninput;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -26,7 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.TechnicalBindingType;
@@ -56,9 +57,15 @@ public class TestEditorActionInputControllerTest {
 	 *             on test failure
 	 */
 	@Test
-	@Ignore
 	public void testEventActionGroupComboModfied() throws Exception {
 		String bindingName = "Allgemein Brwoser";
+		context.set(ActionGroupService.class, new ActionGroupServiceAdapter() {
+			@Override
+			public List<TechnicalBindingType> getTechnicalBindingTypes(TestProject testProject, String name) {
+				return new ArrayList<TechnicalBindingType>();
+			}
+		});
+		ContextInjectionFactory.inject(inputController, context);
 		inputController.createComboboxActionSelection(bindingName);
 	}
 
@@ -78,7 +85,6 @@ public class TestEditorActionInputControllerTest {
 	 */
 	@Test
 	public void testCreateActionLineInputArea() {
-		// TODO add more checks.
 		final Set<String> tecBindings = new HashSet<String>();
 		context.set(ActionGroupService.class, new ActionGroupServiceAdapter() {
 			@Override
