@@ -1633,7 +1633,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            the locator of the widget.
 	 * @param searched
 	 *            the internal text or a part
-	 * @return ture, if the searched text is in the styledText.
+	 * @return true, if the searched text is in the styledText.
 	 */
 	private String compareTextInStyledById(String locator, String searched) {
 		boolean compResult = false;
