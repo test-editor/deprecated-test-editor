@@ -34,6 +34,7 @@ import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
@@ -402,44 +403,40 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return SWTBot Message
 	 */
 	public String setTextById(String id, String text) {
-
-		try {
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.trace("setTextById: id=" + id + " text=" + text);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("setTextById: id=" + id + " text=" + text);
+		}
+		Widget widget = bot.widget(WidgetMatcherFactory.withId(id));
+		if (widget != null) {
+			boolean found = false;
+			if (widget instanceof Combo) {
+				SWTBotCombo combo = bot.comboBoxWithId(id);
+				combo.setFocus();
+				combo.typeText(text);
+				found = true;
 			}
-			SWTBotText textWithId = null;
-			try {
-				textWithId = bot.textWithId(id);
-			} catch (Exception e) {
-				LOGGER.error("Widget by id: " + id + " not found: ", e);
-			}
-			if (textWithId != null) {
-				bot.textWithId(id).setFocus();
-				bot.textWithId(id).setText(text);
-			} else {
-				LOGGER.trace("Trying styled text Widget by id: " + id + " not found: ");
+			if (widget instanceof StyledText) {
 				SWTBotStyledText styledText = null;
+				styledText = bot.styledTextWithId(id);
+				styledText.setFocus();
+				styledText.setText(text);
+				found = true;
+			}
+			if (!found) {
+				SWTBotText textWithId = null;
 				try {
-					styledText = bot.styledTextWithId(id);
-					styledText.setFocus();
-					styledText.setText(text);
+					textWithId = bot.textWithId(id);
 				} catch (Exception e) {
-					LOGGER.error("Widget by id: " + id + " not found: ");
+					LOGGER.error("Widget by id: " + id + " not found: ", e);
 				}
-				if (styledText == null) {
-					LOGGER.trace("Trying comboBox Widget by id: " + id);
-					SWTBotCombo combo = bot.comboBoxWithId(id);
-					combo.setFocus();
-					combo.typeText(text);
+				if (textWithId != null) {
+					bot.textWithId(id).setFocus();
+					bot.textWithId(id).setText(text);
+				} else {
+					LOGGER.trace("Trying styled text Widget by id: " + id + " not found: ");
+					LOGGER.error(analyzeWidgets());
 				}
 			}
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.trace("setTextById: text was set");
-			}
-		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage(), e);
-			LOGGER.error(analyzeWidgets());
-			return "ERROR " + e.getMessage();
 		}
 		return Boolean.toString(true);
 	}
