@@ -45,4 +45,5 @@ public class SearchTestStructureHandler {
 			structureHandler.execute(dialog.getSelectedTestStructure(), context);
 		}
 	}
+
 }
