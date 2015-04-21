@@ -99,6 +99,11 @@ public class SearchTestStructureDialog extends Dialog {
 		return cmp;
 	}
 
+	/**
+	 * 
+	 * @return selection listener to store the selection of the result view in a
+	 *         local variable.
+	 */
 	private ISelectionChangedListener getResultSelectionListener() {
 		return new ISelectionChangedListener() {
 
@@ -170,7 +175,7 @@ public class SearchTestStructureDialog extends Dialog {
 	 * 
 	 * @return Thread that loads all TestStructure names to the Reasult view.
 	 */
-	private Thread createTestStructureNamesLoader() {
+	protected Thread createTestStructureNamesLoader() {
 		return new Thread() {
 			private List<TestStructure> list;
 
@@ -225,6 +230,14 @@ public class SearchTestStructureDialog extends Dialog {
 	 */
 	public TestStructure getSelectedTestStructure() {
 		return selectedTestStructure;
+	}
+
+	/**
+	 * 
+	 * @return table view containing the result.
+	 */
+	protected TableViewer getResultViewer() {
+		return result;
 	}
 
 }
