@@ -82,7 +82,7 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 			}
 
 			@Override
-			public List<FieldMappingExtension> getFieldDeclarations() {
+			public List<FieldMappingExtension> getConfigUIExtensions() {
 				return new ArrayList<FieldMappingExtension>();
 			}
 
@@ -134,7 +134,7 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 			}
 
 			@Override
-			public List<FieldMappingExtension> getFieldDeclarations() {
+			public List<FieldMappingExtension> getConfigUIExtensions() {
 				return null;
 			}
 

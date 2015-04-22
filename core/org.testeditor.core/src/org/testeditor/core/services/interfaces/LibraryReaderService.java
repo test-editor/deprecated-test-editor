@@ -16,7 +16,10 @@ import org.testeditor.core.model.action.ProjectLibraryConfig;
 
 /**
  * 
- * Interface for the LibraryReader.
+ * A LibraryReaderService loads a Library, i.e. a project specific collection of
+ * ActionGroups and matching TechnicalBindings. That library is used as a basis
+ * for a concrete ActionGroupService, which exposes the ActionGroups from the
+ * library to its client.
  * 
  * @author llipinski
  */

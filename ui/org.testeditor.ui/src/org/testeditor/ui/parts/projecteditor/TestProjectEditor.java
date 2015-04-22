@@ -568,7 +568,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 			updateLibraryTypeComboSelection(projectLibraryConfig.getId());
 			LibraryConfigurationService libraryConfigurationService = plugInService
 					.getLibraryConfigurationServiceFor(projectLibraryConfig.getId());
-			List<FieldMappingExtension> fields = libraryConfigurationService.getFieldDeclarations();
+			List<FieldMappingExtension> fields = libraryConfigurationService.getConfigUIExtensions();
 			addWorkspacepathWidgets();
 			for (FieldMappingExtension field : fields) {
 				createLibraryField(field);
