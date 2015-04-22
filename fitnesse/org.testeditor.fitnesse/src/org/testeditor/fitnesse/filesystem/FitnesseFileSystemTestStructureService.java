@@ -195,7 +195,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void createTestStructure(TestStructure testStructure) throws SystemException {
+	public void create(TestStructure testStructure) throws SystemException {
 		Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
 		if (Files.exists(pathToTestStructure)) {
 			throw new SystemException("TestStructure allready exits");
@@ -254,7 +254,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void removeTestStructure(TestStructure testStructure) throws SystemException {
+	public void delete(TestStructure testStructure) throws SystemException {
 
 		if (testStructureExists(testStructure)) {
 
