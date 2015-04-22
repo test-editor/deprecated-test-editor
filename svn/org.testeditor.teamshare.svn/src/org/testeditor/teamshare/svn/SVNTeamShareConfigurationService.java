@@ -27,7 +27,6 @@ import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
  * Subversion.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareConfigurationService implements TeamShareConfigurationService {
 
 	public static final String URL_PROPERTY = "teamshare.svn.url";

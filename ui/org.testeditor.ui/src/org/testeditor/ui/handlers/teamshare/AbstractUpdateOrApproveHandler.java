@@ -105,6 +105,11 @@ public abstract class AbstractUpdateOrApproveHandler {
 								public void log(String progressInfo) {
 									monitor.subTask(progressInfo);
 								}
+
+								@Override
+								public boolean isCanceled() {
+									return monitor.isCanceled();
+								}
 							});
 
 							if (executeSpecials(testStructure)) {
