@@ -12,14 +12,14 @@
 package org.testeditor.teamshare.svn;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * 
  * Field Declaration for URL.
  * 
  */
-public class URLFieldDeclaration implements FieldDeclaration {
+public class URLFieldDeclaration implements FieldMappingExtension {
 
 	@Override
 	public String getTranslatedLabel(TranslationService translationService) {

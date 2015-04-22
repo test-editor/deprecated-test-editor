@@ -20,7 +20,6 @@ import org.testeditor.core.model.action.ProjectActionGroups;
  * this is the interface for a module, that keeps the information of the library
  * in a cache.
  * 
- * @author llipinski
  */
 public interface LibraryDataStoreService {
 	/**

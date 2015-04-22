@@ -423,6 +423,7 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 			List<String> inputLineParts, List<Argument> arguments, TestActionGroup testActionGr) {
 		testActionGr.setActionGroupName(actionGroupName);
 		ActionGroup actionGroup = getActionGroup(testProject.getRootElement(), actionGroupName);
+		testActionGr.setActionGroupName(actionGroupName);
 		StringBuilder inputLine = new StringBuilder("|");
 		for (String input : inputLineParts) {
 			if (input.startsWith("|") && input.endsWith("|")) {

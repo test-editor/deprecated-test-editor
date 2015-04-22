@@ -50,7 +50,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
@@ -474,7 +474,7 @@ public class SVNTeamShareServiceLocalTest {
 		TestStructure parent = testCase.getParent();
 		teamService.approve(testCase, translationService, "");
 
-		teamService.doDelete(testCase, translationService);
+		teamService.delete(testCase, translationService);
 		// delete directory for checkout from repository
 		FileUtils.deleteDirectory(createdNewTestPage.toFile());
 
@@ -530,7 +530,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		testStatus(testPageName, testProject, testCaseName, "normal 1");
 
-		teamService.doDelete(testSuite, translationService);
+		teamService.delete(testSuite, translationService);
 		testStatus(testPageName, testProject, testCaseName, "deleted 4");
 
 		teamService.approve(testProject, translationService, "");
@@ -618,7 +618,7 @@ public class SVNTeamShareServiceLocalTest {
 			}
 		}
 
-		teamService.doDelete(testPage, translationService);
+		teamService.delete(testPage, translationService);
 		statusInfo = teamService.getStatus(testProject, translationService);
 		statusLines = statusInfo.split("\n");
 		for (String line : statusLines) {
@@ -1208,7 +1208,7 @@ public class SVNTeamShareServiceLocalTest {
 			}
 
 			@Override
-			public List<FieldDeclaration> getFieldDeclarations() {
+			public List<FieldMappingExtension> getFieldMappingExtensions() {
 				return null;
 			}
 
