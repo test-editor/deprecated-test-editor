@@ -50,7 +50,7 @@ public class SVNTeamShareConfigurationService implements TeamShareConfigurationS
 	}
 
 	@Override
-	public List<FieldMappingExtension> getFieldMappingDeclarations() {
+	public List<FieldMappingExtension> getFieldMappingExtensions() {
 		List<FieldMappingExtension> result = new ArrayList<FieldMappingExtension>();
 		result.add(new URLFieldDeclaration());
 		result.add(new UserNameFieldDeclaration());

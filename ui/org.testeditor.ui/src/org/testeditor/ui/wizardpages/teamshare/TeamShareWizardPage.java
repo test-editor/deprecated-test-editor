@@ -204,7 +204,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 *            Team-Sharing-Configuration.
 	 */
 	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
-		List<FieldMappingExtension> fields = configurationService.getFieldMappingDeclarations();
+		List<FieldMappingExtension> fields = configurationService.getFieldMappingExtensions();
 		for (FieldMappingExtension field : fields) {
 			createTeamShareField(field, field.getIdConstant());
 		}

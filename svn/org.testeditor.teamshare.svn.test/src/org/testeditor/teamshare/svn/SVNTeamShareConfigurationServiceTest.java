@@ -40,7 +40,7 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testGettingFieldDeclarations() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		List<FieldMappingExtension> fieldDeclarations = teamShareConfigurationService.getFieldMappingDeclarations();
+		List<FieldMappingExtension> fieldDeclarations = teamShareConfigurationService.getFieldMappingExtensions();
 		assertNotNull("Expecting a List with Declaring Fields.", fieldDeclarations);
 		assertTrue("Expect one or more Fields.", fieldDeclarations.size() > 0);
 		for (FieldMappingExtension fieldDeclaration : fieldDeclarations) {
@@ -60,7 +60,7 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfURL() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		URLFieldDeclaration url = (URLFieldDeclaration) teamShareConfigurationService.getFieldMappingDeclarations().get(0);
+		URLFieldDeclaration url = (URLFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions().get(0);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setUrl("http://localhost");
 		assertEquals("Expecting correct url from config.", "http://localhost", url.getStringValue(cfgBean));
@@ -77,7 +77,7 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfUserName() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		UserNameFieldDeclaration url = (UserNameFieldDeclaration) teamShareConfigurationService.getFieldMappingDeclarations()
+		UserNameFieldDeclaration url = (UserNameFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions()
 				.get(1);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setUserName("hugo");
@@ -95,7 +95,7 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfPassword() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		PasswordFieldDeclaration url = (PasswordFieldDeclaration) teamShareConfigurationService.getFieldMappingDeclarations()
+		PasswordFieldDeclaration url = (PasswordFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions()
 				.get(2);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setPassword("hugo");
