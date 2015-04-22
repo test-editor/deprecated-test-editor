@@ -809,7 +809,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		reader.close();
 		writer.close();
 		if (configFile.exists()) {
-			configFile.delete();
+			if (!configFile.delete()) {
+				LOGGER.error("Delete failed for " + configFile);
+			}
 		}
 		if (!outFile.renameTo(configFile)) {
 			LOGGER.error("Rename failed from " + outFile.getName() + " to " + configFile.getName());
@@ -911,7 +913,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 				if (!file.getAbsolutePath().equalsIgnoreCase(preferncesFileName)) {
 					replace(oldName, newName, file, outFile);
 					if (file.exists()) {
-						file.delete();
+						if (!file.delete()) {
+							LOGGER.error("Delete failed form " + file);
+						}
 					}
 					if (!outFile.renameTo(file)) {
 						String message = "Rename from " + outFile.getName() + " to " + file.getAbsoluteFile()

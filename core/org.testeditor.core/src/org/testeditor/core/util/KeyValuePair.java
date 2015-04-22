@@ -76,4 +76,17 @@ public class KeyValuePair implements Comparable<KeyValuePair> {
 		return this.key.compareToIgnoreCase(compareToObject.getKey());
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof KeyValuePair) {
+			return this.compareTo((KeyValuePair) obj) == 0;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return key.hashCode();
+	}
+
 }
