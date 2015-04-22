@@ -20,10 +20,9 @@ import org.testeditor.core.services.interfaces.TechnicalBindingsDSLMappingServic
 
 /**
  * 
- * Event Hanlder to Handle Messages from the EventBroker. The Toppic for this
- * Hanlder are TestExecutionProgress Messages.
+ * Event Handler to Handle Messages from the EventBroker. The Topic for this
+ * Handler are TestExecutionProgress Messages.
  * 
- * @author karsten
  */
 public class TestExecutionProgressEventHandler implements EventHandler {
 
