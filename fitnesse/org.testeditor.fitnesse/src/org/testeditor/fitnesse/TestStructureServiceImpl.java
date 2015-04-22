@@ -92,7 +92,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 			String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
 			LOGGER.trace("Looking up for team share service with id: " + id);
 			TeamShareService teamShareService = teamShareServices.get(id);
-			teamShareService.doDelete(testStructure, context.get(TranslationService.class));
+			teamShareService.delete(testStructure, context.get(TranslationService.class));
 			LOGGER.trace("Used " + teamShareService);
 		}
 		new FitnesseFileSystemTestStructureService().removeTestStructure(testStructure);

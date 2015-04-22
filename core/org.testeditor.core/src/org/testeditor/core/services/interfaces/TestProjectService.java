@@ -28,7 +28,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * Service to retrieve all known Projects.
  * 
  */
-public interface TestProjectService extends TestStructureTreeInputService {
+public interface TestProjectService extends TestStructureTreeModelService {
 
 	String VERSION_TAG = "tpr-version";
 
@@ -164,17 +164,17 @@ public interface TestProjectService extends TestStructureTreeInputService {
 	void reloadProjectList() throws SystemException;
 
 	/**
-	 * Refresh a testProject in the List with the given name. If the project
+	 * Reload a testProject in the List with the given name. If the project
 	 * wasn't in the list it is added in other case it will be replaced. It
 	 * throws an event to inform the UI about the need for refresh.
 	 * 
 	 * @param testProject
-	 *            the project to be refreshed from filesystem, and added to the
+	 *            the project to be reloaded from filesystem, and added to the
 	 *            project list.
 	 * @throws SystemException
 	 *             on io error loading project configuration.
 	 */
-	void refreshTestProjectFromFileSystem(TestProject testProject) throws SystemException;
+	void reloadTestProjectFromFileSystem(TestProject testProject) throws SystemException;
 
 	/**
 	 * Checks if an project with the given name already exists.

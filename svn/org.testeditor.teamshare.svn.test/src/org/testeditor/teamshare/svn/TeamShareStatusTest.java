@@ -471,7 +471,7 @@ public class TeamShareStatusTest {
 		assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
 		assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
 
-		teamService.doDelete(testCase, translationService);
+		teamService.delete(testCase, translationService);
 		testSuite.removeChild(testCase);
 
 		TeamShareStatus teamShareStatus = new TeamShareStatus(null);

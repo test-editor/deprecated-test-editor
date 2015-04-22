@@ -26,7 +26,7 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestProjectService;
-import org.testeditor.core.services.interfaces.TestStructureTreeInputService;
+import org.testeditor.core.services.interfaces.TestStructureTreeModelService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.handlers.HandlerMockFactory;
 import org.testeditor.ui.parts.commons.tree.TestStructureTreeContentProvider;
@@ -61,7 +61,7 @@ public class TestStructureTreeContentProviderTest {
 	 * 
 	 * @return an Empty Service
 	 */
-	private TestStructureTreeInputService getEmptyTestStructureTreeInputService() {
+	private TestStructureTreeModelService getEmptyTestStructureTreeInputService() {
 		return HandlerMockFactory.getEmptyTestProjectService();
 	}
 

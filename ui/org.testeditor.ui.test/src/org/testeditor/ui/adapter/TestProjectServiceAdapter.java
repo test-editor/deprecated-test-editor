@@ -107,7 +107,7 @@ public class TestProjectServiceAdapter implements TestProjectService {
 	}
 
 	@Override
-	public void refreshTestProjectFromFileSystem(TestProject testProject) throws SystemException {
+	public void reloadTestProjectFromFileSystem(TestProject testProject) throws SystemException {
 
 	}
 

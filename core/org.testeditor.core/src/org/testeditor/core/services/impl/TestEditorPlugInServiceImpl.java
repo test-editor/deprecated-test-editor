@@ -210,7 +210,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<LibraryConfigurationService> getAllLibraryConfigurationService() {
+	public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
 		return libraryConfigurationServices.values();
 	}
 

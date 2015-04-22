@@ -18,14 +18,14 @@ package org.testeditor.core.services.interfaces;
  * <b>Example:</b> Technical Binding: |click|@guiElement| maps to:
  * !|scenario|klicke auf|guiElement|
  * 
- * @author karsten
  */
 public interface TechnicalBindingsDSLMappingService {
 
 	/**
 	 * Maps a technical Binding to the Test DSL.
 	 * 
-	 * @param technicalBinding to be mapped
+	 * @param technicalBinding
+	 *            to be mapped
 	 * @return the TestDSL of the technicalBinding
 	 */
 	String mapTechnicalBindingToTestDSL(String technicalBinding);

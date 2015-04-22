@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.e4.core.contexts.ContextInjectionFactory;
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -88,9 +85,9 @@ public class ActionGroupServiceImplTest {
 
 	@BeforeClass
 	public static void initiliazeTest() throws Exception {
-		IEclipseContext context = EclipseContextFactory.create();
-		context.set(LibraryDataStoreService.class, ServiceLookUpForTest.getService(LibraryDataStoreService.class));
-		context.set(LibraryReaderService.class, new LibraryReaderService() {
+		actionGroupService = new ActionGroupServiceImpl();
+		actionGroupService.bindLibraryDataStoreService(ServiceLookUpForTest.getService(LibraryDataStoreService.class));
+		actionGroupService.bindLibraryReader(new LibraryReaderService() {
 
 			@Override
 			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig)
@@ -110,7 +107,6 @@ public class ActionGroupServiceImplTest {
 				return "org.testeditor.dummylibrary";
 			}
 		});
-		actionGroupService = ContextInjectionFactory.make(ActionGroupServiceImpl.class, context);
 	}
 
 	/**

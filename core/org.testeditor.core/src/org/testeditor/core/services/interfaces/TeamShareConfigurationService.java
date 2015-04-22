@@ -19,11 +19,10 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.team.TeamShareConfig;
 
 /**
- * Configuration Service for the Team Share Option. This Service manges the
+ * Configuration Service for the Team Share Option. This Service manages the
  * Configuration of a TeamShareService.
  * 
  */
-@SuppressWarnings("restriction")
 public interface TeamShareConfigurationService {
 
 	/**
@@ -49,14 +48,14 @@ public interface TeamShareConfigurationService {
 	TeamShareConfig createAnEmptyTeamShareConfig();
 
 	/**
-	 * The UI uses this method to get a List of <code>FieldDeclaration</code>.
-	 * This FieldDeclaration are used by the UI to display and update the
-	 * Plug-In Configuration.
+	 * The UI uses this method to get a List of
+	 * <code>FieldMappingExtension</code>. This FieldDeclaration are used by the
+	 * UI to display and update the Plug-In Configuration.
 	 * 
-	 * @return List with FieldDeclaration for the UI od the Plug-In
+	 * @return List with FieldDeclaration for the UI of the Plug-In
 	 *         configuration.
 	 */
-	List<FieldDeclaration> getFieldDeclarations();
+	List<FieldMappingExtension> getFieldMappingExtensions();
 
 	/**
 	 * This method is called for to store the config of the team share in the
@@ -79,6 +78,8 @@ public interface TeamShareConfigurationService {
 	TeamShareConfig createTeamShareConfigFrom(Properties properties);
 
 	/**
+	 * Template for the config.tpr to allow this file to be well formed and
+	 * formatted.
 	 * 
 	 * @return the template for the configuration
 	 */

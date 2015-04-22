@@ -18,7 +18,8 @@ import org.testeditor.core.exceptions.SystemException;
  * special exception, in case of problems while the object-tree under
  * construction.
  * 
- * @author llipinski
+ * @deprecated is only used while loading the "library" and thus not really
+ *             needed
  */
 public class ObjectTreeConstructionException extends SystemException {
 	/**
