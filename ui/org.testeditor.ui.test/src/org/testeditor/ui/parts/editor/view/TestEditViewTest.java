@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
@@ -210,14 +211,14 @@ public class TestEditViewTest {
 			}
 
 			@Override
-			public ArrayList<String> getLine(int i) {
+			public List<String> getLine(int i) {
 				ArrayList<String> lines = new ArrayList<String>();
 				lines.add("|wait|3|");
 				return lines;
 			}
 
 			@Override
-			public ArrayList<TextType> getTextTypes(int i) {
+			public List<TextType> getTextTypes(int i) {
 				ArrayList<TextType> types = new ArrayList<TextType>();
 				types.add(TextType.UNPARSED_ACTION_lINE);
 				return types;

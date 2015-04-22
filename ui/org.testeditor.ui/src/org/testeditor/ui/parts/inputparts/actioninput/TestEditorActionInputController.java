@@ -392,7 +392,7 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 	 * @param cursorPosInLine
 	 *            the position of the cursor in the line
 	 */
-	public void setActionToEditArea(int lineNumber, ArrayList<String> texts, TestActionGroup testActionGr,
+	public void setActionToEditArea(int lineNumber, List<String> texts, TestActionGroup testActionGr,
 			int cursorPosInLine) {
 		setAddMode(false);
 		// chose the actionGroup

@@ -324,7 +324,7 @@ public class TestEditView extends TestEditorViewBasis {
 			int insertPos = getStyledText().getCaretOffset();
 			int cursorPosInSelection = insertPos
 					- getStyledText().getOffsetAtLine(getStyledText().getLineAtOffset(insertPos));
-			ArrayList<String> texts = testCaseController.getLine(lineNumber);
+			List<String> texts = testCaseController.getLine(lineNumber);
 
 			TestComponent testComponent = testCaseController.getTestComponentAt(lineNumber);
 			if (testComponent instanceof TestDescription) {
@@ -698,8 +698,8 @@ public class TestEditView extends TestEditorViewBasis {
 	 *            the line number
 	 */
 	private void addTextsToStyledText(int sizeTestCase, int i) {
-		ArrayList<String> texts = getTestCaseController().getLine(i);
-		ArrayList<TextType> types = getTestCaseController().getTextTypes(i);
+		List<String> texts = getTestCaseController().getLine(i);
+		List<TextType> types = getTestCaseController().getTextTypes(i);
 
 		if (types.size() == 0) {
 			LOGGER.error("No Texttypes for testcaseelement number = " + i);
