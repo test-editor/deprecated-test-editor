@@ -26,7 +26,7 @@ package org.testeditor.core.services.interfaces;
 public interface ProgressListener {
 
 	/**
-	 * Display some information about a job's progress to the user
+	 * Display some information about a job's progress to the user.
 	 * 
 	 * @param progressInfo
 	 *            text to be log
