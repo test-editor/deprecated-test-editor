@@ -228,10 +228,10 @@ public class Action extends AbstractAction {
 	@Override
 	public int compareTo(AbstractAction compareAction) {
 		// sorting by technicalbinding
-		if (this.getTechnicalBindingType().compareTo(compareAction.getTechnicalBindingType()) == 0) {
+		if (this.getTechnicalBindingType().compareWith(compareAction.getTechnicalBindingType()) == 0) {
 			return sortingAction(compareAction);
 		}
-		return this.getTechnicalBindingType().compareTo(compareAction.getTechnicalBindingType());
+		return this.getTechnicalBindingType().compareWith(compareAction.getTechnicalBindingType());
 	}
 
 	/**
