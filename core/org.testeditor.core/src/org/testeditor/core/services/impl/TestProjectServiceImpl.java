@@ -451,9 +451,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			testProjectConfig.setTestServerID(serverId);
 		}
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
-		// TODO [ FIXTURE_JAR_PATH is not used check for defects ]
-		testProjectConfig.setFixtureJarPath(properties.getProperty(TestEditorGlobalConstans.VARIABLE_PRAEFIX + "."
-				+ TestEditorGlobalConstans.FIXTURE_JAR_PATH));
 		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
 			fixNonVersionProperties(properties);
 		} else {
@@ -567,7 +564,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
 		testProjectConfig.setFixtureClass(properties.getProperty("classFixtures"));
-		testProjectConfig.setFixtureJarPath(properties.getProperty("pathToJar"));
 		testProjectConfig.setProjectConfigVersion(VERSION1_1);
 		return testProjectConfig;
 	}
@@ -593,10 +589,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		properties.put("testautomat.serverid", config.getTestServerID());
 		if (config.getPathToTestFiles() != null) {
 			properties.put("pathToTestFiles", config.getPathToTestFiles());
-		}
-		if (config.getFixtureJarPath() != null) {
-			properties.put(TestEditorGlobalConstans.VARIABLE_PRAEFIX + "." + TestEditorGlobalConstans.FIXTURE_JAR_PATH,
-					config.getFixtureJarPath());
 		}
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
 		if (plugInservice != null) {

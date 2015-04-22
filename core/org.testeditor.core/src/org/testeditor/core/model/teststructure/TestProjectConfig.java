@@ -31,7 +31,6 @@ public class TestProjectConfig {
 	private ProjectLibraryConfig projectLibraryConfig;
 	private String fixtureClass = "";
 	private String projectPath = "";
-	private String fixtureJarPath = "";
 	private TeamShareConfig teamShareConfig;
 	private HashMap<String, String> globalProjectVariables = new HashMap<String, String>();
 	private String testServerID = "fitnesse_based_1.2";
@@ -108,7 +107,6 @@ public class TestProjectConfig {
 		sb.append(" ProjectActionGroup: ").append(projectLibraryConfig);
 		sb.append(" fixture bundle: ").append(fixtureClass);
 		sb.append(" projectpath: ").append(projectPath);
-		sb.append(" fixtureJarPath: ").append(fixtureJarPath);
 		sb.append(" testServerId: ").append(testServerID);
 		sb.append(getGlobalVariablesAsString());
 		return sb.toString();
@@ -156,24 +154,6 @@ public class TestProjectConfig {
 	}
 
 	/**
-	 * 
-	 * @param fixtureJarPath
-	 *            the fixtureJarPath.
-	 */
-	public void setFixtureJarPath(String fixtureJarPath) {
-		this.fixtureJarPath = fixtureJarPath;
-
-	}
-
-	/**
-	 * 
-	 * @return the fixtureJarPath.
-	 */
-	public String getFixtureJarPath() {
-		return fixtureJarPath;
-	}
-
-	/**
 	 * this method set the values from the given configuration into the
 	 * configuration (this).
 	 * 
@@ -184,7 +164,6 @@ public class TestProjectConfig {
 		this.setPathToTestFiles(testProjectConfig.getPathToTestFiles());
 		this.setProjectLibraryConfig(testProjectConfig.getProjectLibraryConfig());
 		this.setFixtureClass(testProjectConfig.getFixtureClass());
-		this.setFixtureJarPath(testProjectConfig.getFixtureJarPath());
 		this.setProjectPath(testProjectConfig.getProjectPath());
 		this.setGlobalProjectVariables(testProjectConfig.getGlobalProjectVariables());
 		this.setTeamShareConfig(testProjectConfig.getTeamShareConfig());

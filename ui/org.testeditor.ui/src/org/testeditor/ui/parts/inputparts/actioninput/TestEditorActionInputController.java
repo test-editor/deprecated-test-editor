@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.testeditor.core.model.action.AbstractAction;
 import org.testeditor.core.model.action.Action;
 import org.testeditor.core.model.action.ActionElement;
+import org.testeditor.core.model.action.ActionElementPositionComparator;
 import org.testeditor.core.model.action.ActionElementType;
 import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.Argument;
@@ -228,7 +229,7 @@ public class TestEditorActionInputController extends AbstractTestEditorInputPart
 							action.getArguments().get(argPosOfKey));
 				}
 				List<ActionElement> actionElements = action.getTechnicalBindingType().getActionParts();
-				Collections.sort(actionElements);
+				Collections.sort(actionElements, new ActionElementPositionComparator());
 				keyPosition = createElementsOfActionLineInput(parameterList, keyPosition, actionElements);
 			}
 		}
