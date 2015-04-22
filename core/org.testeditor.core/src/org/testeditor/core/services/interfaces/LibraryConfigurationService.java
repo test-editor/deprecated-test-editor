@@ -74,7 +74,7 @@ public interface LibraryConfigurationService {
 	 * @return List with FieldDeclaration for the UI od the Plug-In
 	 *         configuration.
 	 */
-	List<FieldDeclaration> getFieldDeclarations();
+	List<FieldMappingExtension> getFieldDeclarations();
 
 	/**
 	 * 

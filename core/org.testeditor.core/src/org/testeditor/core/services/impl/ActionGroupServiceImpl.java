@@ -14,8 +14,6 @@ package org.testeditor.core.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.Action;
@@ -45,9 +43,7 @@ import org.testeditor.core.util.ActionLineSplitter;
 public class ActionGroupServiceImpl implements ActionGroupService {
 	private static final Logger LOGGER = Logger.getLogger(ActionGroupServiceImpl.class);
 
-	@Inject
 	private LibraryDataStoreService libraryDataStoreService;
-	@Inject
 	private LibraryReaderService libraryReader;
 
 	/**
@@ -205,11 +201,21 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the action by a given uncoded String line (e.g. a FitNesse table
+	 * column separated by pipes) and project.
 	 * 
+	 * @param testProject
+	 *            the current project (e.g. object for "DemoWebTests")
+	 * @param actionGroup
+	 *            related group (e.g. "Login" mask)
+	 * @param line
+	 *            line in clear code (e.g. |insert|123|into|user name|field|)
 	 * @param arguments
+	 *            List<Arguments> arguments
+	 * @param isTestActionGroupTestScenario
+	 *            true, if it's a scenario, else false
+	 * @return action (e.g. action for the insert into field)
 	 */
-	@Override
 	public IAction getActionByLine(TestProject testProject, ActionGroup actionGroup, String line,
 			List<Argument> arguments, boolean isTestActionGroupTestScenario) {
 		String saveLine = line;

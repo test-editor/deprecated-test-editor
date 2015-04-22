@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -153,7 +153,7 @@ public class TestEditorPlugInServiceTest {
 			}
 
 			@Override
-			public List<FieldDeclaration> getFieldDeclarations() {
+			public List<FieldMappingExtension> getFieldDeclarations() {
 				return null;
 			}
 
