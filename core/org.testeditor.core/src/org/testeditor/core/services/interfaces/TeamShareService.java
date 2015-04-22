@@ -52,15 +52,14 @@ public interface TeamShareService {
 	 * 
 	 * @param testProject
 	 *            to be shared.
-	 * @param svnComment
+	 * @param comment
 	 *            String comment for share.
 	 * @param translationService
 	 *            {@link TranslationService}
 	 * @throws SystemException
 	 *             if the sharing of the project fails
 	 */
-	void share(TestProject testProject, TranslationService translationService, String svnComment)
-			throws SystemException;
+	void share(TestProject testProject, TranslationService translationService, String comment) throws SystemException;
 
 	/**
 	 * Approve the Changes of a <code>TestStructure</code> and all it children's
@@ -151,7 +150,7 @@ public interface TeamShareService {
 	void addProgressListener(ProgressListener listener);
 
 	/**
-	 * adds a child to the parent in the local svn-structure.
+	 * adds a child to the parent in the local structure.
 	 * 
 	 * @param testStructureChild
 	 *            child TestStructure
