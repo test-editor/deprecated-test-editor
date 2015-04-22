@@ -44,7 +44,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void removeTestStructure(TestStructure testStructure) throws SystemException {
+	public void delete(TestStructure testStructure) throws SystemException {
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void createTestStructure(TestStructure testStructure) throws SystemException {
+	public void create(TestStructure testStructure) throws SystemException {
 
 	}
 

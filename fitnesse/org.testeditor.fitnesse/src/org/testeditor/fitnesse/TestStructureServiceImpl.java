@@ -73,8 +73,8 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void createTestStructure(TestStructure testStructure) throws SystemException {
-		new FitnesseFileSystemTestStructureService().createTestStructure(testStructure);
+	public void create(TestStructure testStructure) throws SystemException {
+		new FitnesseFileSystemTestStructureService().create(testStructure);
 		eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, testStructure.getFullName());
 
 	}
@@ -83,7 +83,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void removeTestStructure(TestStructure testStructure) throws SystemException {
+	public void delete(TestStructure testStructure) throws SystemException {
 		String testStructureFullName = testStructure.getFullName();
 		if (testStructure.getParent() instanceof TestCompositeStructure) {
 			((TestCompositeStructure) testStructure.getParent()).removeChild(testStructure);
@@ -95,7 +95,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 			teamShareService.delete(testStructure, context.get(TranslationService.class));
 			LOGGER.trace("Used " + teamShareService);
 		}
-		new FitnesseFileSystemTestStructureService().removeTestStructure(testStructure);
+		new FitnesseFileSystemTestStructureService().delete(testStructure);
 		clearHistory(testStructure);
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED, testStructureFullName);
