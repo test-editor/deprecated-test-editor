@@ -20,7 +20,6 @@ import org.testeditor.core.exceptions.SystemException;
  * 
  * @deprecated is only used while loading the "library" and thus not really
  *             needed
- * @author llipinski
  */
 public class ObjectTreeConstructionException extends SystemException {
 	/**
