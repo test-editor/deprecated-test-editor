@@ -396,7 +396,14 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		}
 	}
 
-	@Override
+	/**
+	 * 
+	 * @param testProject
+	 *            to get the config for.
+	 * @return Config for the given TestProject
+	 * @throws SystemException
+	 *             on Read Action
+	 */
 	public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
 		String projectName = testProject.getName();
 		try {
