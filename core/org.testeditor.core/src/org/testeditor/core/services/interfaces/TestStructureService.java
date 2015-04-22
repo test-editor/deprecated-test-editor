@@ -28,7 +28,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 public interface TestStructureService {
 
 	/**
-	 * Loads the child of the given test structure.
+	 * Loads the children of the given test structure.
 	 * 
 	 * @param testCompositeStructure
 	 *            composite structure
