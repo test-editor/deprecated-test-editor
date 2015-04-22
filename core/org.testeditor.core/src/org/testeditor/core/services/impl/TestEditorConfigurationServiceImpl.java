@@ -64,7 +64,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	}
 
 	@Override
-	public void loadGlobalVariablesAsSystemProperties() throws BackingStoreException {
+	public void exportGlobalVariablesToSystemProperties() throws BackingStoreException {
 		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(ID_TE_PROPERTIES);
 		setDefaultVariablesIfNotset();
 		String[] keysOfSystemPreferences = prefs.keys();
