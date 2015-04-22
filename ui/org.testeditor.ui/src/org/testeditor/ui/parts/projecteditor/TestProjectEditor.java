@@ -195,7 +195,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 *            Team-Sharing-Configuration.
 	 */
 	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
-		List<FieldMappingExtension> fields = configurationService.getFieldMappingDeclarations();
+		List<FieldMappingExtension> fields = configurationService.getFieldMappingExtensions();
 		for (FieldMappingExtension field : fields) {
 			createTeamShareField(field);
 		}
