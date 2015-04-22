@@ -133,7 +133,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 */
 	public void initializeSystemConfiguration() throws BackingStoreException, IOException {
 		TestEditorConfigurationService testEditorConfigService = getService(TestEditorConfigurationService.class);
-		testEditorConfigService.loadGlobalVariablesAsSystemProperties();
+		testEditorConfigService.exportGlobalVariablesToSystemProperties();
 		testEditorConfigService.initializeSystemProperties();
 		LOGGER.info("Headless Test-Editor initialized.");
 	}

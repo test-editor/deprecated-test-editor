@@ -90,7 +90,7 @@ public class ApplicationLifeCycleHandler {
 		context.set(TestEditorTranslationService.class,
 				ContextInjectionFactory.make(TestEditorTranslationService.class, context));
 		try {
-			testEditorConfigService.loadGlobalVariablesAsSystemProperties();
+			testEditorConfigService.exportGlobalVariablesToSystemProperties();
 			testEditorConfigService.initializeSystemProperties();
 		} catch (BackingStoreException e) {
 			LOGGER.error("Error setting SystemVariables", e);
