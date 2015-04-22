@@ -78,6 +78,8 @@ public interface TeamShareConfigurationService {
 	TeamShareConfig createTeamShareConfigFrom(Properties properties);
 
 	/**
+	 * Template for the config.tpr to allow this file to be well formed and
+	 * formatted.
 	 * 
 	 * @return the template for the configuration
 	 */
