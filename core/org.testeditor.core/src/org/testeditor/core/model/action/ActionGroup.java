@@ -107,7 +107,7 @@ public class ActionGroup {
 	/**
 	 * gets the sorting.
 	 * 
-	 * @return teh sorting
+	 * @return the sorting
 	 */
 	public Integer getSorting() {
 		return sorting;
@@ -123,16 +123,4 @@ public class ActionGroup {
 		this.sorting = sorting;
 	}
 
-	/**
-	 * compares the names of this action whit the name of the compareAction.
-	 * 
-	 * @param compareActionGroup
-	 *            the compareAction
-	 * @return ameOfThis.compareTo(compName);
-	 */
-	private int compareTheNames(ActionGroup compareActionGroup) {
-
-		return this.getName().compareTo(compareActionGroup.getName());
-
-	}
 }
