@@ -27,7 +27,7 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestProjectService;
-import org.testeditor.core.services.interfaces.TestStructureTreeModelService;
+import org.testeditor.core.services.interfaces.TestStructureTreeModel;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class TestStructureTreeContentProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		TestStructureTreeModelService treeInputService = (TestStructureTreeModelService) inputElement;
+		TestStructureTreeModel treeInputService = (TestStructureTreeModel) inputElement;
 		List<? extends TestStructure> elements = new ArrayList<TestStructure>();
 		try {
 			elements = treeInputService.getElements();
