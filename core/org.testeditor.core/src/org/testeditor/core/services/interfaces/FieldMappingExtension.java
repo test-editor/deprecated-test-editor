@@ -20,7 +20,7 @@ import org.eclipse.e4.core.services.translation.TranslationService;
  * with a label in the UI. The FieldDeclaration handles also the Bean Updates.
  * 
  */
-public interface FieldDeclaration {
+public interface FieldMappingExtension {
 
 	/**
 	 * 

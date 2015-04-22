@@ -16,7 +16,6 @@ import java.util.List;
 import org.testeditor.core.model.action.Action;
 import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.Argument;
-import org.testeditor.core.model.action.IAction;
 import org.testeditor.core.model.action.TechnicalBindingType;
 import org.testeditor.core.model.teststructure.TestActionGroup;
 import org.testeditor.core.model.teststructure.TestActionGroupTestCase;
@@ -43,12 +42,6 @@ public class ActionGroupServiceAdapter implements ActionGroupService {
 
 	@Override
 	public List<TechnicalBindingType> getTechnicalBindingTypes(TestProject testProject, String name) {
-		return null;
-	}
-
-	@Override
-	public IAction getActionByLine(TestProject testProject, ActionGroup actionGroup, String line,
-			List<Argument> arguments, boolean isTestActionGroupTestScenario) {
 		return null;
 	}
 

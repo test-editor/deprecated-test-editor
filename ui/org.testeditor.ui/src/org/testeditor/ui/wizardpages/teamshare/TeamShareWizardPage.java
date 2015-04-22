@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -204,8 +204,8 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 *            Team-Sharing-Configuration.
 	 */
 	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
-		List<FieldDeclaration> fields = configurationService.getFieldDeclarations();
-		for (FieldDeclaration field : fields) {
+		List<FieldMappingExtension> fields = configurationService.getFieldDeclarations();
+		for (FieldMappingExtension field : fields) {
 			createTeamShareField(field, field.getIdConstant());
 		}
 		teamShareDetailComposite.getParent().getParent().layout(true);
@@ -226,7 +226,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 * @param idConstant
 	 *            used to identify element ID for TestEditorTests.
 	 */
-	private void createTeamShareField(final FieldDeclaration fieldDeclaration, String idConstant) {
+	private void createTeamShareField(final FieldMappingExtension fieldDeclaration, String idConstant) {
 		new Label(teamShareDetailComposite, SWT.NORMAL)
 				.setText(fieldDeclaration.getTranslatedLabel(translationService));
 		final Text text = new Text(teamShareDetailComposite, SWT.NORMAL);

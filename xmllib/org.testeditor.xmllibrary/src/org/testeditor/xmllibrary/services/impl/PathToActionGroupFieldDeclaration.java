@@ -12,7 +12,7 @@
 package org.testeditor.xmllibrary.services.impl;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
 
 /**
@@ -20,7 +20,7 @@ import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
  * Field Declaration to handle the Path to an ActionGroup File.
  * 
  */
-public class PathToActionGroupFieldDeclaration implements FieldDeclaration {
+public class PathToActionGroupFieldDeclaration implements FieldMappingExtension {
 
 	@Override
 	public void updatePlugInConfig(Object bean, String newValue) {
