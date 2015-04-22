@@ -141,7 +141,7 @@ public class TestEditorActionInputView extends TestEditorInputView {
 	 * @param cursorPosInLine
 	 *            position of the cursor in the line.
 	 */
-	public void setValuesInActionLine(ArrayList<String> texts, int cursorPosInLine) {
+	public void setValuesInActionLine(List<String> texts, int cursorPosInLine) {
 		unparsedAction = false;
 		int totalTextLength = 0;
 		boolean cursorIsSet = false;
@@ -616,7 +616,7 @@ public class TestEditorActionInputView extends TestEditorInputView {
 	 * @param texts
 	 *            array of {@link String}
 	 */
-	public void setUnparsedActionLineToEdit(ArrayList<String> texts) {
+	public void setUnparsedActionLineToEdit(List<String> texts) {
 		unparsedAction = true;
 		StringBuilder output = new StringBuilder();
 		for (String text : texts) {

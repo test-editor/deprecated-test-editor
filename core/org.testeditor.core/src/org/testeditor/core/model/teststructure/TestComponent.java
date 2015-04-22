@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.model.teststructure;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.testeditor.core.model.action.TextType;
 
@@ -27,7 +27,7 @@ public interface TestComponent {
 	 * 
 	 * @return source code
 	 */
-	ArrayList<String> getTexts();
+	List<String> getTexts();
 
 	/**
 	 * Returns the plain text of this test structure as it is used at the third
@@ -43,6 +43,6 @@ public interface TestComponent {
 	 * 
 	 * @return ArrayList of texttyps
 	 */
-	ArrayList<TextType> getTextTypes();
+	List<TextType> getTextTypes();
 
 }
