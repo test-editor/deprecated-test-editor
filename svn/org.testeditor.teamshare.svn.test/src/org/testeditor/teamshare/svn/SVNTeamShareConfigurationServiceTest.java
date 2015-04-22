@@ -28,7 +28,6 @@ import org.testeditor.core.services.interfaces.FieldMappingExtension;
  * ModulTests for SVNTeamShareConfigurationService.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareConfigurationServiceTest {
 
 	/**
@@ -60,7 +59,8 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfURL() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		URLFieldDeclaration url = (URLFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions().get(0);
+		URLFieldDeclaration url = (URLFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions()
+				.get(0);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setUrl("http://localhost");
 		assertEquals("Expecting correct url from config.", "http://localhost", url.getStringValue(cfgBean));
@@ -77,8 +77,8 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfUserName() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		UserNameFieldDeclaration url = (UserNameFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions()
-				.get(1);
+		UserNameFieldDeclaration url = (UserNameFieldDeclaration) teamShareConfigurationService
+				.getFieldMappingExtensions().get(1);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setUserName("hugo");
 		assertEquals("Expecting correct Username from config.", "hugo", url.getStringValue(cfgBean));
@@ -95,8 +95,8 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfPassword() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		PasswordFieldDeclaration url = (PasswordFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions()
-				.get(2);
+		PasswordFieldDeclaration url = (PasswordFieldDeclaration) teamShareConfigurationService
+				.getFieldMappingExtensions().get(2);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setPassword("hugo");
 		assertEquals("Expecting correct Password from config.", "hugo", url.getStringValue(cfgBean));

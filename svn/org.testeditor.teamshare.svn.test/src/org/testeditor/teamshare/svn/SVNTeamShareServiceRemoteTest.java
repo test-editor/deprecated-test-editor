@@ -282,8 +282,6 @@ public class SVNTeamShareServiceRemoteTest {
 	 */
 	@Ignore("only for debugging")
 	public void testIgnoreListNegative() throws SystemException {
-		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
-
 		String[] ignoreList = { "DemoWebTests" };
 
 		Collection<File> listFiles = FileUtils.listFilesAndDirs(new File(TARGET_WORKSPACE_PATH),

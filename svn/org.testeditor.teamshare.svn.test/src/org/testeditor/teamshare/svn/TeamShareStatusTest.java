@@ -41,10 +41,7 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 /**
  * Test the TeamShareStatus class.
  * 
- * @author dkuhlmann
- * 
  */
-@SuppressWarnings("restriction")
 public class TeamShareStatusTest {
 
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";

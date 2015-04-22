@@ -33,4 +33,10 @@ public interface ProgressListener {
 	 */
 	void log(String progressInfo);
 
+	/**
+	 * 
+	 * @return true if the progress Monitor is canceled
+	 */
+	boolean isCanceled();
+
 }
