@@ -52,12 +52,12 @@ public class TestEditorControllerAdapter implements ITestEditorController {
 	}
 
 	@Override
-	public ArrayList<String> getLine(int i) {
+	public List<String> getLine(int i) {
 		return null;
 	}
 
 	@Override
-	public ArrayList<TextType> getTextTypes(int i) {
+	public List<TextType> getTextTypes(int i) {
 		return null;
 	}
 
@@ -80,7 +80,7 @@ public class TestEditorControllerAdapter implements ITestEditorController {
 	}
 
 	@Override
-	public void setActionToEditArea(int lineNumber, ArrayList<String> texts, int posInSelection) {
+	public void setActionToEditArea(int lineNumber, List<String> texts, int posInSelection) {
 	}
 
 	@Override
