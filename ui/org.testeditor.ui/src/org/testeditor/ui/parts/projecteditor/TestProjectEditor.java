@@ -329,7 +329,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 */
 	protected void fillLibraryTypeCombo() {
 		Collection<LibraryConfigurationService> allLibraryConfigurationService = plugInService
-				.getAllLibraryConfigurationService();
+				.getAllLibraryConfigurationServices();
 		libraryPlugInNameIdMap = new HashMap<String, String>();
 		for (LibraryConfigurationService libraryConfigurationService : allLibraryConfigurationService) {
 			libraryPlugInNameIdMap.put(

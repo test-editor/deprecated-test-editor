@@ -289,7 +289,7 @@ public class FitNesseWikiParserTest {
 			}
 
 			@Override
-			public Collection<LibraryConfigurationService> getAllLibraryConfigurationService() {
+			public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
 				return null;
 			}
 

@@ -28,7 +28,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * Service to retrieve all known Projects.
  * 
  */
-public interface TestProjectService extends TestStructureTreeInputService {
+public interface TestProjectService extends TestStructureTreeModelService {
 
 	String VERSION_TAG = "tpr-version";
 

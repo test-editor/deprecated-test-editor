@@ -17,13 +17,13 @@ import java.util.List;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestStructureTreeInputService;
+import org.testeditor.core.services.interfaces.TestStructureTreeModelService;
 
 /**
  * TestStructureTreeInputService for the TestScenarios of a TestProject.
  * 
  */
-public class TestScenarioTreeInput implements TestStructureTreeInputService {
+public class TestScenarioTreeInput implements TestStructureTreeModelService {
 
 	private TestProject testProject;
 

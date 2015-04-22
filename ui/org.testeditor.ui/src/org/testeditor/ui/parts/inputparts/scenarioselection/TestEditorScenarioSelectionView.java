@@ -32,7 +32,7 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestStructureTreeInputService;
+import org.testeditor.core.services.interfaces.TestStructureTreeModelService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -66,7 +66,7 @@ public class TestEditorScenarioSelectionView extends TestEditorInputView {
 	private Composite buttonComposite;
 	private SashForm sash;
 	private Button scenarioLinkButton;
-	private TestStructureTreeInputService treeInputService;
+	private TestStructureTreeModelService treeInputService;
 
 	private ITestScenarioSelectionController scenarioController;
 
