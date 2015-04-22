@@ -432,7 +432,7 @@ public class TestProjectServiceImplTest {
 		createProjectInFileSystem();
 		TestProject tp = new TestProject();
 		tp.setName("MyPrj");
-		service.refreshTestProjectFromFileSystem(tp);
+		service.reloadTestProjectFromFileSystem(tp);
 		assertEquals(1, service.getProjects().size());
 	}
 
@@ -451,7 +451,7 @@ public class TestProjectServiceImplTest {
 		list.add(tp);
 		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
 		createProjectInFileSystem();
-		service.refreshTestProjectFromFileSystem(tp);
+		service.reloadTestProjectFromFileSystem(tp);
 		assertEquals(1, service.getProjects().size());
 	}
 
