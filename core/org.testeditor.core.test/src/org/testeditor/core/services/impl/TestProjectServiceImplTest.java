@@ -150,7 +150,7 @@ public class TestProjectServiceImplTest {
 			}
 
 			@Override
-			public List<FieldMappingExtension> getFieldDeclarations() {
+			public List<FieldMappingExtension> getFieldMappingDeclarations() {
 				return null;
 			}
 

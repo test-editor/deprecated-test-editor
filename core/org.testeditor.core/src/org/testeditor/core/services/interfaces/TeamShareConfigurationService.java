@@ -48,14 +48,14 @@ public interface TeamShareConfigurationService {
 	TeamShareConfig createAnEmptyTeamShareConfig();
 
 	/**
-	 * The UI uses this method to get a List of <code>FieldDeclaration</code>.
-	 * This FieldDeclaration are used by the UI to display and update the
-	 * Plug-In Configuration.
+	 * The UI uses this method to get a List of
+	 * <code>FieldMappingExtension</code>. This FieldDeclaration are used by the
+	 * UI to display and update the Plug-In Configuration.
 	 * 
 	 * @return List with FieldDeclaration for the UI od the Plug-In
 	 *         configuration.
 	 */
-	List<FieldMappingExtension> getFieldDeclarations();
+	List<FieldMappingExtension> getFieldMappingDeclarations();
 
 	/**
 	 * This method is called for to store the config of the team share in the
