@@ -69,7 +69,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	private HashSet<String> specialPages;
 
 	@Override
-	public void loadTestStructuresChildrenFor(TestCompositeStructure testCompositeStructure) throws SystemException {
+	public void loadChildrenInto(TestCompositeStructure testCompositeStructure) throws SystemException {
 		Path path = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testCompositeStructure));
 
 		if (Files.exists(path)) {
@@ -281,7 +281,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void renameTestStructure(TestStructure testStructure, String newName) throws SystemException {
+	public void rename(TestStructure testStructure, String newName) throws SystemException {
 
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("oldFullName: " + testStructure.getFullName() + " newName: " + newName);
@@ -308,7 +308,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public String getLogData(TestStructure testStructure) throws SystemException {
+	public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
 		Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility
 				.getPathToTestStructureErrorDirectory(testStructure));
 		return FitnesseFileSystemUtility.getContentOfFitnesseFileForTestStructure(testStructure,
@@ -414,7 +414,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void clearHistory(TestStructure testStructure) throws SystemException {
+	public void clearTestHistory(TestStructure testStructure) throws SystemException {
 		String pathToTestResults = getPathToTestResults(testStructure);
 		try {
 			if (new File(pathToTestResults).exists()) {
@@ -433,7 +433,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 			@Override
 			public void run() {
 				try {
-					loadTestStructuresChildrenFor(toBeLoadedLazy);
+					loadChildrenInto(toBeLoadedLazy);
 				} catch (SystemException e) {
 					LOGGER.error(e.getMessage(), e);
 					throw new RuntimeException(e);
@@ -449,7 +449,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public boolean hasLogData(TestStructure testStructure) throws SystemException {
+	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
 	}
 

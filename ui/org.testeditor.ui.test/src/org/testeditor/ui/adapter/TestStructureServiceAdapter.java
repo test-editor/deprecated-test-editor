@@ -40,7 +40,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void renameTestStructure(TestStructure testStructure, String newName) throws SystemException {
+	public void rename(TestStructure testStructure, String newName) throws SystemException {
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void loadTestStructuresChildrenFor(TestCompositeStructure project) throws SystemException {
+	public void loadChildrenInto(TestCompositeStructure project) throws SystemException {
 		if (!empty) {
 			TestSuite suite = new TestSuite();
 			suite.setName("root");
@@ -70,7 +70,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public String getLogData(TestStructure testStructure) throws SystemException {
+	public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return null;
 	}
 
@@ -85,7 +85,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void clearHistory(TestStructure testStructure) throws SystemException {
+	public void clearTestHistory(TestStructure testStructure) throws SystemException {
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public boolean hasLogData(TestStructure testStructure) throws SystemException {
+	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return false;
 	}
 
