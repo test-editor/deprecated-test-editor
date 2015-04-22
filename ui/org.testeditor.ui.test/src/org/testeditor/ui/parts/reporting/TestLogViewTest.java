@@ -50,7 +50,7 @@ public class TestLogViewTest {
 			public TestStructureService getTestStructureServiceFor(String testServerID) {
 				return new TestStructureServiceAdapter() {
 					@Override
-					public String getLogData(TestStructure testStructure) throws SystemException {
+					public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
 						return "exec success.";
 					}
 				};

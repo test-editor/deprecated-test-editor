@@ -138,7 +138,7 @@ public class PurgeTestHistoryHandler {
 	 */
 	private void purgeTestHistoryFromTestStructure(TestStructure ts) throws SystemException {
 		testProtocolService.remove(ts);
-		testStructureService.clearHistory(ts);
+		testStructureService.clearTestHistory(ts);
 	}
 
 	/**

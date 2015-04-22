@@ -28,14 +28,14 @@ import org.testeditor.core.model.teststructure.TestStructure;
 public interface TestStructureService {
 
 	/**
-	 * Loads the children of the given test structure.
+	 * Loads the children of the given test structure and adds them to it.
 	 * 
 	 * @param testCompositeStructure
 	 *            composite structure
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	void loadTestStructuresChildrenFor(TestCompositeStructure testCompositeStructure) throws SystemException;
+	void loadChildrenInto(TestCompositeStructure testCompositeStructure) throws SystemException;
 
 	/**
 	 * Creates the given test structure in the backend system.
@@ -68,7 +68,7 @@ public interface TestStructureService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	void renameTestStructure(TestStructure testStructure, String newName) throws SystemException;
+	void rename(TestStructure testStructure, String newName) throws SystemException;
 
 	/**
 	 * Executes a given test structure.
@@ -88,7 +88,7 @@ public interface TestStructureService {
 			InterruptedException;
 
 	/**
-	 * Returns the test log.
+	 * Returns the latest test execution log.
 	 * 
 	 * @param testStructure
 	 *            text of structure which should be shown
@@ -96,10 +96,10 @@ public interface TestStructureService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	String getLogData(TestStructure testStructure) throws SystemException;
+	String getTestExecutionLog(TestStructure testStructure) throws SystemException;
 
 	/**
-	 * tests, if log data for this structure exists.
+	 * tests, if a log of a test execution for this structure exists.
 	 * 
 	 * @param testStructure
 	 *            structure which should be checked
@@ -107,10 +107,10 @@ public interface TestStructureService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	boolean hasLogData(TestStructure testStructure) throws SystemException;
+	boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException;
 
 	/**
-	 * gets the history of the test-results sorted by ResultDate.
+	 * Gets the history of the test-results sorted by ResultDate.
 	 * 
 	 * @param testStructure
 	 *            {@link TestStructure}
@@ -121,6 +121,16 @@ public interface TestStructureService {
 	List<TestResult> getTestHistory(TestStructure testStructure) throws SystemException;
 
 	/**
+	 * Removes the testHistory of a test structure.
+	 * 
+	 * @param testStructure
+	 *            test structure which should be deleted
+	 * @throws SystemException
+	 *             is thrown if a system exception occurred
+	 */
+	void clearTestHistory(TestStructure testStructure) throws SystemException;
+
+	/**
 	 * Checks if the parameter is a reserved name in the context of the
 	 * TestServer.
 	 * 
@@ -129,16 +139,6 @@ public interface TestStructureService {
 	 * @return true if the name is reserved.
 	 */
 	boolean isReservedName(String name);
-
-	/**
-	 * Removes the testHistory of a test structure.
-	 * 
-	 * @param testStructure
-	 *            test structure which should be deleted
-	 * @throws SystemException
-	 *             is thrown if a system exception occurred
-	 */
-	void clearHistory(TestStructure testStructure) throws SystemException;
 
 	/**
 	 * Creates a Runnable which can used for lazy loading the children in the

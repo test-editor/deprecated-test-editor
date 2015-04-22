@@ -175,7 +175,7 @@ public class TestStructureServiceImplTest {
 	public void testRenameWithTeamService() throws Exception {
 		TestStructureServiceImpl service = new TestStructureServiceImpl();
 		TestStructure testStructure = getTeamSharedTestStructure(service);
-		service.renameTestStructure(testStructure, "foo");
+		service.rename(testStructure, "foo");
 		assertTrue(testStructure.getTeamChangeType().equals(TeamChangeType.MOVED));
 	}
 
