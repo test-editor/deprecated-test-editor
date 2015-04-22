@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.model.action;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -18,7 +19,9 @@ import java.util.Comparator;
  * Comparator for ActionElement to order them by the position field.
  *
  */
-public class ActionElementPositionComparator implements Comparator<ActionElement> {
+public class ActionElementPositionComparator implements Comparator<ActionElement>, Serializable {
+
+	private static final long serialVersionUID = -3798394682611961506L;
 
 	@Override
 	public int compare(ActionElement o1, ActionElement o2) {

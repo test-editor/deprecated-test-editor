@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.model.action;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -19,7 +20,9 @@ import java.util.Comparator;
  * null by the name.
  *
  */
-public class ActionGroupPositionComparator implements Comparator<ActionGroup> {
+public class ActionGroupPositionComparator implements Comparator<ActionGroup>, Serializable {
+
+	private static final long serialVersionUID = -5787865417074579647L;
 
 	@Override
 	public int compare(ActionGroup o1, ActionGroup o2) {
