@@ -46,7 +46,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -150,7 +150,7 @@ public class TestProjectServiceImplTest {
 			}
 
 			@Override
-			public List<FieldDeclaration> getFieldDeclarations() {
+			public List<FieldMappingExtension> getFieldMappingExtensions() {
 				return null;
 			}
 
@@ -432,7 +432,7 @@ public class TestProjectServiceImplTest {
 		createProjectInFileSystem();
 		TestProject tp = new TestProject();
 		tp.setName("MyPrj");
-		service.refreshTestProjectFromFileSystem(tp);
+		service.reloadTestProjectFromFileSystem(tp);
 		assertEquals(1, service.getProjects().size());
 	}
 
@@ -451,7 +451,7 @@ public class TestProjectServiceImplTest {
 		list.add(tp);
 		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
 		createProjectInFileSystem();
-		service.refreshTestProjectFromFileSystem(tp);
+		service.reloadTestProjectFromFileSystem(tp);
 		assertEquals(1, service.getProjects().size());
 	}
 

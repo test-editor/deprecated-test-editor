@@ -12,14 +12,14 @@
 package org.testeditor.teamshare.svn;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * 
  * Field Declaration for UserName.
  * 
  */
-public class UserNameFieldDeclaration implements FieldDeclaration {
+public class UserNameFieldDeclaration implements FieldMappingExtension {
 
 	@Override
 	public String getTranslatedLabel(TranslationService translationService) {

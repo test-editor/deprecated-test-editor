@@ -17,9 +17,10 @@ import org.testeditor.core.exceptions.SystemException;
  * 
  * own exception class. used by the implementors of the LibraryReaderService
  * 
- * @author llipinski
  */
 public class LibraryReadException extends SystemException {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * constructor.

@@ -12,14 +12,14 @@
 package org.testeditor.teamshare.svn;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * 
  * Field Declaration for Password to the SVN repository. sff
  * 
  */
-public class PasswordFieldDeclaration implements FieldDeclaration {
+public class PasswordFieldDeclaration implements FieldMappingExtension {
 
 	@Override
 	public String getTranslatedLabel(TranslationService translationService) {

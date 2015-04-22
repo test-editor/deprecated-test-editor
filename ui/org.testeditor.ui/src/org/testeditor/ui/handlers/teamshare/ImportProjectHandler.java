@@ -168,7 +168,7 @@ public class ImportProjectHandler {
 								TeamShareConfig oldTeamShareconfig = testProject.getTestProjectConfig()
 										.getTeamShareConfig();
 
-								testProjectService.refreshTestProjectFromFileSystem(testProject);
+								testProjectService.reloadTestProjectFromFileSystem(testProject);
 								testProject.getTestProjectConfig().setTeamShareConfig(oldTeamShareconfig);
 
 								ApplicationLifeCycleHandler lifeCycleHandler = ContextInjectionFactory.make(

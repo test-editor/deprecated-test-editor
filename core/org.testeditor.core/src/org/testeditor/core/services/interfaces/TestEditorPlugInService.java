@@ -39,7 +39,7 @@ public interface TestEditorPlugInService {
 	ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties);
 
 	/**
-	 * Looks the correct ConfigurationService up and delegates the work to the
+	 * Looks up the matching ConfigurationService and delegates the work to the
 	 * service. Stores the ID of the ProjectLibraryConfig in the properties.
 	 * 
 	 * @param projectLibraryConfig
@@ -56,7 +56,7 @@ public interface TestEditorPlugInService {
 	 * @return a Collection of all registered
 	 *         <code>LibraryConfigurationService</code> Service objects.
 	 */
-	Collection<LibraryConfigurationService> getAllLibraryConfigurationService();
+	Collection<LibraryConfigurationService> getAllLibraryConfigurationServices();
 
 	/**
 	 * Lookup the LibraryConfigurationService with for the id.

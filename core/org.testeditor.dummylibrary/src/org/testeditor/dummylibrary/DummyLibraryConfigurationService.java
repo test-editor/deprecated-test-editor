@@ -18,7 +18,7 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 
 /**
@@ -45,9 +45,9 @@ public class DummyLibraryConfigurationService implements LibraryConfigurationSer
 	}
 
 	@Override
-	public List<FieldDeclaration> getFieldDeclarations() {
-		List<FieldDeclaration> result = new ArrayList<FieldDeclaration>();
-		result.add(new FieldDeclaration() {
+	public List<FieldMappingExtension> getConfigUIExtensions() {
+		List<FieldMappingExtension> result = new ArrayList<FieldMappingExtension>();
+		result.add(new FieldMappingExtension() {
 
 			@Override
 			public void updatePlugInConfig(Object bean, String text) {

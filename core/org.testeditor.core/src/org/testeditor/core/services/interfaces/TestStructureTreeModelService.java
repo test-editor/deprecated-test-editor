@@ -20,7 +20,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * Interface for a service input of a tree.
  * 
  */
-public interface TestStructureTreeInputService {
+public interface TestStructureTreeModelService {
 	
 	/**
 	 * 
