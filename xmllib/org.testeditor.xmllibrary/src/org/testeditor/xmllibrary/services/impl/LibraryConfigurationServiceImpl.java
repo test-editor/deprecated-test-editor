@@ -89,7 +89,7 @@ public class LibraryConfigurationServiceImpl implements LibraryConfigurationServ
 	}
 
 	@Override
-	public List<FieldMappingExtension> getFieldDeclarations() {
+	public List<FieldMappingExtension> getConfigUIExtensions() {
 		List<FieldMappingExtension> result = new ArrayList<FieldMappingExtension>();
 		result.add(new PathToActionGroupFieldDeclaration());
 		result.add(new PathToTechnicalBindingsXMLFieldDeclaration());

@@ -15,11 +15,18 @@
 package org.testeditor.core.services.interfaces;
 
 /**
- * Listener for logging of progress.
+ * Listener for logging of progress information.
+ * 
+ * Any long running job inside the test editor gets injected or passed a
+ * ProgressListener. Any relevant information about the running transaction can
+ * be passed to the Listener and is displayed in a matching ProgressMonitor
+ * Dialog. This indirection is preferred to the injection of an eclipse specific
+ * Component to an independent job.
  */
 public interface ProgressListener {
 
 	/**
+	 * Display some information about a job's progress to the user
 	 * 
 	 * @param progressInfo
 	 *            text to be log

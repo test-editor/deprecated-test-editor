@@ -153,7 +153,7 @@ public class TestEditorPlugInServiceTest {
 			}
 
 			@Override
-			public List<FieldMappingExtension> getFieldDeclarations() {
+			public List<FieldMappingExtension> getConfigUIExtensions() {
 				return null;
 			}
 
