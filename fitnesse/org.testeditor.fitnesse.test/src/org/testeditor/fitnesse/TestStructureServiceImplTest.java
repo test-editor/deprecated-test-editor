@@ -248,7 +248,7 @@ public class TestStructureServiceImplTest {
 			}
 
 			@Override
-			public void doDelete(TestStructure testStructure, TranslationService translationService)
+			public void delete(TestStructure testStructure, TranslationService translationService)
 					throws SystemException {
 				set.add("deleted");
 			}
