@@ -20,8 +20,8 @@ import org.testeditor.core.model.teststructure.TestStructure;
 
 /**
  * 
- * this class is the interface for the ScenarioService. The ScenarioService
- * should provide the informations about the scenarios of the actual project.
+ * A ScenarioService provides informations about the scenarios of the actual
+ * project.
  * 
  */
 public interface TestScenarioService {
