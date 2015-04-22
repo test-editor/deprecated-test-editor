@@ -1067,7 +1067,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	}
 
 	@Override
-	public void refreshTestProjectFromFileSystem(TestProject testProject) throws SystemException {
+	public void reloadTestProjectFromFileSystem(TestProject testProject) throws SystemException {
 		File dir = new File(Platform.getLocation().toFile() + File.separator + testProject.getName());
 		loadProjectConfigFromFileSystem(testProject, dir);
 		registerProject(testProject);
