@@ -499,7 +499,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	}
 
 	@Override
-	public void doDelete(TestStructure testStructure, TranslationService translationService) throws SystemException {
+	public void delete(TestStructure testStructure, TranslationService translationService) throws SystemException {
 
 		SVNClientManager clientManager = getSVNClientManager(testStructure.getRootElement());
 		SVNStatusClient statusClient = clientManager.getStatusClient();

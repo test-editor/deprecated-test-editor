@@ -19,7 +19,7 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.team.TeamShareConfig;
 
 /**
- * Configuration Service for the Team Share Option. This Service manges the
+ * Configuration Service for the Team Share Option. This Service manages the
  * Configuration of a TeamShareService.
  * 
  */
@@ -52,7 +52,7 @@ public interface TeamShareConfigurationService {
 	 * <code>FieldMappingExtension</code>. This FieldDeclaration are used by the
 	 * UI to display and update the Plug-In Configuration.
 	 * 
-	 * @return List with FieldDeclaration for the UI od the Plug-In
+	 * @return List with FieldDeclaration for the UI of the Plug-In
 	 *         configuration.
 	 */
 	List<FieldMappingExtension> getFieldMappingExtensions();
