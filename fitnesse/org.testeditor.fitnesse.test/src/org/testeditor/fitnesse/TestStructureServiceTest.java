@@ -131,7 +131,7 @@ public class TestStructureServiceTest {
 		testProject.addChild(testStructure);
 
 		// Tests the Function to create the new testStructure
-		testStructureService.createTestStructure(testStructure);
+		testStructureService.create(testStructure);
 
 		testProject = getTestProject();
 		testStructureService.loadTestStructuresChildrenFor(testProject);
@@ -150,7 +150,7 @@ public class TestStructureServiceTest {
 
 		testStructure.setName(newName);
 		// Tests the Function to remove the new testStructre
-		testStructureService.removeTestStructure(testStructure);
+		testStructureService.delete(testStructure);
 
 		testProject = getTestProject();
 		testStructureService.loadTestStructuresChildrenFor(testProject);

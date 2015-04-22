@@ -162,7 +162,7 @@ public class TestStructureServiceImplTest {
 	public void testDeleteWithTeamService() throws Exception {
 		TestStructureServiceImpl service = new TestStructureServiceImpl();
 		TestStructure testStructure = getTeamSharedTestStructure(service);
-		service.removeTestStructure(testStructure);
+		service.delete(testStructure);
 	}
 
 	/**

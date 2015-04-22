@@ -48,7 +48,7 @@ public interface TestServerService {
 	void stopTestServer(TestProject testProject) throws IOException;
 
 	/**
-	 * Returns true if fitnesse Server is running on given configuration.
+	 * Returns true if test Server is running on given configuration.
 	 * 
 	 * @param testProject
 	 *            to identify the serverprocess.

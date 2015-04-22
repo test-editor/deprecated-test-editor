@@ -149,7 +149,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
 		assertTrue("Directory of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
-		service.removeTestStructure(testProject.getTestChildByFullName("tp.tc"));
+		service.delete(testProject.getTestChildByFullName("tp.tc"));
 		assertFalse("Directory of Testcase is removed.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
 	}
@@ -191,7 +191,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		TestCase tc = new TestCase();
 		tc.setName("MyTestCase");
 		testProject.addChild(tc);
-		service.createTestStructure(tc);
+		service.create(tc);
 		assertTrue(
 				"Directory of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -223,7 +223,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		tc.setName("tc");
 		testProject.addChild(tc);
 		try {
-			service.createTestStructure(tc);
+			service.create(tc);
 			fail("Exception expected.");
 		} catch (SystemException e) {
 			assertTrue(e.getMessage().contains("TestStructure allready exits"));
@@ -244,7 +244,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		tc.setName("MyTestCase");
 		TestStructure structure = testProject.getTestChildByFullName("tp.ts");
 		((TestCompositeStructure) structure).addChild(tc);
-		service.createTestStructure(tc);
+		service.create(tc);
 		assertTrue(
 				"Directory of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -270,7 +270,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		TestSuite ts = new TestSuite();
 		ts.setName("CiSuite");
 		testProject.addChild(ts);
-		service.createTestStructure(ts);
+		service.create(ts);
 		assertTrue(
 				"Directory of TestSuite exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -302,7 +302,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		TestScenario tsc = new TestScenario();
 		tsc.setName("Scenario");
 		testProject.addChild(tsc);
-		service.createTestStructure(tsc);
+		service.create(tsc);
 		assertTrue(
 				"Directory of TestScenario exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -335,7 +335,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		ScenarioSuite scs = new ScenarioSuite();
 		scs.setName("ScenarioSuite");
 		testProject.addChild(scs);
-		service.createTestStructure(scs);
+		service.create(scs);
 		assertTrue(
 				"Directory of ScenarioSuite exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -368,11 +368,11 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		ScenarioSuite scs = new ScenarioSuite();
 		scs.setName("ScenarioSuite");
 		testProject.addChild(scs);
-		service.createTestStructure(scs);
+		service.create(scs);
 		TestScenario tsc = new TestScenario();
 		tsc.setName("Scenario");
 		scs.addChild(tsc);
-		service.createTestStructure(tsc);
+		service.create(tsc);
 		assertTrue(
 				"Directory of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -405,9 +405,9 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		TestCase tc2 = new TestCase();
 		tc2.setName("SecondTest");
 		testProject.addChild(tc2);
-		service.createTestStructure(tc2);
-		service.createTestStructure(suite);
-		service.createTestStructure(tc1);
+		service.create(tc2);
+		service.create(suite);
+		service.create(tc1);
 		TestProject tp = new TestProject();
 		tp.setName("tp");
 		service.loadTestStructuresChildrenFor(tp);

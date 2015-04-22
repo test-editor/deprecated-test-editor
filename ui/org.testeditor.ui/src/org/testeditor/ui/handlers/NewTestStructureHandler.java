@@ -149,7 +149,7 @@ public abstract class NewTestStructureHandler {
 		TestProject testProject = testStructure.getRootElement();
 		TestStructureService testStructureService = plugInService.getTestStructureServiceFor(testProject
 				.getTestProjectConfig().getTestServerID());
-		testStructureService.createTestStructure(testStructure);
+		testStructureService.create(testStructure);
 	}
 
 	/**
