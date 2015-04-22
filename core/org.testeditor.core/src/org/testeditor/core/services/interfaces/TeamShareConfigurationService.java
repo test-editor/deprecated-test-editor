@@ -23,7 +23,6 @@ import org.testeditor.core.model.team.TeamShareConfig;
  * Configuration of a TeamShareService.
  * 
  */
-@SuppressWarnings("restriction")
 public interface TeamShareConfigurationService {
 
 	/**

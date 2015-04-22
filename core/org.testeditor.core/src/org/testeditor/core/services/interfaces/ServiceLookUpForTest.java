@@ -16,8 +16,10 @@ import org.osgi.framework.ServiceReference;
 
 /**
  * 
- * This Class is only for Tests. Production code should use e4 Dependency
- * Injection to consume services.
+ * This Class is only for JUnit Tests of the Test-Editor. It is placed in this
+ * package to be accessible by all test-bundles which work with this service
+ * interfaces. Production code should use e4 Dependency Injection to consume
+ * services.
  * 
  */
 public final class ServiceLookUpForTest {
