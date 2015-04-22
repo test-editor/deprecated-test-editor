@@ -12,6 +12,7 @@
 package org.testeditor.core.model.teststructure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.testeditor.core.model.action.TextType;
 
@@ -40,13 +41,13 @@ public class TestInvisibleContent implements TestComponent {
 	}
 
 	@Override
-	public ArrayList<String> getTexts() {
+	public List<String> getTexts() {
 		ArrayList<String> array = new ArrayList<String>();
 		return array;
 	}
 
 	@Override
-	public ArrayList<TextType> getTextTypes() {
+	public List<TextType> getTextTypes() {
 		ArrayList<TextType> array = new ArrayList<TextType>();
 		return array;
 	}
