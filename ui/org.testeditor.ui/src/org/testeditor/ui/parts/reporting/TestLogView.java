@@ -102,7 +102,7 @@ public class TestLogView {
 		try {
 			TestStructureService testStructureService = testEditorPlugInService
 					.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig().getTestServerID());
-			String logData = testStructureService.getLogData(testStructure);
+			String logData = testStructureService.getTestExecutionLog(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
 			if (ishHighlightLogEnabled()) {
@@ -194,7 +194,7 @@ public class TestLogView {
 					.getTestStructureServiceFor(aTestStructure.getRootElement().getTestProjectConfig()
 							.getTestServerID());
 			try {
-				if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasLogData(aTestStructure)) {
+				if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasTestExecutionLog(aTestStructure)) {
 					onTestExecutionShowTestLogForLastRun(aTestStructure);
 				}
 			} catch (SystemException e) {

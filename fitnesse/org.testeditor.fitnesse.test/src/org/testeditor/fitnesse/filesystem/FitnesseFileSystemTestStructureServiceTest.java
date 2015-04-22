@@ -131,7 +131,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	public void testLoadTestStructuresChildrenFor() throws Exception {
 		TestProject testProject = createTestProjectsInWS();
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
-		service.loadTestStructuresChildrenFor(testProject);
+		service.loadChildrenInto(testProject);
 		assertEquals(2, testProject.getTestChildren().size());
 	}
 
@@ -166,7 +166,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
 		assertTrue("Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
-		service.renameTestStructure(testProject.getTestChildByFullName("tp.tc"), "tcChanged");
+		service.rename(testProject.getTestChildByFullName("tp.tc"), "tcChanged");
 
 		assertFalse("Testcase with oldname does not exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
@@ -410,7 +410,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		service.create(tc1);
 		TestProject tp = new TestProject();
 		tp.setName("tp");
-		service.loadTestStructuresChildrenFor(tp);
+		service.loadChildrenInto(tp);
 		assertTrue(tp.getAllTestChildren().contains(tc2));
 		assertTrue(tp.getAllTestChildren().contains(tc1));
 		assertTrue(tp.getAllTestChildren().contains(suite));
@@ -504,7 +504,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		TestProject testProject = createTestProjectsInWS();
 		TestStructure testStructure = testProject.getTestChildByFullName("tp.tc");
 		assertTrue(new File(service.getPathToTestResults(testStructure)).exists());
-		service.clearHistory(testStructure);
+		service.clearTestHistory(testStructure);
 		assertFalse(new File(service.getPathToTestResults(testStructure)).exists());
 	}
 

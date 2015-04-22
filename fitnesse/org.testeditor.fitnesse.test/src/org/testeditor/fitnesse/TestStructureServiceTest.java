@@ -126,7 +126,7 @@ public class TestStructureServiceTest {
 		testStructure.setName(name);
 
 		TestProject testProject = getTestProject();
-		testStructureService.loadTestStructuresChildrenFor(testProject);
+		testStructureService.loadChildrenInto(testProject);
 		int beforeCreate = testProject.getTestChildren().size();
 		testProject.addChild(testStructure);
 
@@ -134,12 +134,12 @@ public class TestStructureServiceTest {
 		testStructureService.create(testStructure);
 
 		testProject = getTestProject();
-		testStructureService.loadTestStructuresChildrenFor(testProject);
+		testStructureService.loadChildrenInto(testProject);
 		int afterCreate = testProject.getTestChildren().size();
 		assertTrue("testStructure was not created", beforeCreate < afterCreate);
 
 		// Tests the Function to rename the new testStructre
-		testStructureService.renameTestStructure(testStructure, newName);
+		testStructureService.rename(testStructure, newName);
 		// TestSuite testSuiteCheck =
 		// (TestSuite)testStructureService.getTestStructures().get(parent);
 		// TODO for-schleife um das element wieder zu finden
@@ -153,7 +153,7 @@ public class TestStructureServiceTest {
 		testStructureService.delete(testStructure);
 
 		testProject = getTestProject();
-		testStructureService.loadTestStructuresChildrenFor(testProject);
+		testStructureService.loadChildrenInto(testProject);
 		afterCreate = testProject.getTestChildren().size();
 		assertTrue("testStructure was not removed", beforeCreate == afterCreate);
 
@@ -171,7 +171,7 @@ public class TestStructureServiceTest {
 	// No Centent found on server after move fitnesse lib to fixturelib
 	public void testLoadTestStructuresChildrenFor() throws SystemException {
 		TestProject projectMock = getTestProject();
-		testStructureService.loadTestStructuresChildrenFor(projectMock);
+		testStructureService.loadChildrenInto(projectMock);
 		List<TestStructure> testStructures = projectMock.getTestChildren();
 
 		assertNotNull("test struture is null", testStructures);

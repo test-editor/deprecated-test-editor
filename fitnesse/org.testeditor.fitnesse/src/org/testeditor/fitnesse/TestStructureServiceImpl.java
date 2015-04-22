@@ -96,7 +96,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 			LOGGER.trace("Used " + teamShareService);
 		}
 		new FitnesseFileSystemTestStructureService().delete(testStructure);
-		clearHistory(testStructure);
+		clearTestHistory(testStructure);
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED, testStructureFullName);
 		}
@@ -106,9 +106,9 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void renameTestStructure(TestStructure testStructure, String newName) throws SystemException {
+	public void rename(TestStructure testStructure, String newName) throws SystemException {
 		storeOldNameOnTheFullNewNameAsKey(testStructure, newName);
-		clearHistory(testStructure);
+		clearTestHistory(testStructure);
 		if (testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
 			String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
 			LOGGER.trace("Looking up for team share service with id: " + id);
@@ -116,7 +116,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 			teamShareService.rename(testStructure, newName, context.get(TranslationService.class));
 			testStructure.setTeamChangeType(TeamChangeType.MOVED);
 		} else {
-			new FitnesseFileSystemTestStructureService().renameTestStructure(testStructure, newName);
+			new FitnesseFileSystemTestStructureService().rename(testStructure, newName);
 		}
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE,
@@ -160,13 +160,13 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	}
 
 	@Override
-	public String getLogData(TestStructure testStructure) throws SystemException {
-		return new FitnesseFileSystemTestStructureService().getLogData(testStructure);
+	public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
+		return new FitnesseFileSystemTestStructureService().getTestExecutionLog(testStructure);
 	}
 
 	@Override
-	public void loadTestStructuresChildrenFor(TestCompositeStructure testCompositeStructure) throws SystemException {
-		new FitnesseFileSystemTestStructureService().loadTestStructuresChildrenFor(testCompositeStructure);
+	public void loadChildrenInto(TestCompositeStructure testCompositeStructure) throws SystemException {
+		new FitnesseFileSystemTestStructureService().loadChildrenInto(testCompositeStructure);
 	}
 
 	@Override
@@ -205,8 +205,8 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	}
 
 	@Override
-	public void clearHistory(TestStructure testStructure) throws SystemException {
-		new FitnesseFileSystemTestStructureService().clearHistory(testStructure);
+	public void clearTestHistory(TestStructure testStructure) throws SystemException {
+		new FitnesseFileSystemTestStructureService().clearTestHistory(testStructure);
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_HISTORY_DELETED, testStructure.getFullName());
 		}
@@ -242,7 +242,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	}
 
 	@Override
-	public boolean hasLogData(TestStructure testStructure) throws SystemException {
+	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
 	}
 

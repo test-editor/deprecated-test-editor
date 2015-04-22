@@ -311,7 +311,7 @@ public class TestHistoryPart {
 	public void clearHistory() {
 		try {
 			TestStructureService testStructureService = getTestStructureService(testStructure);
-			testStructureService.clearHistory(testStructure);
+			testStructureService.clearTestHistory(testStructure);
 		} catch (SystemException e) {
 			LOGGER.error(e.getMessage());
 			final String errorMessage = e.getCause().getMessage();

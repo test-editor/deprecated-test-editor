@@ -144,7 +144,7 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
-		testStructureService.renameTestStructure(selectedTestStructure, sbname);
+		testStructureService.rename(selectedTestStructure, sbname);
 	}
 
 	/**
