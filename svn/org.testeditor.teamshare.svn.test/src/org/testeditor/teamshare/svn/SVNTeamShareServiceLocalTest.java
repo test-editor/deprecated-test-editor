@@ -1208,7 +1208,7 @@ public class SVNTeamShareServiceLocalTest {
 			}
 
 			@Override
-			public List<FieldMappingExtension> getFieldMappingDeclarations() {
+			public List<FieldMappingExtension> getFieldMappingExtensions() {
 				return null;
 			}
 
