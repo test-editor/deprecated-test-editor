@@ -45,8 +45,7 @@ public interface TestStructureService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	// TODO rename to create TE-1459
-	void createTestStructure(TestStructure testStructure) throws SystemException;
+	void create(TestStructure testStructure) throws SystemException;
 
 	/**
 	 * Removes the test structure.
@@ -56,8 +55,7 @@ public interface TestStructureService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	// TODO rename to delete TE-1459
-	void removeTestStructure(TestStructure testStructure) throws SystemException;
+	void delete(TestStructure testStructure) throws SystemException;
 
 	/**
 	 * Renames a given test structure.
