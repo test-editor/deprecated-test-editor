@@ -17,7 +17,7 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
 
 /**
- * Interface for a tree model
+ * Interface for a tree model.
  * 
  */
 public interface TestStructureTreeModel {
