@@ -134,11 +134,6 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 			}
 
 			@Override
-			public List<FieldMappingExtension> getConfigUIExtensions() {
-				return null;
-			}
-
-			@Override
 			public Map<String, String> getAsProperties(TeamShareConfig teamShareConfig) {
 				return null;
 			}
@@ -150,6 +145,11 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 
 			@Override
 			public String getTemplateForConfiguration() {
+				return null;
+			}
+
+			@Override
+			public List<FieldMappingExtension> getFieldMappingDeclarations() {
 				return null;
 			}
 		});
