@@ -30,7 +30,7 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 public interface FieldMappingExtension {
 
 	/**
-	 * returns the translated label for this field
+	 * Returns the translated label for this field.
 	 * 
 	 * @param translationService
 	 *            for Translation.
@@ -39,7 +39,7 @@ public interface FieldMappingExtension {
 	String getTranslatedLabel(TranslationService translationService);
 
 	/**
-	 * return the translated tool tip text for this field
+	 * Return the translated tool tip text for this field.
 	 * 
 	 * @param translationService
 	 *            for Translation.

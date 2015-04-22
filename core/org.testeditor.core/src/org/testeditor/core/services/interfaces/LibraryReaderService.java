@@ -21,7 +21,6 @@ import org.testeditor.core.model.action.ProjectLibraryConfig;
  * for a concrete ActionGroupService, which exposes the ActionGroups from the
  * library to its client.
  * 
- * @author llipinski
  */
 public interface LibraryReaderService {
 

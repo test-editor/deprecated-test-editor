@@ -84,7 +84,7 @@ public interface LibraryConfigurationService {
 
 	/**
 	 * Template for the config.tpr to allow this file to be well formed and
-	 * formatted
+	 * formatted.
 	 * 
 	 * @return the template for the configuration
 	 */
