@@ -50,7 +50,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
@@ -1208,7 +1208,7 @@ public class SVNTeamShareServiceLocalTest {
 			}
 
 			@Override
-			public List<FieldDeclaration> getFieldDeclarations() {
+			public List<FieldMappingExtension> getFieldDeclarations() {
 				return null;
 			}
 

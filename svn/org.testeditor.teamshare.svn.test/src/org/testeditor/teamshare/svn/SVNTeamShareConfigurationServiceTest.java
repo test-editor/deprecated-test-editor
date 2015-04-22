@@ -21,7 +21,7 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.Test;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * 
@@ -40,10 +40,10 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testGettingFieldDeclarations() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		List<FieldDeclaration> fieldDeclarations = teamShareConfigurationService.getFieldDeclarations();
+		List<FieldMappingExtension> fieldDeclarations = teamShareConfigurationService.getFieldDeclarations();
 		assertNotNull("Expecting a List with Declaring Fields.", fieldDeclarations);
 		assertTrue("Expect one or more Fields.", fieldDeclarations.size() > 0);
-		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
+		for (FieldMappingExtension fieldDeclaration : fieldDeclarations) {
 			assertNotNull("Expect a value for the label.",
 					fieldDeclaration.getTranslatedLabel(getTranslationServiceMock()));
 			assertNotNull("Expect a value for the tooltip.",

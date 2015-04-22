@@ -56,7 +56,7 @@ public interface TeamShareConfigurationService {
 	 * @return List with FieldDeclaration for the UI od the Plug-In
 	 *         configuration.
 	 */
-	List<FieldDeclaration> getFieldDeclarations();
+	List<FieldMappingExtension> getFieldDeclarations();
 
 	/**
 	 * This method is called for to store the config of the team share in the
