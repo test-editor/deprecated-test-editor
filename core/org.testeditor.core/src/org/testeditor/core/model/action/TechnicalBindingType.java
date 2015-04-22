@@ -161,7 +161,7 @@ public class TechnicalBindingType {
 	 *            TechnicalBindingType
 	 * @return the result of the compareTo
 	 */
-	public int compareTo(TechnicalBindingType compareTechBind) {
+	public int compareWith(TechnicalBindingType compareTechBind) {
 		if (this.getSorting() == null && compareTechBind.getSorting() == null) {
 			if (!this.getShortName().isEmpty() && !compareTechBind.getShortName().isEmpty()) {
 				return this.getShortName().compareTo(compareTechBind.getShortName());

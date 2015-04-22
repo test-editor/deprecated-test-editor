@@ -31,9 +31,9 @@ public class TechnicalBindingTypeComperatorTest {
 		TechnicalBindingType technicalBindingTypeComp = new TechnicalBindingType();
 		technicalBindingType.setSorting(1);
 
-		int compare = technicalBindingType.compareTo(technicalBindingTypeComp);
+		int compare = technicalBindingType.compareWith(technicalBindingTypeComp);
 		assertEquals(-1, compare);
-		compare = technicalBindingTypeComp.compareTo(technicalBindingType);
+		compare = technicalBindingTypeComp.compareWith(technicalBindingType);
 		assertEquals(1, compare);
 
 	}
@@ -47,9 +47,9 @@ public class TechnicalBindingTypeComperatorTest {
 		technicalBindingType.setSorting(1);
 		TechnicalBindingType technicalBindingTypeComp = new TechnicalBindingType();
 		technicalBindingTypeComp.setSorting(2);
-		int compare = technicalBindingType.compareTo(technicalBindingTypeComp);
+		int compare = technicalBindingType.compareWith(technicalBindingTypeComp);
 		assertEquals(-1, compare);
-		compare = technicalBindingTypeComp.compareTo(technicalBindingType);
+		compare = technicalBindingTypeComp.compareWith(technicalBindingType);
 		assertEquals(1, compare);
 	}
 
@@ -61,7 +61,7 @@ public class TechnicalBindingTypeComperatorTest {
 		TechnicalBindingType technicalBindingType = new TechnicalBindingType();
 		TechnicalBindingType technicalBindingTypeComp = new TechnicalBindingType();
 
-		int compare = technicalBindingType.compareTo(technicalBindingTypeComp);
+		int compare = technicalBindingType.compareWith(technicalBindingTypeComp);
 		assertEquals(0, compare);
 	}
 
@@ -75,12 +75,12 @@ public class TechnicalBindingTypeComperatorTest {
 		TechnicalBindingType technicalBindingTypeComp = new TechnicalBindingType();
 		technicalBindingTypeComp.setId("B");
 
-		int compare = technicalBindingType.compareTo(technicalBindingTypeComp);
+		int compare = technicalBindingType.compareWith(technicalBindingTypeComp);
 		assertEquals(-1, compare);
-		compare = technicalBindingTypeComp.compareTo(technicalBindingType);
+		compare = technicalBindingTypeComp.compareWith(technicalBindingType);
 		assertEquals(1, compare);
 		technicalBindingTypeComp.setId("A");
-		compare = technicalBindingType.compareTo(technicalBindingType);
+		compare = technicalBindingType.compareWith(technicalBindingType);
 		assertEquals(0, compare);
 	}
 

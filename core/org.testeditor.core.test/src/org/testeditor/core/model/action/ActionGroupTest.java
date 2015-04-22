@@ -21,7 +21,6 @@ import org.junit.Test;
  * 
  * this class test the functionality of the ActionGroup.
  * 
- * @author llipinski
  */
 public class ActionGroupTest {
 	/**
@@ -94,33 +93,4 @@ public class ActionGroupTest {
 		assertEquals("first", actionGr.getActions().get(2).getArguments().get(0).getValue());
 	}
 
-	/**
-	 * this test tests the sorting of the actions.
-	 */
-	@Test
-	public void testCompareTo() {
-		ActionGroup actionGr = new ActionGroup();
-		ActionGroup compareActionGr = new ActionGroup();
-		actionGr.setName("group");
-		compareActionGr.setName("copare");
-
-		actionGr.setSorting(null);
-		compareActionGr.setSorting(1);
-		assertEquals(actionGr.compareTo(compareActionGr), 1);
-		actionGr.setSorting(null);
-		compareActionGr.setSorting(null);
-		assertEquals(actionGr.compareTo(compareActionGr), 4);
-		actionGr.setSorting(1);
-		compareActionGr.setSorting(null);
-		assertEquals(actionGr.compareTo(compareActionGr), -1);
-		actionGr.setSorting(1);
-		compareActionGr.setSorting(1);
-		assertEquals(actionGr.compareTo(compareActionGr), 4);
-		actionGr.setSorting(3);
-		compareActionGr.setSorting(1);
-		assertEquals(actionGr.compareTo(compareActionGr), 1);
-		actionGr.setSorting(1);
-		compareActionGr.setSorting(3);
-		assertEquals(actionGr.compareTo(compareActionGr), -1);
-	}
 }

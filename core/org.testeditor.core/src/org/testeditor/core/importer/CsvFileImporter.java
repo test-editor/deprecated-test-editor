@@ -67,11 +67,15 @@ public class CsvFileImporter implements FileImporter {
 		BufferedReader reader = null;
 
 		Charset charset = null;
-		try {
-			String encoding = System.getProperty(CSV_FILE_ENCODING);
-			charset = encoding == null ? Charset.defaultCharset() : Charset.forName(encoding);
-		} catch (Exception e) {
-			LOGGER.error("CSV file encoding '" + System.getProperty(CSV_FILE_ENCODING) + "' not valid.");
+		String encoding = System.getProperty(CSV_FILE_ENCODING);
+		if (encoding != null) {
+			try {
+				charset = Charset.forName(encoding);
+			} catch (Exception e) {
+				LOGGER.error("CSV file encoding '" + System.getProperty(CSV_FILE_ENCODING) + "' not valid.");
+				charset = Charset.defaultCharset();
+			}
+		} else {
 			charset = Charset.defaultCharset();
 		}
 
@@ -109,5 +113,4 @@ public class CsvFileImporter implements FileImporter {
 		return testData;
 
 	}
-
 }

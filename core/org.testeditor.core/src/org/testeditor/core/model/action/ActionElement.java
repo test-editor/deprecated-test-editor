@@ -16,7 +16,7 @@ package org.testeditor.core.model.action;
  * 
  * 
  */
-public class ActionElement implements Comparable<ActionElement> {
+public class ActionElement {// implements Comparable<ActionElement> {
 	private Integer position;
 	private ActionElementType type;
 	private String value;
@@ -93,20 +93,6 @@ public class ActionElement implements Comparable<ActionElement> {
 	 */
 	public Integer getPosition() {
 		return position;
-	}
-
-	@Override
-	public int compareTo(ActionElement b) {
-		if (b.getPosition() == null && this.getPosition() == null) {
-			return 0;
-		}
-		if (this.getPosition() == null) {
-			return 1;
-		}
-		if (b.getPosition() == null) {
-			return -1;
-		}
-		return this.getPosition().compareTo(b.getPosition());
 	}
 
 	/**
