@@ -377,8 +377,6 @@ public class TestProjectEditor implements ITestStructureEditor {
 	public void save() {
 		try {
 			TestProject oldTestProject = getTestProject();
-			testProjectService.getProjectConfigFor(testProject);
-
 			testProjectService.storeProjectConfig(testProject, newTestProjectConfig);
 			/*
 			 * We have to set the port form oldProject to new project because we
@@ -496,20 +494,13 @@ public class TestProjectEditor implements ITestStructureEditor {
 	@Optional
 	protected void refreshAfterRevert(@UIEventTopic(TestEditorUIEventConstants.TESTSTRUCTURE_REVERTED) String data) {
 		if (data.equals(getTestProject().getFullName())) {
-			loadAndRerender();
-		}
-	}
-
-	/**
-	 * load the TestSuite and rerender the Ui.
-	 */
-	private void loadAndRerender() {
-		try {
-			testProject.setTestProjectConfig(testProjectService.getProjectConfigFor(testProject));
-			setTestProject(testProject);
-		} catch (SystemException e) {
-			LOGGER.error(e.getMessage());
-			closePart();
+			try {
+				testProjectService.reloadTestProjectFromFileSystem(getTestProject());
+				setTestProject(getTestProject());
+			} catch (SystemException e) {
+				LOGGER.error(e.getMessage());
+				closePart();
+			}
 		}
 	}
 

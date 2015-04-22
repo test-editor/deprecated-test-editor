@@ -47,18 +47,6 @@ public interface TestProjectService extends TestStructureTreeModel {
 	List<TestProject> getProjects();
 
 	/**
-	 * 
-	 * @param testProject
-	 *            to get the config for.
-	 * @return Config for the given TestProject
-	 * @throws SystemException
-	 *             on Read Action
-	 */
-	// TODO Check to remove this method.
-	@Deprecated
-	TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException;
-
-	/**
 	 * Stores the TestProjectConfig. This includes the Config.tpr,
 	 * TeamShareConfig prefs. The Config.tpr will be created from the template.
 	 * 
