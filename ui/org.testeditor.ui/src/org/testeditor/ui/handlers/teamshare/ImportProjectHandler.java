@@ -143,7 +143,7 @@ public class ImportProjectHandler {
 					tsConfig = importProjectPage.getTeamShareConfig();
 
 					ProgressMonitorDialog dialog = new ProgressMonitorDialog(getDisplay().getActiveShell());
-					dialog.run(true, false, new IRunnableWithProgress() {
+					dialog.run(true, true, new IRunnableWithProgress() {
 
 						@Override
 						public void run(final IProgressMonitor monitor) throws InvocationTargetException,
@@ -161,21 +161,26 @@ public class ImportProjectHandler {
 										monitor.subTask(progressInfo);
 
 									}
+
+									@Override
+									public boolean isCanceled() {
+										return monitor.isCanceled();
+									}
 								});
 
 								getTeamService().checkout(testProject, translate);
+								if (!monitor.isCanceled()) {
+									TeamShareConfig oldTeamShareconfig = testProject.getTestProjectConfig()
+											.getTeamShareConfig();
 
-								TeamShareConfig oldTeamShareconfig = testProject.getTestProjectConfig()
-										.getTeamShareConfig();
+									testProjectService.reloadTestProjectFromFileSystem(testProject);
+									testProject.getTestProjectConfig().setTeamShareConfig(oldTeamShareconfig);
 
-								testProjectService.reloadTestProjectFromFileSystem(testProject);
-								testProject.getTestProjectConfig().setTeamShareConfig(oldTeamShareconfig);
+									ApplicationLifeCycleHandler lifeCycleHandler = ContextInjectionFactory.make(
+											ApplicationLifeCycleHandler.class, context);
 
-								ApplicationLifeCycleHandler lifeCycleHandler = ContextInjectionFactory.make(
-										ApplicationLifeCycleHandler.class, context);
-
-								lifeCycleHandler.startBackendServer(testProject);
-
+									lifeCycleHandler.startBackendServer(testProject);
+								}
 								ok.flag = true;
 							} catch (SystemException e) {
 								File projectDir = new File(prPathStringBuilder.toString());

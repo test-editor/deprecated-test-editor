@@ -419,15 +419,17 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProjectConfig getProjectConfigFor(String projectName) throws IOException {
 		File[] directories = getWorkspaceDirectories(projectName);
 		TestProjectConfig result = null;
-		for (File file : directories) {
-			Properties properties = new Properties();
-			File configFile = new File(file.getAbsolutePath() + File.separator + "config.tpr");
-			InputStreamReader inputStream = new InputStreamReader(new FileInputStream(configFile), "UTF-8");
-			properties.load(inputStream);
-			inputStream.close();
-			TestProjectConfig projectConfig = getTestProjectConfigFrom(properties, projectName);
-			projectConfig.setProjectPath(file.getAbsolutePath());
-			result = projectConfig;
+		if (directories != null) {
+			for (File file : directories) {
+				Properties properties = new Properties();
+				File configFile = new File(file.getAbsolutePath() + File.separator + "config.tpr");
+				InputStreamReader inputStream = new InputStreamReader(new FileInputStream(configFile), "UTF-8");
+				properties.load(inputStream);
+				inputStream.close();
+				TestProjectConfig projectConfig = getTestProjectConfigFrom(properties, projectName);
+				projectConfig.setProjectPath(file.getAbsolutePath());
+				result = projectConfig;
+			}
 		}
 		return result;
 	}

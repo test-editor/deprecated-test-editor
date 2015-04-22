@@ -71,7 +71,6 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * Tests the {@link SVNTeamShareService} on local repository.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareServiceLocalTest {
 
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";

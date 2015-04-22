@@ -21,7 +21,6 @@ import org.eclipse.e4.core.services.translation.TranslationService;
  * Utiliy-class to translate some special the exceptions.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareTranslateExceptions {
 	/**
 	 * 

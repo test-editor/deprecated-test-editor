@@ -12,6 +12,7 @@
 package org.testeditor.teamshare.svn;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +37,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
@@ -68,7 +70,6 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * Subversion implementation of the <code>TeamShareService</code>.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareService implements TeamShareService, IContextFunction {
 
 	// SVNException: svn: E175002: connection refused by the server
@@ -469,14 +470,21 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			}
 
 			updateClient.setEventHandler(new SVNLoggingEventHandler(listener, LOGGER));
-
 			File dstPath = new File(testProject.getTestProjectConfig().getProjectPath()).getParentFile();
 
 			long doCheckout = updateClient.doCheckout(svnUrl, new File(dstPath, testProject.getName()),
 					SVNRevision.HEAD, SVNRevision.HEAD, SVNDepth.INFINITY, true);
 
 			LOGGER.info("doCheckout: " + doCheckout);
-
+		} catch (SVNCancelException canExp) {
+			File dirtyPrjPath = new File(testProject.getTestProjectConfig().getProjectPath());
+			LOGGER.info("Checkout canceled.");
+			try {
+				FileUtils.deleteDirectory(dirtyPrjPath);
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+			LOGGER.info("File system cleaned:" + dirtyPrjPath);
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			String message = substitudeSVNException(e, translationService);
