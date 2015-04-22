@@ -25,7 +25,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestStructureTreeModelService;
+import org.testeditor.core.services.interfaces.TestStructureTreeModel;
 import org.testeditor.ui.parts.commons.TestStructureViewerComparator;
 import org.testeditor.ui.parts.commons.tree.filter.ErrorInProjectConfigFilter;
 import org.testeditor.ui.parts.commons.tree.filter.ReservedNameFilter;
@@ -57,7 +57,7 @@ public class TestStructureTree {
 	 * @param style
 	 *            as SWT-Style
 	 */
-	public void createUI(Composite parent, TestStructureTreeModelService treeInputService, int style) {
+	public void createUI(Composite parent, TestStructureTreeModel treeInputService, int style) {
 		treeViewer = new TreeViewer(parent, style | SWT.VIRTUAL);
 		initializeInternalsToTreeViewer(treeInputService);
 	}
@@ -68,7 +68,7 @@ public class TestStructureTree {
 	 * @param treeInputService
 	 *            TestStructureTreeInputService
 	 */
-	private void initializeInternalsToTreeViewer(TestStructureTreeModelService treeInputService) {
+	private void initializeInternalsToTreeViewer(TestStructureTreeModel treeInputService) {
 		treeViewer.setLabelProvider(ContextInjectionFactory.make(TestStructureTreeLabelProvider.class, context));
 		treeViewer.setContentProvider(ContextInjectionFactory.make(TestStructureTreeContentProvider.class, context));
 		treeViewer.setComparator(new TestStructureViewerComparator());
@@ -85,7 +85,7 @@ public class TestStructureTree {
 	 *            the Service is passed to the Content Provider to retrieve the
 	 *            Root-Teststructures
 	 */
-	public void createUI(Composite parent, TestStructureTreeModelService treeInputService) {
+	public void createUI(Composite parent, TestStructureTreeModel treeInputService) {
 		treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.VIRTUAL);
 		initializeInternalsToTreeViewer(treeInputService);
 	}
