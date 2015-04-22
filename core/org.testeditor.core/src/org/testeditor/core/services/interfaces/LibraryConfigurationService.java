@@ -19,9 +19,8 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 
 /**
- * 
- * Implementation of an <code>LibraryReaderService</code> needs a Configuration
- * Service to Load, Store and show the UI Config.
+ * Provide functionality to load and save configurations that are used by an
+ * implementation of the <code>LibraryReaderService</code> interface.
  * 
  */
 public interface LibraryConfigurationService {
@@ -74,7 +73,7 @@ public interface LibraryConfigurationService {
 	 * @return List with FieldDeclaration for the UI od the Plug-In
 	 *         configuration.
 	 */
-	List<FieldMappingExtension> getFieldDeclarations();
+	List<FieldMappingExtension> getConfigUIExtensions();
 
 	/**
 	 * 
@@ -84,6 +83,8 @@ public interface LibraryConfigurationService {
 	ProjectLibraryConfig createEmptyProjectLibraryConfig();
 
 	/**
+	 * Template for the config.tpr to allow this file to be well formed and
+	 * formatted
 	 * 
 	 * @return the template for the configuration
 	 */

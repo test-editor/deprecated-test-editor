@@ -45,7 +45,7 @@ public class DummyLibraryConfigurationService implements LibraryConfigurationSer
 	}
 
 	@Override
-	public List<FieldMappingExtension> getFieldDeclarations() {
+	public List<FieldMappingExtension> getConfigUIExtensions() {
 		List<FieldMappingExtension> result = new ArrayList<FieldMappingExtension>();
 		result.add(new FieldMappingExtension() {
 
