@@ -25,9 +25,12 @@ import org.testeditor.core.model.action.IAction;
 public class TestActionGroupTestScenario extends TestActionGroup {
 
 	/**
-	 * specialized getSourceCode-method for the TestScenario.
+	 * specialized getSourceCode-method for the TestScenario because FitNesse
+	 * does not allow interrupted testlines so it is advisable to interrupt the
+	 * testflow with the description beginning with |note|. In TestScenarios you
+	 * can not use a "#" for comments.
 	 * 
-	 * @return the sourcecode as a String
+	 * @return the sourcecode as String
 	 */
 	public String getSourceCode() {
 		StringBuilder sourceCode = new StringBuilder();

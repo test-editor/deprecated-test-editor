@@ -13,6 +13,7 @@ package org.testeditor.core.model.teststructure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.testeditor.core.exceptions.SystemException;
@@ -38,7 +39,7 @@ public class TestScenarioParameterTable implements TestComponent {
 	private static final Logger LOGGER = Logger.getLogger(TestScenarioParameterTable.class);
 
 	@Override
-	public ArrayList<String> getTexts() {
+	public List<String> getTexts() {
 		ArrayList<String> texts = new ArrayList<String>();
 		texts.add(getSplitedTitle().trim());
 		return texts;
@@ -82,7 +83,7 @@ public class TestScenarioParameterTable implements TestComponent {
 	}
 
 	@Override
-	public ArrayList<TextType> getTextTypes() {
+	public List<TextType> getTextTypes() {
 		ArrayList<TextType> types = new ArrayList<TextType>();
 		types.add(TextType.ACTION_NAME);
 		return types;
