@@ -11,77 +11,86 @@
  *******************************************************************************/
 package org.testeditor.metadata.core.model;
 
-public class MetaDataValue {
+public class MetaDataValue implements Comparable<MetaDataValue> {
 
-	private MetaDataValueList parent;
-	private Integer id;
+	private String label;
+	private MetaData metaData;
 	private String key;
-	private String value;
 
-	public Integer getId() {
-		return id;
+	public MetaDataValue(MetaData metaData, String key, String label) {
+		this.metaData = metaData;
+		this.key = key;
+		this.label = label;
+		metaData.getValues().add(this);
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public MetaDataValue() {
-	}
-
-	public MetaDataValueList getParent() {
-		return parent;
-	}
-
-	public void setParent(MetaDataValueList parent) {
-		this.parent = parent;
+	public MetaData getMetaData() {
+		return metaData;
 	}
 
 	public String getKey() {
 		return key;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public String getLabel() {
+		return label;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
+	public void setLabel(String value) {
+		this.label = value;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		MetaDataValue other = (MetaDataValue) obj;
-		if (key == null) {
-			if (other.key != null)
+		if (getMetaData() == null) {
+			if (other.getMetaData() != null) {
 				return false;
-		} else if (!key.equals(other.key))
+			}
+		} else if (!getMetaData().getKey().equals(other.getMetaData().getKey())) {
 			return false;
-		if (value == null) {
-			if (other.value != null)
+		}
+		if (getKey() == null) {
+			if (other.getKey() != null) {
 				return false;
-		} else if (!value.equals(other.value))
+			}
+		} else if (!getKey().equals(other.getKey())) {
 			return false;
+		}
 		return true;
+	}
+
+	public String getGlobalKey() {
+		return getMetaData().getKey() + "-" + getKey();
+	}
+
+	public String toString() {
+		return label;
+	}
+
+	@Override
+	public int compareTo(MetaDataValue metaDataValue) {
+		if (metaData.getLabel().equals(metaDataValue.getMetaData().getLabel())) {
+			return getLabel().compareTo(metaDataValue.getLabel());
+		}
+		return metaData.getLabel().compareTo(metaDataValue.getMetaData().getLabel());
 	}
 
 }
