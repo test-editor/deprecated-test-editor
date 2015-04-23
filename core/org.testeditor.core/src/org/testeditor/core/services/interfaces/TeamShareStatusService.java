@@ -18,7 +18,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 
 /**
- * 
+ * Service to retrieve the state of a team shared test structures.
  *
  */
 public interface TeamShareStatusService {
