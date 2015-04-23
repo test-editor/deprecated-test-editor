@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
@@ -37,6 +39,7 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -48,6 +51,9 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 public class DeleteTestHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(DeleteTestHandler.class);
+
+	@Inject
+	private MetaDataService metaDataService;
 
 	/**
 	 * Executes the deleteTestcase action.
@@ -91,6 +97,7 @@ public class DeleteTestHandler {
 									testProjectService.deleteProject((TestProject) testStructure);
 								} else {
 									testStructureService.removeTestStructure(testStructure);
+									metaDataService.delete(testStructure);
 								}
 							} catch (SystemException | IOException e) {
 								MessageDialog.openError(Display.getCurrent().getActiveShell(),
