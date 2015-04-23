@@ -25,6 +25,7 @@ import org.testeditor.core.model.team.TeamChangeType;
 public class TestProject extends TestCompositeStructure {
 
 	private TestProjectConfig testProjectConfig;
+
 	private Map<String, TeamChangeType> teamChangeFileList;
 	private Map<String, TeamChangeType> oldTeamChangeFileList = null;
 
@@ -32,9 +33,9 @@ public class TestProject extends TestCompositeStructure {
 	 * set the TeamChangeType from the child`s of the project. (sets only
 	 * modified ones).
 	 */
-	public void setSVNStatusInChilds() {
-		setSVNStatusInChilds(oldTeamChangeFileList, TeamChangeType.NONE);
-		setSVNStatusInChilds(teamChangeFileList, null);
+	public void setTeamStatusInChilds() {
+		setTeamStatusInChilds(oldTeamChangeFileList, TeamChangeType.NONE);
+		setTeamStatusInChilds(teamChangeFileList, null);
 		oldTeamChangeFileList = teamChangeFileList;
 	}
 
@@ -51,7 +52,7 @@ public class TestProject extends TestCompositeStructure {
 	 *            TeamChangeType if its null the TeamChangeType from the list
 	 *            will be used, else all childs will be set this TeamChangeType
 	 */
-	private void setSVNStatusInChilds(Map<String, TeamChangeType> changeFilelist, TeamChangeType type) {
+	private void setTeamStatusInChilds(Map<String, TeamChangeType> changeFilelist, TeamChangeType type) {
 		if (changeFilelist != null) {
 			for (String fullname : changeFilelist.keySet()) {
 				if (!fullname.equals(getName())) {
