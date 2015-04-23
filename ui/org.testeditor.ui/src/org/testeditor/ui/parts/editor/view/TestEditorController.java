@@ -60,11 +60,11 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ActionGroupService;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
-import org.testeditor.teamshare.svn.TeamShareStatus;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -90,6 +90,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public static final String TESTCASE_ID = "org.testeditor.ui.partdescriptor.testCaseView";
 	public static final String TESTSUITE_ID = "org.testeditor.ui.partdescriptor.testSuiteEditor";
 	public static final String TESTSCENARIO_ID = "org.testeditor.ui.partdescriptor.testScenarioView";
+
+	@Inject
+	private TeamShareStatusService teamShareStatusService;
 
 	@Inject
 	private IEclipseContext context;
@@ -181,8 +184,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private void updateTeamStateInformation() {
 		TestProject testProject = getTestStructure().getRootElement();
 		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
-			TeamShareStatus shareState = new TeamShareStatus(eventBroker);
-			shareState.setSVNStatusForProject(testProject);
+			teamShareStatusService.setTeamStatusForProject(testProject);
 		}
 	}
 

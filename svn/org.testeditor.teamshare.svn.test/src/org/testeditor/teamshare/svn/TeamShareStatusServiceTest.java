@@ -11,15 +11,15 @@
  *******************************************************************************/
 package org.testeditor.teamshare.svn;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.EclipseContextFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.After;
 import org.junit.Before;
@@ -33,6 +33,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
@@ -44,8 +45,7 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
  * @author dkuhlmann
  * 
  */
-@SuppressWarnings("restriction")
-public class TeamShareStatusTest {
+public class TeamShareStatusServiceTest {
 
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
@@ -59,7 +59,7 @@ public class TeamShareStatusTest {
 
 	private TranslationService translationService = new TranslationServiceAdapter().getTranslationService();
 
-	private static final Logger LOGGER = Logger.getLogger(TeamShareStatusTest.class);
+	private static final Logger LOGGER = Logger.getLogger(TeamShareStatusServiceTest.class);
 
 	/**
 	 * Setup for testing.
@@ -89,6 +89,10 @@ public class TeamShareStatusTest {
 		System.setProperty("svn.default.comment", "xyz");
 
 		teamService = new SVNTeamShareService();
+
+		IEclipseContext context = EclipseContextFactory.create();
+		context.set(TeamShareStatusService.class, new SVNTeamShareStatusService());
+		ContextInjectionFactory.inject(teamService, context);
 
 		SVNRepositoryFactoryImpl.setup();
 
@@ -175,9 +179,9 @@ public class TeamShareStatusTest {
 		File updateFile = new File(projectpath + "/AllActionGroups.xml");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -222,9 +226,9 @@ public class TeamShareStatusTest {
 		File updateFile = new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testSuite + "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -277,9 +281,9 @@ public class TeamShareStatusTest {
 				+ "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -318,9 +322,9 @@ public class TeamShareStatusTest {
 		File updateFile = new File(projectpath + "/AllActionGroups.xml");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
@@ -354,9 +358,9 @@ public class TeamShareStatusTest {
 				+ "/TestKomponenten/SucheGoogleSzenario/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -409,9 +413,9 @@ public class TeamShareStatusTest {
 				+ "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -420,9 +424,8 @@ public class TeamShareStatusTest {
 
 		teamService.approve(testProject, translationService, "");
 
-		teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
@@ -449,6 +452,7 @@ public class TeamShareStatusTest {
 	 */
 	@Test
 	public void testStatusOnTestCaseDeleted() throws IOException, SVNException, SystemException, InterruptedException {
+
 		String testSuiteName = "SuiteSvn";
 		String testCaseName = "CaseSvn";
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -474,9 +478,9 @@ public class TeamShareStatusTest {
 		teamService.doDelete(testCase, translationService);
 		testSuite.removeChild(testCase);
 
-		TeamShareStatus teamShareStatus = new TeamShareStatus(null);
-		teamShareStatus.setSVNStatusForProject(testProject);
-		while (!teamShareStatus.isFinish()) {
+		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		teamShareStatusService.setTeamStatusForProject(testProject);
+		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertEquals(TeamChangeType.MODIFY, testProject.getTeamChangeType());

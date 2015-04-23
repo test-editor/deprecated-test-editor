@@ -3,9 +3,7 @@
 !define TIMEOUT {10000}
 !define TEST_SYSTEM {slim}
 
-
-!path ${FIXTURE_LIB_BUNDLE_PATH}/fixture/web-fixture-*.jar
-!path ${FIXTURE_LIB_BUNDLE_PATH}/lib/*.jar
+!path ${FIXTURE_LIB_BUNDLE_PATH}/lib/web/*.jar
 
 !define BROWSER_PATH {${path.browser}}
 
