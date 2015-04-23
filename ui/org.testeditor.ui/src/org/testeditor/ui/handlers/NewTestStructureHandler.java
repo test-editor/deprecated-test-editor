@@ -123,7 +123,7 @@ public abstract class NewTestStructureHandler {
 					createAndOpenTestStructure(testStructure, context);
 					addTestStructureLocalToRepository(testStructure, shell);
 					testExplorer.setSelectionOn(testStructure);
-					testExplorer.reloadSvnStatusForProjects();
+					testExplorer.reloadTeamShareStatusForProjects();
 				} catch (SystemException e) {
 					LOGGER.error(e.getMessage(), e);
 					MessageDialog.openError(shell, "System-Exception", e.getMessage());

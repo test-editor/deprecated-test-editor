@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.IContextFunction;
@@ -36,6 +38,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
@@ -68,7 +71,6 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * Subversion implementation of the <code>TeamShareService</code>.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareService implements TeamShareService, IContextFunction {
 
 	// SVNException: svn: E175002: connection refused by the server
@@ -89,6 +91,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	private ProgressListener listener;
 
 	private IEventBroker eventBroker;
+
+	@Inject
+	private TeamShareStatusService teamShareStatusHandlerService;
 
 	static {
 
@@ -537,8 +542,8 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			LOGGER.error(e);
 			throw new SystemException(e.getMessage());
 		}
-		TeamShareStatus teamShareStatus = new TeamShareStatus(eventBroker);
-		teamShareStatus.setSVNStatusForProject(testStructure.getRootElement());
+
+		teamShareStatusHandlerService.setTeamStatusForProject(testStructure.getRootElement());
 	}
 
 	@Override

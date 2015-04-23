@@ -19,11 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -41,8 +39,8 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestProjectService;
-import org.testeditor.teamshare.svn.TeamShareStatus;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
@@ -60,8 +58,6 @@ import org.testeditor.ui.parts.testsuite.TestSuiteEditor;
  */
 public class TestExplorer {
 
-	private static final Logger LOGGER = Logger.getLogger(TestExplorer.class);
-
 	@Inject
 	private IEclipseContext context;
 
@@ -72,7 +68,7 @@ public class TestExplorer {
 	private EPartService partService;
 
 	@Inject
-	private IEventBroker eventBroker;
+	private TeamShareStatusService teamShareStatusService;
 
 	private TestStructureTree testStructureTree;
 
@@ -88,14 +84,14 @@ public class TestExplorer {
 	public void createUi(Composite parent, EMenuService service) {
 		testStructureTree = ContextInjectionFactory.make(TestStructureTree.class, context);
 		testStructureTree.createUI(parent, testProjectService);
-		// testStructureTree.showOnlyTestKomponentsSuite();
+
 		TreeViewer treeViewer = testStructureTree.getTreeViewer();
 		List<TestProject> projects;
 		projects = testProjectService.getProjects();
 		if (projects.size() > 0) {
 			setSelectionOn(projects.get(0));
 		}
-		reloadSvnStatusForProjects();
+		reloadTeamShareStatusForProjects();
 		if (service != null) {
 			service.registerContextMenu(treeViewer.getControl(), "org.testeditor.ui.popupmenu");
 		}
@@ -127,7 +123,7 @@ public class TestExplorer {
 			return;
 		}
 		testStructureTree.getTreeViewer().setInput(testProjectService);
-		reloadSvnStatusForProjects();
+		reloadTeamShareStatusForProjects();
 		// Restore after refresh the previous ui state as much as possible
 		for (Object expElement : expandedElements) {
 			testStructureTree.getTreeViewer().expandToLevel(expElement, 1);
@@ -147,13 +143,12 @@ public class TestExplorer {
 	}
 
 	/**
-	 * Loads the SVN Status for all projects.
+	 * Loads the Team-share status info for all projects.
 	 */
-	public void reloadSvnStatusForProjects() {
+	public void reloadTeamShareStatusForProjects() {
 		for (TestProject project : testProjectService.getProjects()) {
 			if (project.getTestProjectConfig().isTeamSharedProject()) {
-				TeamShareStatus shareState = new TeamShareStatus(eventBroker);
-				shareState.setSVNStatusForProject(project);
+				teamShareStatusService.setTeamStatusForProject(project);
 			}
 		}
 	}
@@ -248,7 +243,7 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	protected void refresh(@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED) String data) {
-		reloadSvnStatusForProjects();
+		reloadTeamShareStatusForProjects();
 		getTreeViewer().refresh();
 	}
 
