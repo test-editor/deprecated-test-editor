@@ -25,6 +25,7 @@
  		<module>dashboard</module>
 		<module>product</module>
 		<module>jreproduct</module>
+		<module>metadata</module>
 	</modules>
 	
 </project>

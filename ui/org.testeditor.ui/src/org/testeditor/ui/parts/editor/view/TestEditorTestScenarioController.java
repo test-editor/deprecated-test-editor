@@ -119,6 +119,7 @@ public class TestEditorTestScenarioController extends TestEditorController imple
 	public void save() {
 		super.save();
 		eventBroker.post(TestEditorEventConstants.REFRESH_TESTFLOW_VIEWS_TO_PROJECT, getTestFlow().getRootElement());
+
 	}
 
 	/**

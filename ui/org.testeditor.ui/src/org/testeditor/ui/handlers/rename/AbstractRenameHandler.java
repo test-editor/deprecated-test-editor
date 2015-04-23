@@ -38,6 +38,7 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
@@ -62,6 +63,8 @@ public abstract class AbstractRenameHandler {
 	private TestStructureService testStructureService;
 	@Inject
 	private EPartService partService;
+	@Inject
+	private MetaDataService metaDataService;
 
 	private boolean selectedStructureWasOpen = false;
 
@@ -144,6 +147,7 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
+		metaDataService.rename(selectedTestStructure, sbname);
 		testStructureService.renameTestStructure(selectedTestStructure, sbname);
 	}
 

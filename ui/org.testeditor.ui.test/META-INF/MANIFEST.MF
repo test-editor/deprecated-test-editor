@@ -13,4 +13,3 @@ Require-Bundle: org.junit,
  org.testeditor.agent.swtbot;bundle-version="1.8.0"
 Import-Package: org.eclipse.e4.core.services.events,
  org.eclipse.swt.graphics
-
