@@ -11,53 +11,75 @@
  *******************************************************************************/
 package org.testeditor.metadata.core.model;
 
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
-
 public class MetaDataTag {
 
-	private Integer metaDataValueId;
+	public String getKey() {
+		return key;
+	}
 
-	@XStreamOmitField
-	private MetaDataValue metaDataValue;
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getParentKey() {
+		return parentKey;
+	}
+
+	public void setParentKey(String parentKey) {
+		this.parentKey = parentKey;
+	}
+
+	private String key;
+	private String parentKey;
 
 	public MetaDataTag() {
 	}
 
-	public MetaDataValue getMetaDataValue() {
-		return metaDataValue;
-	}
-
-	public void setMetaDataValue(MetaDataValue metaDataValue) throws Exception {
-		this.metaDataValue = metaDataValue;
-		if (metaDataValue.getId() <= 0 || metaDataValue.getId() == null) {
-			throw new Exception("Die Id ist nicht vorhanden oder <= 0 .");
-		}
-		metaDataValueId = metaDataValue.getId();
+	public MetaDataTag(MetaDataValue metaDataValue) {
+		key = metaDataValue.getKey();
+		parentKey = metaDataValue.getMetaData().getKey();
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((metaDataValue == null) ? 0 : metaDataValue.hashCode());
+		result = prime * result + ((getKey() == null) ? 0 : getKey().hashCode());
+		result = prime * result + ((getParentKey() == null) ? 0 : getParentKey().hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		MetaDataTag other = (MetaDataTag) obj;
-		if (metaDataValue == null) {
-			if (other.metaDataValue != null)
+		if (getParentKey() == null) {
+			if (other.getParentKey() != null) {
 				return false;
-		} else if (!metaDataValue.equals(other.metaDataValue))
+			}
+		} else if (!getParentKey().equals(other.getParentKey())) {
 			return false;
+		}
+		if (getKey() == null) {
+			if (other.getKey() != null) {
+				return false;
+			}
+		} else if (!getKey().equals(other.getKey())) {
+			return false;
+		}
 		return true;
+	}
+
+	public String getGlobalKey() {
+		return getParentKey() + "-" + getKey();
 	}
 
 }

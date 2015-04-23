@@ -36,9 +36,9 @@ import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.MetaDataServiceImpl;
 import org.testeditor.metadata.core.model.MetaDataStore;
 import org.testeditor.metadata.core.model.MetaDataTag;
-import org.testeditor.metadata.core.model.MetaDataTagList;
+import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataValue;
-import org.testeditor.metadata.core.model.MetaDataValueList;
+import org.testeditor.metadata.core.model.MetaData;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -48,7 +48,7 @@ public class NewMetaDataServiceTest {
 	TestProject project;
 	MetaDataStore testStore;
 	TestCase testCase;
-	MetaDataTagList testMetaDataTags;
+	MetaData testMetaDataTags;
 
 	@Before
 	public void setup() throws Exception {
@@ -91,7 +91,7 @@ public class NewMetaDataServiceTest {
 		testStore = new MetaDataStore();
 		testStore.setProject(project);
 
-		MetaDataValueList testList = new MetaDataValueList();
+		MetaData testList = new MetaData();
 		List<MetaDataValue> testValues = new ArrayList<>();
 		MetaDataValue value = new MetaDataValue();
 		value.setId(1);
@@ -116,7 +116,7 @@ public class NewMetaDataServiceTest {
 		testList.setDescription("Geschäftsvorfälle");
 		testList.setMetaDataValues(testValues);
 
-		MetaDataValueList testList2 = new MetaDataValueList();
+		MetaData testList2 = new MetaData();
 		List<MetaDataValue> testValues2 = new ArrayList<>();
 		MetaDataValue value2 = new MetaDataValue();
 		value2.setId(4);
@@ -140,8 +140,8 @@ public class NewMetaDataServiceTest {
 		File testMetaDataFile = new File(root, "metadata.xml");
 		XStream xStream = new XStream(new DomDriver("UTF-8"));
 		xStream.alias("metaDataStore", MetaDataStore.class);
-		xStream.alias("metaDataTagList", MetaDataTagList.class);
-		xStream.alias("metaDataValueList", MetaDataValueList.class);
+		xStream.alias("metaDataTagList", MetaData.class);
+		xStream.alias("metaDataValueList", MetaData.class);
 		xStream.alias("metaDataValue", MetaDataValue.class);
 		xStream.alias("metaDataTag", MetaDataTag.class);
 		xStream.autodetectAnnotations(true);
@@ -161,7 +161,7 @@ public class NewMetaDataServiceTest {
 	}
 
 	private void createMetaDataTagList() throws Exception {
-		testMetaDataTags = new MetaDataTagList();
+		testMetaDataTags = new MetaData();
 		testMetaDataTags.setTestcase(testCase);
 
 		MetaDataTag testMetaDataTag = new MetaDataTag();
@@ -180,8 +180,8 @@ public class NewMetaDataServiceTest {
 		value2.setParent(testStore.getList().get(0));
 		testMetaDataTag2.setMetaDataValue(value2);
 
-		testMetaDataTags.getTags().add(testMetaDataTag);
-		testMetaDataTags.getTags().add(testMetaDataTag2);
+		testMetaDataTags.getValues().add(testMetaDataTag);
+		testMetaDataTags.getValues().add(testMetaDataTag2);
 
 		File root = new File(project.getTestProjectConfig().getProjectPath(), "metaData");
 		if (!root.exists()) {
@@ -190,8 +190,8 @@ public class NewMetaDataServiceTest {
 		File testTestCaseFile = new File(root, testCase.getFullName() + ".xml");
 		XStream xStream = new XStream(new DomDriver("UTF-8"));
 		xStream.alias("metaDataStore", MetaDataStore.class);
-		xStream.alias("metaDataTagList", MetaDataTagList.class);
-		xStream.alias("metaDataValueList", MetaDataValueList.class);
+		xStream.alias("metaDataTagList", MetaData.class);
+		xStream.alias("metaDataValueList", MetaData.class);
 		xStream.alias("metaDataValue", MetaDataValue.class);
 		xStream.alias("metaDataTag", MetaDataTag.class);
 		xStream.autodetectAnnotations(true);
@@ -220,11 +220,11 @@ public class NewMetaDataServiceTest {
 		MetaDataService service = getService();
 		MetaDataStore store = service.getMetaDataStore(project);
 
-		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
+		MetaData toBeSavedMetaDataList = new MetaData();
 		toBeSavedMetaDataList.setName("Gevo");
 
-		List<MetaDataValueList> listFromXML = store.getList();
-		for (MetaDataValueList metaDataValueList : listFromXML) {
+		List<MetaData> listFromXML = store.getList();
+		for (MetaData metaDataValueList : listFromXML) {
 			if (metaDataValueList.getName().equals(toBeSavedMetaDataList.getName())) {
 				MetaDataValue newValue = store.createNewValue("1", "Hallo", metaDataValueList);
 				metaDataValueList.getMetaDataValues().add(newValue);
@@ -243,7 +243,7 @@ public class NewMetaDataServiceTest {
 		MetaDataService service = getService();
 		MetaDataStore store = service.getMetaDataStore(project);
 
-		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
+		MetaData toBeSavedMetaDataList = new MetaData();
 		toBeSavedMetaDataList.setDescription("TEST");
 		toBeSavedMetaDataList.setName("Hallo");
 		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
@@ -264,7 +264,7 @@ public class NewMetaDataServiceTest {
 
 	@Test
 	public void testSaveRemoveMetaDataValueList() throws Exception {
-		MetaDataValueList toBeSavedMetaDataList = new MetaDataValueList();
+		MetaData toBeSavedMetaDataList = new MetaData();
 		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
 		MetaDataValue value = new MetaDataValue();
 		value.setId(5);
@@ -282,7 +282,7 @@ public class NewMetaDataServiceTest {
 		service.saveLists(toBeUpdatedstore);
 
 		MetaDataStore updatedStore = service.getMetaDataStore(toBeUpdatedstore.getProject());
-		List<MetaDataValueList> updatedListWithAddedElement = updatedStore.getList();
+		List<MetaData> updatedListWithAddedElement = updatedStore.getList();
 		assertEquals(updatedListWithAddedElement.size(), toBeUpdatedstore.getList().size());
 		assertEquals(updatedStore.getId(), toBeUpdatedstore.getId());
 		assertFalse(updatedListWithAddedElement.contains(toBeSavedMetaDataList));
@@ -294,7 +294,7 @@ public class NewMetaDataServiceTest {
 		MetaDataStore store = service.getMetaDataStore(project);
 		store.setProject(project);
 
-		MetaDataValueList parentList = store.getList().get(2);
+		MetaData parentList = store.getList().get(2);
 		List<MetaDataValue> alreadyExsistingMetaDataValues = new ArrayList<>();
 		MetaDataValue alreadyExsistingValue = store.createNewValue("1", "Antrag speichern.", parentList);
 		alreadyExsistingMetaDataValues.add(alreadyExsistingValue);
@@ -312,10 +312,10 @@ public class NewMetaDataServiceTest {
 		// Grund: Diese werden nicht in XML erzeugt. Daher mit Hilfe des Keys
 		// passend aus dem Store suchen und zurückgeben?
 		MetaDataService service = getService();
-		MetaDataTagList metaDataTagListFromXml = service.getTags(testCase);
+		MetaData metaDataTagListFromXml = service.getTags(testCase);
 
-		assertEquals(testMetaDataTags.getTags().size(), metaDataTagListFromXml.getTags().size());
-		assertTrue(testMetaDataTags.getTags().containsAll(metaDataTagListFromXml.getTags()));
+		assertEquals(testMetaDataTags.getValues().size(), metaDataTagListFromXml.getValues().size());
+		assertTrue(testMetaDataTags.getValues().containsAll(metaDataTagListFromXml.getValues()));
 	}
 
 	// TODO: Add & Remove Tags
