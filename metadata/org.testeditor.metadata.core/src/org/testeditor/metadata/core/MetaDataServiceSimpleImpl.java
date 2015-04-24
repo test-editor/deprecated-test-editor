@@ -18,8 +18,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.testeditor.core.model.teststructure.TestProject;
@@ -41,6 +42,7 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		xStream.alias("metaDataValueList", MetaData.class);
 		xStream.alias("metaDataValue", MetaDataValue.class);
 		xStream.alias("metaDataTag", MetaDataTag.class);
+		xStream.alias("metaDataStoreObject", MetaDataStoreObject.class);
 		xStream.autodetectAnnotations(true);
 	}
 
@@ -55,13 +57,24 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 
 		Writer writer;
 
+		String fileName = projectPath + File.separator + META_DATA_XML;
 		try {
 			writer = new FileWriter(projectPath + File.separator + META_DATA_XML);
-			xStream.toXML(getMetaDataStore(projectName), writer);
+			List<String> testCases = new ArrayList<String>();
+			testCases.addAll(getMetaDataStore(projectName).keySet());
+			Collections.sort(testCases);
+
+			List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
+
+			for (String testCase : testCases) {
+				List<MetaDataTag> metaDataTags = getMetaDataStore(projectName).get(testCase);
+				metaDataStoreObjects.add(new MetaDataStoreObject(testCase, metaDataTags));
+			}
+
+			xStream.toXML(metaDataStoreObjects, writer);
 			writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("the metadata.xml " + fileName + " could not be written. Reason: " + e, e);
 		}
 	}
 
@@ -70,18 +83,19 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 
 		Properties prop = new Properties();
 
-		String fileName = projectPath + File.separator + META_DATA_PROPERTIES;
+		String propertiesFileName = projectPath + File.separator + META_DATA_PROPERTIES;
 		try {
-			File propertiesFile = new File(fileName);
+			File propertiesFile = new File(propertiesFileName);
 			if (!propertiesFile.exists()) {
 				return;
 			}
 			InputStream inputStream = new FileInputStream(propertiesFile);
 			prop.load(inputStream);
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException("the propertiesfile " + fileName + " was not found");
+			throw new RuntimeException("the propertiesfile " + propertiesFileName + " was not found");
 		} catch (IOException e) {
-			throw new RuntimeException("the propertiesfile " + fileName + " could not be read. Reason: " + e, e);
+			throw new RuntimeException("the propertiesfile " + propertiesFileName + " could not be read. Reason: " + e,
+					e);
 		}
 		for (Object object : prop.keySet()) {
 			String key = (String) object;
@@ -101,15 +115,41 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 			}
 
 		}
-		File xmlTagFile = new File(projectPath + File.separator + META_DATA_XML);
+		String xmlFileName = projectPath + File.separator + META_DATA_XML;
+		File xmlTagFile = new File(xmlFileName);
 
 		getMetaDataStore(projectName).clear();
 		if (xmlTagFile.exists()) {
 			Object fromXML = xStream.fromXML(xmlTagFile);
-			if (fromXML instanceof Map<?, ?>) {
-				Map<String, List<MetaDataTag>> map = (Map<String, List<MetaDataTag>>) fromXML;
-				getMetaDataStore(projectName).putAll(map);
+			if (fromXML instanceof List<?>) {
+				List<MetaDataStoreObject> metaDataStoreObjects = (List<MetaDataStoreObject>) fromXML;
+				for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
+					getMetaDataStore(projectName).put(metaDataStoreObject.getTestCase(),
+							metaDataStoreObject.getMetaDataTags());
+				}
+			} else {
+				throw new RuntimeException("illegal class of type " + fromXML.getClass().getName() + " found in "
+						+ xmlFileName);
 			}
+		}
+
+	}
+
+	static private class MetaDataStoreObject {
+		public String getTestCase() {
+			return testCase;
+		}
+
+		public List<MetaDataTag> getMetaDataTags() {
+			return metaDataTags;
+		}
+
+		private String testCase;
+		private List<MetaDataTag> metaDataTags;
+
+		public MetaDataStoreObject(String testCase, List<MetaDataTag> metaDataTags) {
+			this.testCase = testCase;
+			this.metaDataTags = metaDataTags;
 		}
 
 	}
