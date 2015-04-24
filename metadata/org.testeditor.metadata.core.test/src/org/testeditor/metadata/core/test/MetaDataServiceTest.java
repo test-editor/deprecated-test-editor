@@ -11,419 +11,341 @@
  *******************************************************************************/
 package org.testeditor.metadata.core.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.e4.core.contexts.ContextInjectionFactory;
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
-import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.metadata.core.MetaDataService;
-import org.testeditor.metadata.core.MetaDataServiceImpl;
-import org.testeditor.metadata.core.model.MetaDataStore;
+import org.testeditor.metadata.core.MetaDataServiceSimpleImpl;
+import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
-import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataValue;
-import org.testeditor.metadata.core.model.MetaData;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
+/**
+ * Tests the metadataservice.
+ * 
+ * @author Georg Portwich
+ *
+ */
 public class MetaDataServiceTest {
 
-	TestProject project;
-	MetaDataStore testStore;
-	TestCase testCase;
-	MetaData testMetaDataTags;
+	private List<String> projects = new ArrayList<String>();
 
 	@Before
 	public void setup() throws Exception {
-
-		if (project == null) {
-			project = createProject();
-
-			createMetaDataStore();
-			createMetaDataTagList();
-		}
-
+		projects.add("testProject1");
+		projects.add("testProject2");
+		projects.add("testProject3");
 	}
 
-	private TestProject createProject() {
-		TestProjectService projectService = (TestProjectService) ServiceLookUpForTest
-				.getService(TestProjectService.class);
-		TestProject project;
-		project = projectService.getProjectWithName("testproject");
-		if (project == null) {
-			try {
-				project = projectService.createNewProject("testproject");
-				TestSuite suite = new TestSuite();
-				suite.setName("testsuite");
-				project.addChild(suite);
-				testCase = new TestCase();
-				testCase.setName("fall");
-				suite.addChild(testCase);
-			} catch (Exception e) {
-				e.printStackTrace();
-				fail(e.getMessage());
-			}
-		} else {
-			testCase = (TestCase) project.getTestChildByName("fall");
-		}
-		return project;
-	}
-
-	private void createMetaDataStore() throws Exception {
-
-		testStore = new MetaDataStore();
-		testStore.setProject(project);
-
-		MetaData testList = new MetaData();
-		List<MetaDataValue> testValues = new ArrayList<>();
-		MetaDataValue value = new MetaDataValue();
-		value.setId(1);
-		value.setKey("2");
-		value.setValue("Antrag speichern.");
-		value.setParent(testList);
-		testValues.add(value);
-		value = new MetaDataValue();
-		value.setId(2);
-		value.setKey("3");
-		value.setValue("Antrag bearbeiten.");
-		value.setParent(testList);
-		testValues.add(value);
-		value = new MetaDataValue();
-		value.setId(3);
-		value.setKey("4");
-		value.setValue("Antrag ablehnen.");
-		value.setParent(testList);
-		testValues.add(value);
-
-		testList.setName("Gevo");
-		testList.setDescription("Geschäftsvorfälle");
-		testList.setMetaDataValues(testValues);
-
-		MetaData testList2 = new MetaData();
-		List<MetaDataValue> testValues2 = new ArrayList<>();
-		MetaDataValue value2 = new MetaDataValue();
-		value2.setId(4);
-		value2.setKey("R1.1");
-		value2.setValue("Release 1.1");
-		value2.setParent(testList2);
-		testValues2.add(value2);
-
-		testList2.setName("Release");
-		testList2.setDescription("Release 1.1");
-		testList2.setMetaDataValues(testValues2);
-
-		testStore.getList().add(testList);
-		testStore.getList().add(testList2);
-		testStore.setId(5);
-
-		File root = new File(project.getTestProjectConfig().getProjectPath(), "metaData");
-		if (!root.exists()) {
-			root.mkdir();
-		}
-		File testMetaDataFile = new File(root, "metadata.xml");
-		XStream xStream = new XStream(new DomDriver("UTF-8"));
-		xStream.alias("metaDataStore", MetaDataStore.class);
-		xStream.alias("metaDataTagList", MetaData.class);
-		xStream.alias("metaDataValueList", MetaData.class);
-		xStream.alias("metaDataValue", MetaDataValue.class);
-		xStream.alias("metaDataTag", MetaDataTag.class);
-		xStream.autodetectAnnotations(true);
-
-		try {
-			xStream.toXML(testStore, new FileWriter(testMetaDataFile));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private MetaDataService getService() {
-		IEclipseContext context = EclipseContextFactory.create();
-		// context.set(LibraryDataStoreService.class,
-		// ServiceLookUpForTest.getService(LibraryDataStoreService.class));
-		return ContextInjectionFactory.make(MetaDataServiceImpl.class, context);
-	}
-
-	private void createMetaDataTagList() throws Exception {
-		testMetaDataTags = new MetaData();
-		testMetaDataTags.setTestcase(testCase);
-
-		MetaDataTag testMetaDataTag = new MetaDataTag();
-		MetaDataValue value = new MetaDataValue();
-		value.setId(1);
-		value.setKey("2");
-		value.setValue("Antrag speichern.");
-		value.setParent(testStore.getList().get(0));
-		testMetaDataTag.setMetaDataValue(value);
-
-		MetaDataTag testMetaDataTag2 = new MetaDataTag();
-		MetaDataValue value2 = new MetaDataValue();
-		value2.setId(2);
-		value2.setKey("3");
-		value2.setValue("Antrag bearbeiten.");
-		value2.setParent(testStore.getList().get(0));
-		testMetaDataTag2.setMetaDataValue(value2);
-
-		testMetaDataTags.getValues().add(testMetaDataTag);
-		testMetaDataTags.getValues().add(testMetaDataTag2);
-
-		File root = new File(project.getTestProjectConfig().getProjectPath(), "metaData");
-		if (!root.exists()) {
-			root.mkdir();
-		}
-		File testTestCaseFile = new File(root, testCase.getFullName() + ".xml");
-		XStream xStream = new XStream(new DomDriver("UTF-8"));
-		xStream.alias("metaDataStore", MetaDataStore.class);
-		xStream.alias("metaDataTagList", MetaData.class);
-		xStream.alias("metaDataValueList", MetaData.class);
-		xStream.alias("metaDataValue", MetaDataValue.class);
-		xStream.alias("metaDataTag", MetaDataTag.class);
-		xStream.autodetectAnnotations(true);
-
-		try {
-			xStream.toXML(testMetaDataTags, new FileWriter(testTestCaseFile));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
+	/**
+	 * Checks that the metadata are read correctly.
+	 */
 	@Test
-	public void testSaveCreateNewValue() throws Exception {
-		MetaDataService service = getService();
-		// TODO: project = null
-		MetaDataStore store = service.getMetaDataStore(project);
-		store.setProject(project);
-		MetaData toBeSavedMetaDataList = new MetaData();
-		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
-		MetaDataValue newValue = store.createNewValue("1", "Hallo", store.getList().get(0));
-		newMetaDataValues.add(newValue);
-		toBeSavedMetaDataList.setDescription("TEST");
-		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
-		toBeSavedMetaDataList.setName("Hallo");
+	public void testReadMetaDataForProject() {
+		TestProject project = createProject("testProject1");
+		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
 
-		store.getList().add(toBeSavedMetaDataList);
-		service.saveLists(store);
+		assertTrue("" + metaDataList.size() + " Metadata was read. Expected was 3", metaDataList.size() == 3);
 
-	}
+		for (MetaData metaData : metaDataList) {
+			if ("MetaData1".equals(metaData.getKey())) {
+				assertTrue("MetaData1 with wrong label " + metaData.getLabel(),
+						"MetaData1Label".equals(metaData.getLabel()));
 
-	// @Test
-	// public void testCreateDuplicateValue() {
-	//
-	// }
+				assertTrue("MetaData1 with " + metaData.getValues().size() + ". 2 was expected", metaData.getValues()
+						.size() == 2);
+				for (MetaDataValue metaDataValue : metaData.getValues()) {
+					if ("MetaData1".equals(metaDataValue.getKey())) {
+						assertTrue("MetaDataValue1 with wrong label " + metaDataValue.getLabel(),
+								"MetaData1-1Label".equals(metaDataValue.getLabel()));
+					} else if ("MetaData2".equals(metaDataValue.getKey())) {
+						assertTrue("MetaDataValue2 with wrong label " + metaDataValue.getLabel(),
+								"MetaData1-2Label".equals(metaDataValue.getLabel()));
+						assertTrue("wrong globalKey " + metaDataValue.getGlobalKey()
+								+ " expected was MetaData1-MetaData2",
+								"MetaData1-MetaData2".equals(metaDataValue.getGlobalKey()));
+					} else {
+						assertTrue("Illegal MetadataValuekey " + metaDataValue.getKey(), false);
+					}
+					assertTrue("wrong parentKey " + metaDataValue.getMetaData().getKey() + " expected was MetaData1",
+							"MetaData1".equals(metaDataValue.getMetaData().getKey()));
+				}
+			} else if ("MetaData2".equals(metaData.getKey())) {
+				assertTrue("MetaData2 with wrong label " + metaData.getLabel(),
+						"MetaData2Label".equals(metaData.getLabel()));
 
-	@Test
-	public void testGetAllMetaDataList() throws IOException {
-		MetaDataService service = getService();
-		MetaDataStore storeFromXml = service.getMetaDataStore(project);
-
-		assertEquals(testStore.getId(), storeFromXml.getId());
-		assertEquals(testStore.getList().size(), storeFromXml.getList().size());
-		assertTrue(testStore.getList().containsAll(storeFromXml.getList()));
-	}
-
-	@Test
-	public void testSaveAddMetaDataList() throws Exception {
-
-		MetaDataService service = getService();
-
-		MetaData toBeSavedMetaDataList = new MetaData();
-		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
-		MetaDataValue value = new MetaDataValue();
-		value.setId(5);
-		value.setKey("TEST key");
-		value.setValue("TEST value");
-		value.setParent(toBeSavedMetaDataList);
-		newMetaDataValues.add(value);
-		toBeSavedMetaDataList.setName("TEST name");
-		toBeSavedMetaDataList.setDescription("TEST description");
-		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
-
-		// TODO: Auslagern
-		MetaDataStore toBeUpdatedstore = service.getMetaDataStore(project);
-		List<MetaData> toBeUpdatedList = toBeUpdatedstore.getList();
-
-		for (MetaData metaDataValueList : toBeUpdatedList) {
-			if (toBeSavedMetaDataList.getName().equals(metaDataValueList.getName())) {
-				throw new Exception("Eine MetaDataList mit dem ShortName '" + toBeSavedMetaDataList.getName()
-						+ "' ist bereits vorhanden.");
+				assertTrue("MetaData1 with " + metaData.getValues().size() + ". 3 was expected", metaData.getValues()
+						.size() == 3);
+			} else if ("MetaData3".equals(metaData.getKey())) {
+				assertTrue("MetaData3 with wrong label " + metaData.getLabel(),
+						"MetaData3Label".equals(metaData.getLabel()));
+			} else {
+				assertTrue("Illegal Metadatakey " + metaData.getKey(), false);
 			}
 		}
-
-		toBeUpdatedstore.getList().add(toBeSavedMetaDataList);
-		service.saveLists(toBeUpdatedstore);
-
-		MetaDataStore updatedStore = service.getMetaDataStore(toBeUpdatedstore.getProject());
-		List<MetaData> updatedListWithAddedElement = updatedStore.getList();
-		assertEquals(updatedListWithAddedElement.size(), toBeUpdatedstore.getList().size());
-		assertTrue(updatedListWithAddedElement.contains(toBeSavedMetaDataList));
-
 	}
 
+	/**
+	 * Creates the reading of the metadata for an other project
+	 */
 	@Test
-	public void testSaveRemoveMetaDataList() throws Exception {
+	public void testReadMetaDataForOtherProject() {
+		TestProject project = createProject("testProject2");
+		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
 
-		MetaData toBeSavedMetaDataList = new MetaData();
-		List<MetaDataValue> newMetaDataValues = new ArrayList<>();
-		MetaDataValue value = new MetaDataValue();
-		value.setId(5);
-		value.setKey("TEST key");
-		value.setValue("TEST value");
-		value.setParent(toBeSavedMetaDataList);
-		newMetaDataValues.add(value);
-		toBeSavedMetaDataList.setName("TEST name");
-		toBeSavedMetaDataList.setDescription("TEST description");
-		toBeSavedMetaDataList.setMetaDataValues(newMetaDataValues);
-
-		MetaDataService service = new MetaDataServiceImpl();
-		MetaDataStore toBeUpdatedstore = service.getMetaDataStore(project);
-
-		toBeUpdatedstore.getList().remove(toBeSavedMetaDataList);
-		service.saveLists(toBeUpdatedstore);
-
-		MetaDataStore updatedStore = service.getMetaDataStore(toBeUpdatedstore.getProject());
-		List<MetaData> updatedListWithAddedElement = updatedStore.getList();
-		assertEquals(updatedListWithAddedElement.size(), toBeUpdatedstore.getList().size());
-		assertFalse(updatedListWithAddedElement.contains(toBeSavedMetaDataList));
-
+		assertTrue("" + metaDataList.size() + " Metadata was read. Expected was 2", metaDataList.size() == 2);
 	}
 
+	/**
+	 * Tests the start of the metaDataService if no metaData are created for the
+	 * project
+	 */
 	@Test
-	// TODO?
-	public void testSaveListWithExistingElement() throws Exception {
-		testMetaDataTags = new MetaData();
-		testMetaDataTags.setTestcase(testCase);
+	public void testReadMetaDataForEmptyProject() {
+		TestProject project = createProject("testProject3");
+		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
 
-		MetaDataTag metaDataTag = new MetaDataTag();
-		MetaDataValue value = new MetaDataValue();
-		value.setKey("2");
-		value.setValue("Antrag speichern.");
-		metaDataTag.setMetaDataValue(value);
+		assertTrue("" + metaDataList.size() + " Metadata was read. Expected was 0", metaDataList.size() == 0);
 	}
 
+	/**
+	 * Tests the storing and reading of the data of multiple testcases
+	 */
 	@Test
-	public void testGetMetaDataTags() {
+	public void testStoreAndReadMulitpleMetaDataList() {
+		TestProject project = createProject("testProject1");
+		setupMetaDatatestCaseStore(project);
+		for (int index = 1; index <= 3; index++) {
+			TestCase testCase = new TestCase();
+			testCase.setName("testCase" + index);
+			project.addChild(testCase);
+			List<MetaDataTag> metaDataTagListResult = getNewServiceObject().getMetaDataTags(testCase);
+			assertTrue("" + metaDataTagListResult.size() + " found for Testcase. Expected was " + index,
+					metaDataTagListResult.size() == index);
+		}
 
-		MetaDataService service = new MetaDataServiceImpl();
-		MetaData metaDataTagListFromXml = service.getTags(testCase);
-
-		assertEquals(testMetaDataTags.getValues().size(), metaDataTagListFromXml.getValues().size());
-		assertTrue(testMetaDataTags.getValues().containsAll(metaDataTagListFromXml.getValues()));
 	}
 
 	/*
-	 * TODO
-	 * 
-	 * @Test public void testGetEmptyMetaDataTagList() throws IOException,
-	 * SystemException { TestProjectService projectService =
-	 * (TestProjectService) ServiceLookUpForTest
-	 * .getService(TestProjectService.class); TestProject testProject =
-	 * projectService.createNewProject("projectWithoutFile");
-	 * org.testeditor.core.model.teststructure.TestSuite testSuite = new
-	 * org.testeditor.core.model.teststructure.TestSuite();
-	 * testSuite.setName("testSuiteWithoutFile");
-	 * testProject.addChild(testSuite); TestCase testCaseWithoutFile = new
-	 * TestCase(); testCaseWithoutFile.setName("testCaseWithoutFile");
-	 * testSuite.addChild(testCase);
-	 * 
-	 * MetaDataService service = new MetaDataServiceImpl(); MetaDataTagList
-	 * metaDataTagListFromXml = service.getTags(testCaseWithoutFile);
-	 * metaDataTagListFromXml.setTestcase(testCaseWithoutFile);
-	 * 
-	 * assertTrue(metaDataTagListFromXml.getTags().isEmpty());
-	 * 
-	 * }
+	 * Tests the removing of metadata - this is used during deleting a testcase
 	 */
+	@Test
+	public void testDeleteTestStructure() {
+		TestProject project = createProject("testProject1");
+		setupMetaDatatestCaseStore(project);
+
+		TestCase testCase = new TestCase();
+		testCase.setName("testCase3");
+		project.addChild(testCase);
+		assertTrue("Testcase not setup. Entries " + getNewServiceObject().getMetaDataTags(testCase).size()
+				+ " instead of 3", getNewServiceObject().getMetaDataTags(testCase).size() == 3);
+
+		getNewServiceObject().delete(testCase);
+
+		assertTrue(
+				"Testcase not deleted. Still " + getNewServiceObject().getMetaDataTags(testCase).size() + " entries",
+				getNewServiceObject().getMetaDataTags(testCase).size() == 0);
+	}
+
+	/**
+	 * Tests that changes the name of a testcase.
+	 */
+	@Test
+	public void testRenameTestStructure() {
+		TestProject project = createProject("testProject1");
+		setupMetaDatatestCaseStore(project);
+
+		TestCase testCase = new TestCase();
+		testCase.setName("testCase3");
+		project.addChild(testCase);
+		assertTrue("Testcase not setup. Entries " + getNewServiceObject().getMetaDataTags(testCase).size()
+				+ " instead of 3", getNewServiceObject().getMetaDataTags(testCase).size() == 3);
+
+		getNewServiceObject().rename(testCase, "testCase4");
+
+		assertTrue("Testcase not renamed. Old Entry has still "
+				+ getNewServiceObject().getMetaDataTags(testCase).size() + " entries", getNewServiceObject()
+				.getMetaDataTags(testCase).size() == 0);
+
+		testCase.setName("testCase4");
+		assertTrue("Testcase not deleted. New entry has " + getNewServiceObject().getMetaDataTags(testCase).size()
+				+ " instead of 3", getNewServiceObject().getMetaDataTags(testCase).size() == 3);
+	}
 
 	@Test
-	public void testSaveAddMetaDataTag() throws Exception {
+	public void testGetMetaDataFromMetaDataTag() {
+		TestProject project = createProject("testProject1");
+		setupMetaDatatestCaseStore(project);
 
-		MetaDataService service = new MetaDataServiceImpl();
+		TestCase testCase = new TestCase();
+		testCase.setName("testCase3");
+		project.addChild(testCase);
 
-		List<MetaDataTag> toBeSavedMetaDataTags = new ArrayList<>();
-		MetaDataTag toBeSavedMetaDataTag = new MetaDataTag();
-		MetaDataValue newValue = new MetaDataValue();
-		newValue.setKey("new key");
-		newValue.setValue("new value");
-		toBeSavedMetaDataTag.setMetaDataValue(newValue);
-		toBeSavedMetaDataTags.add(toBeSavedMetaDataTag);
+		List<MetaDataTag> metaDataTagListResult = getNewServiceObject().getMetaDataTags(testCase);
 
-		MetaData toBeUpdatedList = service.getTags(testCase);
-		toBeUpdatedList.setTestcase(testCase);
-		List<MetaDataTag> toBeUpdatedTags = toBeUpdatedList.getValues();
-
-		// TODO: Auslagern
-		for (MetaDataTag metaDataTag : toBeUpdatedTags) {
-			if (toBeSavedMetaDataTag.getMetaDataValue().getValue().equals(metaDataTag.getMetaDataValue().getValue())) {
-				throw new Exception("Es existiert bereits ein MetaDataTag mit folgenden MetaDataValues: '"
-						+ toBeSavedMetaDataTag.getMetaDataValue().getKey() + "' & '"
-						+ toBeSavedMetaDataTag.getMetaDataValue().getValue() + "'.");
-			}
+		for (MetaDataTag metaDataTag : metaDataTagListResult) {
+			MetaDataValue metaDataValue = getNewServiceObject().getMetaDataValue(metaDataTag, project);
+			assertTrue(metaDataTag.getGlobalKey() + " not found in MetaDataService", metaDataValue.getGlobalKey()
+					.equals(metaDataTag.getGlobalKey()));
 		}
 
-		toBeUpdatedList.getValues().addAll(toBeSavedMetaDataTags);
-		service.saveTags(toBeUpdatedList);
-
-		MetaData updatedListWithAddedTags = service.getTags(testCase);
-		assertEquals(toBeUpdatedList.getValues().size(), updatedListWithAddedTags.getValues().size());
-		assertTrue(updatedListWithAddedTags.getValues().containsAll(toBeUpdatedList.getValues()));
-
 	}
 
 	@Test
-	public void testSaveRemoveMetaDataTag() throws Exception {
+	public void testGetTestCasesForMetaData() {
+		TestProject project = createProject("testProject1");
+		setupMetaDatatestCaseStore(project);
+		MetaDataService metaDataService = getNewServiceObject();
 
-		MetaDataService service = new MetaDataServiceImpl();
-
-		List<MetaDataTag> toBeSavedMetaDataTags = new ArrayList<>();
-		MetaDataTag toBeSavedMetaDataTag = new MetaDataTag();
-		MetaDataValue newValue = new MetaDataValue();
-		newValue.setKey("new key");
-		newValue.setValue("new value");
-		toBeSavedMetaDataTag.setMetaDataValue(newValue);
-		toBeSavedMetaDataTags.add(toBeSavedMetaDataTag);
-
-		MetaData toBeUpdatedList = service.getTags(testCase);
-		toBeUpdatedList.setTestcase(testCase);
-		toBeUpdatedList.getValues().remove(toBeSavedMetaDataTags);
-		service.saveTags(toBeUpdatedList);
-
-		MetaData updatedListWithAddedTags = service.getTags(testCase);
-		assertEquals(toBeUpdatedList.getValues().size(), updatedListWithAddedTags.getValues().size());
-		assertFalse(updatedListWithAddedTags.getValues().containsAll(toBeSavedMetaDataTags));
+		for (int index = 1; index <= 3; index++) {
+			MetaDataValue metaDataValue = metaDataService.getAllMetaData(project).get(3 - index).getValues()
+					.get(3 - index);
+			List<String> testCases = metaDataService.getTestCases(project, metaDataValue);
+			assertTrue("no testcases found for " + metaDataValue, testCases.size() == index);
+		}
 	}
 
-	// TODO: Funktioniert nicht (mehr) - MetaDataOrdner und Technical Bindings
-	// löschen...
-	// @After
-	// public void deleteProject() {
-	//
-	// TestProjectService projectService = (TestProjectService)
-	// ServiceLookUpForTest
-	// .getService(TestProjectService.class);
-	// try {
-	// projectService.deleteProject(project);
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// }
+	/**
+	 * Tests the search of testcases for a metadatavalue
+	 */
+	@Test
+	public void testGetTestCasesForMetaDataList() {
+		TestProject project = createProject("testProject1");
+		setupMetaDatatestCaseStore(project);
+		MetaDataService metaDataService = getNewServiceObject();
+
+		List<MetaDataValue> metaDataValueList = new ArrayList<MetaDataValue>();
+		for (int index = 0; index < 3; index++) {
+			MetaDataValue metaDataValue = metaDataService.getAllMetaData(project).get(index).getValues().get(index);
+			metaDataValueList.add(metaDataValue);
+			List<String> testCases = metaDataService.getTestCases(project, metaDataValueList);
+			assertTrue("" + testCases.size() + " testcaes found. Expected was " + (3 - index),
+					testCases.size() == (3 - index));
+		}
+	}
+
+	/**
+	 * Tests the storing and reading of a metadatalist
+	 */
+	@Test
+	public void testStoreAndReadMetaDataList() {
+
+		TestProject project = createProject("testProject1");
+		TestCase testCase = new TestCase();
+		testCase.setName("testCase1");
+		List<MetaDataTag> metaDataTagList = getMetTagList(testCase, project, 2);
+
+		getNewServiceObject().storeMetaDataTags(metaDataTagList, testCase);
+
+		List<MetaDataTag> metaDataTagListResult = getNewServiceObject().getMetaDataTags(testCase);
+		assertTrue("" + metaDataTagListResult.size() + " found for Testcase. Expected was 2",
+				metaDataTagListResult.size() == 2);
+
+		assertTrue(metaDataTagList.get(0).getGlobalKey() + " not found in stored data", metaDataTagList.get(0)
+				.getGlobalKey().equals(metaDataTagListResult.get(0).getGlobalKey()));
+		assertTrue(metaDataTagList.get(1).getGlobalKey() + " not found in stored data", metaDataTagList.get(1)
+				.getGlobalKey().equals(metaDataTagListResult.get(1).getGlobalKey()));
+	}
+
+	/**
+	 * Creates a store containing three testcases with different metatags for
+	 * project
+	 * 
+	 * @param project
+	 */
+	private void setupMetaDatatestCaseStore(TestProject project) {
+		for (int index = 1; index <= 3; index++) {
+			TestCase testCase = new TestCase();
+			testCase.setName("testCase" + index);
+			getNewServiceObject().storeMetaDataTags(getMetTagList(testCase, project, index), testCase);
+		}
+	}
+
+	/**
+	 * Creates a list of metatags for a testcase with count number of elements
+	 * 
+	 * @param testCase
+	 * @param project
+	 * @param count
+	 * @return
+	 */
+	private List<MetaDataTag> getMetTagList(TestCase testCase, TestProject project, int count) {
+		List<MetaDataTag> metaDataTagList = new ArrayList<MetaDataTag>();
+
+		project.addChild(testCase);
+		for (int index = 0; index < count; index++) {
+			MetaDataTag metaDataTag = new MetaDataTag(getNewServiceObject().getAllMetaData(project).get(index)
+					.getValues().get(index));
+			metaDataTagList.add(metaDataTag);
+		}
+
+		return metaDataTagList;
+	}
+
+	/**
+	 * Gets the path to the testprojects - the testprojects are stored in the
+	 * resources directors of the testproject
+	 * 
+	 * @param projectName
+	 * @return
+	 */
+	private String getProjectPath(String projectName) {
+		URL url = this.getClass().getClassLoader().getResource(projectName);
+		assertTrue("Project " + projectName + " not found in classpath of test", url != null);
+
+		return url.toString().substring("file:/".length());
+
+	}
+
+	/**
+	 * Creates an object of type TestProject whith the given name.
+	 * 
+	 * @param projectName
+	 * @return
+	 */
+	private TestProject createProject(String projectName) {
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+
+		testProjectConfig.setProjectPath(getProjectPath(projectName));
+
+		TestProject project = new TestProject();
+		project.setName(projectName);
+		project.setTestProjectConfig(testProjectConfig);
+		return project;
+	}
+
+	/**
+	 * creates a new object of the serviceobject. This garanties that all data
+	 * have to be read from the disk and no data is read from the internal state
+	 * of the service
+	 * 
+	 * @return
+	 */
+	private MetaDataService getNewServiceObject() {
+		return new MetaDataServiceSimpleImpl();
+	}
+
+	/**
+	 * removes all Files containing testprojectdata after the test.
+	 */
+	@After
+	public void removeCreatedMetaDataFiles() {
+		for (String project : projects) {
+			File file = new File(getProjectPath(project) + File.separator + "MetaData.xml");
+			if (file.exists()) {
+				file.delete();
+			}
+		}
+	}
 
 }
