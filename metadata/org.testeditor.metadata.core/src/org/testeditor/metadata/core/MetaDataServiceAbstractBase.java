@@ -115,6 +115,7 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
 	@Override
 	public void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure) {
+		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		if (!getMetaDataStore(projectName).containsKey(testStructure.getFullName())) {
 			getMetaDataStore(projectName).put(testStructure.getFullName(), new ArrayList<MetaDataTag>());
@@ -129,6 +130,7 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
 	@Override
 	public void rename(TestStructure testStructure, String newName) {
+		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		String newFullName = testStructure.getParent().getFullName() + "." + newName;
 		getMetaDataStore(projectName).put(newFullName, getMetaDataTags(testStructure));
@@ -138,15 +140,49 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
 	@Override
 	public void delete(TestStructure testStructure) {
+		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		getMetaDataStore(projectName).remove(testStructure.getFullName());
 		store(testStructure.getRootElement());
 	}
 
 	@Override
-	public List<String> getTestCases(String projectName, MetaDataValue metaDataValue) {
+	public List<String> getTestCases(TestProject testProject, List<MetaDataValue> metaDataValueList) {
+		if (metaDataValueList.size() == 0) {
+			return new ArrayList<String>();
+		}
+		if (metaDataValueList.size() == 1) {
+			return getTestCases(testProject, metaDataValueList.get(0));
+		}
+		List<MetaDataTag> metaDataTags = new ArrayList<MetaDataTag>();
+		for (MetaDataValue metaDataValue : metaDataValueList) {
+			metaDataTags.add(new MetaDataTag(metaDataValue));
+		}
 		List<String> testCases = new ArrayList<String>();
+		String projectName = testProject.getName();
 
+		for (String testCase : getMetaDataStore(projectName).keySet()) {
+			List<MetaDataTag> testCaseMetaDataTags = getMetaDataStore(projectName).get(testCase);
+			int foundElemets = metaDataTags.size();
+			for (MetaDataTag testCaseMetaDataTag : testCaseMetaDataTags) {
+				for (MetaDataTag metaDataTag : metaDataTags) {
+					if (metaDataTag.equals(testCaseMetaDataTag)) {
+						foundElemets--;
+						break;
+					}
+				}
+			}
+			if (foundElemets == 0) {
+				testCases.add(testCase);
+			}
+		}
+		return testCases;
+	}
+
+	@Override
+	public List<String> getTestCases(TestProject testProject, MetaDataValue metaDataValue) {
+		List<String> testCases = new ArrayList<String>();
+		String projectName = testProject.getName();
 		MetaDataTag metaDataTag = new MetaDataTag(metaDataValue);
 		for (String testCase : getMetaDataStore(projectName).keySet()) {
 			for (MetaDataTag indexMetaDataTag : getMetaDataStore(projectName).get(testCase)) {
