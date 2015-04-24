@@ -45,16 +45,6 @@ public interface MetaDataService {
 	List<MetaData> getAllMetaData(TestProject project);
 
 	/**
-	 * return the MetaData for specific key. The method will throw a
-	 * runtimeException if there is no metadata for the key.
-	 * 
-	 * @param label
-	 *            - the key of the metadata
-	 * @return - the metadata-.
-	 */
-	// MetaData getMetaData(String key);
-
-	/**
 	 * Return the metatags for a testscture. If there is no metadate for the
 	 * teststructure an empty list is returned.
 	 * 
@@ -90,11 +80,11 @@ public interface MetaDataService {
 	 * 
 	 * @param selectedTestStructure
 	 *            - the teststrcuture with the old name
-	 * @param sbname
+	 * @param newName
 	 *            - the new name without the path information (not the
 	 *            fullName).
 	 */
-	void rename(TestStructure selectedTestStructure, String sbname);
+	void rename(TestStructure selectedTestStructure, String newName);
 
 	/**
 	 * Deletes the metaData for a teststructure. If no metadata are available
@@ -105,5 +95,7 @@ public interface MetaDataService {
 	 */
 	void delete(TestStructure testStructure);
 
-	List<String> getTestCases(String projectName, MetaDataValue metaDataValue);
+	List<String> getTestCases(TestProject project, MetaDataValue metaDataValue);
+
+	List<String> getTestCases(TestProject project, List<MetaDataValue> metaDataValueList);
 }
