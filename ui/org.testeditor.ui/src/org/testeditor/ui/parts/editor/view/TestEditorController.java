@@ -63,7 +63,6 @@ import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
-import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -108,9 +107,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Inject
 	private TestStructureContentService testStructureContentService;
 	@Inject
+	@Optional
 	private ITestEditorTab iTestEditorTab;
-	@Inject
-	private MetaDataService metaDataService;
 
 	private TestEditorActionInputController actionInputController;
 
@@ -169,7 +167,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
 			testStructureContentService.saveTestStructureData(testFlow);
-			iTestEditorTab.save();
+			getTestEditorTab().save();
 			mpart.setDirty(false);
 		} catch (SystemException e) {
 			String message = translationService.translate("%editController.ErrorStoringTestFlow");
@@ -319,8 +317,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		item1.setControl(testEditViewArea.getStyledText());
 
 		TabItem item2 = new TabItem((TabFolder) compositeForView, SWT.NONE);
-		item2.setText(iTestEditorTab.getLabel(translationService));
-		Composite composite = iTestEditorTab.createTab((TabFolder) compositeForView, mpart, translationService);
+		item2.setText(getTestEditorTab().getLabel(translationService));
+		Composite composite = getTestEditorTab().createTab((TabFolder) compositeForView, mpart, translationService);
 
 		item2.setControl(composite);
 
@@ -369,7 +367,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		this.testFlow = testFlow;
 
-		iTestEditorTab.setTestFlow(testFlow);
+		getTestEditorTab().setTestFlow(testFlow);
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();
 		linkTestExplorerWithEditor();
@@ -1421,6 +1419,20 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	protected TestEditorDescriptionInputController getDescriptionController() {
 		return descriptionController;
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set and throws
+	 * an Exception with a message if the service was not configured.
+	 * 
+	 * @return the service
+	 */
+	private ITestEditorTab getTestEditorTab() throws RuntimeException {
+		if (iTestEditorTab == null) {
+			throw new RuntimeException(
+					"MetaDataTab ist not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
+		}
+		return iTestEditorTab;
 	}
 
 }

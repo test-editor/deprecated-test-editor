@@ -22,6 +22,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -64,6 +65,7 @@ public abstract class AbstractRenameHandler {
 	@Inject
 	private EPartService partService;
 	@Inject
+	@Optional
 	private MetaDataService metaDataService;
 
 	private boolean selectedStructureWasOpen = false;
@@ -147,7 +149,7 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
-		metaDataService.rename(selectedTestStructure, sbname);
+		getMetaDataService().rename(selectedTestStructure, sbname);
 		testStructureService.renameTestStructure(selectedTestStructure, sbname);
 	}
 
@@ -306,5 +308,20 @@ public abstract class AbstractRenameHandler {
 	 * @return the NewTestStructureWizardPage.
 	 */
 	protected abstract AbstractRenameTestStructureWizardPage getRenameTestStructureWizardPage(TestStructure selectedTS);
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set and throws
+	 * an Exception with a message if the service was not configured.
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			throw new RuntimeException(
+					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
+
+	}
 
 }

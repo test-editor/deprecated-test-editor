@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -94,6 +95,8 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	private Label lblMetaDataCB;
 	private ComboViewer metaDataValuesCB;
 	private Label lblMetaDataValuesCB;
+
+	private static final Logger LOGGER = Logger.getLogger(MetaDataController.class);
 
 	/**
 	 * Created the composite and the containing controls. To use the control the
@@ -196,22 +199,37 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		this.testFlow = testFlow;
 
 		metaDataTagList.clear();
-		metaDataTagList.addAll(metaDataService.getMetaDataTags(testFlow));
+		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
 
-		for (MetaData metaData : metaDataService.getAllMetaData(testFlow.getRootElement())) {
-			metaDataCB.add(metaData);
+		if (metaDataTagList.size() == 0) {
+			Label lblMessage = new Label(composite, SWT.NONE);
+			String message = "Für das Projekt sind noch keine Metadaten angelegt.\n"
+					+ "Bitte legen Sie im Projektverzeichnis eine metadata.properties Datei an.\n"
+					+ "In dieser Pflegen Sie bitten Ihre Metadaten.\n\nBeispiel metadata.properties.\n\n"
+					+ "metadata = Name der Metadaten-Kategorie\n"
+					+ "metadata.schluessel1 = Name des Wertes des Wertes wie in der Oberfläche angezeigt wird\n"
+					+ "metadata.schluessel2 = Nächster Wert und so weiter\n";
+			lblMessage.setText(message);
+			metaDataCB.getCombo().setVisible(false);
+			lblMetaDataCB.setVisible(false);
+			metaDataTagsTable.setVisible(false);
+
+		} else {
+			for (MetaData metaData : getMetaDataService().getAllMetaData(testFlow.getRootElement())) {
+				metaDataCB.add(metaData);
+			}
+			metaDataCB.getCombo().pack(true);
+			metaDataCB.getCombo().getParent().pack(true);
+
+			for (MetaDataTag metaDataTag : metaDataTagList) {
+				MetaDataValue metaDataValue = getMetaDataService().getMetaDataValue(metaDataTag,
+						testFlow.getRootElement());
+				TableItem tableRow = new TableItem(metaDataTagsTable, SWT.NONE);
+				tableRow.setText(0, metaDataValue.getMetaData().getLabel());
+				tableRow.setText(1, metaDataValue.getLabel());
+				tableRow.setImage(2, IconConstants.ICON_DELETE);
+			}
 		}
-		metaDataCB.getCombo().pack(true);
-		metaDataCB.getCombo().getParent().pack(true);
-
-		for (MetaDataTag metaDataTag : metaDataTagList) {
-			MetaDataValue metaDataValue = metaDataService.getMetaDataValue(metaDataTag, testFlow.getRootElement());
-			TableItem tableRow = new TableItem(metaDataTagsTable, SWT.NONE);
-			tableRow.setText(0, metaDataValue.getMetaData().getLabel());
-			tableRow.setText(1, metaDataValue.getLabel());
-			tableRow.setImage(2, IconConstants.ICON_DELETE);
-		}
-
 	}
 
 	/**
@@ -249,7 +267,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	 */
 	@Override
 	public void save() {
-		metaDataService.storeMetaDataTags(metaDataTagList, testFlow);
+		getMetaDataService().storeMetaDataTags(metaDataTagList, testFlow);
 	}
 
 	@Override
@@ -306,6 +324,15 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 
 	public void unbinbMetaDataService(MetaDataService metaDataService) {
 		this.metaDataService = null;
+	}
+
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			throw new RuntimeException(
+					"MetaDataService is not set. Probably is the plugin org.testeditor.metadata.core not activated");
+		}
+		return metaDataService;
+
 	}
 
 }
