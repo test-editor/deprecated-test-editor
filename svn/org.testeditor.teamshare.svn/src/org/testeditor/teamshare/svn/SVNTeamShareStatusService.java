@@ -40,6 +40,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 	private Thread svnStateRunner;
 
 	private IEventBroker eventBroker;
+	protected Map<String, TeamChangeType> lastSVNState;
 
 	/**
 	 * Convert the SVNStatusType to the matching TeamChangeType
@@ -70,9 +71,45 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 
 				@Override
 				public void run() {
-					testProject.setTeamStatusInChilds(getSvnStatusFromProjectFiles(testProject));
+					testProject.setTeamChangeType(TeamChangeType.NONE);
+					if (lastSVNState != null) {
+						for (String fullname : lastSVNState.keySet()) {
+							TestStructure child = testProject.getTestChildByFullName(fullname);
+							if (child != null) {
+								child.setTeamChangeType(TeamChangeType.NONE);
+							}
+						}
+					}
+					Map<String, TeamChangeType> statusFromProjectFiles = getSvnStatusFromProjectFiles(testProject);
+					lastSVNState = statusFromProjectFiles;
+					updateTeamStatusInChilds(testProject, statusFromProjectFiles);
 					LOGGER.info("Loaded SVN State for files in: " + testProject.getName());
-					eventBroker.post(TestEditorCoreEventConstants.TEAM_STATE_LOADED, testProject);
+					if (eventBroker != null) {
+						eventBroker.post(TestEditorCoreEventConstants.TEAM_STATE_LOADED, testProject);
+					}
+				}
+
+				/**
+				 * set the TeamChangeType from the child`s of the project. (sets
+				 * only modified ones).
+				 * 
+				 * @param changeFilelist
+				 *            Map<String, TeamChangeType> list of childs with
+				 *            their TeamChangeTypes
+				 */
+				public void updateTeamStatusInChilds(TestProject testProject, Map<String, TeamChangeType> changeFilelist) {
+					if (changeFilelist != null) {
+						for (String fullname : changeFilelist.keySet()) {
+							if (!fullname.equals(testProject.getName())) {
+								TestStructure child = testProject.getTestChildByFullName(fullname);
+								if (child != null) {
+									child.setTeamChangeType(changeFilelist.get(fullname));
+								}
+							} else {
+								testProject.setTeamChangeType(changeFilelist.get(fullname));
+							}
+						}
+					}
 				}
 
 				/**
