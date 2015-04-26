@@ -26,58 +26,27 @@ public class TestProject extends TestCompositeStructure {
 
 	private TestProjectConfig testProjectConfig;
 
-	private Map<String, TeamChangeType> teamChangeFileList;
-
 	/**
 	 * set the TeamChangeType from the child`s of the project. (sets only
 	 * modified ones).
-	 */
-	public void setTeamStatusInChilds() {
-		setTeamStatusInChilds(teamChangeFileList, null);
-	}
-
-	/**
-	 * Set the TeamChangeType in the childs from the given changeFilelist to the
-	 * type. if the given type is null it will set every child on his own State
-	 * (gets the TeamChangeType from the given list). if the type is given type
-	 * is != it will set every Child the same given type.
 	 * 
 	 * @param changeFilelist
 	 *            Map<String, TeamChangeType> list of childs with their
 	 *            TeamChangeTypes
-	 * @param type
-	 *            TeamChangeType if its null the TeamChangeType from the list
-	 *            will be used, else all childs will be set this TeamChangeType
 	 */
-	private void setTeamStatusInChilds(Map<String, TeamChangeType> changeFilelist, TeamChangeType type) {
+	public void setTeamStatusInChilds(Map<String, TeamChangeType> changeFilelist) {
 		if (changeFilelist != null) {
 			for (String fullname : changeFilelist.keySet()) {
 				if (!fullname.equals(getName())) {
 					TestStructure child = getTestChildByFullName(fullname);
 					if (child != null) {
-						if (type == null) {
-							child.setTeamChangeType(changeFilelist.get(fullname));
-						} else {
-							child.setTeamChangeType(type);
-						}
+						child.setTeamChangeType(changeFilelist.get(fullname));
 					}
 				} else {
-					if (type == null) {
-						setTeamChangeType(changeFilelist.get(fullname));
-					} else {
-						setTeamChangeType(type);
-					}
+					setTeamChangeType(changeFilelist.get(fullname));
 				}
 			}
 		}
-	}
-
-	/**
-	 * @param teamChangeFileList
-	 *            the teamChangeFileList (Map<String, TeamChangeType>) to set
-	 */
-	public void setTeamChangeFileList(Map<String, TeamChangeType> teamChangeFileList) {
-		this.teamChangeFileList = teamChangeFileList;
 	}
 
 	@Override
@@ -112,15 +81,6 @@ public class TestProject extends TestCompositeStructure {
 	@Override
 	public String getPageType() {
 		return null;
-	}
-
-	@Override
-	public TeamChangeType getTeamChangeType() {
-		if (teamChangeFileList == null || teamChangeFileList.isEmpty()) {
-			return TeamChangeType.NONE;
-		} else {
-			return TeamChangeType.MODIFY;
-		}
 	}
 
 	@Override

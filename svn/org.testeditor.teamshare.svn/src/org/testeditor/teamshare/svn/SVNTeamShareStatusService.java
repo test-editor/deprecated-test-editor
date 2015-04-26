@@ -70,8 +70,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 
 				@Override
 				public void run() {
-					testProject.setTeamChangeFileList(getSvnStatusFromProjectFiles(testProject));
-					testProject.setTeamStatusInChilds();
+					testProject.setTeamStatusInChilds(getSvnStatusFromProjectFiles(testProject));
 					LOGGER.info("Loaded SVN State for files in: " + testProject.getName());
 					eventBroker.post(TestEditorCoreEventConstants.TEAM_STATE_LOADED, testProject);
 				}
