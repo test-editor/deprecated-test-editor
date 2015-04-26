@@ -27,16 +27,13 @@ public class TestProject extends TestCompositeStructure {
 	private TestProjectConfig testProjectConfig;
 
 	private Map<String, TeamChangeType> teamChangeFileList;
-	private Map<String, TeamChangeType> oldTeamChangeFileList = null;
 
 	/**
 	 * set the TeamChangeType from the child`s of the project. (sets only
 	 * modified ones).
 	 */
 	public void setTeamStatusInChilds() {
-		setTeamStatusInChilds(oldTeamChangeFileList, TeamChangeType.NONE);
 		setTeamStatusInChilds(teamChangeFileList, null);
-		oldTeamChangeFileList = teamChangeFileList;
 	}
 
 	/**

@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.IContextFunction;
@@ -92,8 +90,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 
 	private IEventBroker eventBroker;
 
-	@Inject
-	private TeamShareStatusService teamShareStatusHandlerService;
+	private TeamShareStatusService teamShareStatusService;
 
 	static {
 
@@ -543,7 +540,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			throw new SystemException(e.getMessage());
 		}
 
-		teamShareStatusHandlerService.setTeamStatusForProject(testStructure.getRootElement());
+		teamShareStatusService.setTeamStatusForProject(testStructure.getRootElement());
 	}
 
 	@Override
@@ -834,6 +831,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
+		}
+		if (teamShareStatusService == null) {
+			teamShareStatusService = context.get(TeamShareStatusService.class);
 		}
 		return this;
 	}
