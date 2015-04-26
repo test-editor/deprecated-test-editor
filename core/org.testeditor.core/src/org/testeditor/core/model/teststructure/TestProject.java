@@ -13,9 +13,6 @@ package org.testeditor.core.model.teststructure;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.testeditor.core.model.team.TeamChangeType;
 
 /**
  * 
@@ -25,29 +22,6 @@ import org.testeditor.core.model.team.TeamChangeType;
 public class TestProject extends TestCompositeStructure {
 
 	private TestProjectConfig testProjectConfig;
-
-	/**
-	 * set the TeamChangeType from the child`s of the project. (sets only
-	 * modified ones).
-	 * 
-	 * @param changeFilelist
-	 *            Map<String, TeamChangeType> list of childs with their
-	 *            TeamChangeTypes
-	 */
-	public void setTeamStatusInChilds(Map<String, TeamChangeType> changeFilelist) {
-		if (changeFilelist != null) {
-			for (String fullname : changeFilelist.keySet()) {
-				if (!fullname.equals(getName())) {
-					TestStructure child = getTestChildByFullName(fullname);
-					if (child != null) {
-						child.setTeamChangeType(changeFilelist.get(fullname));
-					}
-				} else {
-					setTeamChangeType(changeFilelist.get(fullname));
-				}
-			}
-		}
-	}
 
 	@Override
 	protected void setParent(TestStructure parent) {
