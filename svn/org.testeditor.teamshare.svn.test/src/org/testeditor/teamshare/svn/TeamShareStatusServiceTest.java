@@ -359,7 +359,7 @@ public class TeamShareStatusServiceTest {
 		while (!teamShareStatusService.isFinish()) {
 			LOGGER.debug("Wait for thread ends");
 		}
-		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
+		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
 	}
 
 	/**
