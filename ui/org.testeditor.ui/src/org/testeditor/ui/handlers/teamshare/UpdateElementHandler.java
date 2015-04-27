@@ -21,23 +21,18 @@ import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * executes the update-element event.
  * 
  * 
  */
-@SuppressWarnings("restriction")
 public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 
 	@Inject
 	private IEventBroker eventBroker;
 
 	private static final Logger LOGGER = Logger.getLogger(UpdateElementHandler.class);
-
-	@Inject
-	private TestEditorTranslationService translationService;
 
 	@Inject
 	private TranslationService translate;

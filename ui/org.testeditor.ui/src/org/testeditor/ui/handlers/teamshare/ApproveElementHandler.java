@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareApproveWizardPage;
 
 /**
@@ -40,9 +39,6 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareApproveWizardPage;
 public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ApproveElementHandler.class);
-
-	@Inject
-	private TestEditorTranslationService translationService;
 
 	@Inject
 	private TranslationService translate;

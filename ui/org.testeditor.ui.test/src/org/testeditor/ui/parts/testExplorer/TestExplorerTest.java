@@ -43,6 +43,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
@@ -117,6 +118,7 @@ public class TestExplorerTest {
 		context.set(MWindow.class, null);
 		context.set(Logger.class, null);
 		context.set(MApplication.class, null);
+		context.set(TeamShareStatusService.class, null);
 
 		shell = new Shell();
 		composite = new Composite(shell, SWT.NORMAL);
