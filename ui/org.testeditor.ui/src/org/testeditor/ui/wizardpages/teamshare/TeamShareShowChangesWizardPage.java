@@ -20,7 +20,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +27,7 @@ import org.eclipse.swt.widgets.List;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.teamshare.svn.TeamShareStatus;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -42,6 +41,9 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	@Inject
 	private TestEditorTranslationService translationService;
 
+	@Inject
+	private TeamShareStatusService teamShareStatusHandlerService;
+
 	private Collection<String> changedDatas;
 
 	private TestStructure testStructure;
@@ -49,8 +51,6 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	private List changesList;
 
 	private Button developerView;
-
-	private Point listSize;
 
 	@Override
 	String getTitleValue() {
@@ -75,8 +75,8 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		TeamShareStatus shareStatus = new TeamShareStatus();
-		setChangedDatas(shareStatus.getModifiedFilesFromTestStructure(testStructure));
+		// TeamShareStatus shareStatus = new TeamShareStatus();
+		setChangedDatas(teamShareStatusHandlerService.getModifiedFilesFromTestStructure(testStructure));
 		super.createControl(parent);
 		setPageComplete(true);
 		refreshList();

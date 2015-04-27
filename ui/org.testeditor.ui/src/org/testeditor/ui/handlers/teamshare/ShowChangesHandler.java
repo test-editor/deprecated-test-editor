@@ -27,8 +27,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.teamshare.svn.SVNTeamShareService;
-import org.testeditor.teamshare.svn.TeamShareStatus;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareShowChangesWizardPage;
@@ -43,17 +41,6 @@ public class ShowChangesHandler extends AbstractUpdateOrApproveHandler {
 	@Inject
 	private MApplication application;
 
-	// @Inject
-	// private IEventBroker eventBroker;
-	//
-	// private static final Logger LOGGER =
-	// Logger.getLogger(RevertElementHandler.class);
-	//
-	// @Inject
-	// private TestEditorTranslationService translationService;
-	//
-	// @Inject
-	// private TranslationService translate;
 	@Inject
 	@Named(IServiceConstants.ACTIVE_SHELL)
 	private Shell shell;
