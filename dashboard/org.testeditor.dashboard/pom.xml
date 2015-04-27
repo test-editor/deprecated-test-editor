@@ -9,7 +9,7 @@
   <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.testeditor</groupId>
-	    <version>1.8.0-SNAPSHOT</version>
+	    <version>1.7.2-SNAPSHOT</version>
 	    <relativePath>../../build/org.testeditor.build</relativePath>	    
   </parent>
   

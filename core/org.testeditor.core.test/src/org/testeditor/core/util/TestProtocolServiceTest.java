@@ -28,6 +28,7 @@ import org.osgi.service.event.EventHandler;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCase;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 
@@ -232,4 +233,31 @@ public class TestProtocolServiceTest {
 		handler.handleEvent(event);
 		assertNull(protocolService.get(testCase));
 	}
+
+	/**
+	 * Test delete of elements with fullqualified name and removing child
+	 * elements on removing their parent.
+	 */
+	@Test
+	public void testDeleteEventHandlerOnFullNameAndParentName() {
+		TestProtocolService protocolService = new TestProtocolService();
+		TestProject tp = new TestProject();
+		tp.setName("TP");
+		TestCase tc = new TestCase();
+		tp.addChild(tc);
+		protocolService.set(tc, new TestResult());
+		assertNotNull(protocolService.get(tc));
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("org.eclipse.e4.data", tc.getFullName());
+		Event event = new Event(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED, properties);
+		protocolService.getDeletedTestStructureEventHandler().handleEvent(event);
+		assertNull(protocolService.get(tc));
+		protocolService.set(tc, new TestResult());
+		assertNotNull(protocolService.get(tc));
+		properties.put("org.eclipse.e4.data", tp.getFullName());
+		event = new Event(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED, properties);
+		protocolService.getDeletedTestStructureEventHandler().handleEvent(event);
+		assertNull("Deleting project also deletes child testcase.", protocolService.get(tc));
+	}
+
 }

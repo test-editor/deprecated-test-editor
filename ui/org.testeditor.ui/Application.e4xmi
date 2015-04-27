@@ -248,7 +248,11 @@
     </toolbar>
   </descriptors>
   <descriptors xmi:id="_qR6ooFtEEeS0I5PPKkGMVA" elementId="org.testeditor.ui.testresultexecutionpart" label="TestResult" category="testresult" closeable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testhistory.TestExecutionResultViewPart"/>
-  <descriptors xmi:id="_-I7OwLoMEeSlVIAn-j6YHg" elementId="org.testeditor.ui.parts.reporting.TestLogView" label="Test Log View" iconURI="platform:/plugin/org.testeditor.ui/icons/testlog.gif" category="reporting" closeable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.reporting.TestLogView"/>
+  <descriptors xmi:id="_-I7OwLoMEeSlVIAn-j6YHg" elementId="org.testeditor.ui.parts.reporting.TestLogView" label="Test Log View" iconURI="platform:/plugin/org.testeditor.ui/icons/testlog.gif" category="reporting" closeable="true" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.reporting.TestLogView">
+    <toolbar xmi:id="_a_8sQM54EeSfWduYZfIMKQ" elementId="org.testeditor.ui.toolbar.5">
+      <children xsi:type="menu:DirectToolItem" xmi:id="_camFUM54EeSfWduYZfIMKQ" elementId="org.testeditor.ui.testlogview.highlightlog" iconURI="platform:/plugin/org.testeditor.ui/icons/logHighlight.gif" tooltip="%testlogview.highlightswitch" type="Check" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.reporting.HighlightLogHandler"/>
+    </toolbar>
+  </descriptors>
   <commands xmi:id="_vtvnJCNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.file.exit" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%org.eclipse.ui.file.exit.command"/>
   <commands xmi:id="_vtvnJiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.file.save" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%command.commandname.save.command"/>
   <commands xmi:id="_vtvnJyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.help.aboutAction" contributorURI="platform:/plugin/org.testeditor.ui" commandName="%command.commandname.about.command"/>

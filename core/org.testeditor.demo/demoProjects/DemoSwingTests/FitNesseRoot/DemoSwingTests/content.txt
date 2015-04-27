@@ -3,7 +3,7 @@
 !define TIMEOUT {10000}
 !define TEST_SYSTEM {slim}
 
-!path ${FIXTURE_LIB_BUNDLE_PATH}/fixture/TestEditorFixtureSwing-*.jar
+!path ${FIXTURE_LIB_BUNDLE_PATH}/fixture/swing-fixture-*.jar
 !path ${FIXTURE_LIB_BUNDLE_PATH}/lib/*.jar
 !define APPLICATION_PATH {${FIXTURE_LIB_BUNDLE_PATH}/lib/GeburtstagsListenVerwaltung-1.0-jar-with-dependencies.jar}
 
