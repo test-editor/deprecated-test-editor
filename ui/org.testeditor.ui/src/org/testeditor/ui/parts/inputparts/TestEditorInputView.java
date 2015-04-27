@@ -109,7 +109,7 @@ public abstract class TestEditorInputView {
 	 *            TestEditorController
 	 * @return the result of comparison
 	 */
-	public boolean newTestEditorController(ITestEditorController newTestEditorController) {
+	public boolean isNewTestEditorController(ITestEditorController newTestEditorController) {
 		return testCaseController == newTestEditorController;
 	}
 

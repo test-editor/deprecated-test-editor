@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
 import org.testeditor.core.model.teststructure.TestData;
@@ -31,6 +32,7 @@ import org.testeditor.core.model.teststructure.TestDataRow;
 public class CsvFileImporter implements FileImporter {
 
 	private static final Logger LOGGER = Logger.getLogger(CsvFileImporter.class);
+	private static final String CSV_FILE_ENCODING = "csv.file.encoding";
 
 	/**
 	 * if all cells of a row are empty then return true.
@@ -64,8 +66,17 @@ public class CsvFileImporter implements FileImporter {
 
 		BufferedReader reader = null;
 
+		Charset charset = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			String encoding = System.getProperty(CSV_FILE_ENCODING);
+			charset = encoding == null ? Charset.defaultCharset() : Charset.forName(encoding);
+		} catch (Exception e) {
+			LOGGER.error("CSV file encoding '" + System.getProperty(CSV_FILE_ENCODING) + "' not valid.");
+			charset = Charset.defaultCharset();
+		}
+
+		try {
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
 
 			String dataRow = null;
 			while ((dataRow = reader.readLine()) != null) {

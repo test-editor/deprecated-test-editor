@@ -353,12 +353,23 @@ public class SVNTeamShareServiceLocalTest {
 		assertTrue(!loginSuite.exists());
 
 		TestSuite localDemoSuite = new TestSuite();
+		final HashSet<String> set = new HashSet<String>();
+		localDemoSuite.setLazyLoader(new Runnable() {
+
+			@Override
+			public void run() {
+				set.add("run");
+			}
+		});
+		localDemoSuite.setChildCountInBackend(1);
 		localDemoSuite.setName("LocalDemoSuite");
 		testProject.addChild(localDemoSuite);
 
 		// update at suite node
 		teamService.update(localDemoSuite, translationService);
-
+		assertFalse(set.contains("run"));
+		localDemoSuite.getTestChildren();
+		assertTrue(set.contains("run"));
 		// update was successfull
 		assertTrue(loginSuite.exists());
 
