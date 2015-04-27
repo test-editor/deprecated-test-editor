@@ -64,7 +64,6 @@ import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
-import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.mocks.TestScenarioServiceMock;
 import org.testeditor.ui.parts.editor.view.Adapter.TestActionGroupServiceAdapter;
@@ -859,8 +858,8 @@ public class TestEditorControllerTest {
 	public void linkTestExplorerWithEditorTest() {
 		initalizeForTest();
 		events.clear();
-		testEditorController.linkTestExplorerWithEditor();
-		assertTrue(events.contains(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE));
+		testEditorController.setTestFlow(testFlowForTest);
+		assertTrue(events.contains(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED));
 		assertEquals(testStructureFromEvent, testFlowForTest);
 
 	}
@@ -1111,7 +1110,7 @@ public class TestEditorControllerTest {
 				events.add(arg0.getTopic());
 			}
 		});
-		eventBroker.subscribe("explorer_select_test_structure", new EventHandler() {
+		eventBroker.subscribe("testflow/*", new EventHandler() {
 
 			@Override
 			public void handleEvent(org.osgi.service.event.Event arg0) {

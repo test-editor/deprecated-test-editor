@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testhistory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
-import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -35,8 +34,6 @@ public class TestHistoryView {
 
 	@Inject
 	private TestEditorTranslationService translationService;
-	@Inject
-	private IEclipseContext context;
 
 	private TableViewer tableViewer;
 	private Composite mainComposite;
@@ -49,6 +46,7 @@ public class TestHistoryView {
 	 * @param parent
 	 *            the parent {@link Composite}
 	 */
+	@PostConstruct
 	public void createUi(Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -63,12 +61,12 @@ public class TestHistoryView {
 		nameOfTestHistory.setText(translationService.translate("%label.testhistory.of"));
 		nameOfTestHistory.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.TEST_HISTORY_LABEL);
+		nameOfTestHistory.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL));
 		Composite compositeForTable = new Composite(mainComposite, SWT.NONE);
 		compositeForTable.setLayout(new FillLayout(SWT.NONE));
 		compositeForTable.setLayoutData(gd);
 		createHistoryTable(compositeForTable);
 		mainComposite.setVisible(false);
-		context.set(TestEditorConstants.TEST_HISTORY_VIEW, this);
 	}
 
 	/**
@@ -132,7 +130,7 @@ public class TestHistoryView {
 	protected void setTitle(String name) {
 		if (!nameOfTestHistory.isDisposed()) {
 			nameOfTestHistory.setText(translationService.translate("%label.testhistory.of") + ": " + name);
-			nameOfTestHistory.pack();
+			nameOfTestHistory.getParent().layout(true, true);
 			nameOfTestHistory.setVisible(true);
 		}
 	}
@@ -142,8 +140,6 @@ public class TestHistoryView {
 	 * filling the table.
 	 */
 	protected void setVisible() {
-		mainComposite.redraw();
-		mainComposite.getParent().redraw();
 		mainComposite.setVisible(true);
 	}
 

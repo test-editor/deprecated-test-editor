@@ -75,10 +75,18 @@ public final class TestEditorFontConstants {
 	 * method at the end!
 	 */
 	public static void disposeFonts() {
-		FONT_NORMAL.dispose();
-		FONT_UNDERLINE.dispose();
-		FONT_ITALIC.dispose();
-		FONT_UNDERLINE_ERROR.dispose();
+		if (FONT_NORMAL != null) {
+			FONT_NORMAL.dispose();
+		}
+		if (FONT_UNDERLINE != null) {
+			FONT_UNDERLINE.dispose();
+		}
+		if (FONT_ITALIC != null) {
+			FONT_ITALIC.dispose();
+		}
+		if (FONT_UNDERLINE_ERROR != null) {
+			FONT_UNDERLINE_ERROR.dispose();
+		}
 
 	}
 

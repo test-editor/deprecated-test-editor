@@ -37,7 +37,8 @@ import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
  */
 public final class FitnesseFileSystemUtility {
 
-	private static final Logger LOGGER = Logger.getLogger(FitnesseFileSystemUtility.class);
+	private static final Logger LOGGER = Logger
+			.getLogger(FitnesseFileSystemUtility.class);
 
 	/**
 	 * Utility Class can not be instantiated.
@@ -54,11 +55,14 @@ public final class FitnesseFileSystemUtility {
 	 *            to be used for lookup.
 	 * @return the path as string to the TestStructure.
 	 */
-	public static String getPathToTestStructureDirectory(TestStructure testStructure) {
+	public static String getPathToTestStructureDirectory(
+			TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getPathToProject(testStructure));
-		String pathInProject = testStructure.getFullName().replace('.', File.separator.toCharArray()[0]);
-		sb.append(File.separator).append("FitNesseRoot").append(File.separator).append(pathInProject);
+		String pathInProject = testStructure.getFullName().replace('.',
+				File.separator.toCharArray()[0]);
+		sb.append(File.separator).append("FitNesseRoot").append(File.separator)
+				.append(pathInProject);
 		return sb.toString();
 	}
 
@@ -70,26 +74,32 @@ public final class FitnesseFileSystemUtility {
 	 *            to be used for lookup.
 	 * @return the path as string to the TestStructure.
 	 */
-	public static String getPathToTestStructureErrorDirectory(TestStructure testStructure) {
+	public static String getPathToTestStructureErrorDirectory(
+			TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getPathToProject(testStructure));
-		String pathInProject = "ErrorLogs" + File.separator
-				+ testStructure.getFullName().replace('.', File.separator.toCharArray()[0]);
-		sb.append(File.separator).append("FitNesseRoot").append(File.separator).append(pathInProject);
+		String pathInProject = "ErrorLogs"
+				+ File.separator
+				+ testStructure.getFullName().replace('.',
+						File.separator.toCharArray()[0]);
+		sb.append(File.separator).append("FitNesseRoot").append(File.separator)
+				.append(pathInProject);
 		return sb.toString();
 	}
 
 	/**
-	 * Creates the ErrorLog Path to the Directory of the TestStructure in the
-	 * FileSystem as a string.
+	 * Checks if for given testStructure if an content.txt exixts in error log
+	 * path of fitnesse.
 	 * 
 	 * @param testStructure
 	 *            to be used for lookup.
 	 * @return the path as string to the TestStructure.
 	 */
-	public static boolean existsPathToTestStructureErrorDirectory(TestStructure testStructure) {
+	public static boolean existsContentTxtInPathOfTestStructureInErrorDirectory(
+			TestStructure testStructure) {
 		String pathToTestStructureErrorDirectory = getPathToTestStructureErrorDirectory(testStructure);
-		return new File(pathToTestStructureErrorDirectory).exists();
+		return new File(pathToTestStructureErrorDirectory + File.separatorChar
+				+ "content.txt").exists();
 	}
 
 	/**
@@ -99,7 +109,8 @@ public final class FitnesseFileSystemUtility {
 	 *            TestStructure
 	 * @return Returns true if path of structure exists.
 	 */
-	public static boolean existsPathToTestStructureDirectory(TestStructure testStructure) {
+	public static boolean existsPathToTestStructureDirectory(
+			TestStructure testStructure) {
 		String pathToTestStructureDirectory = getPathToTestStructureDirectory(testStructure);
 		return new File(pathToTestStructureDirectory).exists();
 	}
@@ -113,7 +124,8 @@ public final class FitnesseFileSystemUtility {
 	 */
 	public static String getPathToProject(TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(Platform.getLocation().toFile().toPath().toString()).append(File.separator)
+		sb.append(Platform.getLocation().toFile().toPath().toString())
+				.append(File.separator)
 				.append(testStructure.getRootElement().getName());
 		return sb.toString();
 	}
@@ -129,8 +141,10 @@ public final class FitnesseFileSystemUtility {
 	 */
 	public static boolean isComponentNode(String fileAsString) {
 
-		return fileAsString.contains(TestEditorGlobalConstans.TEST_SCENARIO_SUITE)
-				|| fileAsString.contains(TestEditorGlobalConstans.TEST_KOMPONENTS);
+		return fileAsString
+				.contains(TestEditorGlobalConstans.TEST_SCENARIO_SUITE)
+				|| fileAsString
+						.contains(TestEditorGlobalConstans.TEST_KOMPONENTS);
 	}
 
 	/**
@@ -145,7 +159,8 @@ public final class FitnesseFileSystemUtility {
 				if (name.startsWith(".")) {
 					return false;
 				}
-				return new File(dir.getAbsoluteFile() + File.separator + name).isDirectory();
+				return new File(dir.getAbsoluteFile() + File.separator + name)
+						.isDirectory();
 			}
 		};
 	}
@@ -177,18 +192,21 @@ public final class FitnesseFileSystemUtility {
 	 * @throws SystemException
 	 *             on io problems.
 	 */
-	public static String getContentOfFitnesseFileForTestStructure(TestStructure testStructure, String pathToFitnesseFile)
+	public static String getContentOfFitnesseFileForTestStructure(
+			TestStructure testStructure, String pathToFitnesseFile)
 			throws SystemException {
 		StringBuilder sb = new StringBuilder();
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(pathToFitnesseFile),
-				"UTF8"))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				new FileInputStream(pathToFitnesseFile), "UTF8"))) {
 			while (br.ready()) {
 				sb.append(br.readLine()).append("\n");
 			}
 		} catch (IOException e) {
-			LOGGER.error("Error reading content of teststructrue: " + testStructure, e);
-			throw new SystemException("Error reading content of teststructrue: " + testStructure + "\n"
-					+ e.getMessage(), e);
+			LOGGER.error("Error reading content of teststructrue: "
+					+ testStructure, e);
+			throw new SystemException(
+					"Error reading content of teststructrue: " + testStructure
+							+ "\n" + e.getMessage(), e);
 		}
 		return sb.toString().trim();
 	}
@@ -200,13 +218,15 @@ public final class FitnesseFileSystemUtility {
 	public static FileVisitor<Path> getDeleteRecursiveVisitor() {
 		return new SimpleFileVisitor<Path>() {
 			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+			public FileVisitResult visitFile(Path file,
+					BasicFileAttributes attrs) throws IOException {
 				Files.delete(file);
 				return FileVisitResult.CONTINUE;
 			}
 
 			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+					throws IOException {
 
 				if (Files.exists(dir, LinkOption.NOFOLLOW_LINKS)) {
 					Files.delete(dir);

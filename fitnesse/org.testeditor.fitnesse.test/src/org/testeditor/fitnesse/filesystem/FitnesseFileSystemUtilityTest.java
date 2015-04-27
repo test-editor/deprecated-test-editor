@@ -11,17 +11,19 @@
  *******************************************************************************/
 package org.testeditor.fitnesse.filesystem;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.eclipse.core.runtime.Platform;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
+import org.testeditor.core.util.FileUtils;
 
 /**
  * Tests for the FitnesseFileSystemUtility to lookup an access Files in the
@@ -36,10 +38,13 @@ public class FitnesseFileSystemUtilityTest {
 	@Test
 	public void testGetPathToTestStructure() {
 		TestStructure testStructure = createTestStructureForTest();
-		String pathPart = File.separator + "FitNesseRoot" + File.separator + "MyTestPrj" + File.separator + "MySuite"
-				+ File.separator + "ATestCase";
-		assertTrue("Path ends with",
-				FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure).endsWith(pathPart));
+		String pathPart = File.separator + "FitNesseRoot" + File.separator
+				+ "MyTestPrj" + File.separator + "MySuite" + File.separator
+				+ "ATestCase";
+		assertTrue(
+				"Path ends with",
+				FitnesseFileSystemUtility.getPathToTestStructureDirectory(
+						testStructure).endsWith(pathPart));
 	}
 
 	/**
@@ -50,9 +55,11 @@ public class FitnesseFileSystemUtilityTest {
 		TestStructure testStructure = createTestStructureForTest();
 		String pathToTestStructureErrorDirectory = FitnesseFileSystemUtility
 				.getPathToTestStructureErrorDirectory(testStructure);
-		String pathPart = File.separator + "FitNesseRoot" + File.separator + "ErrorLogs" + File.separator + "MyTestPrj"
-				+ File.separator + "MySuite" + File.separator + "ATestCase";
-		assertTrue("Path ends with", pathToTestStructureErrorDirectory.endsWith(pathPart));
+		String pathPart = File.separator + "FitNesseRoot" + File.separator
+				+ "ErrorLogs" + File.separator + "MyTestPrj" + File.separator
+				+ "MySuite" + File.separator + "ATestCase";
+		assertTrue("Path ends with",
+				pathToTestStructureErrorDirectory.endsWith(pathPart));
 	}
 
 	/**
@@ -72,20 +79,42 @@ public class FitnesseFileSystemUtilityTest {
 	}
 
 	/**
+	 * Tests the Method
+	 * {@link FitnesseFileSystemUtility#existsContentTxtInPathOfTestStructureInErrorDirectory(TestStructure)}
+	 * .
 	 * 
+	 * @throws IOException IOException
+	 * @throws IllegalStateException IllegalStateException
 	 */
-	public void testIsComponentNode() {
+	@Test
+	public void testExistsContentTxtInPathOfTestStructureInErrorDirectory() throws IllegalStateException, IOException {
 
-		String testfilePath = "d:" + File.separatorChar + " DemoWebTests " + File.separatorChar
-				+ TestEditorGlobalConstans.TEST_SCENARIO_SUITE + File.separatorChar + "content.txt";
-		assertTrue(FitnesseFileSystemUtility.isComponentNode(testfilePath));
+		FileUtils.copyFolder(new File("./ressources/MyTestPrj"), new File(
+				Platform.getLocation().toFile(), "MyTestPrj"));
 
-		testfilePath = "d:" + File.separatorChar + " DemoWebTests " + File.separatorChar
-				+ TestEditorGlobalConstans.TEST_KOMPONENTS + File.separatorChar + "content.txt";
-		assertTrue(FitnesseFileSystemUtility.isComponentNode(testfilePath));
+		TestStructure testStructure = createTestStructureForTest();
 
-		testfilePath = "d:" + File.separatorChar + " DemoWebTests " + File.separatorChar + "content.txt";
-		assertFalse(FitnesseFileSystemUtility.isComponentNode(testfilePath));
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+		testProjectConfig.setPathToTestFiles(Platform.getLocation().toFile()
+				.getAbsolutePath());
+
+		// content.txt for test must be exist
+		assertTrue(
+				"content.txt for suite "
+						+ testStructure.getParent().getFullName()
+						+ " must exist",
+				FitnesseFileSystemUtility
+						.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure));
+
+		// content.txt for suite must not be exist
+		assertFalse(
+				"content.txt for suite "
+						+ testStructure.getParent().getFullName()
+						+ " must not exist",
+				FitnesseFileSystemUtility
+						.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure
+								.getParent()));
 
 	}
+
 }

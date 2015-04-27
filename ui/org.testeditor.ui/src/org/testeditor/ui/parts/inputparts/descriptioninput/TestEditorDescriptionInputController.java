@@ -65,7 +65,7 @@ public class TestEditorDescriptionInputController extends AbstractTestEditorInpu
 	 *            ITestEditorController
 	 */
 	public void setTestCaseController(ITestEditorController testEditorController) {
-		if (!editArea.newTestEditorController(testEditorController)) {
+		if (!editArea.isNewTestEditorController(testEditorController)) {
 			editArea.cleanInput();
 			editArea.setTestCaseControler(testEditorController);
 			setAddMode(true);

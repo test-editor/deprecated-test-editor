@@ -62,7 +62,6 @@ import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
-import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
 import org.testeditor.ui.parts.commons.tree.TestStructureTreeLabelProvider;
@@ -395,7 +394,7 @@ public class TestSuiteEditor implements ITestStructureEditor {
 	public void onFocus(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell, IEventBroker eventBroker) {
 		this.eventBroker = eventBroker;
 		if (eventBroker != null) {
-			eventBroker.send(TestEditorEventConstants.EXPLORER_SELECT_TEST_STRUCTURE, testSuite);
+			eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testSuite);
 		}
 		shell.setDefaultButton(null);
 	}

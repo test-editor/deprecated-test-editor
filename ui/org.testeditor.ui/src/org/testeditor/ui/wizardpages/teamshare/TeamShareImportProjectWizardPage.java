@@ -121,6 +121,8 @@ public class TeamShareImportProjectWizardPage extends TeamShareWizardPage {
 		boolean existsProjectWithName = testProjectService.existsProjectWithName(projectName);
 		if (existsProjectWithName) {
 			setErrorMessage(translationService.translate("%wizard.team.error.projectexists"));
+		} else {
+			setErrorMessage(null);
 		}
 		setPageComplete(isPageComplete() && !projectName.isEmpty() && !existsProjectWithName);
 	}

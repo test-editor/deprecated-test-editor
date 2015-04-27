@@ -52,7 +52,10 @@ import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
- * Controller for the TestHistory-Part.
+ * 
+ * Part in the Application model to represent the TestHistory ViewPart. This
+ * class contains the controller for the TestHistory-Part. UI elements are build
+ * in <code>TestHistoryView</code>.
  * 
  * 
  */
@@ -71,10 +74,12 @@ public class TestHistoryPart {
 	@Inject
 	private TestEditorTranslationService translationService;
 
-	private TestHistoryView testHistoryPart;
+	private TestHistoryView testHistoryView;
 	private ArrayList<Button> buttonArray = new ArrayList<Button>();
 
 	private TestStructure testStructure;
+
+	private List<TestResult> testHistory;
 
 	/**
 	 * Consumes the event of deleted Teststructues to remove ui informations on
@@ -87,10 +92,10 @@ public class TestHistoryPart {
 	@Optional
 	public void onTestSturctureRenamedEvent(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_HISTORY_DELETED) String testStructureFullname) {
-		if (testStructure != null) {
-			if (testStructureFullname.equals(testStructure.getFullName())) {
-				clearView();
-			}
+		if (testStructure != null && testStructureFullname.equals(testStructure.getFullName())) {
+			clearView();
+			testStructure = null;
+			testHistory = null;
 		}
 	}
 
@@ -109,6 +114,24 @@ public class TestHistoryPart {
 	}
 
 	/**
+	 * Retrieves the active editor event and loads the history for the Testcase
+	 * in the editor.
+	 * 
+	 * @param aTestStructure
+	 *            to be used in the history view.
+	 */
+	@Inject
+	@Optional
+	public void onActiveEditorChanged(
+			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
+		if (aTestStructure != null) {
+			if (aTestStructure.isExecutableTestStructure()) {
+				showTestHistory(aTestStructure);
+			}
+		}
+	}
+
+	/**
 	 * Refresh the history table with current history data of teststructure.
 	 * 
 	 * @param testStructure
@@ -122,7 +145,7 @@ public class TestHistoryPart {
 			clearButtonArray();
 			getTestHistoryPart().clearTable();
 
-			List<TestResult> testHistory = null;
+			testHistory = null;
 			try {
 				TestStructureService testStructureService = testEditorPlugInService
 						.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig()
@@ -139,7 +162,6 @@ public class TestHistoryPart {
 			}
 			packColumns(getTestHistoryPart().getTableViewer().getTable());
 			getTestHistoryPart().setVisible();
-
 		}
 
 	}
@@ -168,10 +190,7 @@ public class TestHistoryPart {
 		final TestProjectConfig testProjectConfig = testStructure.getRootElement().getTestProjectConfig();
 
 		TableItem item = new TableItem(tableViewer.getTable(), SWT.NONE);
-		String formatedDateString = format(testResult.getResultDate());
-		String error = translationService.translate("%error");
-		item.setText(new String[] { "", formatedDateString,
-				"Ok: " + testResult.getRight() + " " + error + ": " + testResult.getWrong(), "" });
+		item.setText(getResultSummaryRowFrom(testResult));
 
 		if (testResult.isSuccessfully()) {
 			item.setImage(0, IconConstants.ICON_TESTCASE_SUCCESSED);
@@ -204,6 +223,26 @@ public class TestHistoryPart {
 		editor.minimumWidth = 30;
 		editor.setEditor(button, item, 3);
 		editor.layout();
+	}
+
+	/**
+	 * Extracts Summary String from TestResult to be used in the table.
+	 * 
+	 * @param testResult
+	 *            as data for the extraction.
+	 * @return string array used in the table.
+	 */
+	public String[] getResultSummaryRowFrom(TestResult testResult) {
+		String formatedDateString = format(testResult.getResultDate());
+
+		String right = translationService.translate("%test.history.right") + ":" + testResult.getRight();
+		String wrong = translationService.translate("%test.history.wrong") + ":" + testResult.getWrong();
+		String ignored = translationService.translate("%test.history.ignored") + ":" + testResult.getIgnored();
+		String exception = translationService.translate("%test.history.exception") + ":" + testResult.getException();
+
+		String[] row = new String[] { "", formatedDateString,
+				right + "; " + wrong + "; " + ignored + "; " + exception, "" };
+		return row;
 	}
 
 	/**
@@ -246,9 +285,7 @@ public class TestHistoryPart {
 	 */
 	@PostConstruct
 	public void createControls(Composite parent) {
-		setTestHistoryPart(ContextInjectionFactory.make(TestHistoryView.class, context));
-		getTestHistoryPart().createUi(parent);
-
+		this.testHistoryView = ContextInjectionFactory.make(TestHistoryView.class, context);
 	}
 
 	/**
@@ -256,17 +293,7 @@ public class TestHistoryPart {
 	 * @return the testHistoryPart
 	 */
 	private TestHistoryView getTestHistoryPart() {
-		return testHistoryPart;
-	}
-
-	/**
-	 * set the local variable {@link TestHistoryView}.
-	 * 
-	 * @param testHistoryPart
-	 *            TestHistoryPart
-	 */
-	private void setTestHistoryPart(TestHistoryView testHistoryPart) {
-		this.testHistoryPart = testHistoryPart;
+		return testHistoryView;
 	}
 
 	/**
@@ -283,8 +310,7 @@ public class TestHistoryPart {
 	 */
 	public void clearHistory() {
 		try {
-			TestStructureService testStructureService = testEditorPlugInService
-					.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig().getTestServerID());
+			TestStructureService testStructureService = getTestStructureService(testStructure);
 			testStructureService.clearHistory(testStructure);
 		} catch (SystemException e) {
 			LOGGER.error(e.getMessage());
@@ -296,22 +322,37 @@ public class TestHistoryPart {
 				}
 			});
 		}
-		testStructure = null;
 	}
 
 	/**
 	 * 
+	 * @param aTestStructure
+	 *            used to identify the correct service.
+	 * 
+	 * @return the TestStructureService used for teststructure.
+	 */
+	private TestStructureService getTestStructureService(TestStructure aTestStructure) {
+		return testEditorPlugInService.getTestStructureServiceFor(aTestStructure.getRootElement()
+				.getTestProjectConfig().getTestServerID());
+	}
+
+	/**
+	 * Checks that the view has a test structure which has a test history.
+	 * 
 	 * @return true, if the testStructure is not null
 	 */
-	public boolean canExecute() {
-		return testStructure != null;
+	public boolean containsTestHistory() {
+		if (testStructure != null && testHistory != null) {
+			return testHistory.size() > 0;
+		}
+		return false;
 	}
 
 	/**
 	 * clears the view.
 	 */
 	public void clearView() {
-		testHistoryPart.clearHistory();
+		testHistoryView.clearHistory();
 	}
 
 }

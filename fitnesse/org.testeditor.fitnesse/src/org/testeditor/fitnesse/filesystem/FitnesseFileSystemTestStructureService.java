@@ -450,7 +450,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 	@Override
 	public boolean hasLogData(TestStructure testStructure) throws SystemException {
-		return FitnesseFileSystemUtility.existsPathToTestStructureErrorDirectory(testStructure);
+		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
 	}
 
 }
