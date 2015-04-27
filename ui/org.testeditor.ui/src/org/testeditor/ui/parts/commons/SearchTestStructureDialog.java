@@ -134,6 +134,8 @@ public class SearchTestStructureDialog extends Dialog {
 					if (result.getTable().getItemCount() > 0) {
 						result.getTable().select(0);
 						result.getTable().setFocus();
+						selectedTestStructure = (TestStructure) ((IStructuredSelection) result.getSelection())
+								.getFirstElement();
 					}
 				}
 			}
