@@ -41,6 +41,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
 	private static final String CURRENT_WS_VERSION = "1.0.4";
+	private FileLocatorService fileLocatorService;
 
 	/**
 	 * Described in Bug TE-760 and TE-1038 it doesn't work on all operating
@@ -63,7 +64,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	}
 
 	@Override
-	public void loadGlobalVariablesAsSystemProperties() throws BackingStoreException {
+	public void exportGlobalVariablesToSystemProperties() throws BackingStoreException {
 		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(ID_TE_PROPERTIES);
 		setDefaultVariablesIfNotset();
 		String[] keysOfSystemPreferences = prefs.keys();
@@ -231,4 +232,35 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 		}
 		return prefs.getBoolean(RESET_APP_PROPERTY, false);
 	}
+
+	@Override
+	public void initializeSystemProperties() throws IOException {
+		String bundleLocation = fileLocatorService.findBundleFileLocationAsString("org.testeditor.fixture.lib");
+		String swtBotBundle = fileLocatorService.findBundleFileLocationAsString("org.testeditor.agent.swtbot");
+		System.setProperty("FIXTURE_LIB_BUNDLE_PATH", bundleLocation);
+		System.setProperty("SWT_BOT_AGENT_BUNDLE_PATH", swtBotBundle);
+		System.setProperty("APPLICATION_WORK", Platform.getLocation().toOSString());
+	}
+
+	/**
+	 * Binds a the file locator service to this service.
+	 * 
+	 * @param fileLocatorService
+	 *            used in this service.
+	 */
+	public void bind(FileLocatorService fileLocatorService) {
+		this.fileLocatorService = fileLocatorService;
+		LOGGER.trace("Wired up: " + fileLocatorService);
+	}
+
+	/**
+	 * Unbind the service, if it is removed from the system.
+	 * 
+	 * @param fileLocatorService
+	 *            to be removed.
+	 */
+	public void unbind(FileLocatorService fileLocatorService) {
+		this.fileLocatorService = null;
+	}
+
 }

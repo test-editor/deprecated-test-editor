@@ -43,7 +43,9 @@ public class SVNLoggingEventHandler implements ISVNEventHandler {
 
 	@Override
 	public void checkCancelled() throws SVNCancelException {
-
+		if (listener != null && listener.isCanceled()) {
+			throw new SVNCancelException();
+		}
 	}
 
 	@Override

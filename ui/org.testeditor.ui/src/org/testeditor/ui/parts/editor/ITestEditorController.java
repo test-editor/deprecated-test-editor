@@ -66,7 +66,7 @@ public interface ITestEditorController {
 	 *            linenumber
 	 * @return array of stings
 	 */
-	ArrayList<String> getLine(int i);
+	List<String> getLine(int i);
 
 	/**
 	 * returns an array of textType of a line.
@@ -75,7 +75,7 @@ public interface ITestEditorController {
 	 *            linenumber
 	 * @return array Text_type
 	 */
-	ArrayList<TextType> getTextTypes(int i);
+	List<TextType> getTextTypes(int i);
 
 	/**
 	 * returns the testcomponent at a linenumber.
@@ -127,7 +127,7 @@ public interface ITestEditorController {
 	 * @param posInSelection
 	 *            position of the cursor in the selected element
 	 */
-	void setActionToEditArea(int lineNumber, ArrayList<String> texts, int posInSelection);
+	void setActionToEditArea(int lineNumber, List<String> texts, int posInSelection);
 
 	/**
 	 * this method set the actiongroup in the testcase in the give line with the

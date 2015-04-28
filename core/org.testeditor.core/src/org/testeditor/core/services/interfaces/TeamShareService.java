@@ -52,15 +52,14 @@ public interface TeamShareService {
 	 * 
 	 * @param testProject
 	 *            to be shared.
-	 * @param svnComment
+	 * @param comment
 	 *            String comment for share.
 	 * @param translationService
 	 *            {@link TranslationService}
 	 * @throws SystemException
 	 *             if the sharing of the project fails
 	 */
-	void share(TestProject testProject, TranslationService translationService, String svnComment)
-			throws SystemException;
+	void share(TestProject testProject, TranslationService translationService, String comment) throws SystemException;
 
 	/**
 	 * Approve the Changes of a <code>TestStructure</code> and all it children's
@@ -68,14 +67,14 @@ public interface TeamShareService {
 	 * 
 	 * @param testStructure
 	 *            to be approved.
-	 * @param svnComment
-	 *            String comment for the svn.
+	 * @param comment
+	 *            String comment for the Team Share system.
 	 * @param translationService
 	 *            {@link TranslationService}
 	 * @throws SystemException
 	 *             if the sharing of the project fails
 	 */
-	void approve(TestStructure testStructure, TranslationService translationService, String svnComment)
+	void approve(TestStructure testStructure, TranslationService translationService, String comment)
 			throws SystemException;
 
 	/**
@@ -128,8 +127,7 @@ public interface TeamShareService {
 	 * @throws SystemException
 	 *             if the deletion fails
 	 */
-	// TODO rename to delete TE-1459
-	void doDelete(TestStructure testStructure, TranslationService translationService) throws SystemException;
+	void delete(TestStructure testStructure, TranslationService translationService) throws SystemException;
 
 	/**
 	 * gets the status of the {@link TestStructure}.
@@ -152,7 +150,7 @@ public interface TeamShareService {
 	void addProgressListener(ProgressListener listener);
 
 	/**
-	 * adds a child to the parent in the local svn-structure.
+	 * adds a child to the parent in the local structure.
 	 * 
 	 * @param testStructureChild
 	 *            child TestStructure

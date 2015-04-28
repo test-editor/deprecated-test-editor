@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,10 +32,15 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
@@ -42,12 +48,15 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
+import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -55,9 +64,6 @@ import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.testing.ITestHarness;
 import org.eclipse.ui.testing.TestableObject;
 import org.hamcrest.Matcher;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.FrameworkUtil;
 
 /**
  * 
@@ -107,15 +113,17 @@ public class TEAgentServer extends Thread implements ITestHarness {
 
 	/**
 	 * Stops the Application by telling the Workbench that the test is Finished.
+	 * SWTBot tries to close the active window. If there is no active window,
+	 * the JVM will be terminated.
 	 */
 	public void stopApplication() {
-		testableObject.testingFinished();
-		LOGGER.info(">>>> Stopping AUT");
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-		try {
-			bundle.getBundleContext().getBundle(0).stop();
-		} catch (BundleException e) {
-			LOGGER.error("AUT Shutdown failed", e);
+		if (Display.getCurrent() != null && !Display.getCurrent().isDisposed()) {
+			testableObject.testingFinished();
+			LOGGER.info(">>>> Stopping AUT");
+			bot.activeShell().close();
+		} else {
+			LOGGER.info(">>>> Terminating AUT");
+			System.exit(0);
 		}
 	}
 
@@ -396,31 +404,40 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return SWTBot Message
 	 */
 	public String setTextById(String id, String text) {
-
-		try {
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.trace("setTextById: id=" + id + " text=" + text);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("setTextById: id=" + id + " text=" + text);
+		}
+		Widget widget = bot.widget(WidgetMatcherFactory.withId(id));
+		if (widget != null) {
+			boolean found = false;
+			if (widget instanceof Combo) {
+				SWTBotCombo combo = bot.comboBoxWithId(id);
+				combo.setFocus();
+				combo.typeText(text);
+				found = true;
 			}
-			SWTBotText textWithId = null;
-			try {
-				textWithId = bot.textWithId(id);
-			} catch (Exception e) {
-				LOGGER.error("Widget by id: " + id + " not found: ", e);
+			if (widget instanceof StyledText) {
+				SWTBotStyledText styledText = null;
+				styledText = bot.styledTextWithId(id);
+				styledText.setFocus();
+				styledText.setText(text);
+				found = true;
 			}
-			if (textWithId != null) {
-				bot.textWithId(id).setFocus();
-				bot.textWithId(id).setText(text);
-			} else {
-				LOGGER.trace("Trying styled text Widget by id: " + id + " not found: ");
-				bot.styledTextWithId(id).setFocus();
-				bot.styledTextWithId(id).setText(text);
+			if (!found) {
+				SWTBotText textWithId = null;
+				try {
+					textWithId = bot.textWithId(id);
+				} catch (Exception e) {
+					LOGGER.error("Widget by id: " + id + " not found: ", e);
+				}
+				if (textWithId != null) {
+					bot.textWithId(id).setFocus();
+					bot.textWithId(id).setText(text);
+				} else {
+					LOGGER.trace("Trying styled text Widget by id: " + id + " not found: ");
+					LOGGER.error(analyzeWidgets());
+				}
 			}
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.trace("setTextById: text was set");
-			}
-		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
-			return "ERROR " + e.getMessage();
 		}
 		return Boolean.toString(true);
 	}
@@ -468,7 +485,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            to compare with the text in the textfield.
 	 * @return SWTBot Message
 	 */
-	private String compareLabelById(String id, String comptext) {
+	public String compareLabelById(String id, String comptext) {
 
 		try {
 			LOGGER.trace("compareLableById: id=" + id + " comptext=" + comptext);
@@ -774,13 +791,27 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " ...");
 			}
-			bot.button(text).click();
+			SWTBotButton button = bot.button(text);
+			LOGGER.trace("Found button " + button);
+			try {
+				// There is a Try catch for index out bound exeption, to ignore
+				// the event notification error in swtbot.
+				button.click();
+			} catch (IndexOutOfBoundsException e) {
+				LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
+			}
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " clicked");
 			}
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
-			return "ERROR " + e.getMessage();
+			StringBuffer sb = new StringBuffer();
+			sb.append("ERROR ").append(e.getMessage());
+			StackTraceElement[] trace = e.getStackTrace();
+			for (StackTraceElement stackTraceElement : trace) {
+				sb.append("\n").append(stackTraceElement.toString());
+			}
+			return sb.toString();
 		}
 		return Boolean.toString(true);
 
@@ -975,7 +1006,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            text to be typed in widget
 	 * @return "done" or exception message text
 	 */
-	private String setStyledTextWithId(String locator, String text) {
+	public String setStyledTextWithId(String locator, String text) {
 
 		try {
 			if (LOGGER.isTraceEnabled()) {
@@ -1000,7 +1031,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            text to be selected in widget
 	 * @return "done" or exception message text
 	 */
-	private String selectComboBoxWithId(String locator, String text) {
+	public String selectComboBoxWithId(String locator, String text) {
 
 		try {
 			if (LOGGER.isTraceEnabled()) {
@@ -1051,7 +1082,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            node to be checked if selected
 	 * @return "true" if selected, otherwise "false"
 	 */
-	private String checkSelectedTreeNode(final String treeNodeText) {
+	public String checkSelectedTreeNode(final String treeNodeText) {
 
 		result = Boolean.toString(false);
 
@@ -1123,7 +1154,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            id of widget
 	 * @return exception message text or "done"
 	 */
-	private String clickToolbarButtonWithId(String locator) {
+	public String clickToolbarButtonWithId(String locator) {
 		try {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickToolbarButtonWithId locator: " + locator);
@@ -1145,7 +1176,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            given tooltip text
 	 * @return @return exception message text or "done"
 	 */
-	private String clickToolbarButtonWithTooltip(String tooltip) {
+	public String clickToolbarButtonWithTooltip(String tooltip) {
 		try {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickToolbarButtonWithTooltip tooltip: " + tooltip);
@@ -1228,6 +1259,47 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * Select a string in a auto complete widget.
+	 * 
+	 * @param item
+	 *            that is selected
+	 * @return true on success.
+	 */
+	public String selectElementInAtuocompleteWidget(final String item) {
+		try {
+			SWTBotShell shell = bot.shell("", bot.activeShell().widget);
+			shell.activate();
+			final Table table = (Table) bot.widget(WidgetMatcherFactory.widgetOfType(Table.class), shell.widget);
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					TableItem[] items = table.getItems();
+					TableItem workOn = null;
+					for (int i = 0; i < items.length; i++) {
+						TableItem tableItem = table.getItem(i);
+						if (tableItem.getText().equals(item)) {
+							workOn = tableItem;
+							bot.table().click(i, 0);
+						}
+					}
+					if (workOn != null) {
+						Event event = new Event();
+						event.type = SWT.Selection;
+						event.widget = table;
+						event.item = workOn;
+						table.notifyListeners(SWT.Selection, event);
+						table.notifyListeners(SWT.DefaultSelection, event);
+					}
+				}
+			});
+			return Boolean.toString(true);
+		} catch (Exception e) {
+			LOGGER.error("ERROR selecting " + item + " in autocomplete widget. " + e.getMessage(), e);
+			return "ERROR selcting " + item + " in autocomplete widget. " + e.getMessage();
+		}
+	}
+
+	/**
 	 * Checks for widget text and returns true if text was found.
 	 * 
 	 * @param text
@@ -1306,7 +1378,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
-	 * Starts the Serversocket an listen for testclient. Commands will be
+	 * Starts the Serversocket and listen for testclient. Commands will be
 	 * recieved and SWT-Bot calls will be invoked.
 	 * 
 	 */
@@ -1316,9 +1388,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		try {
 			listener = new ServerSocket(SERVER_PORT);
 
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("Server startet on Port: " + SERVER_PORT);
-			}
+			LOGGER.info("Server startet on Port: " + SERVER_PORT);
 
 			try {
 				while (!isInterrupted()) {
@@ -1344,164 +1414,57 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								stopApplication();
 							}
 
-							String methodName = command.split(";")[0];
+							String[] splitCommand = command.split(";");
+							String methodName = splitCommand[0];
 
 							if (methodName.equals("expandTreeItems")) {
-								String[] splitCommand = command.split(";");
 								String[] nodes = splitCommand[1].split(",");
 								out.println(expandTreeItems(nodes));
-							}
-							if (methodName.equals("selectTableAtIndex")) {
-								String[] splitCommand = command.split(";");
-								String index = splitCommand[1];
-								out.println(selectTableAtIndex(index));
-							}
-							if (methodName.equals("clickContextMenu")) {
-								String[] splitCommand = command.split(";");
-								out.println(clickContextMenu(splitCommand[1]));
-							} else if (methodName.equals("clickMenuByName")) {
-								String[] splitCommand = command.split(";");
-								String result = clickMenuByName(splitCommand[1]);
-								if (LOGGER.isTraceEnabled()) {
-									LOGGER.trace("result of clickMenuByName: " + result);
-								}
-								out.println(Boolean.valueOf(result));
-							} else if (methodName.equals("clickMenuById")) {
-								String[] splitCommand = command.split(";");
-								String result = clickMenuById(splitCommand[1]);
-								if (LOGGER.isTraceEnabled()) {
-									LOGGER.trace("result of clickMenuById: " + result);
-								}
-								out.println(Boolean.valueOf(result));
-							} else if (methodName.equals("clickButton")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								out.println(clickButton(locator));
-
-							} else if (methodName.equals("clickCheckBox")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								out.println(clickCheckBox(locator));
-							} else if (methodName.equals("isCheckBoxEnabled")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								out.println(isCheckBoxEnabled(locator));
-							} else if (methodName.equals("isCheckBoxChecked")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								out.println(isCheckBoxChecked(locator));
-							} else if (methodName.equals("checkTextForAllWidgets")) {
-								String[] splitCommand = command.split(";");
-								String text = splitCommand[1];
-								out.println(checkTextForAllWidgets(text));
-
-							} else if (methodName.equals("clickToolbarButtonWithId")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								out.println(clickToolbarButtonWithId(locator));
-							} else if (methodName.equals("clickToolbarButtonWithTooltip")) {
-								String[] splitCommand = command.split(";");
-								String tooltip = splitCommand[1];
-								out.println(clickToolbarButtonWithTooltip(tooltip));
-							} else if (methodName.equals("checkSelectedTreeNode")) {
-								String[] splitCommand = command.split(";");
-								String treeNodeText = splitCommand[1];
-								out.println(checkSelectedTreeNode(treeNodeText));
-							} else if (methodName.equals("setTextById")) {
-								String[] splitCommand = command.split(";");
-								out.println(setTextById(splitCommand[1], splitCommand[2]));
-							} else if (methodName.equals("setStyledTextWithId")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String text = splitCommand[2];
-								out.println(setStyledTextWithId(locator, text));
-							} else if (methodName.equals("setPlayBackTime")) {
-								String[] splitCommand = command.split(";");
-								String playBackTime = splitCommand[1];
-								out.println(setPlayBackTime(playBackTime));
-							} else if (methodName.equals("waitSeconds")) {
-								String[] splitCommand = command.split(";");
-								String seconds = splitCommand[1];
-								out.println(waitSeconds(seconds));
-							} else if (methodName.equals("selectComboBoxWithId")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String text = splitCommand[2];
-								out.println(selectComboBoxWithId(locator, text));
 							} else if (methodName.equals("analyzeWidgets")) {
 								out.println(analyzeWidgets());
-							} else if (methodName.equals("selectLineInText")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String lineNumber = splitCommand[2];
-								out.println(selectLineInText(locator, lineNumber));
 							} else if (methodName.equals("setCursorInTextWithContentsAtPosition")) {
-								String[] splitCommand = command.split(";");
 								String locator = splitCommand[1];
 								String content = splitCommand[2];
 								String position = splitCommand[3];
 								out.println(setCursorInTextWithContentsAtPosition(locator, content, position));
 							} else if (methodName.equals("checkTextExistInWidgets")) {
-								String[] splitCommand = command.split(";");
 								String locator = splitCommand[1];
 								String text = splitCommand[2];
 								out.println(checkTextExistInWidgets(locator, text));
-							} else if (methodName.equals("compareTextById")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String comptext = splitCommand[2];
-								out.println(compareTextById(locator, comptext));
-							} else if (methodName.equals("closeTabItemWithName")) {
-								String[] splitCommand = command.split(";");
-								String name = splitCommand[1];
-								out.println(closeTabItemWithName(name));
 							} else if (methodName.equals("pressShortcutWithModificationKeyOfStyledText")) {
-								String[] splitCommand = command.split(";");
 								String locator = splitCommand[1];
 								String modificationKeys = splitCommand[2];
 								char key = splitCommand[3].toCharArray()[0];
 								out.println(pressShortcutOfStyledText(locator, modificationKeys, key));
-							} else if (methodName.equals("pressShortcutOfStyledText")) {
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String keyStrokeAsString = splitCommand[2];
-								out.println(pressShortcutOfStyledText(locator, keyStrokeAsString));
 							} else if (methodName.equals("readAllProjectsInTree")) {
 								out.println(readAllProjectsInTree());
 							} else if (methodName.equals("deleteAllProjects")) {
 								out.println(deleteAllProjects());
-							} else if (methodName.equals("countProjectsEquals")) {
-								String[] splitCommand = command.split(";");
-								String expectedCount = splitCommand[1];
-								out.println(countProjectsEquals(expectedCount));
 							} else if (methodName.equals("countChildrenEquals")) {
-								String[] splitCommand = command.split(";");
 								String expectedCount = splitCommand[2];
 								String[] nodes = splitCommand[1].split(",");
 								out.println(countChildrenEquals(nodes, expectedCount));
-							} else if (methodName.equals("isButtonEnabled")) {
-								String[] splitCommand = command.split(";");
-								String locatorWithType = splitCommand[1];
-								out.println(isButtonEnabled(locatorWithType));
-							} else if (methodName.equals("textIsVisible")) {
-								String[] splitCommand = command.split(";");
-								String text = splitCommand[1];
-								out.println(textIsVisible(text));
-							} else if (methodName.equals("compareTextInStyledById")) {
-								LOGGER.info("compareTextInStyledById");
-								LOGGER.info("command");
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String comptext = splitCommand[2];
-								out.println(compareTextInStyledById(locator, comptext));
-							} else if (methodName.equals("compareLabelById")) {
-								LOGGER.info("compareLabelById");
-								LOGGER.info(command);
-								String[] splitCommand = command.split(";");
-								String locator = splitCommand[1];
-								String comptext = splitCommand[2];
-								out.println(compareLabelById(locator, comptext));
 							} else {
+								try {
+									if (splitCommand.length == 2) {
+										Method method = getClass().getMethod(methodName, String.class);
+										out.println(method.invoke(this, splitCommand[1]));
+									}
+									if (splitCommand.length == 3) {
+										Method method = getClass().getMethod(methodName, String.class, String.class);
+										out.println(method.invoke(this, splitCommand[1], splitCommand[2]));
+									}
+								} catch (NoSuchMethodException e) {
+									LOGGER.error("Method not found in fixture", e);
+								} catch (SecurityException e) {
+									LOGGER.error("Error Executing Teststep", e);
+								} catch (IllegalAccessException e) {
+									LOGGER.error("Error Executing Teststep", e);
+								} catch (IllegalArgumentException e) {
+									LOGGER.error("Error Executing Teststep", e);
+								} catch (InvocationTargetException e) {
+									LOGGER.error("Error Executing Teststep", e);
+								}
 								out.println("command: [" + command + "] unknown !");
 							}
 						}
@@ -1526,8 +1489,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            the text as a String.
 	 * @return true, if the text is visible
 	 */
-	@SuppressWarnings("unchecked")
-	private String textIsVisible(String text) {
+	public String textIsVisible(String text) {
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("textIsVisible: " + text);
 		}
@@ -1555,9 +1517,9 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *            the locator of the widget.
 	 * @param searched
 	 *            the internal text or a part
-	 * @return ture, if the searched text is in the styledText.
+	 * @return true, if the searched text is in the styledText.
 	 */
-	private String compareTextInStyledById(String locator, String searched) {
+	public String compareTextInStyledById(String locator, String searched) {
 		boolean compResult = false;
 		try {
 			if (LOGGER.isTraceEnabled()) {

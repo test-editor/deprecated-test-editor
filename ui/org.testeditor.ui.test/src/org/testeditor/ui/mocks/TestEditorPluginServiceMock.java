@@ -20,7 +20,7 @@ import java.util.Properties;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
@@ -43,7 +43,7 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<LibraryConfigurationService> getAllLibraryConfigurationService() {
+	public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
 		ArrayList<LibraryConfigurationService> result = new ArrayList<LibraryConfigurationService>();
 		result.add(getLibraryConfigurationServiceMock("xmlservice", "XML"));
 		result.add(getLibraryConfigurationServiceMock("dbservice", "DB"));
@@ -82,8 +82,8 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 			}
 
 			@Override
-			public List<FieldDeclaration> getFieldDeclarations() {
-				return new ArrayList<FieldDeclaration>();
+			public List<FieldMappingExtension> getConfigUIExtensions() {
+				return new ArrayList<FieldMappingExtension>();
 			}
 
 			@Override
@@ -105,7 +105,7 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 
 	@Override
 	public LibraryConfigurationService getLibraryConfigurationServiceFor(String id) {
-		for (LibraryConfigurationService service : getAllLibraryConfigurationService()) {
+		for (LibraryConfigurationService service : getAllLibraryConfigurationServices()) {
 			if (service.getId().equals(id)) {
 				return service;
 			}
@@ -134,11 +134,6 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 			}
 
 			@Override
-			public List<FieldDeclaration> getFieldDeclarations() {
-				return null;
-			}
-
-			@Override
 			public Map<String, String> getAsProperties(TeamShareConfig teamShareConfig) {
 				return null;
 			}
@@ -150,6 +145,11 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 
 			@Override
 			public String getTemplateForConfiguration() {
+				return null;
+			}
+
+			@Override
+			public List<FieldMappingExtension> getFieldMappingExtensions() {
 				return null;
 			}
 		});

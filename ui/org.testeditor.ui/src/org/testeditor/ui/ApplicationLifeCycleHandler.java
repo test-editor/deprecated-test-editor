@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
@@ -40,7 +39,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
-import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.editor.view.TestEditorController;
 import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
@@ -71,9 +69,6 @@ public class ApplicationLifeCycleHandler {
 	@Inject
 	private TranslationService translationService;
 
-	@Inject
-	private FileLocatorService fileLocatorService;
-
 	/**
 	 * Inititalization of the Application.
 	 * 
@@ -95,14 +90,8 @@ public class ApplicationLifeCycleHandler {
 		context.set(TestEditorTranslationService.class,
 				ContextInjectionFactory.make(TestEditorTranslationService.class, context));
 		try {
-			testEditorConfigService.loadGlobalVariablesAsSystemProperties();
-
-			String bundleLocation = fileLocatorService.findBundleFileLocationAsString("org.testeditor.fixture.lib");
-			String swtBotBundle = fileLocatorService.findBundleFileLocationAsString("org.testeditor.agent.swtbot");
-			System.setProperty("FIXTURE_LIB_BUNDLE_PATH", bundleLocation);
-			System.setProperty("SWT_BOT_AGENT_BUNDLE_PATH", swtBotBundle);
-			System.setProperty("APPLICATION_WORK", Platform.getLocation().toOSString());
-
+			testEditorConfigService.exportGlobalVariablesToSystemProperties();
+			testEditorConfigService.initializeSystemProperties();
 		} catch (BackingStoreException e) {
 			LOGGER.error("Error setting SystemVariables", e);
 		} catch (IOException e) {
@@ -182,7 +171,7 @@ public class ApplicationLifeCycleHandler {
 		} catch (IOException | URISyntaxException e) {
 			LOGGER.trace("Error starting Test Server", e);
 			MessageDialog.openError(shell, "Error", e.getMessage());
-		} 
+		}
 	}
 
 	/**

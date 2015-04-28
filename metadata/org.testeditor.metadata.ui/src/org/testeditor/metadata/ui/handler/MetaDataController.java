@@ -322,7 +322,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		this.metaDataService = metaDataService;
 	}
 
-	public void unbinbMetaDataService(MetaDataService metaDataService) {
+	public void unbindMetaDataService(MetaDataService metaDataService) {
 		this.metaDataService = null;
 	}
 

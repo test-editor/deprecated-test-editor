@@ -49,11 +49,6 @@ public class TestProjectServiceAdapter implements TestProjectService {
 	}
 
 	@Override
-	public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
-		return null;
-	}
-
-	@Override
 	public void storeProjectConfig(TestProject testProject, TestProjectConfig config) throws SystemException {
 	}
 
@@ -107,7 +102,7 @@ public class TestProjectServiceAdapter implements TestProjectService {
 	}
 
 	@Override
-	public void refreshTestProjectFromFileSystem(TestProject testProject) throws SystemException {
+	public void reloadTestProjectFromFileSystem(TestProject testProject) throws SystemException {
 
 	}
 

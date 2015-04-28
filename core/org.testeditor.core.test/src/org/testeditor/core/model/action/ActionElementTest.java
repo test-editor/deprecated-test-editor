@@ -20,7 +20,6 @@ import org.junit.Test;
  * 
  * JunitTest for the actionElement.
  * 
- * @author llipinski
  */
 public class ActionElementTest {
 
@@ -85,21 +84,4 @@ public class ActionElementTest {
 		assertTrue(actionElement.getId() == "4");
 	}
 
-	/**
-	 * test the compareTo method.
-	 */
-	@Test
-	public void testCompareTo() {
-		ActionElement actionElement = new ActionElement(27, ActionElementType.ARGUMENT, "Test", "");
-		ActionElement actionElementCompare = new ActionElement();
-		assertEquals(-1, actionElement.compareTo(actionElementCompare));
-		assertEquals(1, actionElementCompare.compareTo(actionElement));
-		ActionElement actionElementCompareNull = new ActionElement();
-		assertEquals(0, actionElementCompare.compareTo(actionElementCompareNull));
-		ActionElement actionElement3 = new ActionElement(3, ActionElementType.ARGUMENT, "Test_3", "");
-		assertEquals(1, actionElement.compareTo(actionElement3));
-		assertEquals(-1, actionElement3.compareTo(actionElement));
-		assertEquals(0, actionElement.compareTo(actionElement));
-
-	}
 }

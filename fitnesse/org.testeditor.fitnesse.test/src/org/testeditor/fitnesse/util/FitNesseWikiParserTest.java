@@ -16,7 +16,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -157,9 +156,7 @@ public class FitNesseWikiParserTest {
 		assertTrue(comp instanceof TestActionGroup);
 		TestActionGroup testAcGr = (TestActionGroup) comp;
 		assertTrue(testAcGr.getActionGroupName().equalsIgnoreCase("Browser"));
-		ArrayList<String> texts = testAcGr.getTexts();
-		// System.err.println(texts.size());
-		// System.err.println(texts.get(0));
+		List<String> texts = testAcGr.getTexts();
 		assertEquals("starte Browser ", texts.get(0));
 
 	}
@@ -289,7 +286,7 @@ public class FitNesseWikiParserTest {
 			}
 
 			@Override
-			public Collection<LibraryConfigurationService> getAllLibraryConfigurationService() {
+			public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
 				return null;
 			}
 

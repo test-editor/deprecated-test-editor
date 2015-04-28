@@ -16,7 +16,9 @@ import java.util.Map;
 
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusListener;
@@ -26,6 +28,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.testeditor.core.model.action.Argument;
 import org.testeditor.ui.parts.inputparts.actioninput.ActionLineTextContainsInvalidText;
 import org.testeditor.ui.parts.inputparts.actioninput.IActionLineInputWidget;
@@ -51,7 +54,6 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 	private String eventTopic = "";
 
 	private IEventBroker eventBroker;
-	private TEComboContentAdapter teComboContentAdapter = new TEComboContentAdapter(this);
 
 	// will be set on true if TECombo contains ACTION_NAMES
 	private boolean containsActionNames = false;
@@ -85,16 +87,29 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 		if (proposalAdapter == null) {
 			proposalProvider = new SimpleContentProposalProvider(wrappedCombo.getItems());
 			proposalProvider.setFiltering(true);
+			proposalAdapter = new ContentProposalAdapter(wrappedCombo,
+					getComoboContentAdapterWithFireSelectionChangeEvenet(), proposalProvider, getActivationKeystroke(),
+					getAutoactivationChars());
+			proposalAdapter.setPropagateKeys(true);
+			proposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 		} else {
 			proposalProvider.setProposals(wrappedCombo.getItems());
 		}
-		if (proposalAdapter == null) {
-			proposalAdapter = new ContentProposalAdapter(wrappedCombo, teComboContentAdapter, proposalProvider,
-					getActivationKeystroke(), getAutoactivationChars());
-			proposalAdapter.setPropagateKeys(true);
-			proposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
-		}
+	}
 
+	/**
+	 * 
+	 * @return special ComboContentAdapter that calls the
+	 *         fireSelectionChangeEvnt method.
+	 */
+	private IControlContentAdapter getComoboContentAdapterWithFireSelectionChangeEvenet() {
+		return new ComboContentAdapter() {
+			@Override
+			public void setControlContents(Control control, String text, int cursorPosition) {
+				super.setControlContents(control, text, cursorPosition);
+				fireSelectionChangeEvent();
+			}
+		};
 	}
 
 	/**
@@ -418,7 +433,7 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 	 */
 	public void fireSelectionChangeEvent() {
 		if (!eventTopic.equalsIgnoreCase("")) {
-			eventBroker.send(eventTopic, this);
+			eventBroker.send(eventTopic, this.getText());
 		}
 	}
 
