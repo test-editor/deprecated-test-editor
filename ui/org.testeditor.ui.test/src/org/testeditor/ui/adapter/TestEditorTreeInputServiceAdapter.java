@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestStructureTreeInputService;
+import org.testeditor.core.services.interfaces.TestStructureTreeModel;
 
 /**
  * Mockup for a TestEditorTreeInputService.
@@ -24,7 +24,7 @@ import org.testeditor.core.services.interfaces.TestStructureTreeInputService;
  * @author llipinski
  * 
  */
-public class TestEditorTreeInputServiceAdapter implements TestStructureTreeInputService {
+public class TestEditorTreeInputServiceAdapter implements TestStructureTreeModel {
 
 	private List<TestStructure> testStructures = new ArrayList<TestStructure>();
 

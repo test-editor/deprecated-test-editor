@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.testeditor.core.model.action.Argument;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.editor.ITestEditorController;
 import org.testeditor.ui.parts.inputparts.TestEditorInputView;
 import org.testeditor.ui.parts.inputparts.dialogelements.TECombo;
@@ -140,7 +141,7 @@ public class TestEditorActionInputView extends TestEditorInputView {
 	 * @param cursorPosInLine
 	 *            position of the cursor in the line.
 	 */
-	public void setValuesInActionLine(ArrayList<String> texts, int cursorPosInLine) {
+	public void setValuesInActionLine(List<String> texts, int cursorPosInLine) {
 		unparsedAction = false;
 		int totalTextLength = 0;
 		boolean cursorIsSet = false;
@@ -200,7 +201,8 @@ public class TestEditorActionInputView extends TestEditorInputView {
 		String messageMakse = translationService.translate("%TestEditView_Mask");
 		lblMaske.setText(messageMakse);
 
-		comboActionGroup = new TECombo(maskComposite, SWT.NONE, null, eventBroker);
+		comboActionGroup = new TECombo(maskComposite, SWT.NONE, TestEditorUIEventConstants.ACTION_GROUP_COMBO_MODIFIED,
+				eventBroker);
 		comboActionGroup.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.CHOSE_MASKE);
 		comboActionGroup.setVisible(true);
@@ -212,7 +214,8 @@ public class TestEditorActionInputView extends TestEditorInputView {
 		lblAction.setText(messageAktion);
 		lblAction.setVisible(false);
 
-		comboActions = new TECombo(maskComposite, SWT.NONE, null, eventBroker);
+		comboActions = new TECombo(maskComposite, SWT.NONE, TestEditorUIEventConstants.ACTIONS_COMBO_MODIFIED,
+				eventBroker);
 		comboActions.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.CHOSE_ACTION);
 		comboActions.setVisible(false); // later on the combobox is set to
@@ -613,7 +616,7 @@ public class TestEditorActionInputView extends TestEditorInputView {
 	 * @param texts
 	 *            array of {@link String}
 	 */
-	public void setUnparsedActionLineToEdit(ArrayList<String> texts) {
+	public void setUnparsedActionLineToEdit(List<String> texts) {
 		unparsedAction = true;
 		StringBuilder output = new StringBuilder();
 		for (String text : texts) {

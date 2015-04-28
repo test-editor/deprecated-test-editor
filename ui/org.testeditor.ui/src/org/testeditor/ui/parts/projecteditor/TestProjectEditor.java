@@ -55,7 +55,7 @@ import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -195,8 +195,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 *            Team-Sharing-Configuration.
 	 */
 	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
-		List<FieldDeclaration> fields = configurationService.getFieldDeclarations();
-		for (FieldDeclaration field : fields) {
+		List<FieldMappingExtension> fields = configurationService.getFieldMappingExtensions();
+		for (FieldMappingExtension field : fields) {
 			createTeamShareField(field);
 		}
 		teamShareDetailComposite.getParent().getParent().layout(true);
@@ -209,7 +209,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 *            used to create Label and Text for a field of the Team Share
 	 *            Configuration.
 	 */
-	private void createTeamShareField(final FieldDeclaration fieldDeclaration) {
+	private void createTeamShareField(final FieldMappingExtension fieldDeclaration) {
 		new Label(teamShareDetailComposite, SWT.NORMAL)
 				.setText(fieldDeclaration.getTranslatedLabel(translationService));
 		final Text text = new Text(teamShareDetailComposite, SWT.NORMAL);
@@ -329,7 +329,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 */
 	protected void fillLibraryTypeCombo() {
 		Collection<LibraryConfigurationService> allLibraryConfigurationService = plugInService
-				.getAllLibraryConfigurationService();
+				.getAllLibraryConfigurationServices();
 		libraryPlugInNameIdMap = new HashMap<String, String>();
 		for (LibraryConfigurationService libraryConfigurationService : allLibraryConfigurationService) {
 			libraryPlugInNameIdMap.put(
@@ -377,8 +377,6 @@ public class TestProjectEditor implements ITestStructureEditor {
 	public void save() {
 		try {
 			TestProject oldTestProject = getTestProject();
-			testProjectService.getProjectConfigFor(testProject);
-
 			testProjectService.storeProjectConfig(testProject, newTestProjectConfig);
 			/*
 			 * We have to set the port form oldProject to new project because we
@@ -496,20 +494,13 @@ public class TestProjectEditor implements ITestStructureEditor {
 	@Optional
 	protected void refreshAfterRevert(@UIEventTopic(TestEditorUIEventConstants.TESTSTRUCTURE_REVERTED) String data) {
 		if (data.equals(getTestProject().getFullName())) {
-			loadAndRerender();
-		}
-	}
-
-	/**
-	 * load the TestSuite and rerender the Ui.
-	 */
-	private void loadAndRerender() {
-		try {
-			testProject.setTestProjectConfig(testProjectService.getProjectConfigFor(testProject));
-			setTestProject(testProject);
-		} catch (SystemException e) {
-			LOGGER.error(e.getMessage());
-			closePart();
+			try {
+				testProjectService.reloadTestProjectFromFileSystem(getTestProject());
+				setTestProject(getTestProject());
+			} catch (SystemException e) {
+				LOGGER.error(e.getMessage());
+				closePart();
+			}
 		}
 	}
 
@@ -568,9 +559,9 @@ public class TestProjectEditor implements ITestStructureEditor {
 			updateLibraryTypeComboSelection(projectLibraryConfig.getId());
 			LibraryConfigurationService libraryConfigurationService = plugInService
 					.getLibraryConfigurationServiceFor(projectLibraryConfig.getId());
-			List<FieldDeclaration> fields = libraryConfigurationService.getFieldDeclarations();
+			List<FieldMappingExtension> fields = libraryConfigurationService.getConfigUIExtensions();
 			addWorkspacepathWidgets();
-			for (FieldDeclaration field : fields) {
+			for (FieldMappingExtension field : fields) {
 				createLibraryField(field);
 			}
 			parent.layout(true);
@@ -596,7 +587,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 * @param fieldDeclaration
 	 *            to create UI.
 	 */
-	protected void createLibraryField(final FieldDeclaration fieldDeclaration) {
+	protected void createLibraryField(final FieldMappingExtension fieldDeclaration) {
 		new Label(libraryDetailComposite, SWT.NORMAL).setText(fieldDeclaration.getTranslatedLabel(translationService));
 		final Text text = new Text(libraryDetailComposite, SWT.NORMAL);
 		text.setToolTipText(fieldDeclaration.getTranslatedToolTip(translationService));

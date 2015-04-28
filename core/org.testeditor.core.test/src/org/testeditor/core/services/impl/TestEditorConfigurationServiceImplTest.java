@@ -120,7 +120,7 @@ public class TestEditorConfigurationServiceImplTest {
 	public void testLoadGlobalVariablesAsSystemProperties() throws Exception {
 		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
 				.getService(TestEditorConfigurationService.class);
-		testEditorConfigurationService.loadGlobalVariablesAsSystemProperties();
+		testEditorConfigurationService.exportGlobalVariablesToSystemProperties();
 		assertEquals("", System.getProperty(TestEditorGlobalConstans.PATH_BROWSER));
 	}
 

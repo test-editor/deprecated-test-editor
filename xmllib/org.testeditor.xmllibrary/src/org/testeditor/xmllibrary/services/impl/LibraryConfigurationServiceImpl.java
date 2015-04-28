@@ -19,7 +19,7 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
@@ -89,8 +89,8 @@ public class LibraryConfigurationServiceImpl implements LibraryConfigurationServ
 	}
 
 	@Override
-	public List<FieldDeclaration> getFieldDeclarations() {
-		List<FieldDeclaration> result = new ArrayList<FieldDeclaration>();
+	public List<FieldMappingExtension> getConfigUIExtensions() {
+		List<FieldMappingExtension> result = new ArrayList<FieldMappingExtension>();
 		result.add(new PathToActionGroupFieldDeclaration());
 		result.add(new PathToTechnicalBindingsXMLFieldDeclaration());
 		return result;

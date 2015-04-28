@@ -21,14 +21,13 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.Test;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * 
  * ModulTests for SVNTeamShareConfigurationService.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareConfigurationServiceTest {
 
 	/**
@@ -40,10 +39,10 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testGettingFieldDeclarations() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		List<FieldDeclaration> fieldDeclarations = teamShareConfigurationService.getFieldDeclarations();
+		List<FieldMappingExtension> fieldDeclarations = teamShareConfigurationService.getFieldMappingExtensions();
 		assertNotNull("Expecting a List with Declaring Fields.", fieldDeclarations);
 		assertTrue("Expect one or more Fields.", fieldDeclarations.size() > 0);
-		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
+		for (FieldMappingExtension fieldDeclaration : fieldDeclarations) {
 			assertNotNull("Expect a value for the label.",
 					fieldDeclaration.getTranslatedLabel(getTranslationServiceMock()));
 			assertNotNull("Expect a value for the tooltip.",
@@ -60,7 +59,8 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfURL() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		URLFieldDeclaration url = (URLFieldDeclaration) teamShareConfigurationService.getFieldDeclarations().get(0);
+		URLFieldDeclaration url = (URLFieldDeclaration) teamShareConfigurationService.getFieldMappingExtensions()
+				.get(0);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setUrl("http://localhost");
 		assertEquals("Expecting correct url from config.", "http://localhost", url.getStringValue(cfgBean));
@@ -77,8 +77,8 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfUserName() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		UserNameFieldDeclaration url = (UserNameFieldDeclaration) teamShareConfigurationService.getFieldDeclarations()
-				.get(1);
+		UserNameFieldDeclaration url = (UserNameFieldDeclaration) teamShareConfigurationService
+				.getFieldMappingExtensions().get(1);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setUserName("hugo");
 		assertEquals("Expecting correct Username from config.", "hugo", url.getStringValue(cfgBean));
@@ -95,8 +95,8 @@ public class SVNTeamShareConfigurationServiceTest {
 	@Test
 	public void testReadAndUpdateOfPassword() throws Exception {
 		SVNTeamShareConfigurationService teamShareConfigurationService = new SVNTeamShareConfigurationService();
-		PasswordFieldDeclaration url = (PasswordFieldDeclaration) teamShareConfigurationService.getFieldDeclarations()
-				.get(2);
+		PasswordFieldDeclaration url = (PasswordFieldDeclaration) teamShareConfigurationService
+				.getFieldMappingExtensions().get(2);
 		SVNTeamShareConfig cfgBean = new SVNTeamShareConfig();
 		cfgBean.setPassword("hugo");
 		assertEquals("Expecting correct Password from config.", "hugo", url.getStringValue(cfgBean));

@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -68,9 +67,6 @@ public class ShareProjectHandler {
 	private TranslationService translate;
 	@Inject
 	private EventBroker eventBroker;
-
-	@Inject
-	private TeamShareConfigurationService teamShareConfigurationService;
 
 	@Inject
 	@Named(IServiceConstants.ACTIVE_SHELL)
@@ -152,6 +148,11 @@ public class ShareProjectHandler {
 
 									monitor.subTask(progressInfo);
 
+								}
+
+								@Override
+								public boolean isCanceled() {
+									return monitor.isCanceled();
 								}
 							});
 

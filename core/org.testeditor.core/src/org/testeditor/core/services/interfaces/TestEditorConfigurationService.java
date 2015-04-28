@@ -11,13 +11,14 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * 
- * This Services manages the configuration of the TestEditor. The TestEditor has
+ * This Service manages the configuration of the TestEditor. The TestEditor has
  * some properties for all projects like:
  * <ul>
  * <li>Browser Path</li>
@@ -28,22 +29,21 @@ import org.osgi.service.prefs.BackingStoreException;
 public interface TestEditorConfigurationService {
 
 	/**
-	 * Loads the globalVaraiables from the workspace and sets them as
-	 * SystemProperties.
+	 * Set the globalVaraiables from the workspace in the system properties.
 	 * 
-	 * If there are no globalVaraiables in the workspace default values are
+	 * If there are no global variables in the workspace default values are
 	 * created and stored to the preference store.
 	 * 
 	 * @throws BackingStoreException
 	 *             on problems accessing the preference store
 	 * 
 	 */
-	void loadGlobalVariablesAsSystemProperties() throws BackingStoreException;
+	void exportGlobalVariablesToSystemProperties() throws BackingStoreException;
 
 	/**
 	 * 
 	 * Updates the Preference Store with this key value pair and sets them as VM
-	 * Properties.
+	 * system properties.
 	 * 
 	 * @param key
 	 *            used as property identifier.
@@ -54,8 +54,8 @@ public interface TestEditorConfigurationService {
 
 	/**
 	 * 
-	 * Removes the key from the Preference Store and removes it from VM
-	 * Properties.
+	 * Removes the key from the Preference Store and removes it from the VM
+	 * system properties.
 	 * 
 	 * @param key
 	 *            used as property identifier.
@@ -73,9 +73,9 @@ public interface TestEditorConfigurationService {
 	void storeChanges() throws BackingStoreException;
 
 	/**
-	 * Loads the globalVaraiables from the workspace and returns them.
+	 * Loads the global variables from the workspace and returns them.
 	 * 
-	 * @return global Variables of the TestEditor Workspace.
+	 * @return global variables of the TestEditor Workspace.
 	 * @throws BackingStoreException
 	 *             on problems accessing the preference store
 	 */
@@ -98,5 +98,15 @@ public interface TestEditorConfigurationService {
 	 * @return state of the Application reset.
 	 */
 	boolean isResetApplicationState();
+
+	/**
+	 * Initializes the System Properties of the Application. They are used by
+	 * the test engine in a new jvm. It sets the path to the system fixtures and
+	 * the workspace location.
+	 * 
+	 * @throws IOException
+	 *             on file access.
+	 */
+	void initializeSystemProperties() throws IOException;
 
 }

@@ -162,7 +162,7 @@ public class TestStructureServiceImplTest {
 	public void testDeleteWithTeamService() throws Exception {
 		TestStructureServiceImpl service = new TestStructureServiceImpl();
 		TestStructure testStructure = getTeamSharedTestStructure(service);
-		service.removeTestStructure(testStructure);
+		service.delete(testStructure);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class TestStructureServiceImplTest {
 	public void testRenameWithTeamService() throws Exception {
 		TestStructureServiceImpl service = new TestStructureServiceImpl();
 		TestStructure testStructure = getTeamSharedTestStructure(service);
-		service.renameTestStructure(testStructure, "foo");
+		service.rename(testStructure, "foo");
 		assertTrue(testStructure.getTeamChangeType().equals(TeamChangeType.MOVED));
 	}
 
@@ -248,7 +248,7 @@ public class TestStructureServiceImplTest {
 			}
 
 			@Override
-			public void doDelete(TestStructure testStructure, TranslationService translationService)
+			public void delete(TestStructure testStructure, TranslationService translationService)
 					throws SystemException {
 				set.add("deleted");
 			}

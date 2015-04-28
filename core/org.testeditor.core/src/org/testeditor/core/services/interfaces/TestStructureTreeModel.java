@@ -17,19 +17,19 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
 
 /**
- * Interface for a service input of a tree.
+ * Interface for a tree model.
  * 
  */
-public interface TestStructureTreeInputService {
-	
+public interface TestStructureTreeModel {
+
 	/**
 	 * 
-	 * The Root Elements of the Test Structures used in the Tree. 
+	 * The Root Elements of the Test Structures used in the Tree.
 	 * 
 	 * @return a list of TestCompositeStructure
 	 * @throws SystemException
 	 *             while reading elements
 	 */
 	List<? extends TestStructure> getElements() throws SystemException;
-	
+
 }

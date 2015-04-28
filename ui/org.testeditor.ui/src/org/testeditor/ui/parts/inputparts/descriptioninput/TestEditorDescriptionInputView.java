@@ -287,10 +287,12 @@ public class TestEditorDescriptionInputView extends TestEditorInputView {
 	/**
 	 * collects the actual input and sends it via event to the actual
 	 * TestFlowController to cache the input temporary.
+	 *
 	 * 
 	 * @param eventBroker
 	 *            the EventBroker
 	 */
+	// TODO Check why is the eventBroker a param and not injected.
 	public void cacheInput(IEventBroker eventBroker) {
 		if (descriptionText.isDisposed() || descriptionText.getText().isEmpty()) {
 			return;
