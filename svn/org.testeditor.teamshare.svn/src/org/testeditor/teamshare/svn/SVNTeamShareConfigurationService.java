@@ -19,7 +19,7 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.team.TeamShareConfig;
-import org.testeditor.core.services.interfaces.FieldDeclaration;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 
 /**
@@ -27,7 +27,6 @@ import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
  * Subversion.
  * 
  */
-@SuppressWarnings("restriction")
 public class SVNTeamShareConfigurationService implements TeamShareConfigurationService {
 
 	public static final String URL_PROPERTY = "teamshare.svn.url";
@@ -50,8 +49,8 @@ public class SVNTeamShareConfigurationService implements TeamShareConfigurationS
 	}
 
 	@Override
-	public List<FieldDeclaration> getFieldDeclarations() {
-		List<FieldDeclaration> result = new ArrayList<FieldDeclaration>();
+	public List<FieldMappingExtension> getFieldMappingExtensions() {
+		List<FieldMappingExtension> result = new ArrayList<FieldMappingExtension>();
 		result.add(new URLFieldDeclaration());
 		result.add(new UserNameFieldDeclaration());
 		result.add(new PasswordFieldDeclaration());

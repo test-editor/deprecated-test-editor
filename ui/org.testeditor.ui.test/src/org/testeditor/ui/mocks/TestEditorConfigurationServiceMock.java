@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.mocks;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.osgi.service.prefs.BackingStoreException;
@@ -24,7 +25,7 @@ import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 public class TestEditorConfigurationServiceMock implements TestEditorConfigurationService {
 
 	@Override
-	public void loadGlobalVariablesAsSystemProperties() throws BackingStoreException {
+	public void exportGlobalVariablesToSystemProperties() throws BackingStoreException {
 	}
 
 	@Override
@@ -51,6 +52,10 @@ public class TestEditorConfigurationServiceMock implements TestEditorConfigurati
 	@Override
 	public boolean isResetApplicationState() {
 		return false;
+	}
+
+	@Override
+	public void initializeSystemProperties() throws IOException {
 	}
 
 }

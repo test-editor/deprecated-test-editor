@@ -107,7 +107,7 @@ public class TestActionGroup implements TestComponent {
 	}
 
 	@Override
-	public ArrayList<String> getTexts() {
+	public List<String> getTexts() {
 		ArrayList<String> stringList = new ArrayList<String>();
 		for (IAction action : actionLines) {
 			stringList.addAll(action.getTexts());
@@ -116,7 +116,7 @@ public class TestActionGroup implements TestComponent {
 	}
 
 	@Override
-	public ArrayList<TextType> getTextTypes() {
+	public List<TextType> getTextTypes() {
 		ArrayList<TextType> typeList = new ArrayList<TextType>();
 		for (IAction action : actionLines) {
 			typeList.addAll(action.getTextTypes());

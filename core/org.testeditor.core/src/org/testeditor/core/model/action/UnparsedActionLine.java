@@ -12,13 +12,12 @@
 package org.testeditor.core.model.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * {@link UnparsedActionLine} extends the {@link IAction}.
  * 
- * 
- * @author llipinski
  */
 public class UnparsedActionLine extends AbstractAction {
 
@@ -115,7 +114,7 @@ public class UnparsedActionLine extends AbstractAction {
 	 * @return the parameters for the error
 	 */
 	public Object[] getErrorParams() {
-		return errorParams;
+		return Arrays.copyOf(errorParams, errorParams.length);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import java.util.List;
  * 
  * 
  */
-public class ActionGroup implements Comparable<ActionGroup> {
+public class ActionGroup {
 	private List<AbstractAction> actions;
 	private String name;
 	private Integer sorting;
@@ -107,7 +107,7 @@ public class ActionGroup implements Comparable<ActionGroup> {
 	/**
 	 * gets the sorting.
 	 * 
-	 * @return teh sorting
+	 * @return the sorting
 	 */
 	public Integer getSorting() {
 		return sorting;
@@ -123,35 +123,4 @@ public class ActionGroup implements Comparable<ActionGroup> {
 		this.sorting = sorting;
 	}
 
-	@Override
-	public int compareTo(ActionGroup compareActionGroup) {
-		if (this.getSorting() == null && compareActionGroup.getSorting() == null) {
-			return compareTheNames(compareActionGroup);
-		}
-		if (this.getSorting() == null) {
-			return 1;
-		}
-		if (compareActionGroup.getSorting() == null) {
-			return -1;
-		}
-		int comp = this.getSorting().compareTo(compareActionGroup.getSorting());
-		if (comp != 0) {
-			return comp;
-		} else {
-			return compareTheNames(compareActionGroup);
-		}
-	}
-
-	/**
-	 * compares the names of this action whit the name of the compareAction.
-	 * 
-	 * @param compareActionGroup
-	 *            the compareAction
-	 * @return ameOfThis.compareTo(compName);
-	 */
-	private int compareTheNames(ActionGroup compareActionGroup) {
-
-		return this.getName().compareTo(compareActionGroup.getName());
-
-	}
 }

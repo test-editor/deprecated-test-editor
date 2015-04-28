@@ -12,10 +12,7 @@
 package org.testeditor.core.services.interfaces;
 
 /**
- * interface for global constans.
- * 
- * @author llipinski
- * 
+ * interface for global constants.
  */
 public abstract class TestEditorGlobalConstans {
 

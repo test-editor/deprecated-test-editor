@@ -15,14 +15,22 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 
 /**
  * 
- * FieldDeclarations are used to allow other bundles the specification of UI
- * fields and beans for Update. This Declarations is used to show Text Widgets
- * with a label in the UI. The FieldDeclaration handles also the Bean Updates.
+ * FieldMappingExtensions are used to allow other (non-UI) bundles to inject a
+ * (form-)field into a UI Component. The object provides display relevant
+ * information (tooltip, label) to the UI and in return gets notified by the UI
+ * when an update event occurred.
  * 
+ * This Interface is designed to show Text Widgets with a label in the UI. The
+ * FieldMappingExtension also handles the Bean Updates.
+ * 
+ * This interface is designed with a very narrow context, i.e. it is used to
+ * allow configuration values to be set in a external UI. Thus a separate UI for
+ * the configuration is not necessary.
  */
-public interface FieldDeclaration {
+public interface FieldMappingExtension {
 
 	/**
+	 * Returns the translated label for this field.
 	 * 
 	 * @param translationService
 	 *            for Translation.
@@ -31,6 +39,7 @@ public interface FieldDeclaration {
 	String getTranslatedLabel(TranslationService translationService);
 
 	/**
+	 * Return the translated tool tip text for this field.
 	 * 
 	 * @param translationService
 	 *            for Translation.

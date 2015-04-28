@@ -119,11 +119,15 @@ public class CoreActivator implements BundleActivator {
 	 */
 	private void createFile(BundleContext bundleContext, File configDir) {
 		if (!configDir.exists() && !configDir.mkdir()) {
+			boolean dirCreated = true;
 			if (!configDir.getParentFile().mkdir()) {
-				configDir.getParentFile().getParentFile().mkdir();
-				configDir.getParentFile().mkdir();
+				dirCreated = configDir.getParentFile().getParentFile().mkdir();
+				dirCreated = dirCreated & configDir.getParentFile().mkdir();
 			}
-			configDir.mkdir();
+			dirCreated = dirCreated && configDir.mkdir();
+			if (!dirCreated) {
+				LOGGER.error("Unable to create directory " + configDir);
+			}
 		}
 		// copy this file from the bundle
 		URL bundleConfURL = bundleContext.getBundle().getEntry("log4j.xml");

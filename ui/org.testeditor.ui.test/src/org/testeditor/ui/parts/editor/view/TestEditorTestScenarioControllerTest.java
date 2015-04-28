@@ -48,7 +48,7 @@ import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
 import org.testeditor.ui.mocks.TestScenarioServiceMock;
-import org.testeditor.ui.parts.editor.view.Adapter.TestActionGroupServiceAdapter;
+import org.testeditor.ui.parts.editor.view.Adapter.ActionGroupServiceAdapter;
 import org.testeditor.ui.parts.editor.view.Adapter.TestEditorTestScenarioControllerMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -203,7 +203,7 @@ public class TestEditorTestScenarioControllerTest {
 	 * @return a mockup ActionGroupService.
 	 */
 	private ActionGroupService getActionGroupServiceMock() {
-		return new TestActionGroupServiceAdapter();
+		return new ActionGroupServiceAdapter();
 	}
 
 	/**

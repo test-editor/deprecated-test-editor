@@ -117,7 +117,7 @@ public class ProjectActionGroups {
 	 * this method sorts the actionGroupList by using the sorting value.
 	 */
 	public void sortActionGroups() {
-		Collections.sort(actionGroupList);
+		Collections.sort(actionGroupList, new ActionGroupPositionComparator());
 	}
 
 	/**

@@ -20,15 +20,14 @@ import org.testeditor.core.services.interfaces.TechnicalBindingsDSLMappingServic
  * 
  * Fitnesse Implementation of <code>TechnicalBindingsDSLMappingService</code>.
  * 
- * @author karsten
  */
 public class FitnesseTechnicalBindingsDSLMappingService implements TechnicalBindingsDSLMappingService {
 
 	private Map<String, TecBindDslParameteMapper> map;
 
 	/**
-	 * Creates the Service with static Mapping Rules.
-	 * This Map is a Workaround, until the element list is parsed for mapping.
+	 * Creates the Service with static Mapping Rules. This Map is a Workaround,
+	 * until the element list is parsed for mapping.
 	 */
 	public FitnesseTechnicalBindingsDSLMappingService() {
 		map = new HashMap<String, TecBindDslParameteMapper>();

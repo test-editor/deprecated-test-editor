@@ -452,7 +452,7 @@ public class DeleteTestHandlerTest {
 	private TestStructureService getTestStructureServiceMock(final DeleteTestHandlerTest test) {
 		TestStructureServiceAdapter testStructureServiceAdapter = new TestStructureServiceAdapter() {
 			@Override
-			public void removeTestStructure(TestStructure testStructure) throws SystemException {
+			public void delete(TestStructure testStructure) throws SystemException {
 				test.setRemovedTestCaseName(testStructure.getName());
 			}
 		};

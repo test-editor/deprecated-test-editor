@@ -66,7 +66,7 @@ import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.mocks.TestScenarioServiceMock;
-import org.testeditor.ui.parts.editor.view.Adapter.TestActionGroupServiceAdapter;
+import org.testeditor.ui.parts.editor.view.Adapter.ActionGroupServiceAdapter;
 import org.testeditor.ui.parts.editor.view.Adapter.TestEditorControllerMock;
 import org.testeditor.ui.parts.editor.view.handler.TestEditorInputObject;
 import org.testeditor.ui.parts.inputparts.actioninput.TestEditorActionInputController;
@@ -1125,7 +1125,7 @@ public class TestEditorControllerTest {
 	 * @return mockup for the ActionGroupService.
 	 */
 	private ActionGroupService getActionGroupServiceMock() {
-		return new TestActionGroupServiceAdapter();
+		return new ActionGroupServiceAdapter();
 	}
 
 	/**

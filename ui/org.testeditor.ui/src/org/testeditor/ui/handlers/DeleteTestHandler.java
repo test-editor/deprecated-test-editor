@@ -98,7 +98,7 @@ public class DeleteTestHandler {
 								if (testStructure instanceof TestProject) {
 									testProjectService.deleteProject((TestProject) testStructure);
 								} else {
-									testStructureService.removeTestStructure(testStructure);
+									testStructureService.delete(testStructure);
 									getMetaDataService().delete(testStructure);
 								}
 							} catch (SystemException | IOException e) {

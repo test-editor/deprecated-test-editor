@@ -559,7 +559,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		if (mpart != null) {
 			mpart.setDirty(true);
 		}
-		compositeForView.layout(true);
 	}
 
 	/**
@@ -577,13 +576,13 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	}
 
 	@Override
-	public ArrayList<String> getLine(int line) {
+	public List<String> getLine(int line) {
 		TestComponent component = testFlow.getLine(line);
 		return component.getTexts();
 	}
 
 	@Override
-	public ArrayList<TextType> getTextTypes(int i) {
+	public List<TextType> getTextTypes(int i) {
 		TestComponent component = testFlow.getLine(i);
 		return component.getTextTypes();
 	}
@@ -648,7 +647,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	}
 
 	@Override
-	public void setActionToEditArea(int lineNumber, ArrayList<String> texts, int cursorPosInLine) {
+	public void setActionToEditArea(int lineNumber, List<String> texts, int cursorPosInLine) {
 		cleanupAndCloseDescriptionInputArea();
 		TestActionGroup testActionGr = (TestActionGroup) getTestComponentAt(lineNumber);
 		actionInputController.setActionToEditArea(lineNumber, texts, testActionGr, cursorPosInLine);

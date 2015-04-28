@@ -12,6 +12,7 @@
 package org.testeditor.core.model.teststructure;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.testeditor.core.model.action.TextType;
 
@@ -26,7 +27,7 @@ public class TestScenarioParameters implements TestComponent {
 	private ArrayList<String> texts = new ArrayList<String>();
 
 	@Override
-	public ArrayList<String> getTexts() {
+	public List<String> getTexts() {
 		ArrayList<String> retVal = new ArrayList<String>();
 		retVal.add(0, "Scenario Parameter: ");
 		for (int i = 0; i < texts.size(); i++) {
@@ -54,7 +55,7 @@ public class TestScenarioParameters implements TestComponent {
 	}
 
 	@Override
-	public ArrayList<TextType> getTextTypes() {
+	public List<TextType> getTextTypes() {
 		ArrayList<TextType> textTypes = new ArrayList<TextType>();
 		textTypes.add(TextType.DESCRIPTION);
 		for (int i = 1; i <= texts.size(); i++) {
