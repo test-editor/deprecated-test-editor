@@ -13,7 +13,6 @@ package org.testeditor.core.services.interfaces;
 
 import java.util.List;
 
-import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 
@@ -25,7 +24,7 @@ public interface TeamShareStatusService {
 
 	/**
 	 * Starts the thread to read the SVN status from the given TestProject the
-	 * event ({@link TestEditorCoreEventConstants#TEAM_STATE_LOADED}).
+	 * event ( TestEditorCoreEventConstants#TEAM_STATE_LOADED}).
 	 * 
 	 * @param testProject
 	 *            TestProject
@@ -33,10 +32,12 @@ public interface TeamShareStatusService {
 	void setTeamStatusForProject(TestProject testProject);
 
 	/**
-	 * 
+	 * After finishing the thread, clients can get all modified files for a
+	 * given test structure.
 	 * 
 	 * @param testStructure
 	 *            TestStructure
+	 * @return list of modified files.
 	 */
 	List<String> getModifiedFilesFromTestStructure(TestStructure testStructure);
 
@@ -45,5 +46,5 @@ public interface TeamShareStatusService {
 	 * 
 	 * @return true when the thread is not Alive.
 	 */
-	boolean isFinish();
+	boolean isFinished();
 }
