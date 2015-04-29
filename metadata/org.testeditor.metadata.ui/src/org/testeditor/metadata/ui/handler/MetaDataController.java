@@ -200,8 +200,8 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 
 		metaDataTagList.clear();
 		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
-
-		if (metaDataTagList.size() == 0) {
+		List<MetaData> metaDataList = getMetaDataService().getAllMetaData(testFlow.getRootElement());
+		if (metaDataList.size() == 0) {
 			Label lblMessage = new Label(composite, SWT.NONE);
 			String message = "Für das Projekt sind noch keine Metadaten angelegt.\n"
 					+ "Bitte legen Sie im Projektverzeichnis eine metadata.properties Datei an.\n"
@@ -215,7 +215,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 			metaDataTagsTable.setVisible(false);
 
 		} else {
-			for (MetaData metaData : getMetaDataService().getAllMetaData(testFlow.getRootElement())) {
+			for (MetaData metaData : metaDataList) {
 				metaDataCB.add(metaData);
 			}
 			metaDataCB.getCombo().pack(true);
