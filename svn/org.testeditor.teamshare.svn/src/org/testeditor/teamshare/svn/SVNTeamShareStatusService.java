@@ -213,7 +213,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 	 * @see org.testeditor.teamshare.svn.xxx#isFinish()
 	 */
 	@Override
-	public boolean isFinish() {
+	public boolean isFinished() {
 		return !svnStateRunner.isAlive();
 	}
 
