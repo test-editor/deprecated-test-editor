@@ -175,7 +175,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -222,7 +222,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -277,7 +277,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -318,7 +318,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
@@ -354,7 +354,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
@@ -409,7 +409,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
@@ -419,7 +419,7 @@ public class TeamShareStatusServiceTest {
 		teamService.approve(testProject, translationService, "");
 
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
@@ -474,7 +474,7 @@ public class TeamShareStatusServiceTest {
 
 		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinish()) {
+		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
 		}
 		assertEquals(TeamChangeType.MODIFY, testProject.getTeamChangeType());
