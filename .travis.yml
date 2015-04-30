@@ -1,5 +1,5 @@
+before_install: git clone https://github.com/test-editor/te.target.git ../te.target 
 language: java
 jdk:
   - oraclejdk7
-env:
- - PHASE='te-target=file://${JENKINS_HOME}/te.target.ws'
+
