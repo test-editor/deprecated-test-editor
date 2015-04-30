@@ -1,3 +1,5 @@
 language: java
 jdk:
   - oraclejdk7
+env:
+ - PHASE='te-target=file://${JENKINS_HOME}/te.target.ws'
