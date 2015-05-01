@@ -470,7 +470,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		assertTrue("Arrays not the same length", testResults.size() == strs.length);
 
 		int i = 0;
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
 		for (TestResult testResult : testResults) {
 			assertEquals(testResult.getResultDate().toString(), sdf.parse(strs[i++]).toString());
 		}
