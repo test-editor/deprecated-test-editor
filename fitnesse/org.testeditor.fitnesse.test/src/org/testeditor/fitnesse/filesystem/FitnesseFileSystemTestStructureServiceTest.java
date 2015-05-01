@@ -22,6 +22,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -459,16 +461,18 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	 * @param testResults
 	 *            List<TestResult>
 	 * @param strs
-	 *            referenz list
+	 *            reference list
+	 * @throws ParseException
+	 *             on wrong testdata
 	 */
-	private void compare(List<TestResult> testResults, String[] strs) {
+	private void compare(List<TestResult> testResults, String[] strs) throws ParseException {
 
 		assertTrue("Arrays not the same length", testResults.size() == strs.length);
 
 		int i = 0;
-
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy");
 		for (TestResult testResult : testResults) {
-			assertEquals(testResult.getResultDate().toString(), strs[i++]);
+			assertEquals(testResult.getResultDate().toString(), sdf.parse(strs[i++]).toString());
 		}
 
 	}
