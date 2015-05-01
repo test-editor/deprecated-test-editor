@@ -1,5 +1,7 @@
-before_install: git clone https://github.com/test-editor/te.target.git ../te.target 
+before_install: 
+  - git clone https://github.com/test-editor/te.target.git ../te.target 
+  - git clone https://github.com/test-editor/test-editor-tests ../test-editor-tests 
 language: java
 jdk:
   - oraclejdk7
-
+script: "java -DPATH_TO_TESTEDITOR_AUT=product/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor -Daut.workspace.path=../.testeditor_aut -Dwaits.afterteststep=1ms -cp product/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar -consoleLog -data ../test-editor-tests  ExecuteTest=TestEditorTests.AceptenceForConDelivery"
