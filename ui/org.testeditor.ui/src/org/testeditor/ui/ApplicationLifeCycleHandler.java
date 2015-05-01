@@ -33,6 +33,7 @@ import org.eclipse.e4.ui.workbench.lifecycle.PreSave;
 import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -125,6 +126,13 @@ public class ApplicationLifeCycleHandler {
 		return new Thread() {
 			@Override
 			public void run() {
+				Display.getDefault().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						Display.getDefault().getActiveShell().forceActive();
+					}
+				});
 				while (application.getContext().getActiveChild() == null) {
 					try {
 						LOGGER.info("Waiting for ui is ready.");
