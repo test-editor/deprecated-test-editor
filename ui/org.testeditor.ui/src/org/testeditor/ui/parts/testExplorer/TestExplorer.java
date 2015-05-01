@@ -42,6 +42,7 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.ITestStructureEditor;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
@@ -106,6 +107,8 @@ public class TestExplorer {
 				handler.execute(context);
 			}
 		});
+		treeViewer.getTree().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TESTEXPLORER_TREE);
 	}
 
 	/**
