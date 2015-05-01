@@ -257,7 +257,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *         an ERROR
 	 */
 	public String countProjectsEquals(String expectedCount) {
-		SWTBotTreeItem[] allItems = bot.treeWithId("testexplorer.tree").getAllItems();
+		SWTBotTreeItem[] allItems = bot.tree().getAllItems();
 		if (allItems.length != Integer.valueOf(expectedCount).intValue()) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are " + allItems.length
 					+ " projects";
