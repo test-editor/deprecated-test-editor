@@ -47,8 +47,12 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		String[] args = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
-		exeucteTest(args);
-		return IApplication.EXIT_OK;
+		TestResult result = exeucteTest(args);
+		if (result.isSuccessfully()) {
+			return IApplication.EXIT_OK;
+		} else {
+			return new Integer(13);
+		}
 	}
 
 	/**
@@ -68,8 +72,10 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 *             on te error.
 	 * @throws InterruptedException
 	 *             stopping execution.
+	 * 
+	 * @return testResult of the test execution.
 	 */
-	public void exeucteTest(String[] args) throws BackingStoreException, IOException, InvalidArgumentException,
+	public TestResult exeucteTest(String[] args) throws BackingStoreException, IOException, InvalidArgumentException,
 			URISyntaxException, SystemException, InterruptedException {
 		initializeSystemConfiguration();
 		TestStructure test = getTestStructureToExecute(args);
@@ -79,9 +85,13 @@ public class HeadlessTestRunnerApplication implements IApplication {
 
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
 		LOGGER.info("Test executed with: " + testResult.isSuccessfully() + " details: " + testResult);
+		if (!testResult.isSuccessfully()) {
+			LOGGER.error(testStructureService.getTestExecutionLog(test));
+		}
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
 		LOGGER.info("Shutdown Testengine.");
+		return testResult;
 	}
 
 	/**
