@@ -84,10 +84,10 @@ public class HeadlessTestRunnerApplication implements IApplication {
 				.getTestProjectConfig().getTestServerID());
 
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
-		LOGGER.info("Test executed with: " + testResult.isSuccessfully() + " details: " + testResult);
 		if (!testResult.isSuccessfully()) {
 			LOGGER.error(testStructureService.getTestExecutionLog(test));
 		}
+		LOGGER.info("Test executed with: " + testResult.isSuccessfully() + " details: " + testResult);
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
 		LOGGER.info("Shutdown Testengine.");
