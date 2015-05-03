@@ -68,5 +68,6 @@ public final class CustomWidgetIdConstants {
 	public static final String TEAM_SHARE_IMPORT_PROJECTNAME = "wizard.shareProject.projectname";
 	public static final String RUN_TEST_CLOSE_BUTTON = "runtest.dialog.closebutton";
 	public static final String TESTLOG_TEXT = "testlogview.text";
+	public static final String TESTEXPLORER_TREE = "testexplorer.tree";
 
 }
