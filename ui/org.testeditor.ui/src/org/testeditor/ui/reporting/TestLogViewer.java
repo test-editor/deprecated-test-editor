@@ -21,18 +21,15 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.utilities.TestEditorTestLogAddErrorStyle;
 
 /**
@@ -50,8 +47,6 @@ public class TestLogViewer {
 	private Thread watchingLogFileThread;
 	private boolean watchingLogFile;
 	private TestStructure executingTestStructure;
-	@Inject
-	private IEventBroker eventBroker;
 
 	/**
 	 * 
@@ -119,7 +114,8 @@ public class TestLogViewer {
 				try {
 					File wsDir = Platform.getLocation().toFile();
 					File interActionLogFile = new File(wsDir.getAbsolutePath() + File.separator + ".metadata"
-							+ File.separator + "logs" + File.separator + TestEditorConstants.INTERACTION_LOG_FILE_NAME);
+							+ File.separator + "logs" + File.separator
+							+ TestEditorCoreConstants.INTERACTION_LOG_FILE_NAME);
 					int noLogErrorCounter = 0;
 					while (new Date().getTime()
 							- Files.readAttributes(interActionLogFile.toPath(), BasicFileAttributes.class)
@@ -189,7 +185,6 @@ public class TestLogViewer {
 				}
 				String testProgress = sb.toString();
 				if (testProgress.length() > 0) {
-					sendEvents(testProgress);
 					testLogText.append(testProgress);
 					testLogText.setSelection(testLogText.getText().length());
 
@@ -199,20 +194,6 @@ public class TestLogViewer {
 				}
 			}
 
-			/**
-			 * Extracts only TestEditorInteractionEvents to the EventBroker.
-			 * 
-			 * @param testProgress
-			 *            to extract InteractionEvents from.
-			 */
-			protected void sendEvents(String testProgress) {
-				String[] lines = testProgress.split("\n");
-				for (String line : lines) {
-					if (line.indexOf(TestEditorConstants.LOGGING_INTERACTION) > -1) {
-						eventBroker.post(TestEditorConstants.TEST_EXECUTION_PRGRESS_EVENT + "/" + fullTestName, line);
-					}
-				}
-			}
 		};
 	}
 
