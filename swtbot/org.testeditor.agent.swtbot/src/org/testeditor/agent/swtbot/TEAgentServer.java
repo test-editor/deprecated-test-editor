@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
@@ -106,6 +107,13 @@ public class TEAgentServer extends Thread implements ITestHarness {
 
 		if (Display.getDefault() != null) {
 			bot = new SWTBot();
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					Display.getDefault().getShells()[0].forceActive();
+				}
+			});
 		}
 		// SWTBotPreferences.PLAYBACK_DELAY = 50;
 		launched = true;
@@ -257,7 +265,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *         an ERROR
 	 */
 	public String countProjectsEquals(String expectedCount) {
-		SWTBotTreeItem[] allItems = bot.treeWithId("testexplorer.tree").getAllItems();
+		SWTBotTreeItem[] allItems = bot.tree().getAllItems();
 		if (allItems.length != Integer.valueOf(expectedCount).intValue()) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are " + allItems.length
 					+ " projects";
@@ -786,6 +794,14 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return true, if the button is clicked.
 	 */
 	private String clickButtonByText(String text) {
+		Display.getDefault().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				Shell[] shells = Display.getDefault().getShells();
+				shells[shells.length - 1].forceActive();
+			}
+		});
 
 		try {
 			if (LOGGER.isTraceEnabled()) {
@@ -1414,9 +1430,19 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								stopApplication();
 							}
 
+							if (Display.getDefault() != null) {
+								Display.getDefault().syncExec(new Runnable() {
+
+									@Override
+									public void run() {
+										Shell[] shells = Display.getDefault().getShells();
+										shells[shells.length - 1].forceActive();
+									}
+								});
+							}
+
 							String[] splitCommand = command.split(";");
 							String methodName = splitCommand[0];
-
 							if (methodName.equals("expandTreeItems")) {
 								String[] nodes = splitCommand[1].split(",");
 								out.println(expandTreeItems(nodes));
