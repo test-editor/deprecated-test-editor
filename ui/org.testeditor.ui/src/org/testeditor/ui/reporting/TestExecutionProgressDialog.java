@@ -39,13 +39,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
+import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
-import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorFontConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -172,7 +172,7 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 		File wsDir = Platform.getLocation().toFile();
 		File interActionLogFile = new File(wsDir.getAbsolutePath() + File.separator + ".metadata/logs/"
-				+ TestEditorConstants.INTERACTION_LOG_FILE_NAME);
+				+ TestEditorCoreConstants.INTERACTION_LOG_FILE_NAME);
 
 		logViewer.setAbsolutelogFileName(interActionLogFile.getAbsolutePath());
 
