@@ -13,7 +13,9 @@ package org.testeditor.core.headless;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -25,13 +27,17 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
+import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
+import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 
 /**
@@ -82,16 +88,59 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		TestEditorPlugInService plugInService = getService(TestEditorPlugInService.class);
 		TestStructureService testStructureService = plugInService.getTestStructureServiceFor(test.getRootElement()
 				.getTestProjectConfig().getTestServerID());
-
+		InterActionLogWatcherRunnable interActionLogWatcherRunnable = new InterActionLogWatcherRunnable();
+		if (test instanceof TestSuite) {
+			TestSuite ts = (TestSuite) test;
+			try {
+				getService(TestStructureContentService.class).refreshTestCaseComponents(ts);
+			} catch (TestCycleDetectException e) {
+				LOGGER.warn("Cycle detected in: " + ts.getFullName());
+			}
+			interActionLogWatcherRunnable.setTestCaseCount(ts.getReferredTestStrcutures().size()
+					+ ts.getAllTestChildren().size());
+		}
+		new Thread(interActionLogWatcherRunnable).start();
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
+		interActionLogWatcherRunnable.stopWatching();
 		if (!testResult.isSuccessfully()) {
 			LOGGER.error(testStructureService.getTestExecutionLog(test));
 		}
-		LOGGER.info("Test executed with: " + testResult.isSuccessfully() + " details: " + testResult);
+		LOGGER.info(getTestSummaryFrom(testResult));
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
 		LOGGER.info("Shutdown Testengine.");
 		return testResult;
+	}
+
+	/**
+	 * Creates a formated summary string of the test result.
+	 * 
+	 * @param testResult
+	 *            to be formatted.
+	 * @return a summary of the test result as string.
+	 */
+	protected String getTestSummaryFrom(TestResult testResult) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n*******************************************************************\nTest executed with: ")
+				.append(testResult.isSuccessfully()).append(" in ").append(testResult.getRunTimesSec())
+				.append("s details: \n");
+		List<TestResult> children = testResult.getChildren();
+		int count = 0;
+		int failed = 0;
+		List<TestResult> failedTests = new ArrayList<TestResult>();
+		for (TestResult detailResult : children) {
+			count++;
+			if (!detailResult.isSuccessfully()) {
+				failedTests.add(detailResult);
+				failed++;
+			}
+		}
+		for (TestResult failedTest : failedTests) {
+			sb.append(failedTest.getFullName()).append("\t with: \t").append(failedTest.isSuccessfully()).append("\n");
+		}
+		sb.append(failed).append(" of ").append(count).append(" are failed.");
+		sb.append("\n*******************************************************************");
+		return sb.toString();
 	}
 
 	/**
@@ -143,8 +192,13 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 */
 	public void initializeSystemConfiguration() throws BackingStoreException, IOException {
 		TestEditorConfigurationService testEditorConfigService = getService(TestEditorConfigurationService.class);
+		String waittime = System.getProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP);
 		testEditorConfigService.exportGlobalVariablesToSystemProperties();
 		testEditorConfigService.initializeSystemProperties();
+		if (waittime != null) {
+			LOGGER.info("Restoring Wait time to" + waittime);
+			System.setProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP, waittime);
+		}
 		LOGGER.info("Headless Test-Editor initialized.");
 	}
 
