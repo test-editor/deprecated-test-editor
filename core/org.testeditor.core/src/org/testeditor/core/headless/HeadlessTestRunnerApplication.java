@@ -102,9 +102,9 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		new Thread(interActionLogWatcherRunnable).start();
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
 		interActionLogWatcherRunnable.stopWatching();
-		if (!testResult.isSuccessfully()) {
-			LOGGER.error(testStructureService.getTestExecutionLog(test));
-		}
+		// if (!testResult.isSuccessfully()) {
+		// LOGGER.error(testStructureService.getTestExecutionLog(test));
+		// }
 		LOGGER.info(getTestSummaryFrom(testResult));
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
