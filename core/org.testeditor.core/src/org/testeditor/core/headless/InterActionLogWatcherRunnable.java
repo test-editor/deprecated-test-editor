@@ -85,7 +85,12 @@ public class InterActionLogWatcherRunnable implements Runnable {
 				String line = br.readLine();
 				if (line.contains("Method : setTestName")) {
 					String testcasename = line.substring(line.indexOf("\"") + 1, line.lastIndexOf("\""));
-					LOGGER.info("Executing TestCase: " + testcasename + " " + ++foundTests + " of " + count);
+					LOGGER.info("******* Executing TestCase: " + testcasename + " " + ++foundTests + " of " + count
+							+ " *******");
+				} else {
+					if (!line.contains("Wait ")) {
+						LOGGER.trace(line);
+					}
 				}
 			}
 			try {
