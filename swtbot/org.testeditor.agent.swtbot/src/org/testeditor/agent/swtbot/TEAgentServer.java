@@ -49,7 +49,9 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -794,20 +796,27 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return true, if the button is clicked.
 	 */
 	private String clickButtonByText(String text) {
-		Display.getDefault().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				Shell[] shells = Display.getDefault().getShells();
-				shells[shells.length - 1].forceActive();
-			}
-		});
 
 		try {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " ...");
 			}
-			SWTBotButton button = bot.button(text);
+			SWTBotButton button = null;
+			try {
+				button = bot.button(text);
+			} catch (Exception e) {
+				LOGGER.warn("Button not found try again");
+				UIThreadRunnable.syncExec(new VoidResult() {
+
+					@Override
+					public void run() {
+						Shell[] shells = Display.getDefault().getShells();
+						shells[shells.length - 1].forceActive();
+					}
+				});
+
+				button = bot.button(text);
+			}
 			LOGGER.trace("Found button " + button);
 			try {
 				// There is a Try catch for index out bound exeption, to ignore
@@ -827,6 +836,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			for (StackTraceElement stackTraceElement : trace) {
 				sb.append("\n").append(stackTraceElement.toString());
 			}
+			analyzeWidgets();
 			return sb.toString();
 		}
 		return Boolean.toString(true);
@@ -1431,7 +1441,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 							}
 
 							if (Display.getDefault() != null) {
-								Display.getDefault().syncExec(new Runnable() {
+								UIThreadRunnable.syncExec(new VoidResult() {
 
 									@Override
 									public void run() {
