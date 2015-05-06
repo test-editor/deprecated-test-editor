@@ -52,8 +52,13 @@ public class AgentApplication implements IApplication {
 			LOGGER.info("Running with default display: " + Display.getDefault());
 			return app.start(context);
 		} catch (Exception e) {
-			LOGGER.error("Error executing AUT", e);
-			return new Integer(13);
+			LOGGER.error("Error executing AUT Retrying", e);
+			try {
+				return app.start(context);
+			} catch (Exception ex) {
+				LOGGER.error("Error executing AUT giving up.", ex);
+				return new Integer(13);
+			}
 		}
 	}
 
