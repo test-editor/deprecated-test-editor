@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.testing.TestableObject;
 import org.osgi.framework.ServiceReference;
 
@@ -48,9 +49,10 @@ public class AgentApplication implements IApplication {
 
 		teAgentServer.start();
 		try {
+			LOGGER.info("Running with default display: " + Display.getDefault());
 			return app.start(context);
 		} catch (Exception e) {
-			LOGGER.error("Erro executing AUT", e);
+			LOGGER.error("Error executing AUT", e);
 			return new Integer(13);
 		}
 	}
