@@ -101,7 +101,6 @@ public final class ColorConstants {
 	 */
 	public static void disposeColors() {
 		dispose(COLOR_BLUE);
-		dispose(COLOR_BLUE);
 		dispose(COLOR_DARK_GREEN);
 		dispose(COLOR_BACKROUND_NORMAL);
 		dispose(COLOR_SELECTED);
@@ -117,6 +116,7 @@ public final class ColorConstants {
 	 * Checks if the color is not null and disposes it.
 	 * 
 	 * @param color
+	 *            to be disposed.
 	 */
 	private static void dispose(Color color) {
 		if (color != null) {
