@@ -100,15 +100,27 @@ public final class ColorConstants {
 	 * dispose all colors.
 	 */
 	public static void disposeColors() {
-		COLOR_BLUE.dispose();
-		COLOR_DARK_GREEN.dispose();
-		COLOR_BACKROUND_NORMAL.dispose();
-		COLOR_SELECTED.dispose();
-		COLOR_WHITE.dispose();
-		COLOR_YELLOW.dispose();
-		COLOR_GRAY.dispose();
-		COLOR_DARK_GRAY.dispose();
-		COLOR_DARK_GREEN.dispose();
-		COLOR_CYAN.dispose();
+		dispose(COLOR_BLUE);
+		dispose(COLOR_BLUE);
+		dispose(COLOR_DARK_GREEN);
+		dispose(COLOR_BACKROUND_NORMAL);
+		dispose(COLOR_SELECTED);
+		dispose(COLOR_WHITE);
+		dispose(COLOR_YELLOW);
+		dispose(COLOR_GRAY);
+		dispose(COLOR_DARK_GRAY);
+		dispose(COLOR_DARK_GREEN);
+		dispose(COLOR_CYAN);
+	}
+
+	/**
+	 * Checks if the color is not null and disposes it.
+	 * 
+	 * @param color
+	 */
+	private static void dispose(Color color) {
+		if (color != null) {
+			color.dispose();
+		}
 	}
 }
