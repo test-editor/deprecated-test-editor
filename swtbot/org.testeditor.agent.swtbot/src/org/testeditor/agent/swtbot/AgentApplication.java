@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.agent.swtbot;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -32,6 +33,7 @@ public class AgentApplication implements IApplication {
 
 	private TestableObject testableObject;
 	private TEAgentServer teAgentServer;
+	private static final Logger LOGGER = Logger.getLogger(TEAgentServer.class);
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -45,8 +47,12 @@ public class AgentApplication implements IApplication {
 		testableObject.setTestHarness(teAgentServer);
 
 		teAgentServer.start();
-
-		return app.start(context);
+		try {
+			return app.start(context);
+		} catch (Exception e) {
+			LOGGER.error("Erro executing AUT", e);
+			return new Integer(13);
+		}
 	}
 
 	/**
