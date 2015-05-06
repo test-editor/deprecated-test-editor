@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui.constants;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -63,16 +60,9 @@ public final class ColorConstants {
 	 * 
 	 */
 	private static Color getColor(final int red, final int green, final int blue) {
-		final List<Color> color = new ArrayList<Color>();
-		getDisplay().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				color.add(new Color(getDisplay(), red, green, blue));
-			}
-		});
-		if (color.size() > 0) {
-			return color.get(0);
+		Display display = Display.getCurrent();
+		if (display != null) {
+			return new Color(getDisplay(), red, green, blue);
 		} else {
 			return null;
 		}
@@ -85,16 +75,9 @@ public final class ColorConstants {
 	 * @return the Color
 	 */
 	private static Color getColor(final int colorNo) {
-		final List<Color> color = new ArrayList<Color>();
-		getDisplay().syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				color.add(getDisplay().getSystemColor(colorNo));
-			}
-		});
-		if (color.size() > 0) {
-			return color.get(0);
+		Display display = Display.getCurrent();
+		if (display != null) {
+			return display.getSystemColor(colorNo);
 		} else {
 			return null;
 		}
