@@ -1446,7 +1446,9 @@ public class TEAgentServer extends Thread implements ITestHarness {
 									@Override
 									public void run() {
 										Shell[] shells = Display.getDefault().getShells();
-										shells[shells.length - 1].forceActive();
+										if (shells.length > 0) {
+											shells[shells.length - 1].forceActive();
+										}
 									}
 								});
 							}
