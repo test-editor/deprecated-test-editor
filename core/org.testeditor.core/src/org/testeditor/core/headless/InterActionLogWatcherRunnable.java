@@ -53,7 +53,8 @@ public class InterActionLogWatcherRunnable implements Runnable {
 					Thread.sleep(50);
 					noLogErrorCounter++;
 					if (noLogErrorCounter == 1000) {
-						throw new RuntimeException("No Interaction Log found in 50 seconds.");
+						throw new RuntimeException("No Interaction Log found in 50 seconds. \nAt: "
+								+ interActionLogFile.getAbsolutePath());
 					}
 				} catch (InterruptedException e) {
 					LOGGER.info("Interrupt during wating for new interaction log.", e);
