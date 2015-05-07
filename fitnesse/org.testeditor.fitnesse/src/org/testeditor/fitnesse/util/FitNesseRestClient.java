@@ -11,7 +11,10 @@
  *******************************************************************************/
 package org.testeditor.fitnesse.util;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -29,6 +32,7 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
 
 /**
@@ -103,11 +107,17 @@ public final class FitNesseRestClient {
 						InputStream in = con.getInputStream();
 						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 						String line = bufferedReader.readLine();
+						File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile()
+								+ File.separator + ".metadata" + File.separator + "logs", "latestResult.xml");
+						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
 						while (line != null) {
 							line = bufferedReader.readLine();
+							out.write(line.getBytes());
+							out.write("\n".getBytes());
 						}
 						bufferedReader.close();
 						in.close();
+						out.close();
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}

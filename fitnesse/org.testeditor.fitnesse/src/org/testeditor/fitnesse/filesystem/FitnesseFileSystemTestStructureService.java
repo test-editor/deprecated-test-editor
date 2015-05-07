@@ -345,7 +345,6 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 				testResult.setResultDate(sdf.parse(timestampString));
 				testResult.setFullName(testStructure.getFullName());
 				testResult.setResultLink(getResultLink(testStructure.getFullName(), timestampString));
-				testResult.setUriToTestResultFile(path.toUri());
 				result.add(testResult);
 
 				fileInputStream.close();
