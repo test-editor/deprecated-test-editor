@@ -11,8 +11,12 @@
  *******************************************************************************/
 package org.testeditor.core.headless;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +43,7 @@ import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.util.FileLocatorService;
 
 /**
  * 
@@ -54,7 +59,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	public Object start(IApplicationContext context) throws Exception {
 		String[] args = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
 		TestResult result = exeucteTest(args);
-		if (result.isSuccessfully()) {
+		if (result.getRight() > 0) {
 			return IApplication.EXIT_OK;
 		} else {
 			return new Integer(13);
@@ -62,7 +67,9 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	}
 
 	/**
-	 * Executes a test.
+	 * Executes a test and places the backend specific test result file in the
+	 * root of the workspace. this allows other systems like jenkins to use this
+	 * file for retporting.
 	 * 
 	 * @param args
 	 *            used to determine the teststructure.
@@ -103,10 +110,27 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
 		interActionLogWatcherRunnable.stopWatching();
 		LOGGER.info(getTestSummaryFrom(testResult));
+		publishTestResultFile(testResult);
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
 		LOGGER.info("Shutdown Testengine.");
 		return testResult;
+	}
+
+	/**
+	 * Publishes the test result file as latest test result to the workspace.
+	 * 
+	 * @param testResult
+	 *            to be reported.
+	 * @throws IOException
+	 *             on failure copy test result.
+	 */
+	protected void publishTestResultFile(TestResult testResult) throws IOException {
+		FileLocatorService locatorService = getService(FileLocatorService.class);
+		File resultFile = new File(locatorService.getWorkspace(), "latestResult.xml");
+		FileOutputStream out = new FileOutputStream(resultFile);
+		Files.copy(Paths.get(testResult.getUriToTestResultFile()), out);
+		LOGGER.info("Published latets test result. " + resultFile.getCanonicalPath());
 	}
 
 	/**
