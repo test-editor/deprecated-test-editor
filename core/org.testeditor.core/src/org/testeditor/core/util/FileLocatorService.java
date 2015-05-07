@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -82,6 +83,16 @@ public class FileLocatorService {
 	 */
 	BundleContext getBundleContext() {
 		return FrameworkUtil.getBundle(FileLocatorService.class).getBundleContext();
+	}
+
+	/**
+	 * Return a file object that points to the workspace of the running
+	 * Test-Editor instance.
+	 * 
+	 * @return file that points to the workspace root.
+	 */
+	public File getWorkspace() {
+		return Platform.getLocation().toFile();
 	}
 
 }

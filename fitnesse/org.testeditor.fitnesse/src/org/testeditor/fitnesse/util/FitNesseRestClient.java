@@ -64,7 +64,6 @@ public final class FitNesseRestClient {
 	 *            the port as String
 	 * @return the url to the fitnesse server.
 	 */
-	// TODO [TE-1545] Port
 	private static String getFitnesseUrl(String port) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("http://localhost:").append(port).append("/");
