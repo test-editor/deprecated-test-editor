@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.model.testresult;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,7 @@ public class TestResult {
 	private int runTimeMillis;
 	private List<InstructionsResult> instructionResultTables;
 	private List<ActionResultTable> actionResultTables;
+	private URI resultFileUri;
 
 	/**
 	 * 
@@ -279,6 +281,25 @@ public class TestResult {
 	 */
 	public void setActionResultTables(List<ActionResultTable> actionResultTables) {
 		this.actionResultTables = actionResultTables;
+	}
+
+	/**
+	 * 
+	 * @param uri
+	 *            of the file that represents the test result.
+	 */
+	public void setUriToTestResultFile(URI uri) {
+		resultFileUri = uri;
+	}
+
+	/**
+	 * Clients that know the Testserver can use this information for further
+	 * reporting.
+	 * 
+	 * @return uri to a file that represants the testresult.
+	 */
+	public URI getUriToTestResultFile() {
+		return resultFileUri;
 	}
 
 }
