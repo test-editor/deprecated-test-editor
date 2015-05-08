@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,11 +127,9 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 */
 	protected void publishTestResultFile(TestResult testResult) throws IOException {
 		FileLocatorService locatorService = getService(FileLocatorService.class);
-		File srcFile = new File(locatorService.getWorkspace().getAbsoluteFile() + File.separator + ".metadata"
-				+ File.separator + "logs", "latestResult.xml");
 		File resultFile = new File(locatorService.getWorkspace(), "latestResult.xml");
 		FileOutputStream out = new FileOutputStream(resultFile);
-		Files.copy(srcFile.toPath(), out);
+		Files.copy(Paths.get(testResult.getUriToTestResultFile()), out);
 		LOGGER.info("Published latets test result. " + resultFile.getCanonicalPath());
 	}
 

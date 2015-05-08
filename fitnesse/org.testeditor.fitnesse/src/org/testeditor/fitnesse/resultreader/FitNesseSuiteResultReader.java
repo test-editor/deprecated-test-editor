@@ -112,6 +112,7 @@ public class FitNesseSuiteResultReader implements FitNesseResultReader {
 					testResult.setIgnored(Integer.parseInt(ignores));
 					testResult.setException(Integer.parseInt(exceptions));
 					testResult.setRunTimeMillis(Integer.parseInt(runTimeInMillis));
+
 					suiteRunTimeMillis = suiteRunTimeMillis + Integer.parseInt(runTimeInMillis);
 					suiteResult.add(testResult);
 

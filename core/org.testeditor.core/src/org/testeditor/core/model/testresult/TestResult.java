@@ -283,4 +283,23 @@ public class TestResult {
 		this.actionResultTables = actionResultTables;
 	}
 
+	/**
+	 * 
+	 * @param uri
+	 *            of the file that represents the test result.
+	 */
+	public void setUriToTestResultFile(URI uri) {
+		resultFileUri = uri;
+	}
+
+	/**
+	 * Clients that know the Testserver can use this information for further
+	 * reporting.
+	 * 
+	 * @return uri to a file that represents the test result.
+	 */
+	public URI getUriToTestResultFile() {
+		return resultFileUri;
+	}
+
 }
