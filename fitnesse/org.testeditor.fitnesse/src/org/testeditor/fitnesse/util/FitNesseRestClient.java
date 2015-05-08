@@ -43,7 +43,7 @@ import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService
 public final class FitNesseRestClient {
 
 	/**
-	 * Class can not be intantiated.
+	 * Class can not be instantiated.
 	 */
 	private FitNesseRestClient() {
 	}
@@ -102,7 +102,8 @@ public final class FitNesseRestClient {
 				@Override
 				public void run() {
 					try {
-						URL url = new URL(getFitnesseUrl(testStructure) + fullName + "?" + testStructure.getTypeName());
+						URL url = new URL(getFitnesseUrl(testStructure) + fullName + "?" + testStructure.getTypeName()
+								+ "&format=xml&includehtml");
 						URLConnection con = url.openConnection();
 						InputStream in = con.getInputStream();
 						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
