@@ -111,7 +111,9 @@ public final class FitNesseRestClient {
 						File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile()
 								+ File.separator + ".metadata" + File.separator + "logs", "latestResult.xml");
 						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
-						while (line != null) {
+						out.write(line.getBytes());
+						out.write("\n".getBytes());
+						while (bufferedReader.ready()) {
 							line = bufferedReader.readLine();
 							out.write(line.getBytes());
 							out.write("\n".getBytes());
