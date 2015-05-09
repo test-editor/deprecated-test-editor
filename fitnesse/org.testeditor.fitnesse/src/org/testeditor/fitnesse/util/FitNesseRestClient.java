@@ -95,52 +95,37 @@ public final class FitNesseRestClient {
 
 		int testHistoryBeforeTestSize = new FitnesseFileSystemTestStructureService().getTestHistory(testStructure)
 				.size();
-
 		try {
-
-			Thread testExecutor = new Thread() {
-				@Override
-				public void run() {
-					try {
-						URL url = new URL(getFitnesseUrl(testStructure) + fullName + "?" + testStructure.getTypeName()
-								+ "&format=xml&includehtml");
-						URLConnection con = url.openConnection();
-						InputStream in = con.getInputStream();
-						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-						String line = bufferedReader.readLine();
-						File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile()
-								+ File.separator + ".metadata" + File.separator + "logs", "latestResult.xml");
-						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
-						out.write(line.getBytes());
-						out.write("\n".getBytes());
-						while (bufferedReader.ready()) {
-							line = bufferedReader.readLine();
-							out.write(line.getBytes());
-							out.write("\n".getBytes());
-						}
-						bufferedReader.close();
-						in.close();
-						out.close();
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				};
-			};
-			testExecutor.start();
-			while (testExecutor.isAlive()) {
+			URL url = new URL(getFitnesseUrl(testStructure) + fullName + "?" + testStructure.getTypeName()
+					+ "&format=xml&includehtml");
+			URLConnection con = url.openConnection();
+			InputStream in = con.getInputStream();
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+			String line = bufferedReader.readLine();
+			File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile() + File.separator
+					+ ".metadata" + File.separator + "logs", "latestResult.xml");
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
+			out.write(line.getBytes());
+			out.write("\n".getBytes());
+			while (bufferedReader.ready()) {
+				line = bufferedReader.readLine();
+				out.write(line.getBytes());
+				out.write("\n".getBytes());
 				if (monitor != null && monitor.isCanceled()) {
-
 					// stop test via REST-Call
 					URL urlStopTest = new URL(getFitnesseUrl(testStructure) + fullName + "?stoptest");
 					URLConnection conStopTest = urlStopTest.openConnection();
 					InputStream inputStream = conStopTest.getInputStream();
 
 					inputStream.close();
-					testExecutor.interrupt();
 					throw new InterruptedException();
 				}
 				Thread.sleep(5);
 			}
+			bufferedReader.close();
+			in.close();
+			out.flush();
+			out.close();
 		} catch (InterruptedException e) {
 			throw e;
 		} catch (Exception e) {
