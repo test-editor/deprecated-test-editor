@@ -36,12 +36,12 @@ public final class FitNesseResultReaderFactory {
 	 *            for TestStrucutre
 	 * @return FitnesseResultReader
 	 */
-	public static FitNesseResultReader getReader(TestType type) {
+	public static FitNesseResultReader getHistoryReader(TestType type) {
 
 		if (type.equals(TestType.TEST)) {
-			return new FitNesseTestResultReader();
+			return new FitNesseTestHistoryResultReader();
 		} else if (type.equals(TestType.SUITE)) {
-			return new FitNesseSuiteResultReader();
+			return new FitNesseSuiteHistoryResultReader();
 		}
 
 		LOGGER.error("Type of test have to be 'test' or 'suite'");
