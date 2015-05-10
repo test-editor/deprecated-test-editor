@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.junit.Test;
 import org.testeditor.core.model.testresult.TestResult;
@@ -35,9 +34,9 @@ public class FitNesseResultReaderTest {
 	@Test
 	public void testTestResultXml() throws IOException {
 
-		InputStream fileInputStream = FitNesseTestResultReader.class.getResourceAsStream("/test_result.xml");
+		InputStream fileInputStream = FitNesseTestHistoryResultReader.class.getResourceAsStream("/test_result.xml");
 
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.TEST);
+		FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.TEST);
 
 		TestResult resultFile = reader.readTestResult(fileInputStream);
 
@@ -61,9 +60,9 @@ public class FitNesseResultReaderTest {
 	@Test
 	public void testSuiteResultFinalCounts() throws IOException {
 
-		InputStream fileInputStream = FitNesseTestResultReader.class.getResourceAsStream("/suite_result.xml");
+		InputStream fileInputStream = FitNesseTestHistoryResultReader.class.getResourceAsStream("/suite_result.xml");
 
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.SUITE);
+		FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.SUITE);
 
 		TestResult suiteResult = reader.readTestResult(fileInputStream);
 
@@ -87,9 +86,9 @@ public class FitNesseResultReaderTest {
 	@Test
 	public void testSuiteResultCountOfRunningTest() throws IOException {
 
-		InputStream fileInputStream = FitNesseTestResultReader.class.getResourceAsStream("/suite_result.xml");
+		InputStream fileInputStream = FitNesseTestHistoryResultReader.class.getResourceAsStream("/suite_result.xml");
 
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.SUITE);
+		FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.SUITE);
 
 		TestResult suiteResult = reader.readTestResult(fileInputStream);
 
@@ -122,59 +121,4 @@ public class FitNesseResultReaderTest {
 		fileInputStream.close();
 	}
 
-	/**
-	 * Tests the getTestHistorie-method of a test.
-	 * 
-	 * @throws IOException
-	 *             while file-operation
-	 */
-	@Test
-	public void testGetTestResultHistorie() throws IOException {
-
-		InputStream fileInputStream = FitNesseResultReaderTest.class.getResourceAsStream("/test_result_historie.xml");
-
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.TEST);
-
-		List<TestResult> resultFiles = reader.readResultHistory(fileInputStream);
-
-		TestResult resultFile = resultFiles.get(0);
-		assertEquals("LoginInvalidClearTest", resultFile.getFullName());
-		assertEquals("sum of Rights have to be 10", 10, resultFile.getRight());
-		assertEquals("sum of Wrong have to be 0", 0, resultFile.getWrong());
-		resultFile = resultFiles.get(2);
-		assertEquals("sum of Rights have to be 0", 0, resultFile.getRight());
-		assertEquals("sum of Wrong have to be 2", 2, resultFile.getWrong());
-
-		fileInputStream.close();
-
-	}
-
-	/**
-	 * Tests the getTestHistorie-method of a test.
-	 * 
-	 * @throws IOException
-	 *             while file-operation
-	 */
-	@Test
-	public void testGetSuiteResultHistorie() throws IOException {
-
-		InputStream fileInputStream = FitNesseResultReaderTest.class.getResourceAsStream("/suite_result_historie.xml");
-
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.SUITE);
-
-		List<TestResult> resultFiles = reader.readResultHistory(fileInputStream);
-
-		TestResult resultFile = resultFiles.get(0);
-		assertEquals("LoginSuite", resultFile.getFullName());
-		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite?pageHistory&resultDate=20131121132430",
-				resultFile.getResultLink());
-		assertEquals("sum of Rights have to be 2", 2, resultFile.getRight());
-		assertEquals("sum of Wrong have to be 1", 1, resultFile.getWrong());
-		resultFile = resultFiles.get(2);
-		assertEquals("sum of Rights have to be 2", 2, resultFile.getRight());
-		assertEquals("sum of Wrong have to be 1", 1, resultFile.getWrong());
-
-		fileInputStream.close();
-
-	}
 }
