@@ -16,20 +16,28 @@ import java.io.InputStream;
 import org.testeditor.core.model.testresult.TestResult;
 
 /**
- * Reads a Fitnesse XML Test result file and creates a bean with the test
- * summary. Implementations of this interface ere used for test execution
- * results and test results from history.
+ * <pre>
+ * Creates List of TestResult after parsing the result xml file of test
+ * execution.
  * 
+ * example: 
+ * name = DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidTest 
+ * resultDate = 10/11/2013 15:12:19
+ * 
+ * </pre>
  */
-public interface FitNesseResultReader {
+public class FitNesseSuiteHistoryResultReader extends FitnesseMultiResultReader implements FitNesseResultReader {
 
 	/**
-	 * Reads the generated result file as stream.
+	 * Returns a list of {@link TestResult} after parsing.
 	 * 
 	 * @param resultStream
-	 *            stream of test result after test execution.
-	 * @return TestResult
+	 *            given stream of xml file.
+	 * @return list of {@link TestResult}
 	 */
-	TestResult readTestResult(InputStream resultStream);
+	@Override
+	public TestResult readTestResult(InputStream resultStream) {
+		return super.readTestResult(resultStream, "pageHistoryReference");
+	}
 
 }
