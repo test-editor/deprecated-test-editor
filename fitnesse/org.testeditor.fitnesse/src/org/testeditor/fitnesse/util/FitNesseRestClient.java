@@ -35,6 +35,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.util.FileLocatorService;
+import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
 import org.testeditor.fitnesse.resultreader.FitNesseResultReader;
 import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
 
@@ -91,7 +92,7 @@ public final class FitNesseRestClient {
 	 * @throws InterruptedException
 	 *             will thrown when user terminates the test
 	 */
-	public static TestResult execute(final TestStructure testStructure, final IProgressMonitor monitor)
+	public static TestResult execute(final TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
 		File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile() + File.separator
 				+ ".metadata" + File.separator + "logs", "latestResult.xml");
@@ -106,22 +107,31 @@ public final class FitNesseRestClient {
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 			String line = bufferedReader.readLine();
 			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
+			Thread.sleep(1);
 			out.write(line.getBytes());
 			out.write("\n".getBytes());
 			while (bufferedReader.ready()) {
-				Thread.sleep(5);
 				line = bufferedReader.readLine();
 				out.write(line.getBytes());
 				out.write("\n".getBytes());
 			}
+			stopMonitor.interrupt();
 			bufferedReader.close();
 			in.close();
 			out.flush();
 			out.close();
-			stopMonitor.interrupt();
 			FitNesseResultReader reader = new FitnesseTestExecutionResultReader();
 			FileInputStream fileInputStream = new FileInputStream(resultFile);
-			return reader.readTestResult(fileInputStream);
+			TestResult result = reader.readTestResult(fileInputStream);
+			if (result == null) {
+				result = new FitnesseFileSystemTestStructureService().getTestHistory(testStructure).get(0);
+			}
+			boolean isTestSystemExecuted = result.getRight() > 0 | result.getWrong() > 0 | result.getException() > 0;
+			if (isTestSystemExecuted) {
+				return result;
+			} else {
+				return new TestResult();
+			}
 		} catch (InterruptedException e) {
 			throw e;
 		} catch (Exception e) {

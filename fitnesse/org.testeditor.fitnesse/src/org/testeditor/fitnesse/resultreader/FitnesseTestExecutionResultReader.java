@@ -23,7 +23,12 @@ public class FitnesseTestExecutionResultReader extends FitnesseMultiResultReader
 
 	@Override
 	public TestResult readTestResult(InputStream resultStream) {
-		return super.readTestResult(resultStream, "result");
+		TestResult readTestResult = super.readTestResult(resultStream, "result");
+		if (readTestResult != null) {
+			if (readTestResult.getChildren().size() == 1) {
+				return readTestResult.getChildren().get(0);
+			}
+		}
+		return readTestResult;
 	}
-
 }

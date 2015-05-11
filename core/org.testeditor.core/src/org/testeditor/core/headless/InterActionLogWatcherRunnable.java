@@ -22,6 +22,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.testeditor.core.constants.TestEditorCoreConstants;
 
@@ -37,6 +38,19 @@ public class InterActionLogWatcherRunnable implements Runnable {
 	private boolean watchingLogFile;
 
 	private int count = 1;
+
+	private IProgressMonitor progressMonitor;
+
+	/**
+	 * Constructor of the Runnable to extract the test cases from the
+	 * interactionlog.
+	 * 
+	 * @param progressMonitor
+	 *            used to inform about new testcases.
+	 */
+	public InterActionLogWatcherRunnable(IProgressMonitor progressMonitor) {
+		this.progressMonitor = progressMonitor;
+	}
 
 	@Override
 	public void run() {
@@ -60,7 +74,7 @@ public class InterActionLogWatcherRunnable implements Runnable {
 					LOGGER.info("Interrupt during wating for new interaction log.", e);
 				}
 			}
-			wathingTheLog(interActionLogFile);
+			watchingTheLog(interActionLogFile);
 		} catch (FileNotFoundException e) {
 			LOGGER.error("No Fitnesse Log found", e);
 		} catch (IOException e) {
@@ -76,7 +90,7 @@ public class InterActionLogWatcherRunnable implements Runnable {
 	 * @throws IOException
 	 *             on IO failure.
 	 */
-	protected void wathingTheLog(File interActionLogFile) throws IOException {
+	protected void watchingTheLog(File interActionLogFile) throws IOException {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(interActionLogFile),
 				"UTF-8"));
 		watchingLogFile = true;
@@ -88,6 +102,7 @@ public class InterActionLogWatcherRunnable implements Runnable {
 					String testcasename = line.substring(line.indexOf("\"") + 1, line.lastIndexOf("\""));
 					LOGGER.info("******* Executing TestCase: " + testcasename + " " + ++foundTests + " of " + count
 							+ " *******");
+					progressMonitor.subTask("Test: " + testcasename + " " + foundTests + "/" + count);
 				} else {
 					if (!line.contains("Wait ")) {
 						LOGGER.trace(line);
