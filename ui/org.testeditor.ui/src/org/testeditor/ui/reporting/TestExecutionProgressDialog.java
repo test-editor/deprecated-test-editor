@@ -41,8 +41,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.headless.InterActionLogWatcherRunnable;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
@@ -201,8 +203,18 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 					String executeTestName = translationService.translate("%execute.test.name", toExecute.getFullName());
 
 					monitor.beginTask(executeTestName, IProgressMonitor.UNKNOWN);
+					InterActionLogWatcherRunnable watcherRunnable = null;
+					if (toExecute instanceof TestSuite) {
+						watcherRunnable = new InterActionLogWatcherRunnable(monitor);
+						watcherRunnable.setTestCaseCount(((TestSuite) toExecute)
+								.getAllTestChildrensAndReferedTestcases().size());
+						new Thread(watcherRunnable).start();
+					}
 					testResult = testStructureService.executeTestStructure(toExecute, monitor);
 					monitor.done();
+					if (watcherRunnable != null) {
+						watcherRunnable.stopWatching();
+					}
 					logViewer.stopTailOnTestLog();
 				} catch (SystemException e) {
 					throw new InvocationTargetException(e);

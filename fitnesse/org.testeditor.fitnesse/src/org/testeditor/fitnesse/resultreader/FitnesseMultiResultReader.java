@@ -116,11 +116,12 @@ public abstract class FitnesseMultiResultReader {
 			suiteResult.setRunTimeMillis(suiteRunTimeMillis);
 
 		} catch (ParserConfigurationException | SAXException | IOException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
+			return null;
 		} catch (ParseException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
+			return null;
 		}
-
 		return suiteResult;
 	}
 

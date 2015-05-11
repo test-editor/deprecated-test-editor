@@ -94,7 +94,8 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		TestEditorPlugInService plugInService = getService(TestEditorPlugInService.class);
 		TestStructureService testStructureService = plugInService.getTestStructureServiceFor(test.getRootElement()
 				.getTestProjectConfig().getTestServerID());
-		InterActionLogWatcherRunnable interActionLogWatcherRunnable = new InterActionLogWatcherRunnable();
+		InterActionLogWatcherRunnable interActionLogWatcherRunnable = new InterActionLogWatcherRunnable(
+				new NullProgressMonitor());
 		if (test instanceof TestSuite) {
 			TestSuite ts = (TestSuite) test;
 			try {
