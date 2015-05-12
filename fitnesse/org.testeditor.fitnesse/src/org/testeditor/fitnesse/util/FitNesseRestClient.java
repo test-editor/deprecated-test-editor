@@ -16,10 +16,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -93,32 +91,53 @@ public final class FitNesseRestClient {
 	 */
 	public static TestResult execute(final TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
-		File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile() + File.separator
+		final File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile() + File.separator
 				+ ".metadata" + File.separator + "logs", "latestResult.xml");
 		try {
-			URL url = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName() + "?"
-					+ testStructure.getTypeName() + "&format=xml&includehtml");
-			final Thread executorThread = Thread.currentThread();
-			Thread stopMonitor = getStopMonitor(testStructure, executorThread, monitor);
-			stopMonitor.start();
-			URLConnection con = url.openConnection();
-			InputStream in = con.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-			String line = bufferedReader.readLine();
-			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
-			out.write(line.getBytes());
-			out.write("\n".getBytes());
-			while (bufferedReader.ready()) {
-				Thread.sleep(1);
-				line = bufferedReader.readLine();
-				out.write(line.getBytes());
-				out.write("\n".getBytes());
+
+			Thread testExecutor = new Thread() {
+				@Override
+				public void run() {
+					try {
+						URL url = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName() + "?"
+								+ testStructure.getTypeName() + "&format=xml&includehtml");
+						URLConnection con = url.openConnection();
+						InputStream in = con.getInputStream();
+						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
+						boolean readingResultStream = true;
+						while (readingResultStream) {
+							String line = bufferedReader.readLine();
+							out.write(line.getBytes());
+							out.write("\n".getBytes());
+							readingResultStream = bufferedReader.ready();
+							Thread.sleep(0, 10);
+						}
+						bufferedReader.close();
+						in.close();
+						out.flush();
+						out.close();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				};
+			};
+			testExecutor.start();
+			while (testExecutor.isAlive()) {
+				if (monitor != null && monitor.isCanceled()) {
+
+					// stop test via REST-Call
+					URL urlStopTest = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName() + "?stoptest");
+					URLConnection conStopTest = urlStopTest.openConnection();
+					InputStream inputStream = conStopTest.getInputStream();
+
+					inputStream.close();
+					testExecutor.interrupt();
+					throw new InterruptedException();
+				}
+				Thread.sleep(5);
 			}
-			stopMonitor.interrupt();
-			bufferedReader.close();
-			in.close();
-			out.flush();
-			out.close();
+
 			FitNesseResultReader reader = new FitnesseTestExecutionResultReader();
 			FileInputStream fileInputStream = new FileInputStream(resultFile);
 			TestResult result = reader.readTestResult(fileInputStream);
@@ -139,51 +158,6 @@ public final class FitNesseRestClient {
 				monitor.done();
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * Thread to handle cancel operation on the progress monitor.
-	 * 
-	 * @param testStructure
-	 *            that is currently executed.
-	 * @param monitor
-	 *            used to watch the execution.
-	 * @param executorThread
-	 *            thread, that executes the test.
-	 * @return Thread that monitors the Stop event of the ui to interrupt test
-	 *         execution.
-	 */
-	protected static Thread getStopMonitor(final TestStructure testStructure, final Thread executorThread,
-			final IProgressMonitor monitor) {
-		return new Thread() {
-			@Override
-			public void run() {
-				try {
-					boolean run = true;
-					while (run) {
-						if (monitor != null && monitor.isCanceled()) {
-							LOGGER.info("Abort test execution detected.");
-							URL urlStopTest = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName()
-									+ "?stoptest");
-							URLConnection conStopTest = urlStopTest.openConnection();
-							InputStream inputStream = conStopTest.getInputStream();
-
-							inputStream.close();
-							executorThread.interrupt();
-							run = false;
-						}
-						Thread.sleep(5);
-					}
-				} catch (MalformedURLException e) {
-					LOGGER.error("Stop Thread", e);
-				} catch (IOException e) {
-					LOGGER.error("Stop Thread", e);
-				} catch (InterruptedException e) {
-					LOGGER.info("Stopping Monitor Thread");
-				}
-			}
-		};
 	}
 
 	/**
