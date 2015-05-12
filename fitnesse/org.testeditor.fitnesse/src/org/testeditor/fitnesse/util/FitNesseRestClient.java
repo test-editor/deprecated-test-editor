@@ -35,7 +35,6 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.util.FileLocatorService;
-import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
 import org.testeditor.fitnesse.resultreader.FitNesseResultReader;
 import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
 
@@ -107,10 +106,10 @@ public final class FitNesseRestClient {
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 			String line = bufferedReader.readLine();
 			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
-			Thread.sleep(1);
 			out.write(line.getBytes());
 			out.write("\n".getBytes());
 			while (bufferedReader.ready()) {
+				Thread.sleep(1);
 				line = bufferedReader.readLine();
 				out.write(line.getBytes());
 				out.write("\n".getBytes());
@@ -123,9 +122,6 @@ public final class FitNesseRestClient {
 			FitNesseResultReader reader = new FitnesseTestExecutionResultReader();
 			FileInputStream fileInputStream = new FileInputStream(resultFile);
 			TestResult result = reader.readTestResult(fileInputStream);
-			if (result == null) {
-				result = new FitnesseFileSystemTestStructureService().getTestHistory(testStructure).get(0);
-			}
 			boolean isTestSystemExecuted = result.getRight() > 0 | result.getWrong() > 0 | result.getException() > 0;
 			if (isTestSystemExecuted) {
 				return result;
