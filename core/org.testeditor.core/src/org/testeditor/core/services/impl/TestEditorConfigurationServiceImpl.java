@@ -237,8 +237,12 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	public void initializeSystemProperties() throws IOException {
 		String bundleLocation = fileLocatorService.findBundleFileLocationAsString("org.testeditor.fixture.lib");
 		String swtBotBundle = fileLocatorService.findBundleFileLocationAsString("org.testeditor.agent.swtbot");
-		System.setProperty("FIXTURE_LIB_BUNDLE_PATH", bundleLocation);
-		System.setProperty("SWT_BOT_AGENT_BUNDLE_PATH", swtBotBundle);
+		if (bundleLocation != null) {
+			System.setProperty("FIXTURE_LIB_BUNDLE_PATH", bundleLocation);
+		}
+		if (swtBotBundle != null) {
+			System.setProperty("SWT_BOT_AGENT_BUNDLE_PATH", swtBotBundle);
+		}
 		System.setProperty("APPLICATION_WORK", Platform.getLocation().toOSString());
 	}
 

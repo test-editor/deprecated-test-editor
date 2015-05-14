@@ -56,7 +56,10 @@ public class HeadlessTestRunnerApplication implements IApplication {
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
-		String[] args = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
+		String[] args = null;
+		if (context != null) {
+			args = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
+		}
 		TestResult result = exeucteTest(args);
 		if (result.getRight() > 0) {
 			return IApplication.EXIT_OK;
@@ -146,7 +149,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n*******************************************************************\nTest executed with: ")
 				.append(testResult.isSuccessfully()).append(" in ").append(testResult.getRunTimesSec())
-				.append("s details: \n");
+				.append("s details:\n");
 		List<TestResult> children = testResult.getChildren();
 		int count = 0;
 		int failed = 0;
@@ -234,7 +237,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 *            Service type.
 	 * @return a service implementation.
 	 */
-	private <S> S getService(Class<S> clazz) {
+	protected <S> S getService(Class<S> clazz) {
 		BundleContext bundleContext = FrameworkUtil.getBundle(clazz).getBundleContext();
 		ServiceReference<S> serviceReference = bundleContext.getServiceReference(clazz);
 		return bundleContext.getService(serviceReference);
@@ -242,7 +245,6 @@ public class HeadlessTestRunnerApplication implements IApplication {
 
 	@Override
 	public void stop() {
-
 	}
 
 }
