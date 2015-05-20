@@ -1,0 +1,3 @@
+!|script|
+|setTestName|${PAGE_PATH}.${PAGE_NAME}|
+ 
