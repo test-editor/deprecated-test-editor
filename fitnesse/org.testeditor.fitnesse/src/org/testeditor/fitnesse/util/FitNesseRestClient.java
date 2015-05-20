@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -33,6 +34,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.util.FileLocatorService;
+import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
 import org.testeditor.fitnesse.resultreader.FitNesseResultReader;
 import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
 
@@ -90,6 +92,34 @@ public final class FitNesseRestClient {
 	 *             will thrown when user terminates the test
 	 */
 	public static TestResult execute(final TestStructure testStructure, IProgressMonitor monitor)
+			throws SystemException, InterruptedException {
+		// TODO We have to switch between batch and online mode at this place.
+		// Until we upgrade to FitNesse Version 20150226 or higher. Which
+		// contains this feature: https://github.com/unclebob/fitnesse/pull/627
+		if (System.getProperty("headlessTE") != null) {
+			return executeBatch(testStructure, monitor);
+		} else {
+			return executeOnline(testStructure, monitor);
+		}
+	}
+
+	/**
+	 * Execute a test case in batch mode. in case of not running test, it will
+	 * be return an default TestResult object
+	 * 
+	 * This returns an xml result, that can be used by third party plug-ins.
+	 * 
+	 * @param testStructure
+	 *            test case @link {@link TestStructure}
+	 * @param monitor
+	 *            monitors cancel of test
+	 * @return test result @link {@link TestResult}
+	 * @throws SystemException
+	 *             is thrown in case of IO or connection exceptions
+	 * @throws InterruptedException
+	 *             will thrown when user terminates the test
+	 */
+	public static TestResult executeBatch(final TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
 		final File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile() + File.separator
 				+ ".metadata" + File.separator + "logs", "latestResult.xml");
@@ -157,6 +187,88 @@ public final class FitNesseRestClient {
 			if (monitor != null) {
 				monitor.done();
 			}
+		}
+	}
+
+	/**
+	 * Execute a test case in online mode. in case of not running test, it will
+	 * be return an default TestResult object
+	 * 
+	 * This writes an errorLog and for test result is the history element used.
+	 * 
+	 * @param testStructure
+	 *            test case @link {@link TestStructure}
+	 * @param monitor
+	 *            monitors cancel of test
+	 * @return test result @link {@link TestResult}
+	 * @throws SystemException
+	 *             is thrown in case of IO or connection exceptions
+	 * @throws InterruptedException
+	 *             will thrown when user terminates the test
+	 */
+	public static TestResult executeOnline(final TestStructure testStructure, IProgressMonitor monitor)
+			throws SystemException, InterruptedException {
+
+		final String fullName = testStructure.getFullName();
+
+		int testHistoryBeforeTestSize = new FitnesseFileSystemTestStructureService().getTestHistory(testStructure)
+				.size();
+
+		try {
+
+			Thread testExecutor = new Thread() {
+				@Override
+				public void run() {
+					try {
+						URL url = new URL(getFitnesseUrl(testStructure) + fullName + "?" + testStructure.getTypeName());
+						URLConnection con = url.openConnection();
+						InputStream in = con.getInputStream();
+						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+						String line = bufferedReader.readLine();
+						while (line != null) {
+							line = bufferedReader.readLine();
+						}
+						bufferedReader.close();
+						in.close();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				};
+			};
+			testExecutor.start();
+			while (testExecutor.isAlive()) {
+				if (monitor != null && monitor.isCanceled()) {
+
+					// stop test via REST-Call
+					URL urlStopTest = new URL(getFitnesseUrl(testStructure) + fullName + "?stoptest");
+					URLConnection conStopTest = urlStopTest.openConnection();
+					InputStream inputStream = conStopTest.getInputStream();
+
+					inputStream.close();
+					testExecutor.interrupt();
+					throw new InterruptedException();
+				}
+				Thread.sleep(5);
+			}
+		} catch (InterruptedException e) {
+			throw e;
+		} catch (Exception e) {
+			SystemException systemException = new SystemException("execute test failed", e);
+			throw systemException;
+		} finally {
+			if (monitor != null) {
+				monitor.done();
+			}
+		}
+
+		List<TestResult> testHistoryAfterTest = new FitnesseFileSystemTestStructureService()
+				.getTestHistory(testStructure);
+
+		boolean isTestSystemExecuted = testHistoryAfterTest.size() > testHistoryBeforeTestSize;
+		if (isTestSystemExecuted) {
+			return testHistoryAfterTest.get(0);
+		} else {
+			return new TestResult();
 		}
 	}
 
