@@ -470,7 +470,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		assertTrue("Arrays not the same length", testResults.size() == strs.length);
 
 		int i = 0;
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss  yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
 		for (TestResult testResult : testResults) {
 			assertEquals(testResult.getResultDate().toString(), sdf.parse(strs[i++]).toString());
 		}
@@ -491,8 +491,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		assertNotNull(testHistory);
 		assertEquals(3, testHistory.size());
 
-		compare(testHistory, new String[] { "Sun Oct 19 13:55:03  2014", "Sat Oct 18 13:55:03  2014",
-				"Fri Oct 17 22:13:15  2014" });
+		compare(testHistory, new String[] { "13:55:03 19.10.2014", "13:55:03 18.10.2014", "22:13:15 17.10.2014" });
 
 	}
 
