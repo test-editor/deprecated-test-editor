@@ -171,6 +171,7 @@ public final class FitNesseRestClient {
 			FitNesseResultReader reader = new FitnesseTestExecutionResultReader();
 			FileInputStream fileInputStream = new FileInputStream(resultFile);
 			TestResult result = reader.readTestResult(fileInputStream);
+			fileInputStream.close();
 			boolean isTestSystemExecuted = result.getRight() > 0 | result.getWrong() > 0 | result.getException() > 0;
 			if (isTestSystemExecuted) {
 				return result;
