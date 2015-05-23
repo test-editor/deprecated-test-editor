@@ -53,9 +53,9 @@ public class HeadlessTestRunnerApplicationTest {
 				return testResult;
 			}
 		};
-		assertEquals(new Integer(13), headlessApp.start(null));
+		assertEquals(Integer.valueOf(13), headlessApp.start(null));
 		testResult.setRight(2);
-		assertEquals(new Integer(0), headlessApp.start(null));
+		assertEquals(Integer.valueOf(0), headlessApp.start(null));
 	}
 
 	/**
