@@ -69,4 +69,7 @@ public final class CustomWidgetIdConstants {
 	public static final String RUN_TEST_CLOSE_BUTTON = "runtest.dialog.closebutton";
 	public static final String TESTLOG_TEXT = "testlogview.text";
 
+	public static final String SEARCH_DIALOG_TESTSTRUCTURE_NAME = "dialog.search.teststructure.teststructurename";
+	public static final Object SEARCH_DIALOG_TESTSTRUCTURE_RESULT = "dialog.search.teststructure.resulttable";
+
 }
