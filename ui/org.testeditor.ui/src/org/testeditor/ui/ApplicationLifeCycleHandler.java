@@ -12,6 +12,7 @@
 package org.testeditor.ui;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
@@ -33,6 +35,8 @@ import org.eclipse.e4.ui.workbench.lifecycle.PreSave;
 import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
@@ -124,6 +128,7 @@ public class ApplicationLifeCycleHandler {
 	 */
 	private Thread getUIInitDelayed(final MApplication application) {
 		return new Thread() {
+
 			@Override
 			public void run() {
 				Display.getDefault().asyncExec(new Runnable() {
@@ -209,19 +214,45 @@ public class ApplicationLifeCycleHandler {
 	}
 
 	/**
-	 * Terminates all running Backend Server.
+	 * Shuts the Application down and clears ressources.
 	 */
 	@PreSave
-	public void stopBackendServers() {
+	public void shutDownApplication() {
+		final ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+		try {
+			dialog.run(true, false, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					stopBackendServers(monitor);
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			LOGGER.error("Error shutdown application.", e);
+			MessageDialog.openError(shell, "Error", e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * Terminates all running Backend Server.
+	 * 
+	 * @param monitor
+	 *            ProgressMonitor to indicate progress of stopping TestServer.
+	 */
+	public void stopBackendServers(IProgressMonitor monitor) {
 		try {
 			TestServerStarter starter = ContextInjectionFactory.make(TestServerStarter.class, context);
 			TestProjectService testProjectService = context.get(TestProjectService.class);
 			List<TestProject> projects = testProjectService.getProjects();
+			monitor.beginTask("Exit Test-Editor", projects.size());
 			for (TestProject testProject : projects) {
 				if (testProject.getTestProjectConfig() != null) {
+					monitor.subTask("Stop test engine: " + testProject.getName());
 					starter.stopTestServer(testProject);
+					monitor.worked(1);
 				}
 			}
+			monitor.done();
 		} catch (IOException e) {
 			LOGGER.trace("Error stopping Test Server", e);
 			MessageDialog.openError(shell, "Error", e.getLocalizedMessage());
@@ -251,7 +282,6 @@ public class ApplicationLifeCycleHandler {
 	 */
 	private String translate(String key, Object... params) {
 		String translatedText = translationService.translate(key, TestEditorConstants.CONTRIBUTOR_URI);
-
 		return MessageFormat.format(translatedText, params);
 
 	}
