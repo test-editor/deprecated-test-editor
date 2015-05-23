@@ -15,6 +15,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -75,7 +78,7 @@ public class ApplicationLifeCycleHandlerTest {
 		handler.startBackendServers();
 		assertTrue("Server 1 is running after Launch", serverService.isRunning(tp1));
 		assertTrue("Server 2 is running after Launch", serverService.isRunning(tp2));
-		handler.stopBackendServers();
+		handler.stopBackendServers(new NullProgressMonitor());
 	}
 
 	/**
@@ -116,6 +119,21 @@ public class ApplicationLifeCycleHandlerTest {
 	}
 
 	/**
+	 * Tests the shutdown method to call Stop Servers.
+	 */
+	@Test
+	public void testShutDownApplication() {
+		final HashSet<String> set = new HashSet<String>();
+		ApplicationLifeCycleHandler handler = new ApplicationLifeCycleHandler() {
+			public void stopBackendServers(org.eclipse.core.runtime.IProgressMonitor monitor) {
+				set.add("stop");
+			}
+		};
+		handler.shutDownApplication();
+		assertTrue(set.contains("stop"));
+	}
+
+	/**
 	 * Prepare for test and returns the context. Set Mock-Objects in context.
 	 * 
 	 * @return IEclipseContext
@@ -146,4 +164,5 @@ public class ApplicationLifeCycleHandlerTest {
 			}
 		};
 	}
+
 }
