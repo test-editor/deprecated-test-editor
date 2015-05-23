@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 
 /**
  * Search for a TestStructure.
@@ -84,6 +85,8 @@ public class SearchTestStructureDialog extends Dialog {
 		searchText.addModifyListener(getSearchTextModifiedListener());
 		searchText.addKeyListener(getSwitchToResultViewKeyListner());
 		searchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		searchText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.SEARCH_DIALOG_TESTSTRUCTURE_NAME);
 		Label resultLabel = new Label(area, SWT.NORMAL);
 		resultLabel.setText("Search results:");
 		result = new TableViewer(area);
@@ -95,6 +98,8 @@ public class SearchTestStructureDialog extends Dialog {
 		result.setContentProvider(new ArrayContentProvider());
 		result.addFilter(getSearchFilter());
 		result.addSelectionChangedListener(getResultSelectionListener());
+		result.getTable().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.SEARCH_DIALOG_TESTSTRUCTURE_RESULT);
 		createTestStructureNamesLoader().start();
 		return cmp;
 	}

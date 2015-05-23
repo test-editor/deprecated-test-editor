@@ -61,6 +61,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
@@ -223,6 +224,25 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * Presses the shortcut specified by the given keys on the active window.
+	 * 
+	 * @param modificationKeys
+	 *            the combination of SWT.ALT | SWT.CTRL | SWT.SHIFT |
+	 *            SWT.COMMAND.
+	 * @param key
+	 *            the character
+	 * @return true, after sending the keys
+	 */
+	public String pressGlobalShortcut(final String modificationKeys, final char key) {
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("modificationKeys: " + modificationKeys);
+			LOGGER.trace("key: " + key);
+		}
+		bot.activeShell().pressShortcut(Integer.valueOf(modificationKeys).intValue(), key);
+		return Boolean.toString(true);
+	}
+
+	/**
 	 * reads all projects and trace them to the log.
 	 * 
 	 * @return "true"
@@ -291,6 +311,26 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		if (expandNode.getItems().length != Integer.valueOf(expectedCount)) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are "
 					+ expandNode.getItems().length + " projects";
+			LOGGER.error(message);
+			return message;
+		}
+		return Boolean.toString(true);
+	}
+
+	/**
+	 * Compare the count of a list with expected count.
+	 * 
+	 * @param locator
+	 *            locator id of the widget with items.
+	 * @param expectedCount
+	 *            count of items in the widget.
+	 * @return true if the amount of items equals the expectedCount.
+	 */
+	public String countItemsEquals(String locator, String expectedCount) {
+		SWTBotTable table = bot.tableWithId(locator);
+		if (table.rowCount() != Integer.valueOf(expectedCount)) {
+			String message = "Inspected count of items was: " + expectedCount + " but there are " + table.rowCount()
+					+ " items";
 			LOGGER.error(message);
 			return message;
 		}
@@ -1474,6 +1514,10 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								String modificationKeys = splitCommand[2];
 								char key = splitCommand[3].toCharArray()[0];
 								out.println(pressShortcutOfStyledText(locator, modificationKeys, key));
+							} else if (methodName.equals("pressGlobalShortcut")) {
+								String modificationKeys = splitCommand[1];
+								char key = splitCommand[2].toCharArray()[0];
+								out.println(pressGlobalShortcut(modificationKeys, key));
 							} else if (methodName.equals("readAllProjectsInTree")) {
 								out.println(readAllProjectsInTree());
 							} else if (methodName.equals("deleteAllProjects")) {
