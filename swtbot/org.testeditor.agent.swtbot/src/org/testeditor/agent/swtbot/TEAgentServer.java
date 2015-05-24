@@ -63,6 +63,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.testing.ITestHarness;
@@ -118,7 +119,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 				}
 			});
 		}
-		// SWTBotPreferences.PLAYBACK_DELAY = 50;
 		launched = true;
 	}
 
@@ -388,6 +388,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 				SWTBotTreeItem expandNode = bot.tree().expandNode(nodes);
 				expandNode.select();
 			}
+			bot.tree().setFocus();
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage(), e);
 			LOGGER.trace(analyzeWidgets());
@@ -1278,14 +1279,14 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			public void run() {
 
 				try {
-					List<? extends Widget> widgets = bot.widgets(allOf(widgetOfType(Widget.class)));
+					List<? extends Widget> widgets = bot.widgets(widgetOfType(Widget.class));
 
 					StringBuilder sb = new StringBuilder();
 
 					for (Widget widget : widgets) {
 
 						sb.append("widgetId: " + widget.getData("org.eclipse.swtbot.widget.key"));
-						sb.append("widgetClass: " + widget.getClass().getSimpleName());
+						sb.append(" widgetClass: " + widget.getClass().getSimpleName());
 						try {
 							Method[] methods = widget.getClass().getMethods();
 							boolean foundGetText = false;
@@ -1300,7 +1301,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								sb.append("\n >>> text value: " + method.invoke(widget, new Object[] {}));
 							}
 						} catch (Exception e) {
-							LOGGER.error(">>>>>>> no tesxxt", e);
+							LOGGER.error(">>>>>>> no text", e);
 						}
 						sb.append(" widget: " + widget).append("\n");
 					}
@@ -1575,7 +1576,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("textIsVisible: " + text);
 		}
-		List<? extends Widget> widgets = bot.widgets(allOf(widgetOfType(Widget.class)));
+		List<? extends Widget> widgets = bot.widgets(widgetOfType(Widget.class));
 
 		StringBuilder sb = new StringBuilder();
 
@@ -1664,11 +1665,10 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("isButtonEnabledByIndex text: " + text + " index: " + index);
 				LOGGER.trace("Result of isButtonEnabledByIndex: " + bot.button(text, index).isEnabled());
-
 			}
 			return Boolean.valueOf(bot.button(text, index).isEnabled()).toString();
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
@@ -1697,7 +1697,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			return Boolean.valueOf(new SWTBotButton((Button) widget).isEnabled()).toString();
 
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			return "ERROR " + e.getMessage();
 		}
 	}
@@ -1717,7 +1717,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 			return Boolean.valueOf(bot.button(text).isEnabled()).toString();
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			return "ERROR " + e.getMessage();
 		}
 	}
@@ -1733,14 +1733,19 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		try {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("isButtonEnabledById locator:" + locator);
-				LOGGER.trace("Result of isButtonEnabledById: " + bot.buttonWithId(locator).isEnabled());
+				try {
+					LOGGER.trace("Result of isButtonEnabledById: " + bot.buttonWithId(locator).isEnabled());
+				} catch (WidgetNotFoundException e) {
+
+					SWTBotToolbarButton toolbarButton = bot.toolbarButtonWithId(locator);
+					return Boolean.valueOf(toolbarButton.isEnabled()).toString();
+				}
 			}
 			return Boolean.valueOf(bot.buttonWithId(locator).isEnabled()).toString();
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
 	}
-
 }

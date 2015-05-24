@@ -23,7 +23,6 @@ import org.testeditor.ui.parts.testExplorer.TestExplorer;
  * 
  * Mock of the TestExplorer for CanExecute Handler Test.
  * 
- * @author karsten
  */
 public class TestExplorerMock extends TestExplorer {
 
@@ -35,6 +34,7 @@ public class TestExplorerMock extends TestExplorer {
 	 *            to be used as the Selection.
 	 */
 	public TestExplorerMock(List<TestStructure> list) {
+		super(null);
 		this.selection = list;
 	}
 
