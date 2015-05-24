@@ -41,7 +41,9 @@
                 </children>
               </menus>
               <toolbar xmi:id="_cl21AJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.toolbar.0">
-                <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA"/>
+                <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA">
+                  <persistedState key="org.eclipse.swtbot.widget.key" value="runTest"/>
+                </children>
                 <children xsi:type="menu:DirectToolItem" xmi:id="_jc5lUJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.testExplorerRefreshHandler" iconURI="platform:/plugin/org.testeditor.ui/icons/refresh.gif" tooltip="%handledtoolitem.refresh.tree.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.handler.RefreshTestExplorer"/>
                 <children xsi:type="menu:DirectToolItem" xmi:id="_4CzeYO6sEeS2OYADBOtGQg" elementId="org.testeditor.ui.testexplorer.searchTestStructure" iconURI="platform:/plugin/org.testeditor.ui/icons/search.gif" tooltip="%handledtoolitem.search.tree.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.SearchTestStructureHandler"/>
               </toolbar>

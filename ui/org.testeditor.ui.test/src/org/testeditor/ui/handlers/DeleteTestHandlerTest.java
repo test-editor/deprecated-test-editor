@@ -338,7 +338,7 @@ public class DeleteTestHandlerTest {
 	 * @return TestExplorer Mock Object
 	 */
 	private TestExplorer getTestExplorerWithTestCaseMock(final DeleteTestHandlerTest test) {
-		return new TestExplorer() {
+		return new TestExplorer(null) {
 			@Override
 			public void refreshTreeInput() {
 				test.setRefreshDone();
@@ -379,7 +379,7 @@ public class DeleteTestHandlerTest {
 	 * @return TestExplorer with testsuite Mock Object
 	 */
 	private TestExplorer getTestExplorerWithTestSuiteMock(final DeleteTestHandlerTest test) {
-		return new TestExplorer() {
+		return new TestExplorer(null) {
 			@Override
 			public void refreshTreeInput() {
 				test.setRefreshDone();

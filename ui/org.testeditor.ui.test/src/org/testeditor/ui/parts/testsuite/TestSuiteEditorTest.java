@@ -199,8 +199,7 @@ public class TestSuiteEditorTest {
 	public void testOnFocus() {
 		final Map<String, Boolean> monitor = new HashMap<String, Boolean>();
 		TestSuiteEditorForTest editorForTest = new TestSuiteEditorForTest(new MPartAdapter(), new TestCase());
-		IEclipseContext context = getEclipseContextForTest();
-		TestExplorerMock testExplorerMock = new TestExplorerMock();
+		TestExplorerMock testExplorerMock = new TestExplorerMock(null);
 		IEventBroker specialEventBroker = getSpecialEventBroker();
 		testExplorerMock.setEventBroker(specialEventBroker);
 		testExplorerMock.shareMonitorMap(monitor);

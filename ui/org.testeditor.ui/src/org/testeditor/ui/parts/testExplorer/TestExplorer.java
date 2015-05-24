@@ -22,18 +22,24 @@ import javax.inject.Named;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.viewers.IOpenListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.OpenEvent;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -42,6 +48,7 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.ITestStructureEditor;
+import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
@@ -72,8 +79,15 @@ public class TestExplorer {
 
 	private TestStructureTree testStructureTree;
 
+	private MPart part;
+
+	@Inject
+	public TestExplorer(MPart part) {
+		this.part = part;
+	}
+
 	/**
-	 * Creates the tree-structure to manage testsuite and testcases.
+	 * Creates the tree-structure to manage test suites and test cases.
 	 * 
 	 * @param parent
 	 *            UI-Parent
@@ -106,10 +120,18 @@ public class TestExplorer {
 				handler.execute(context);
 			}
 		});
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
+		treeViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
+			}
+		});
 	}
 
 	/**
-	 * Refresh the Content of the Treeviewer. The Treeviewer Input is replaced
+	 * Refresh the Content of the TreeViewer. The TreeViewer Input is replaced
 	 * with a new Object. Every open Instance will be saved. The old state of
 	 * the tree is restored. This operation is expensive and should be used with
 	 * care.
@@ -203,7 +225,14 @@ public class TestExplorer {
 	@Focus
 	public void setFocusOnTree(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 		testStructureTree.getTreeViewer().getTree().setFocus();
-		shell.setDefaultButton(null);
+		List<MToolBarElement> children = part.getToolbar().getChildren();
+		for (MToolBarElement mToolBarElement : children) {
+			Object widget = mToolBarElement.getWidget();
+			if (widget != null && widget instanceof Widget) {
+				((Widget) widget).setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+						mToolBarElement.getElementId());
+			}
+		}
 	}
 
 	/**
@@ -233,7 +262,7 @@ public class TestExplorer {
 	}
 
 	/**
-	 * Refresh the Content of the using the methode {@link #refreshTreeInput()}.
+	 * Refresh the Content of the using the method {@link #refreshTreeInput()}.
 	 * Will be Called by the event
 	 * {@link TestEditorCoreEventConstants#TESTSTRUCTURE_MODEL_CHANGED}.
 	 * 
@@ -249,8 +278,8 @@ public class TestExplorer {
 
 	/**
 	 * refreshes a single item of the given TestStructure in the tree by using
-	 * the methode {@link #refreshTreeViewerOnTestStrucutre(TestStructure)}.
-	 * Will be Called by the event:
+	 * the method {@link #refreshTreeViewerOnTestStrucutre(TestStructure)}. Will
+	 * be Called by the event:
 	 * {@link TestEditorCoreEventConstants#TEAM_STATE_LOADED}
 	 * 
 	 * @param testStructure
