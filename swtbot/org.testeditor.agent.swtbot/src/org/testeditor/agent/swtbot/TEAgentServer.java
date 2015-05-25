@@ -918,7 +918,13 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonById locator:" + locator);
 			}
-			bot.buttonWithId(locator).click();
+			try {
+				bot.buttonWithId(locator).click();
+			} catch (WidgetNotFoundException e) {
+
+				SWTBotToolbarButton toolbarButton = bot.toolbarButtonWithId(locator);
+				toolbarButton.click();
+			}
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
 			return "ERROR " + e.getMessage();
