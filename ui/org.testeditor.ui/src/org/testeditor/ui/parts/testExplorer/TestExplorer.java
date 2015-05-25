@@ -81,6 +81,13 @@ public class TestExplorer {
 
 	private MPart part;
 
+	/**
+	 * Constructor for the e4 framework to inject the model element of the
+	 * explorer.
+	 * 
+	 * @param part
+	 *            model part that represents the explorer view part.
+	 */
 	@Inject
 	public TestExplorer(MPart part) {
 		this.part = part;
