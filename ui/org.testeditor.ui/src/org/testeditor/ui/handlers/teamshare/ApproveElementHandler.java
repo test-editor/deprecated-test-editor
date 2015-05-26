@@ -49,6 +49,8 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 
 	private TeamShareApproveWizardPage approveProjectPage;
 
+	private String teamChangeState;
+
 	/**
 	 * executes the event for the selected-elements.
 	 * 
@@ -85,7 +87,8 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			getTeamService(testStructure).approve(testStructure, translate, approveProjectPage.getSvnComment());
+			teamChangeState = getTeamService(testStructure).approve(testStructure, translate,
+					approveProjectPage.getSvnComment());
 		} catch (final SystemException e) {
 			Display.getDefault().syncExec(new Runnable() {
 
@@ -109,7 +112,7 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	void showCompletedMessage() {
 		MessageDialog.openInformation(getDisplay().getActiveShell(), translationService.translate("%info"),
-				translationService.translate("%approve.completed"));
+				translationService.translate("%approve.completed") + "\n" + teamChangeState);
 
 	}
 
