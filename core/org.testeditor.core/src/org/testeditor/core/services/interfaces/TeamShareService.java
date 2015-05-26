@@ -73,8 +73,9 @@ public interface TeamShareService {
 	 *            {@link TranslationService}
 	 * @throws SystemException
 	 *             if the sharing of the project fails
+	 * @return state Information of the approve operation.
 	 */
-	void approve(TestStructure testStructure, TranslationService translationService, String comment)
+	String approve(TestStructure testStructure, TranslationService translationService, String comment)
 			throws SystemException;
 
 	/**
@@ -87,9 +88,9 @@ public interface TeamShareService {
 	 *            {@link TranslationService}
 	 * @throws SystemException
 	 *             if the sharing of the project fails
-	 * @return List of Team Changes created by this update operation.
+	 * @return state Information of the update operation.
 	 */
-	List<TeamChange> update(TestStructure testStructure, TranslationService translationService) throws SystemException;
+	String update(TestStructure testStructure, TranslationService translationService) throws SystemException;
 
 	/**
 	 * This method imports a new project from the teamshare-repository and put

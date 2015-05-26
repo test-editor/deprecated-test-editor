@@ -226,14 +226,15 @@ public class TestStructureServiceImplTest {
 			}
 
 			@Override
-			public void approve(TestStructure testStructure, TranslationService translationService, String svnComment)
+			public String approve(TestStructure testStructure, TranslationService translationService, String svnComment)
 					throws SystemException {
+				return "";
 			}
 
 			@Override
-			public List<TeamChange> update(TestStructure testStructure, TranslationService translationService)
+			public String update(TestStructure testStructure, TranslationService translationService)
 					throws SystemException {
-				return null;
+				return "";
 			}
 
 			@Override
