@@ -52,7 +52,6 @@ import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
@@ -218,7 +217,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			LOGGER.trace("key: " + key);
 		}
 		SWTBotStyledText styledTextWithId = bot.styledTextWithId(id);
-		styledTextWithId.pressShortcut(Integer.valueOf(modificationKeys).intValue(), key);
+		styledTextWithId.pressShortcut(Integer.parseInt(modificationKeys), key);
 
 		return Boolean.toString(true);
 	}
@@ -238,7 +237,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			LOGGER.trace("modificationKeys: " + modificationKeys);
 			LOGGER.trace("key: " + key);
 		}
-		bot.activeShell().pressShortcut(Integer.valueOf(modificationKeys).intValue(), key);
+		bot.activeShell().pressShortcut(Integer.parseInt(modificationKeys), key);
 		return Boolean.toString(true);
 	}
 
@@ -288,7 +287,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 */
 	public String countProjectsEquals(String expectedCount) {
 		SWTBotTreeItem[] allItems = bot.tree().getAllItems();
-		if (allItems.length != Integer.valueOf(expectedCount).intValue()) {
+		if (allItems.length != Integer.parseInt(expectedCount)) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are " + allItems.length
 					+ " projects";
 			LOGGER.error(message);
@@ -308,7 +307,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 */
 	public String countChildrenEquals(String[] nodes, String expectedCount) {
 		SWTBotTreeItem expandNode = bot.tree().expandNode(nodes);
-		if (expandNode.getItems().length != Integer.valueOf(expectedCount)) {
+		if (expandNode.getItems().length != Integer.parseInt(expectedCount)) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are "
 					+ expandNode.getItems().length + " projects";
 			LOGGER.error(message);
@@ -328,7 +327,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 */
 	public String countItemsEquals(String locator, String expectedCount) {
 		SWTBotTable table = bot.tableWithId(locator);
-		if (table.rowCount() != Integer.valueOf(expectedCount)) {
+		if (table.rowCount() != Integer.parseInt(expectedCount)) {
 			String message = "Inspected count of items was: " + expectedCount + " but there are " + table.rowCount()
 					+ " items";
 			LOGGER.error(message);
@@ -605,8 +604,8 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			int lineNumber = 0;
 			for (String line : styledTextWithId.getLines()) {
 				if (line.contains(content)) {
-					styledTextWithId.selectRange(lineNumber, Integer.valueOf(position),
-							line.length() - Integer.valueOf(position));
+					styledTextWithId.selectRange(lineNumber, Integer.parseInt(position),
+							line.length() - Integer.parseInt(position));
 					if (LOGGER.isTraceEnabled()) {
 						LOGGER.trace("selectLine: " + line + " with number: " + lineNumber + " and selectedText "
 								+ styledTextWithId.getSelection() + " is selected.");
@@ -882,26 +881,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		}
 		return Boolean.toString(true);
 
-	}
-
-	/**
-	 * The speed of playback in milliseconds. Defaults to 0.
-	 * 
-	 * @param milliseconds
-	 *            for waiting
-	 * 
-	 * @return done on success otherwise an error with the swtbot exception.
-	 */
-	public String setPlayBackTime(String milliseconds) {
-
-		try {
-			SWTBotPreferences.PLAYBACK_DELAY = Long.parseLong(milliseconds);
-		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
-			return "ERROR " + e.getMessage();
-		}
-
-		return Boolean.toString(true);
 	}
 
 	/**
