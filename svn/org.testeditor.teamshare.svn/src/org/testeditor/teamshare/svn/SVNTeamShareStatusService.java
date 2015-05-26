@@ -34,6 +34,11 @@ import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNStatusType;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
+/**
+ * Service to retrieve the state of a team shared test structures. SVN based
+ * implementation of the service.
+ *
+ */
 public class SVNTeamShareStatusService implements TeamShareStatusService, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusService.class);
@@ -43,7 +48,10 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 	protected Map<String, TeamChangeType> lastSVNState;
 
 	/**
-	 * Convert the SVNStatusType to the matching TeamChangeType
+	 * Convert the SVNStatusType to the matching TeamChangeType.
+	 * 
+	 * @param statusType
+	 *            Status type of svn
 	 */
 	private TeamChangeType getTeamChangeTypeFromSVNStatusType(SVNStatusType statusType) {
 		if (statusType == SVNStatusType.STATUS_ADDED) {
@@ -218,7 +226,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 	}
 
 	/**
-	 * create a new SVNClientManager without Credentials
+	 * create a new SVNClientManager without Credentials.
 	 * 
 	 * @return a new {@link SVNClientManager};
 	 */
@@ -234,4 +242,5 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 		}
 		return this;
 	}
+
 }

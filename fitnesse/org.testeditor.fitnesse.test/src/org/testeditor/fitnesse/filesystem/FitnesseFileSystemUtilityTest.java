@@ -11,7 +11,8 @@
  *******************************************************************************/
 package org.testeditor.fitnesse.filesystem;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,13 +39,10 @@ public class FitnesseFileSystemUtilityTest {
 	@Test
 	public void testGetPathToTestStructure() {
 		TestStructure testStructure = createTestStructureForTest();
-		String pathPart = File.separator + "FitNesseRoot" + File.separator
-				+ "MyTestPrj" + File.separator + "MySuite" + File.separator
-				+ "ATestCase";
-		assertTrue(
-				"Path ends with",
-				FitnesseFileSystemUtility.getPathToTestStructureDirectory(
-						testStructure).endsWith(pathPart));
+		String pathPart = File.separator + "FitNesseRoot" + File.separator + "MyTestPrj" + File.separator + "MySuite"
+				+ File.separator + "ATestCase";
+		assertTrue("Path ends with",
+				FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure).endsWith(pathPart));
 	}
 
 	/**
@@ -55,11 +53,9 @@ public class FitnesseFileSystemUtilityTest {
 		TestStructure testStructure = createTestStructureForTest();
 		String pathToTestStructureErrorDirectory = FitnesseFileSystemUtility
 				.getPathToTestStructureErrorDirectory(testStructure);
-		String pathPart = File.separator + "FitNesseRoot" + File.separator
-				+ "ErrorLogs" + File.separator + "MyTestPrj" + File.separator
-				+ "MySuite" + File.separator + "ATestCase";
-		assertTrue("Path ends with",
-				pathToTestStructureErrorDirectory.endsWith(pathPart));
+		String pathPart = File.separator + "FitNesseRoot" + File.separator + "ErrorLogs" + File.separator + "MyTestPrj"
+				+ File.separator + "MySuite" + File.separator + "ATestCase";
+		assertTrue("Path ends with", pathToTestStructureErrorDirectory.endsWith(pathPart));
 	}
 
 	/**
@@ -83,37 +79,30 @@ public class FitnesseFileSystemUtilityTest {
 	 * {@link FitnesseFileSystemUtility#existsContentTxtInPathOfTestStructureInErrorDirectory(TestStructure)}
 	 * .
 	 * 
-	 * @throws IOException IOException
-	 * @throws IllegalStateException IllegalStateException
+	 * @throws IOException
+	 *             IOException
+	 * @throws IllegalStateException
+	 *             IllegalStateException
 	 */
 	@Test
 	public void testExistsContentTxtInPathOfTestStructureInErrorDirectory() throws IllegalStateException, IOException {
 
-		FileUtils.copyFolder(new File("./ressources/MyTestPrj"), new File(
-				Platform.getLocation().toFile(), "MyTestPrj"));
+		FileUtils
+				.copyFolder(new File("./ressources/MyTestPrj"), new File(Platform.getLocation().toFile(), "MyTestPrj"));
 
 		TestStructure testStructure = createTestStructureForTest();
 
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		testProjectConfig.setPathToTestFiles(Platform.getLocation().toFile()
-				.getAbsolutePath());
+		testProjectConfig.setPathToTestFiles(Platform.getLocation().toFile().getAbsolutePath());
 
 		// content.txt for test must be exist
-		assertTrue(
-				"content.txt for suite "
-						+ testStructure.getParent().getFullName()
-						+ " must exist",
-				FitnesseFileSystemUtility
-						.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure));
+		assertTrue("content.txt for suite " + testStructure.getParent().getFullName() + " must exist",
+				FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure));
 
 		// content.txt for suite must not be exist
-		assertFalse(
-				"content.txt for suite "
-						+ testStructure.getParent().getFullName()
-						+ " must not exist",
-				FitnesseFileSystemUtility
-						.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure
-								.getParent()));
+		assertFalse("content.txt for suite " + testStructure.getParent().getFullName() + " must not exist",
+				FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure
+						.getParent()));
 
 	}
 
