@@ -149,7 +149,7 @@ public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 			for (String fileName : libraryLoadingStatus.getErrorWhileLoadingList()) {
 				messageBuilder.append("File not found: ").append(fileName).append("\n");
 			}
-			new SystemException(messageBuilder.toString());
+			throw new SystemException(messageBuilder.toString());
 		}
 		return libraryLoadingStatus.isErrorLessLoaded();
 	}
