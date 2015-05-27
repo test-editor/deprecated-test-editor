@@ -15,7 +15,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.apache.log4j.LogManager;
 import org.junit.Test;
-import org.testeditor.core.services.interfaces.LibraryDataStoreService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -43,7 +42,6 @@ public class CoreActivatorTest {
 		assertNotNull(ServiceLookUpForTest.getService(TestProtocolService.class));
 		assertNotNull(ServiceLookUpForTest.getService(TestProjectService.class));
 		assertNotNull(ServiceLookUpForTest.getService(TestEditorPlugInService.class));
-		assertNotNull(ServiceLookUpForTest.getService(LibraryDataStoreService.class));
 		assertNotNull(ServiceLookUpForTest.getService(TestEditorConfigurationService.class));
 	}
 

@@ -62,7 +62,6 @@ import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
-import org.testeditor.core.services.interfaces.LibraryDataStoreService;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -532,14 +531,13 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	private void readingLibrary(TestFlow testStructure, LibraryLoadingStatus libraryStatus) {
 		LibraryReaderService libraryReaderService = context.get(LibraryReaderService.class);
-		LibraryDataStoreService libraryDataStoreService = context.get(LibraryDataStoreService.class);
 		ProjectActionGroups projectActionGroups;
 		try {
 			projectActionGroups = libraryReaderService.readBasisLibrary(testStructure.getRootElement()
 					.getTestProjectConfig().getProjectLibraryConfig());
 			projectActionGroups.setProjectName(testStructure.getRootElement().getName());
 			LOGGER.debug("ProjectGroups read for: " + projectActionGroups.getProjectName());
-			libraryDataStoreService.addProjectActionGroups(projectActionGroups);
+			actionGroupService.addProjectActionGroups(projectActionGroups);
 		} catch (LibraryConstructionException e) {
 			String mappingErrorPartOne = translationService.translate("%editController.ErrorObjectMappingPartOne");
 			String mappingErrorPartTow = translationService.translate("%editController.ErrorObjectMappingPartTow");

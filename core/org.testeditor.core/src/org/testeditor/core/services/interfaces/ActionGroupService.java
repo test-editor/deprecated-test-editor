@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.Argument;
+import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.TechnicalBindingType;
 import org.testeditor.core.model.teststructure.TestActionGroup;
 import org.testeditor.core.model.teststructure.TestActionGroupTestCase;
@@ -138,5 +139,13 @@ public interface ActionGroupService {
 	 *            ActionLine as String
 	 */
 	void addActionLine(TestActionGroup testActionGroup, TestFlow testFlow, String line);
+
+	/**
+	 * this method adds the given projectActionGroup to the cache.
+	 * 
+	 * @param projectsActionGroups
+	 *            the {@link ProjectActionGroups} to be added
+	 */
+	void addProjectActionGroups(ProjectActionGroups projectsActionGroups);
 
 }
