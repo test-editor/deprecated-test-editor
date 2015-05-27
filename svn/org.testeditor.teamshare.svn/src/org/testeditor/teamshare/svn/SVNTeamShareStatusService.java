@@ -52,6 +52,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 	 * 
 	 * @param statusType
 	 *            Status type of svn
+	 * @return Core TeamChangeType that is team provider independent.
 	 */
 	private TeamChangeType getTeamChangeTypeFromSVNStatusType(SVNStatusType statusType) {
 		if (statusType == SVNStatusType.STATUS_ADDED) {
