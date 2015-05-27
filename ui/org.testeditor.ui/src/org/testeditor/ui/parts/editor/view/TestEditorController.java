@@ -430,7 +430,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	protected void afterSetTestFlow() {
 		LibraryLoadingStatus libraryStatus = testFlow.getRootElement().getTestProjectConfig().getLibraryLoadingStatus();
 		if (!libraryStatus.isLoaded()) {
-			readingLibrary(testFlow, libraryStatus);
+			readingLibrary(testFlow);
 		}
 		if (libraryStatus.isLoaded() && libraryStatus.isErrorLessLoaded()) {
 			refreshTestComponents(testFlow);
@@ -526,10 +526,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 * 
 	 * @param testStructure
 	 *            the {@link TestFlow}
-	 * @param libraryStatus
-	 *            {@link LibraryLoadingStatus}
 	 */
-	private void readingLibrary(TestFlow testStructure, LibraryLoadingStatus libraryStatus) {
+	private void readingLibrary(TestFlow testStructure) {
 		LibraryReaderService libraryReaderService = context.get(LibraryReaderService.class);
 		ProjectActionGroups projectActionGroups;
 		try {
