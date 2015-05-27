@@ -43,10 +43,9 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryDataStoreService;
-import org.testeditor.core.services.interfaces.LibraryReadException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
-import org.testeditor.core.services.interfaces.ObjectTreeConstructionException;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -90,8 +89,8 @@ public class ActionGroupServiceImplTest {
 		actionGroupService.bindLibraryReader(new LibraryReaderService() {
 
 			@Override
-			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig)
-					throws LibraryReadException, ObjectTreeConstructionException {
+			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
+					LibraryConstructionException {
 				ProjectActionGroups actionGroups = new ProjectActionGroups();
 				ActionGroup actionGroup = new ActionGroup();
 				Action action = new Action();

@@ -14,33 +14,38 @@ package org.testeditor.core.services.interfaces;
 import org.testeditor.core.exceptions.SystemException;
 
 /**
+ * Exception on creating the library describing the application. This exception
+ * is thrown on inconsistent action group and technical binding configurations.
+ * Like missing technical binding.
  * 
- * special exception, in case of problems while the object-tree under
- * construction.
  * 
- * @deprecated is only used while loading the "library" and thus not really
- *             needed
  */
-public class ObjectTreeConstructionException extends SystemException {
+public class LibraryConstructionException extends SystemException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -910177736060465259L;
+
 	/**
 	 * constructor with the message.
 	 * 
 	 * @param message
 	 *            string
 	 */
-	public ObjectTreeConstructionException(String message) {
+	public LibraryConstructionException(String message) {
 		super(message);
 	}
 
 	/**
-	 * constructor.
+	 * constructor with message an underlying excpetion.
 	 * 
 	 * @param message
-	 *            String
+	 *            of the exception.
 	 * @param cause
-	 *            Throwable
+	 *            Throwable nested exception.
 	 */
-	public ObjectTreeConstructionException(String message, Throwable cause) {
+	public LibraryConstructionException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

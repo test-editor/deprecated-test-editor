@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.testeditor.core.model.action.ProjectActionGroups;
 
@@ -21,6 +21,7 @@ import org.testeditor.core.model.action.ProjectActionGroups;
  * in a cache.
  * 
  */
+// TODO Can this class be combined with the ActionGroupService
 public interface LibraryDataStoreService {
 	/**
 	 * this method adds the given projectActionGroup to the cache.
@@ -36,5 +37,5 @@ public interface LibraryDataStoreService {
 	 * 
 	 * @return HashMap<String, ProjectActionGroups>
 	 */
-	HashMap<String, ProjectActionGroups> getProjectsActionGroups();
+	Map<String, ProjectActionGroups> getProjectsActionGroups();
 }

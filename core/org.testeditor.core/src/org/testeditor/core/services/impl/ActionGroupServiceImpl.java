@@ -33,7 +33,6 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryDataStoreService;
-import org.testeditor.core.services.interfaces.LibraryReadException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.util.ActionLineSplitter;
 
@@ -70,10 +69,8 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 					.getProjectLibraryConfig());
 			projectActionGroups.setProjectName(testProject.getName());
 			libraryDataStoreService.addProjectActionGroups(projectActionGroups);
-		} catch (LibraryReadException e) {
-			LOGGER.error("Error reading library :: FAILED", e);
 		} catch (SystemException e) {
-			LOGGER.error("Error constructing object-tree :: FAILED", e);
+			LOGGER.error("Error reading Library. object-tree :: FAILED", e);
 		}
 
 	}
