@@ -60,6 +60,7 @@ public final class CustomWidgetIdConstants {
 	public static final String TESTCASE_TOOLBAR_DELETE = "testcase.toolbar.delete";
 
 	public static final String TEST_HISTORY_LABEL = "TestHistoryLabel";
+	public static final String HISTORY_TABLE = "history.table";
 
 	public static final String NAME_ERROR_MESSAGE_LABEL = "name.error.message.label";
 

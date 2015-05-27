@@ -1116,6 +1116,45 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * Checks the expected row number of given Table.
+	 * 
+	 * @param locator
+	 *            String
+	 * @param expectedRowNumber
+	 *            String
+	 * @return true if expected value equals current value
+	 */
+	public String checkRowNumberOfTable(String locator, String expectedRowNumber) {
+
+		try {
+
+			LOGGER.trace("checkRowNumberOfTable locator: " + locator + " expectedRowNumber: " + expectedRowNumber);
+
+			SWTBotTable table = bot.tableWithId(locator);
+
+			if (table != null) {
+
+				if (table.rowCount() == Integer.parseInt(expectedRowNumber)) {
+					return Boolean.toString(true);
+				} else {
+					LOGGER.info("expectedRowNumber " + expectedRowNumber + " currentRowNumber " + table.rowCount());
+				}
+
+			} else {
+				String message = "ERROR  Table with key " + locator + " not found !";
+				LOGGER.error(message);
+				return message;
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("ERROR " + e.getMessage());
+			return "ERROR " + e.getMessage();
+		}
+
+		return Boolean.toString(false);
+	}
+
+	/**
 	 * Replace all mutated vowel in given text.
 	 * 
 	 * @param text
@@ -1269,6 +1308,10 @@ public class TEAgentServer extends Thread implements ITestHarness {
 					StringBuilder sb = new StringBuilder();
 
 					for (Widget widget : widgets) {
+
+						if (widget instanceof Table) {
+							sb.append("\n >>> Table gefunden mit " + ((Table) widget).getItems().length + " Zeilen !");
+						}
 
 						sb.append("widgetId: " + widget.getData("org.eclipse.swtbot.widget.key"));
 						sb.append(" widgetClass: " + widget.getClass().getSimpleName());
@@ -1733,4 +1776,5 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			return "ERROR " + e.getMessage();
 		}
 	}
+
 }
