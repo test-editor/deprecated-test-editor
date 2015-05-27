@@ -49,6 +49,7 @@ import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.action.Argument;
+import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.TextType;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.model.teststructure.TestActionGroup;
@@ -60,6 +61,9 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ActionGroupService;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
+import org.testeditor.core.services.interfaces.LibraryDataStoreService;
+import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -527,10 +531,33 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 *            {@link LibraryLoadingStatus}
 	 */
 	private void readingLibrary(TestFlow testStructure, LibraryLoadingStatus libraryStatus) {
-		TestEditorLibraryController testEditorLibraryController = ContextInjectionFactory.make(
-				TestEditorLibraryController.class, context);
-		testEditorLibraryController.readingLibrary(translationService, LOGGER, testStructure, libraryStatus,
-				compositeForView.getShell());
+		LibraryReaderService libraryReaderService = context.get(LibraryReaderService.class);
+		LibraryDataStoreService libraryDataStoreService = context.get(LibraryDataStoreService.class);
+		ProjectActionGroups projectActionGroups;
+		try {
+			projectActionGroups = libraryReaderService.readBasisLibrary(testStructure.getRootElement()
+					.getTestProjectConfig().getProjectLibraryConfig());
+			projectActionGroups.setProjectName(testStructure.getRootElement().getName());
+			LOGGER.debug("ProjectGroups read for: " + projectActionGroups.getProjectName());
+			libraryDataStoreService.addProjectActionGroups(projectActionGroups);
+		} catch (LibraryConstructionException e) {
+			String mappingErrorPartOne = translationService.translate("%editController.ErrorObjectMappingPartOne");
+			String mappingErrorPartTow = translationService.translate("%editController.ErrorObjectMappingPartTow");
+			MessageDialog.openError(
+					Display.getCurrent().getActiveShell(),
+					translationService.translate("%editController.LibraryNotLoaded"),
+					translationService.translate("%editController.ErrorReadingLibrary") + mappingErrorPartOne + " "
+							+ e.getMessage() + " " + mappingErrorPartTow);
+			LOGGER.error("Error reading library :: FAILED" + mappingErrorPartOne + " " + e.getMessage() + " "
+					+ mappingErrorPartTow, e);
+		} catch (SystemException e) {
+			MessageDialog.openError(
+					Display.getCurrent().getActiveShell(),
+					translationService.translate("%editController.LibraryNotLoaded"),
+					translationService.translate("%editController.ErrorReadingLibrary") + ": "
+							+ e.getLocalizedMessage());
+			LOGGER.error("Error reading library :: FAILED", e);
+		}
 	}
 
 	/**

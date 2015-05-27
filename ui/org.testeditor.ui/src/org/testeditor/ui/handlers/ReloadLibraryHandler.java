@@ -27,16 +27,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryDataStoreService;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
-import org.testeditor.ui.utilities.TestEditorCatchReadingExceptions;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -135,9 +134,24 @@ public class ReloadLibraryHandler {
 					.getTestProjectConfig().getProjectLibraryConfig());
 			projectActionGroups.setProjectName(testProject.getName());
 			libraryDataStoreService.addProjectActionGroups(projectActionGroups);
-		} catch (SystemException except) {
-			Shell shell = Display.getCurrent().getActiveShell();
-			TestEditorCatchReadingExceptions.catchException(shell, translationService, LOGGER, except);
+		} catch (LibraryConstructionException e) {
+			String mappingErrorPartOne = translationService.translate("%editController.ErrorObjectMappingPartOne");
+			String mappingErrorPartTow = translationService.translate("%editController.ErrorObjectMappingPartTow");
+			MessageDialog.openError(
+					Display.getCurrent().getActiveShell(),
+					translationService.translate("%editController.LibraryNotLoaded"),
+					translationService.translate("%editController.ErrorReadingLibrary") + mappingErrorPartOne + " "
+							+ e.getMessage() + " " + mappingErrorPartTow);
+			LOGGER.error("Error reading library :: FAILED" + mappingErrorPartOne + " " + e.getMessage() + " "
+					+ mappingErrorPartTow, e);
+			libraryStatus.setErrorLessLoaded(false);
+		} catch (SystemException e) {
+			MessageDialog.openError(
+					Display.getCurrent().getActiveShell(),
+					translationService.translate("%editController.LibraryNotLoaded"),
+					translationService.translate("%editController.ErrorReadingLibrary") + ": "
+							+ e.getLocalizedMessage());
+			LOGGER.error("Error reading library :: FAILED", e);
 			libraryStatus.setErrorLessLoaded(false);
 		}
 	}
