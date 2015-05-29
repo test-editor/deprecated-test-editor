@@ -74,8 +74,8 @@ public class TestExplorer {
 	@Inject
 	private EPartService partService;
 
-	@Inject
-	private TeamShareStatusService teamShareStatusService;
+//	@Inject
+//	private TeamShareStatusService teamShareStatusService;
 
 	private TestStructureTree testStructureTree;
 
