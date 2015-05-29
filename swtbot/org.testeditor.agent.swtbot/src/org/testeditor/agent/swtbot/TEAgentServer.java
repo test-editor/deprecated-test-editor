@@ -1480,6 +1480,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	@Override
 	public void run() {
 		ServerSocket listener;
+		boolean first = true;
 		try {
 			listener = new ServerSocket(SERVER_PORT);
 
@@ -1509,7 +1510,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								stopApplication();
 							}
 
-							if (Display.getDefault() != null) {
+							if (first && Display.getDefault() != null) {
 								UIThreadRunnable.syncExec(new VoidResult() {
 
 									@Override
@@ -1517,9 +1518,12 @@ public class TEAgentServer extends Thread implements ITestHarness {
 										Shell[] shells = Display.getDefault().getShells();
 										if (shells.length > 0) {
 											shells[shells.length - 1].forceActive();
+											shells[shells.length - 1].setText("***** AUT running with TE-Agent *****"
+													+ shells[shells.length - 1].getText());
 										}
 									}
 								});
+								first = false;
 							}
 
 							String[] splitCommand = command.split(";");
