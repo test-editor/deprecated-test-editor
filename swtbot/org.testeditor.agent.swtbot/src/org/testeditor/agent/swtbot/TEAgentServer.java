@@ -1781,4 +1781,29 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		}
 	}
 
+	/**
+	 * retrieve the items of a drop down box and check if one equals the given
+	 * value
+	 * 
+	 * @param locator
+	 *            locator for a drop down
+	 * @param checkString
+	 *            string to look for
+	 * @return true, if drop down contains the given value
+	 */
+	public boolean checkDropDownContains(String locator, String checkString) {
+		SWTBotCombo combo = bot.comboBoxWithId(locator);
+		if (combo != null) {
+			String[] items = combo.items();
+			for (String item : items) {
+				if (item.equals(checkString)) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			throw new IllegalArgumentException("no drop down found for locator '" + locator + "'");
+		}
+	}
+
 }
