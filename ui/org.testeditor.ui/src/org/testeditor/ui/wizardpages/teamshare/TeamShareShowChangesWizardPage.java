@@ -75,8 +75,10 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		// TeamShareStatus shareStatus = new TeamShareStatus();
+		
 		setChangedDatas(teamShareStatusHandlerService.getModifiedFilesFromTestStructure(testStructure));
+		
+		
 		super.createControl(parent);
 		setPageComplete(true);
 		refreshList();
@@ -211,7 +213,12 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 		}
 		String path;
 		if (!file.getPath().equals(testProject.getTestProjectConfig().getProjectPath())) {
-			path = file.getPath().substring(testProject.getTestProjectConfig().getProjectPath().length() + 1);
+			if(file.getPath().length() >= testProject.getTestProjectConfig().getProjectPath().length() + 1) {
+				path = file.getPath().substring(testProject.getTestProjectConfig().getProjectPath().length() + 1);
+			} else {
+				path = file.getPath();
+			}
+			
 		} else {
 			return testProject.getName();
 		}

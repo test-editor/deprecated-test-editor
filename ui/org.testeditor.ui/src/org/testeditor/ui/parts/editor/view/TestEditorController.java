@@ -187,7 +187,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private void updateTeamStateInformation() {
 		TestProject testProject = getTestStructure().getRootElement();
 		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
-			teamShareStatusService.setTeamStatusForProject(testProject);
+			//teamShareStatusService.setTeamStatusForProject(testProject);
 		}
 	}
 
