@@ -177,7 +177,8 @@ public class TestExplorer {
 	public void reloadTeamShareStatusForProjects() {
 		for (TestProject project : testProjectService.getProjects()) {
 			if (project.getTestProjectConfig().isTeamSharedProject()) {
-				teamShareStatusService.setTeamStatusForProject(project);
+				// TODO here will be injected svn service, in case of git also ????
+				//teamShareStatusService.setTeamStatusForProject(project);
 			}
 		}
 	}
