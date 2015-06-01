@@ -253,9 +253,8 @@ public class ApplicationLifeCycleHandler {
 				}
 			}
 			monitor.done();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOGGER.trace("Error stopping Test Server", e);
-			MessageDialog.openError(shell, "Error", e.getLocalizedMessage());
 		}
 	}
 
