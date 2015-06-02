@@ -17,14 +17,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaData.MetaDataTagListComparator;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.metadata.core.model.MetaDataValue;
 
 public abstract class MetaDataServiceAbstractBase implements MetaDataService {
+
+	@Inject
+	private TestProjectService testProjectService;
 
 	private Map<String, Map<String, MetaData>> metaDataMap = new TreeMap<String, Map<String, MetaData>>();
 	private Map<String, Map<String, MetaDataValue>> allMetaDataValues = new TreeMap<String, Map<String, MetaDataValue>>();
@@ -46,21 +52,12 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
 	protected Map<String, List<MetaDataTag>> getMetaDataStore(String key) {
 		if (!metaDataStore.containsKey(key)) {
-			throw new RuntimeException("no data for  " + key + " in metaDataStore");
+			metaDataStore.put(key, new TreeMap<String, List<MetaDataTag>>());
 		}
 		return metaDataStore.get(key);
 	}
 
 	public MetaDataServiceAbstractBase() {
-	}
-
-	protected void init(String projectName, String rootPath) {
-		if (!metaDataMap.containsKey(projectName)) {
-			metaDataMap.put(projectName, new TreeMap<String, MetaData>());
-			allMetaDataValues.put(projectName, new TreeMap<String, MetaDataValue>());
-			metaDataStore.put(projectName, new TreeMap<String, List<MetaDataTag>>());
-			doInit(projectName, rootPath);
-		}
 	}
 
 	protected void init(TestProject testProject) {
@@ -69,25 +66,17 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 			metaDataMap.put(projectName, new TreeMap<String, MetaData>());
 			allMetaDataValues.put(projectName, new TreeMap<String, MetaDataValue>());
 			metaDataStore.put(projectName, new TreeMap<String, List<MetaDataTag>>());
-			doInit(testProject.getName(), testProject.getTestProjectConfig().getProjectPath());
+			doInit(testProject);
 		}
 	}
 
-	abstract protected void doInit(String projectName, String rootPath);
+	abstract protected void doInit(TestProject testProject);
 
 	@Override
 	public List<MetaData> getAllMetaData(TestProject project) {
 		init(project);
 		ArrayList<MetaData> list = new ArrayList<MetaData>();
 		list.addAll(getMetaDataMap(project.getFullName()).values());
-		Collections.sort(list, new MetaDataTagListComparator());
-		return list;
-	}
-
-	public List<MetaData> getAllMetaData(String projectName, String rootPath) {
-		init(projectName, rootPath);
-		ArrayList<MetaData> list = new ArrayList<MetaData>();
-		list.addAll(getMetaDataMap(projectName).values());
 		Collections.sort(list, new MetaDataTagListComparator());
 		return list;
 	}
@@ -192,6 +181,19 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 			}
 		}
 		return testCases;
+	}
+
+	@Override
+	public List<TestProject> getAllProjects() {
+		return testProjectService.getProjects();
+	}
+
+	public void unbindTestProjectService(TestProjectService testProjectService) {
+		this.testProjectService = null;
+	}
+
+	public void bindTestProjectService(TestProjectService testProjectService) {
+		this.testProjectService = testProjectService;
 	}
 
 }

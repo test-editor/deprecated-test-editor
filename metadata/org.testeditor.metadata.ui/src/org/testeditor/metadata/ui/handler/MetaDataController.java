@@ -158,11 +158,11 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		inputRowGridLayout.verticalSpacing = 100;
 		inputRow.setLayout(inputRowGridLayout);
 
-		GridData gridDataLabel = new GridData(SWT.NONE, SWT.CENTER, true, true);
+		GridData gridDataLabel = new GridData(SWT.NONE, SWT.LEFT, true, true);
 		GridData gridDataControl = new GridData(SWT.FILL, SWT.BEGINNING, true, true);
 
 		// Create label and drop down for metadatavalues. Controls are hidden
-		lblMetaDataCB = new Label(inputRow, SWT.NONE);
+		lblMetaDataCB = new Label(inputRow, SWT.SHADOW_OUT | SWT.RIGHT);
 		lblMetaDataCB.setText(translationService.translate("%testeditor.tab.metadata.key"));
 		lblMetaDataCB.setLayoutData(gridDataLabel);
 

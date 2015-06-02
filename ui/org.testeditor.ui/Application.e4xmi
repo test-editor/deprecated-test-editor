@@ -7,6 +7,14 @@
       <children xsi:type="advanced:Perspective" xmi:id="_vtvnBCNOEeKR9Jsu4DQSAw" elementId="org.testeditor.perspective.testeditor" contributorURI="platform:/plugin/org.testeditor.ui" selectedElement="_vtvnBSNOEeKR9Jsu4DQSAw" label="">
         <children xsi:type="basic:PartSashContainer" xmi:id="_vtvnBSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" containerData="30" selectedElement="_vtvnBiNOEeKR9Jsu4DQSAw" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_vtvnBiNOEeKR9Jsu4DQSAw" elementId="PartStack.org.testeditor.testexplorer" contributorURI="platform:/plugin/org.testeditor.ui" containerData="20" selectedElement="_vtvnByNOEeKR9Jsu4DQSAw">
+          <!--
+            <children xsi:type="basic:Part"
+            	xmi:id="_vtvnByNOEeKR9Jsu4DQSAw"
+            	elementId="org.testeditor.metadata.explorer.metadataexplorer"
+            	contributorURI="platform:/plugin/org.testeditor.metadata.ui" containerData="50" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.explorer.MetaDataExplorer"
+            	label="%part.label.metadataexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif">
+            </children>
+            -->
             <children xsi:type="basic:Part" xmi:id="_vtvnByNOEeKR9Jsu4DQSAw" elementId="org.testeditor.ui.part.testexplorer" contributorURI="platform:/plugin/org.testeditor.ui" containerData="40" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.TestExplorer" label="%part.label.testexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif">
               <menus xsi:type="menu:PopupMenu" xmi:id="_By15wC5IEeKVW5gnB3v2mQ" elementId="org.testeditor.ui.popupmenu" label="%command.description.testexplorerpopupmenudescription" iconURI="" tooltip="" mnemonics="">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_lEX_4D6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.handledmenuitem.opentestcase" label="%popupmenu.label.open.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/open.png" mnemonics="" command="_K6bh4D7GEeKXX6nM9hjBXQ"/>

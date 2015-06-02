@@ -98,4 +98,6 @@ public interface MetaDataService {
 	List<String> getTestCases(TestProject project, MetaDataValue metaDataValue);
 
 	List<String> getTestCases(TestProject project, List<MetaDataValue> metaDataValueList);
+
+	List<TestProject> getAllProjects();
 }
