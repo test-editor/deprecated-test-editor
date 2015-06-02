@@ -4,4 +4,6 @@
    <service>
       <provide interface="org.testeditor.metadata.core.MetaDataService"/>
    </service>
+   <reference bind="bindTestProjectService" cardinality="1..1" interface="org.testeditor.core.services.interfaces.TestProjectService" name="TestProjectService" unbind="unbindTestProjectService"/>
+
 </scr:component>
