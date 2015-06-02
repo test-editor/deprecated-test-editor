@@ -232,7 +232,7 @@ public class ImportProjectHandler {
 			}
 		}
 
-		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, "");
+		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY, "");
 
 	}
 

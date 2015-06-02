@@ -69,7 +69,7 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 	public void saveTestStructureData(TestStructure testStructure) throws SystemException {
 		new FitnesseFileSystemTestStructureContentService().saveTestStructureData(testStructure);
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE,
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getFullName());
 		}
 	}
