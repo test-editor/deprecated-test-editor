@@ -198,52 +198,55 @@ public class FitNesseWikiParser {
 			StringTokenizer stringTokenizer) throws SystemException {
 		String nextElement = stringTokenizer.nextToken();
 		StringTokenizer scenarioTokenizer = new StringTokenizer(nextElement, "|");
-		String scenarioName = scenarioTokenizer.nextToken();
-		String includeOfScenario = ((TestScenario) testFlow).getIncludeOfScenario(scenarioName.split(";")[0]);
-		StringBuilder scenarioStringBuider = new StringBuilder();
-		String[] scenarioNameSplittedByCapitals = scenarioName.split("(?=[A-Z])");
-		StringBuilder scenarioNameWithSpaces = buildScenarioNameWithSpaces(scenarioNameSplittedByCapitals);
+		if (scenarioTokenizer.hasMoreTokens()) {
+			String scenarioName = scenarioTokenizer.nextToken();
+			String includeOfScenario = ((TestScenario) testFlow).getIncludeOfScenario(scenarioName.split(";")[0]);
+			StringBuilder scenarioStringBuider = new StringBuilder();
+			String[] scenarioNameSplittedByCapitals = scenarioName.split("(?=[A-Z])");
+			StringBuilder scenarioNameWithSpaces = buildScenarioNameWithSpaces(scenarioNameSplittedByCapitals);
 
-		try {
-			TestScenarioService testScenarioService = testEditorPluginService.getTestScenarioService(testFlow
-					.getRootElement().getTestProjectConfig().getTestServerID());
+			try {
+				TestScenarioService testScenarioService = testEditorPluginService.getTestScenarioService(testFlow
+						.getRootElement().getTestProjectConfig().getTestServerID());
 
-			TestScenario scenarioByFullName = testScenarioService.getScenarioByFullName(testFlow.getRootElement(),
-					includeOfScenario.substring(10));
+				TestScenario scenarioByFullName = testScenarioService.getScenarioByFullName(testFlow.getRootElement(),
+						includeOfScenario.substring(10));
 
-			List<String> params = new ArrayList<String>();
-			// scenarioByFullName can be null if scenario was not found
-			if (scenarioByFullName != null) {
-				params = scenarioByFullName.getTestParameters();
-			}
-
-			if (!params.isEmpty()) {
-				scenarioStringBuider.append("!|")
-						.append(scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1)).append("|\n");
-				for (String param : params) {
-					scenarioStringBuider.append("|").append(param);
+				List<String> params = new ArrayList<String>();
+				// scenarioByFullName can be null if scenario was not found
+				if (scenarioByFullName != null) {
+					params = scenarioByFullName.getTestParameters();
 				}
-				scenarioStringBuider.append("|\n");
-				scenarioStringBuider.append(nextElement.substring(scenarioName.length() + 1)).append("\n");
 
-			} else {
-				scenarioStringBuider.append("!|script|\n|");
-				scenarioStringBuider.append(scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1))
-						.append("|\n");
-			}
+				if (!params.isEmpty()) {
+					scenarioStringBuider.append("!|")
+							.append(scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1))
+							.append("|\n");
+					for (String param : params) {
+						scenarioStringBuider.append("|").append(param);
+					}
+					scenarioStringBuider.append("|\n");
+					scenarioStringBuider.append(nextElement.substring(scenarioName.length() + 1)).append("\n");
 
-			StringTokenizer inputTokenizer = new StringTokenizer(scenarioStringBuider.toString(), "\n");
+				} else {
+					scenarioStringBuider.append("!|script|\n|");
+					scenarioStringBuider.append(
+							scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1)).append("|\n");
+				}
 
-			addTestScenarioParameterTable(testFlow, testComponents, inputTokenizer, includeOfScenario,
-					isAScenarioInclude(testFlow, includeOfScenario.substring(10)));
+				StringTokenizer inputTokenizer = new StringTokenizer(scenarioStringBuider.toString(), "\n");
 
-		} catch (StringIndexOutOfBoundsException e) {
+				addTestScenarioParameterTable(testFlow, testComponents, inputTokenizer, includeOfScenario,
+						isAScenarioInclude(testFlow, includeOfScenario.substring(10)));
 
-			if (includeOfScenario.isEmpty()) {
-				LOGGER.error(testFlow.getFullName() + ": Include for the scenario with the name: " + scenarioName
-						+ " does not exist !", e);
-			} else {
-				LOGGER.error(e);
+			} catch (StringIndexOutOfBoundsException e) {
+
+				if (includeOfScenario.isEmpty()) {
+					LOGGER.error(testFlow.getFullName() + ": Include for the scenario with the name: " + scenarioName
+							+ " does not exist !", e);
+				} else {
+					LOGGER.error(e);
+				}
 			}
 		}
 	}
