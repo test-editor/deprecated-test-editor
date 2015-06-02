@@ -21,6 +21,7 @@ public abstract class TestEditorConstants {
 	public static final String TEST_CASE_CONTROLER = "org.testeditor.ui.commandparameter.testCaseControler";
 	public static final String SELECTED_TEST_COMPONENT = "org.testeditor.ui.commandparameter.selectedTestComponent";
 	public static final String TEST_EXPLORER_VIEW = "org.testeditor.ui.part.testexplorer";
+	public static final String META_DATA_EXPLORER_VIEW = "org.testeditor.ui.part.metadataexplorer";
 	public static final String TEST_HISTORY_VIEW = "org.testeditor.ui.part.testhistory";
 	public static final String SYSTEM_CONFIGUTRATION_VIEW = "org.testeditor.ui.part.systemconfiguration";
 	public static final String CONTRIBUTOR_URI = "platform:/plugin/org.testeditor.ui";

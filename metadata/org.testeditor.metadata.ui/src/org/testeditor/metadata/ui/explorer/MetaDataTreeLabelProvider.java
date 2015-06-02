@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.parts.commons.tree;
+package org.testeditor.metadata.ui.explorer;
 
 import javax.inject.Inject;
 
@@ -41,7 +41,7 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 		if (element instanceof TestProject) {
 			return IconConstants.ICON_PROJECT;
 		}
-		if (element instanceof MetaData) {
+		if (element instanceof MetaData || element instanceof MetaDataValue) {
 			return IconConstants.ICON_TESTSUITE;
 		}
 		return IconConstants.ICON_TESTCASE;
@@ -57,6 +57,9 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 		}
 		if (element instanceof MetaDataValue) {
 			return ((MetaDataValue) element).getLabel();
+		}
+		if (element instanceof String) {
+			return (String) element;
 		}
 		return null;
 	}
