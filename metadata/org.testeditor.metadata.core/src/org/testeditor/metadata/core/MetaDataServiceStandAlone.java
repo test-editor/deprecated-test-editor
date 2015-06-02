@@ -14,6 +14,8 @@ package org.testeditor.metadata.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.metadata.core.model.MetaDataTag;
 
 public class MetaDataServiceStandAlone extends MetaDataServiceSimpleImpl {
@@ -22,7 +24,12 @@ public class MetaDataServiceStandAlone extends MetaDataServiceSimpleImpl {
 	}
 
 	public List<MetaDataTag> getMetaDataTags(String projectName, String fullName) {
-		init(projectName, null);
+		TestProject project = new TestProject();
+		project.setName(projectName);
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+		testProjectConfig.setProjectPath(fullName);
+		project.setTestProjectConfig(testProjectConfig);
+
 		List<MetaDataTag> value = new ArrayList<MetaDataTag>();
 		if (getMetaDataStore(projectName).containsKey(fullName)) {
 			value.addAll(getMetaDataStore(projectName).get(fullName));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
+a * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -79,7 +79,10 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 	}
 
 	@Override
-	protected void doInit(String projectName, String projectPath) {
+	protected void doInit(TestProject testProject) {
+
+		String projectName = testProject.getName();
+		String projectPath = testProject.getTestProjectConfig().getProjectPath();
 
 		Properties prop = new Properties();
 
@@ -100,7 +103,7 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		for (Object object : prop.keySet()) {
 			String key = (String) object;
 			if (key.indexOf('.') == -1) {
-				MetaData metaData = new MetaData(key, (String) prop.get(key));
+				MetaData metaData = new MetaData(key, (String) prop.get(key), testProject);
 				getMetaDataMap(projectName).put(metaData.getKey(), metaData);
 			}
 		}
@@ -153,5 +156,4 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		}
 
 	}
-
 }
