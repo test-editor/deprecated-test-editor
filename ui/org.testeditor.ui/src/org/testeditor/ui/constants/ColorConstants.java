@@ -59,8 +59,13 @@ public final class ColorConstants {
 	 * @return the Color(display, red, green,blue)
 	 * 
 	 */
-	private static Color getColor(int red, int green, int blue) {
-		return new Color(getDisplay(), red, green, blue);
+	private static Color getColor(final int red, final int green, final int blue) {
+		Display display = Display.getCurrent();
+		if (display != null) {
+			return new Color(getDisplay(), red, green, blue);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -69,8 +74,13 @@ public final class ColorConstants {
 	 *            as SWT.COLOR_..
 	 * @return the Color
 	 */
-	private static Color getColor(int colorNo) {
-		return getDisplay().getSystemColor(colorNo);
+	private static Color getColor(final int colorNo) {
+		Display display = Display.getCurrent();
+		if (display != null) {
+			return display.getSystemColor(colorNo);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -90,15 +100,27 @@ public final class ColorConstants {
 	 * dispose all colors.
 	 */
 	public static void disposeColors() {
-		COLOR_BLUE.dispose();
-		COLOR_DARK_GREEN.dispose();
-		COLOR_BACKROUND_NORMAL.dispose();
-		COLOR_SELECTED.dispose();
-		COLOR_WHITE.dispose();
-		COLOR_YELLOW.dispose();
-		COLOR_GRAY.dispose();
-		COLOR_DARK_GRAY.dispose();
-		COLOR_DARK_GREEN.dispose();
-		COLOR_CYAN.dispose();
+		dispose(COLOR_BLUE);
+		dispose(COLOR_DARK_GREEN);
+		dispose(COLOR_BACKROUND_NORMAL);
+		dispose(COLOR_SELECTED);
+		dispose(COLOR_WHITE);
+		dispose(COLOR_YELLOW);
+		dispose(COLOR_GRAY);
+		dispose(COLOR_DARK_GRAY);
+		dispose(COLOR_DARK_GREEN);
+		dispose(COLOR_CYAN);
+	}
+
+	/**
+	 * Checks if the color is not null and disposes it.
+	 * 
+	 * @param color
+	 *            to be disposed.
+	 */
+	private static void dispose(Color color) {
+		if (color != null) {
+			color.dispose();
+		}
 	}
 }

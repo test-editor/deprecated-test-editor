@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
  * Test for the FitNesseTestResultReader.
  *
  */
-public class FitNesseTestResultReaderTest {
+public class FitNesseTestHistoryResultReaderTest {
 
 	/**
 	 * Test the reading from null object.
@@ -45,7 +45,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateTestActionReportWithInvalidXML() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		assertNotNull("Expecting a Result list. Min an empty one.", resultReader.createActionResultTable(null));
 	}
 
@@ -61,7 +61,7 @@ public class FitNesseTestResultReaderTest {
 		Element element = doc.createElement("tables");
 		Element table = doc.createElement("table");
 		element.appendChild(table);
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		List<ActionResultTable> list = resultReader.createActionResultTable(element);
 		assertNotNull("Expecting a Result list. Min an empty one.", list);
 		ActionResultTable actionResultTable = list.get(0);
@@ -76,7 +76,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateActionResultTableFromWithNull() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		ActionResultTable resultTable = resultReader.createActionResultTableFrom(null);
 		assertNotNull(resultTable);
 		assertTrue(resultTable.toString().contains("Invalid"));
@@ -90,7 +90,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateActionResultTableFromWithValidXML() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		String tableName = "MyTable";
 		Element table = doc.createElement("table");
@@ -117,7 +117,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateInstructionsResultTableFromWithInvalidXML() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		assertNotNull("Expecting a Result list. Min an empty one.", resultReader.createInstructionsResult(null));
 	}
 
@@ -133,7 +133,7 @@ public class FitNesseTestResultReaderTest {
 		Element element = doc.createElement("instructions");
 		Element instruction = doc.createElement("instructionResult");
 		element.appendChild(instruction);
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		List<InstructionsResult> list = resultReader.createInstructionsResult(element);
 		assertNotNull("Expecting a Result list. Min an empty one.", list);
 		InstructionsResult resultTable = list.get(0);
@@ -148,7 +148,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateInstructionsResultTableFromWithNull() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		InstructionsResult resultTable = resultReader.createInstructionsResultFrom(null);
 		assertNotNull(resultTable);
 		assertTrue(resultTable.toString().contains("Invalid"));
@@ -162,7 +162,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateInstructionsResultTableFromWithValidXMLWithoutExpectation() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		Element instructionResult = doc.createElement("instructionResult");
 		Element inst = doc.createElement("instruction");
@@ -184,7 +184,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateInstructionsResultTableFromWithValidXMLWithExpectation() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		Element instructionResult = doc.createElement("instructionResult");
 		Element exp = doc.createElement("expectation");
@@ -203,7 +203,7 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testCreateExpectationFrom() throws Exception {
-		FitNesseTestResultReader resultReader = new FitNesseTestResultReader();
+		FitNesseTestHistoryResultReader resultReader = new FitNesseTestHistoryResultReader();
 		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		Element expNode = doc.createElement("expectation");
 		Element status = doc.createElement("status");
@@ -227,8 +227,8 @@ public class FitNesseTestResultReaderTest {
 	 */
 	@Test
 	public void testTestResultWithExecutionDetailsReadedFromXml() throws IOException {
-		InputStream fileInputStream = FitNesseTestResultReader.class.getResourceAsStream("/test_result.xml");
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.TEST);
+		InputStream fileInputStream = FitNesseTestHistoryResultReader.class.getResourceAsStream("/test_result.xml");
+		FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.TEST);
 		TestResult testResult = reader.readTestResult(fileInputStream);
 		fileInputStream.close();
 		assertNotNull("ActionTables is set", testResult.getActionResultTables());

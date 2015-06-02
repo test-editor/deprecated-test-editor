@@ -16,11 +16,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.jface.wizard.IWizard;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.testeditor.ui.adapter.TranslationServiceAdapter;
+import org.testeditor.ui.mocks.EventBrokerMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareImportProjectWizardPage;
 
@@ -41,10 +43,11 @@ public class ImportProjectHandlerTest {
 				.getBundleContext());
 		context.set(TestEditorTranslationService.class, null);
 		context.set(TranslationService.class, new TranslationServiceAdapter().getTranslationService());
+		context.set(IEventBroker.class, new EventBrokerMock());
 		IWizard wizard = importProjectHandler.createNewTeamShareImportWizard(context);
 		assertNotNull("Expecting creation of the new wizard", wizard);
 		assertTrue("First Page is a TeamShareImportProjectWizardPage.",
 				wizard.getStartingPage() instanceof TeamShareImportProjectWizardPage);
 	}
-		
+
 }

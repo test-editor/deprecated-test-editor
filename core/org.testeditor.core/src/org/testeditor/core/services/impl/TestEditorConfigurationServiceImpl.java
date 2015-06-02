@@ -40,7 +40,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	private static final String ID_CONFIGURATION = "org.testeditor.config.service.configinternal";
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
-	private static final String CURRENT_WS_VERSION = "1.0.4";
+	private static final String CURRENT_WS_VERSION = "1.0.5";
 	private FileLocatorService fileLocatorService;
 
 	/**
@@ -237,8 +237,12 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	public void initializeSystemProperties() throws IOException {
 		String bundleLocation = fileLocatorService.findBundleFileLocationAsString("org.testeditor.fixture.lib");
 		String swtBotBundle = fileLocatorService.findBundleFileLocationAsString("org.testeditor.agent.swtbot");
-		System.setProperty("FIXTURE_LIB_BUNDLE_PATH", bundleLocation);
-		System.setProperty("SWT_BOT_AGENT_BUNDLE_PATH", swtBotBundle);
+		if (bundleLocation != null) {
+			System.setProperty("FIXTURE_LIB_BUNDLE_PATH", bundleLocation);
+		}
+		if (swtBotBundle != null) {
+			System.setProperty("SWT_BOT_AGENT_BUNDLE_PATH", swtBotBundle);
+		}
 		System.setProperty("APPLICATION_WORK", Platform.getLocation().toOSString());
 	}
 

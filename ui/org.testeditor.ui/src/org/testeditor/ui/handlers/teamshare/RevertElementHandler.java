@@ -31,9 +31,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.teamshare.svn.TeamShareStatus;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareRevertWizardPage;
 
 /**
@@ -41,7 +40,6 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareRevertWizardPage;
  * 
  * 
  */
-@SuppressWarnings("restriction")
 public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 
 	@Inject
@@ -50,14 +48,14 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 	private static final Logger LOGGER = Logger.getLogger(RevertElementHandler.class);
 
 	@Inject
-	private TestEditorTranslationService translationService;
-
-	@Inject
 	private TranslationService translate;
 
 	@Inject
 	@Named(IServiceConstants.ACTIVE_SHELL)
 	private Shell shell;
+
+	@Inject
+	private TeamShareStatusService teamShareStatusService;
 
 	/**
 	 * executes the event for the selected-elements.
@@ -100,8 +98,8 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 				eventBroker.post(TestEditorUIEventConstants.TESTSTRUCTURE_REVERTED,
 						teamChange.getRelativeTestStructureFullName());
 			}
-			TeamShareStatus teamShareStatus = new TeamShareStatus(eventBroker);
-			teamShareStatus.setSVNStatusForProject(testStructure.getRootElement());
+
+			teamShareStatusService.setTeamStatusForProject(testStructure.getRootElement());
 
 		} catch (final SystemException e) {
 			LOGGER.error(e.getMessage(), e);

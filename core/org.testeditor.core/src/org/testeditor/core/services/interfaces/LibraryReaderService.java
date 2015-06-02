@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 
@@ -30,14 +31,14 @@ public interface LibraryReaderService {
 	 * @param libraryConfig
 	 *            the current ProjectLibraryConfig (e.g. object for
 	 *            "DemoWebTests")
-	 * @throws LibraryReadException
-	 *             LibraryReadException
+	 * @throws SystemException
+	 *             on problems reading the library.
 	 * @return {@link ProjectActionGroups}
-	 * @throws ObjectTreeConstructionException
-	 *             ObjectTreeConstructionException
+	 * @throws LibraryConstructionException
+	 *             on inconsistent library definition.
 	 */
-	ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws LibraryReadException,
-			ObjectTreeConstructionException;
+	ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
+			LibraryConstructionException;
 
 	/**
 	 * This id is used to identify the library plug-in. It must the same ID in

@@ -134,34 +134,6 @@ public class TestLogViewerTest {
 	}
 
 	/**
-	 * Receive the Log Message over the EventBroker Service.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testBrokerMessageOnBReaderWithContent() throws Exception {
-		BufferedReader br = new BufferedReader(new StringReader("Hello World")) {
-			private int count = 0;
-
-			@Override
-			public boolean ready() throws IOException {
-				count++;
-				return count < 2;
-			}
-
-			@Override
-			public String readLine() throws IOException {
-				return "TestEditorLoggingInteraction Method : click ";
-			}
-		};
-		testLogViewer.getUIUpdateRunnable(br, "MyTestCase").run();
-		assertEquals(1, events.size());
-		assertEquals("TestEditorLoggingInteraction Method : click ", events.get(0));
-		br.close();
-	}
-
-	/**
 	 * Test that no Message comes over the EventBroker, if the BufferedReader
 	 * has no content.
 	 * 
@@ -212,35 +184,6 @@ public class TestLogViewerTest {
 		};
 		testLogViewer.getUIUpdateRunnable(br, "MyTestCase").run();
 		assertEquals(0, events.size());
-		br.close();
-	}
-
-	/**
-	 * Test that only the Lines from the TestEditorLoggingInteraction are
-	 * catched.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testBrokerMessagesOnlyWithTestEditorLoggingInteraction() throws Exception {
-		BufferedReader br = new BufferedReader(new StringReader("Hello World")) {
-			private int count = 0;
-
-			@Override
-			public boolean ready() throws IOException {
-				count++;
-				return count < 2;
-			}
-
-			@Override
-			public String readLine() throws IOException {
-				return "Hello\nTestEditorLoggingInteraction Method : click ";
-			}
-		};
-		testLogViewer.getUIUpdateRunnable(br, "MyTestCase").run();
-		assertEquals(1, events.size());
-		assertEquals("TestEditorLoggingInteraction Method : click ", events.get(0));
 		br.close();
 	}
 

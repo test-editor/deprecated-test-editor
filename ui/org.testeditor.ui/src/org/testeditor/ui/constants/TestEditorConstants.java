@@ -25,9 +25,7 @@ public abstract class TestEditorConstants {
 	public static final String TEST_HISTORY_VIEW = "org.testeditor.ui.part.testhistory";
 	public static final String SYSTEM_CONFIGUTRATION_VIEW = "org.testeditor.ui.part.systemconfiguration";
 	public static final String CONTRIBUTOR_URI = "platform:/plugin/org.testeditor.ui";
-	public static final String TEST_EXECUTION_PRGRESS_EVENT = "testExecutionProgress";
 	public static final String LOGGING_INTERACTION = "TestEditorLoggingInteraction";
-	public static final String INTERACTION_LOG_FILE_NAME = "interaction.log";
 	public static final String LOG4J_RELATIVE_PATH = ".metadata/testEditorLog4j/log4j.xml";
 	public static final String BROWSER_PATH = "BROWSER_INSTALLATION_PATH";
 

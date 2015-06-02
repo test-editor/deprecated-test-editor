@@ -21,7 +21,7 @@ import org.testeditor.core.model.action.ActionElementType;
 import org.testeditor.core.model.action.Argument;
 import org.testeditor.core.model.action.ChoiceList;
 import org.testeditor.core.model.action.TechnicalBindingType;
-import org.testeditor.core.services.interfaces.ObjectTreeConstructionException;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.xmllibrary.domain.action.ActionName;
 import org.testeditor.xmllibrary.domain.binding.ActionPart;
 import org.testeditor.xmllibrary.domain.binding.TechnicalBindingTypes;
@@ -62,14 +62,14 @@ public final class ActionGroupMapper {
 	 * @param technicalBindingTypes
 	 *            all available technical binding types
 	 * @return action (core bundle object)
-	 * @throws ObjectTreeConstructionException
+	 * @throws LibraryConstructionException
 	 *             if not all entries of the actions could map to the
 	 *             technichalBindings.
 	 * @throws CorrruptLibraryException
 	 *             , if the library parts not matching.
 	 */
 	public static Action mapAction(org.testeditor.xmllibrary.domain.action.Action actionDomain,
-			TechnicalBindingTypes technicalBindingTypes) throws ObjectTreeConstructionException,
+			TechnicalBindingTypes technicalBindingTypes) throws LibraryConstructionException,
 			CorrruptLibraryException {
 		List<Argument> arguments = new ArrayList<Argument>();
 
@@ -89,7 +89,7 @@ public final class ActionGroupMapper {
 		TechnicalBindingType technicalBindingType = getTechnicalBindingTypeByName(
 				actionDomain.getTechnicalBindingType(), technicalBindingTypes);
 		if (technicalBindingType == null) {
-			throw new ObjectTreeConstructionException(actionDomain.getTechnicalBindingType());
+			throw new LibraryConstructionException(actionDomain.getTechnicalBindingType());
 		}
 		return new Action(actionName, arguments, actionDomain.getSort(), technicalBindingType, choiceLists);
 	}

@@ -336,7 +336,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(testResultsDirOfTestStructure)) {
 
 			for (Path path : stream) {
-				FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.valueOf(testStructure
+				FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.valueOf(testStructure
 						.getPageType().toUpperCase()));
 				FileInputStream fileInputStream = new FileInputStream(path.toFile());
 				TestResult testResult = reader.readTestResult(fileInputStream);

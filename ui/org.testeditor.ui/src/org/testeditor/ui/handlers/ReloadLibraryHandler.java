@@ -27,16 +27,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.services.interfaces.LibraryDataStoreService;
+import org.testeditor.core.services.interfaces.ActionGroupService;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
-import org.testeditor.ui.utilities.TestEditorCatchReadingExceptions;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -60,12 +59,12 @@ public class ReloadLibraryHandler {
 	 *            {@link EPartService}
 	 * @param libraryReaderService
 	 *            LibraryReaderService
-	 * @param libraryDataStoreService
-	 *            LibraryDataStoreService
+	 * @param actionGroupService
+	 *            ActionGroupService
 	 */
 	@Execute
 	public void execute(final IEclipseContext context, EPartService partService,
-			final LibraryReaderService libraryReaderService, final LibraryDataStoreService libraryDataStoreService) {
+			final LibraryReaderService libraryReaderService, final ActionGroupService actionGroupService) {
 
 		if (!partService.saveAll(true)) {
 			return;
@@ -94,8 +93,8 @@ public class ReloadLibraryHandler {
 							@Override
 							public void run() {
 								try {
-									relaodLibrary(testProject, context.get(IEventBroker.class),
-											libraryDataStoreService, libraryReaderService);
+									relaodLibrary(testProject, context.get(IEventBroker.class), actionGroupService,
+											libraryReaderService);
 								} catch (SystemException e) {
 									LOGGER.error("Error geting children of project", e);
 									MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error",
@@ -120,12 +119,12 @@ public class ReloadLibraryHandler {
 	 * 
 	 * @param testProject
 	 *            the {@link TestProject}
-	 * @param libraryDataStoreService
+	 * @param actionGroupService
 	 *            service to store library
 	 * @param libraryReaderService
 	 *            service to read library
 	 */
-	private void readingLibrary(TestProject testProject, LibraryDataStoreService libraryDataStoreService,
+	private void readingLibrary(TestProject testProject, ActionGroupService actionGroupService,
 			LibraryReaderService libraryReaderService) {
 
 		LibraryLoadingStatus libraryStatus = testProject.getTestProjectConfig().getLibraryLoadingStatus();
@@ -134,10 +133,25 @@ public class ReloadLibraryHandler {
 			ProjectActionGroups projectActionGroups = libraryReaderService.readBasisLibrary(testProject
 					.getTestProjectConfig().getProjectLibraryConfig());
 			projectActionGroups.setProjectName(testProject.getName());
-			libraryDataStoreService.addProjectActionGroups(projectActionGroups);
-		} catch (SystemException except) {
-			Shell shell = Display.getCurrent().getActiveShell();
-			TestEditorCatchReadingExceptions.catchException(shell, translationService, LOGGER, except);
+			actionGroupService.addProjectActionGroups(projectActionGroups);
+		} catch (LibraryConstructionException e) {
+			String mappingErrorPartOne = translationService.translate("%editController.ErrorObjectMappingPartOne");
+			String mappingErrorPartTow = translationService.translate("%editController.ErrorObjectMappingPartTow");
+			MessageDialog.openError(
+					Display.getCurrent().getActiveShell(),
+					translationService.translate("%editController.LibraryNotLoaded"),
+					translationService.translate("%editController.ErrorReadingLibrary") + mappingErrorPartOne + " "
+							+ e.getMessage() + " " + mappingErrorPartTow);
+			LOGGER.error("Error reading library :: FAILED" + mappingErrorPartOne + " " + e.getMessage() + " "
+					+ mappingErrorPartTow, e);
+			libraryStatus.setErrorLessLoaded(false);
+		} catch (SystemException e) {
+			MessageDialog.openError(
+					Display.getCurrent().getActiveShell(),
+					translationService.translate("%editController.LibraryNotLoaded"),
+					translationService.translate("%editController.ErrorReadingLibrary") + ": "
+							+ e.getLocalizedMessage());
+			LOGGER.error("Error reading library :: FAILED", e);
 			libraryStatus.setErrorLessLoaded(false);
 		}
 	}
@@ -150,7 +164,7 @@ public class ReloadLibraryHandler {
 	 *            the TestProject
 	 * @param eventBroker
 	 *            to fire reload Event.
-	 * @param libraryDataStoreService
+	 * @param actionGroupService
 	 *            service to store library
 	 * @param libraryReaderService
 	 *            service to read library
@@ -158,10 +172,9 @@ public class ReloadLibraryHandler {
 	 *             on loading of children
 	 */
 	private void relaodLibrary(TestProject testProject, IEventBroker eventBroker,
-			LibraryDataStoreService libraryDataStoreService, LibraryReaderService libraryReaderService)
-			throws SystemException {
+			ActionGroupService actionGroupService, LibraryReaderService libraryReaderService) throws SystemException {
 		testProject.getTestProjectConfig().getLibraryLoadingStatus().setLoaded(false);
-		readingLibrary(testProject, libraryDataStoreService, libraryReaderService);
+		readingLibrary(testProject, actionGroupService, libraryReaderService);
 		eventBroker.send(TestEditorUIEventConstants.LIBRARY_LOADED_FOR_PROJECT, testProject);
 	}
 }

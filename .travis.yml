@@ -1,0 +1,13 @@
+before_install: 
+  - git clone https://github.com/test-editor/te.target.git ../te.target 
+  - git clone https://github.com/test-editor/test-editor-tests ../test-editor-tests 
+  - "export DISPLAY=:99.0"
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+language: java
+jdk:
+  - oraclejdk7
+install: true
+script: 
+   - mvn install -Dfindbugs.skip=true -Dcheckstyle.skip=true
+#   - java -DPATH_TO_TESTEDITOR_AUT=product/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor #-Daut.workspace.path=../.testeditor_aut -Dwaits.afterteststep=200ms -jar product/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar -application org.testeditor.core.headlesstestrunner -consoleLog -data ../test-editor-tests  ExecuteTest=TestEditorTests.PerformanceAnalyse
+#   - java -DPATH_TO_TESTEDITOR_AUT=product/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/testeditor   -Daut.workspace.path=../.testeditor_aut -Dwaits.afterteststep=50ms -jar product/org.testeditor.product/target/products/TestEditor/linux/gtk/x86_64/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar -application org.testeditor.core.headlesstestrunner -consoleLog -data ../test-editor-tests  ExecuteTest=TestEditorTests.AceptenceForConDelivery

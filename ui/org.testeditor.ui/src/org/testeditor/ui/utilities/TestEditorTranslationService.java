@@ -21,7 +21,6 @@ import org.testeditor.ui.constants.TestEditorConstants;
 /**
  * Central translation service for the local language.
  */
-@SuppressWarnings("restriction")
 public class TestEditorTranslationService {
 
 	@Inject

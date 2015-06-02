@@ -60,6 +60,7 @@ public final class CustomWidgetIdConstants {
 	public static final String TESTCASE_TOOLBAR_DELETE = "testcase.toolbar.delete";
 
 	public static final String TEST_HISTORY_LABEL = "TestHistoryLabel";
+	public static final String HISTORY_TABLE = "history.table";
 
 	public static final String NAME_ERROR_MESSAGE_LABEL = "name.error.message.label";
 
@@ -68,5 +69,8 @@ public final class CustomWidgetIdConstants {
 	public static final String TEAM_SHARE_IMPORT_PROJECTNAME = "wizard.shareProject.projectname";
 	public static final String RUN_TEST_CLOSE_BUTTON = "runtest.dialog.closebutton";
 	public static final String TESTLOG_TEXT = "testlogview.text";
+
+	public static final String SEARCH_DIALOG_TESTSTRUCTURE_NAME = "dialog.search.teststructure.teststructurename";
+	public static final Object SEARCH_DIALOG_TESTSTRUCTURE_RESULT = "dialog.search.teststructure.resulttable";
 
 }
