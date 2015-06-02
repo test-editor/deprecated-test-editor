@@ -214,7 +214,6 @@ public final class FitNesseRestClient {
 
 		int testHistoryBeforeTestSize = new FitnesseFileSystemTestStructureService().getTestHistory(testStructure)
 				.size();
-
 		try {
 
 			Thread testExecutor = new Thread() {
