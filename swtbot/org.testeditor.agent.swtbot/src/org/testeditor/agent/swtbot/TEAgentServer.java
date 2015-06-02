@@ -858,13 +858,13 @@ public class TEAgentServer extends Thread implements ITestHarness {
 				button = bot.button(text);
 			}
 			LOGGER.trace("Found button " + button);
-			// try {
-			// There is a Try catch for index out bound exeption, to ignore
-			// the event notification error in swtbot.
-			button.click();
-			// } catch (IndexOutOfBoundsException e) {
-			// LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
-			// }
+			try {
+				// There is a Try catch for index out bound exeption, to ignore
+				// the event notification error in swtbot.
+				button.click();
+			} catch (IndexOutOfBoundsException e) {
+				LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
+			}
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " clicked");
 			}
