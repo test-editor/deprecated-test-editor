@@ -39,9 +39,9 @@ import org.xml.sax.SAXException;
  * 
  * 
  */
-public class FitNesseTestResultReader implements FitNesseResultReader {
+public class FitNesseTestHistoryResultReader implements FitNesseResultReader {
 
-	private static final Logger LOGGER = Logger.getLogger(FitNesseTestResultReader.class);
+	private static final Logger LOGGER = Logger.getLogger(FitNesseTestHistoryResultReader.class);
 
 	@Override
 	public TestResult readTestResult(InputStream resultStream) {
@@ -213,11 +213,6 @@ public class FitNesseTestResultReader implements FitNesseResultReader {
 			resultTable.setName("Invalid ResultTable");
 		}
 		return resultTable;
-	}
-
-	@Override
-	public List<TestResult> readResultHistory(InputStream resultStream) {
-		return new FitNesseResultHistoryReader().readResultHistory(resultStream);
 	}
 
 }

@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareApproveWizardPage;
 
 /**
@@ -42,9 +41,6 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	private static final Logger LOGGER = Logger.getLogger(ApproveElementHandler.class);
 
 	@Inject
-	private TestEditorTranslationService translationService;
-
-	@Inject
 	private TranslationService translate;
 
 	@Inject
@@ -52,6 +48,8 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	private Shell shell;
 
 	private TeamShareApproveWizardPage approveProjectPage;
+
+	private String teamChangeState;
 
 	/**
 	 * executes the event for the selected-elements.
@@ -89,7 +87,8 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			getTeamService(testStructure).approve(testStructure, translate, approveProjectPage.getSvnComment());
+			teamChangeState = getTeamService(testStructure).approve(testStructure, translate,
+					approveProjectPage.getSvnComment());
 		} catch (final SystemException e) {
 			Display.getDefault().syncExec(new Runnable() {
 
@@ -113,7 +112,7 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	void showCompletedMessage() {
 		MessageDialog.openInformation(getDisplay().getActiveShell(), translationService.translate("%info"),
-				translationService.translate("%approve.completed"));
+				translationService.translate("%approve.completed") + "\n" + teamChangeState);
 
 	}
 

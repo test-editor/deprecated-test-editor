@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
@@ -48,8 +49,9 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
@@ -58,7 +60,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.testing.ITestHarness;
@@ -106,8 +110,14 @@ public class TEAgentServer extends Thread implements ITestHarness {
 
 		if (Display.getDefault() != null) {
 			bot = new SWTBot();
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					Display.getDefault().getShells()[0].forceActive();
+				}
+			});
 		}
-		// SWTBotPreferences.PLAYBACK_DELAY = 50;
 		launched = true;
 	}
 
@@ -207,8 +217,27 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			LOGGER.trace("key: " + key);
 		}
 		SWTBotStyledText styledTextWithId = bot.styledTextWithId(id);
-		styledTextWithId.pressShortcut(Integer.valueOf(modificationKeys).intValue(), key);
+		styledTextWithId.pressShortcut(Integer.parseInt(modificationKeys), key);
 
+		return Boolean.toString(true);
+	}
+
+	/**
+	 * Presses the shortcut specified by the given keys on the active window.
+	 * 
+	 * @param modificationKeys
+	 *            the combination of SWT.ALT | SWT.CTRL | SWT.SHIFT |
+	 *            SWT.COMMAND.
+	 * @param key
+	 *            the character
+	 * @return true, after sending the keys
+	 */
+	public String pressGlobalShortcut(final String modificationKeys, final char key) {
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("modificationKeys: " + modificationKeys);
+			LOGGER.trace("key: " + key);
+		}
+		bot.activeShell().pressShortcut(Integer.parseInt(modificationKeys), key);
 		return Boolean.toString(true);
 	}
 
@@ -258,7 +287,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 */
 	public String countProjectsEquals(String expectedCount) {
 		SWTBotTreeItem[] allItems = bot.tree().getAllItems();
-		if (allItems.length != Integer.valueOf(expectedCount).intValue()) {
+		if (allItems.length != Integer.parseInt(expectedCount)) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are " + allItems.length
 					+ " projects";
 			LOGGER.error(message);
@@ -278,9 +307,29 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 */
 	public String countChildrenEquals(String[] nodes, String expectedCount) {
 		SWTBotTreeItem expandNode = bot.tree().expandNode(nodes);
-		if (expandNode.getItems().length != Integer.valueOf(expectedCount)) {
+		if (expandNode.getItems().length != Integer.parseInt(expectedCount)) {
 			String message = "Inspected count of projects was: " + expectedCount + " but there are "
 					+ expandNode.getItems().length + " projects";
+			LOGGER.error(message);
+			return message;
+		}
+		return Boolean.toString(true);
+	}
+
+	/**
+	 * Compare the count of a list with expected count.
+	 * 
+	 * @param locator
+	 *            locator id of the widget with items.
+	 * @param expectedCount
+	 *            count of items in the widget.
+	 * @return true if the amount of items equals the expectedCount.
+	 */
+	public String countItemsEquals(String locator, String expectedCount) {
+		SWTBotTable table = bot.tableWithId(locator);
+		if (table.rowCount() != Integer.parseInt(expectedCount)) {
+			String message = "Inspected count of items was: " + expectedCount + " but there are " + table.rowCount()
+					+ " items";
 			LOGGER.error(message);
 			return message;
 		}
@@ -338,6 +387,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 				SWTBotTreeItem expandNode = bot.tree().expandNode(nodes);
 				expandNode.select();
 			}
+			bot.tree().setFocus();
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage(), e);
 			LOGGER.trace(analyzeWidgets());
@@ -554,8 +604,8 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			int lineNumber = 0;
 			for (String line : styledTextWithId.getLines()) {
 				if (line.contains(content)) {
-					styledTextWithId.selectRange(lineNumber, Integer.valueOf(position),
-							line.length() - Integer.valueOf(position));
+					styledTextWithId.selectRange(lineNumber, Integer.parseInt(position),
+							line.length() - Integer.parseInt(position));
 					if (LOGGER.isTraceEnabled()) {
 						LOGGER.trace("selectLine: " + line + " with number: " + lineNumber + " and selectedText "
 								+ styledTextWithId.getSelection() + " is selected.");
@@ -791,15 +841,30 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " ...");
 			}
-			SWTBotButton button = bot.button(text);
-			LOGGER.trace("Found button " + button);
+			SWTBotButton button = null;
 			try {
-				// There is a Try catch for index out bound exeption, to ignore
-				// the event notification error in swtbot.
-				button.click();
-			} catch (IndexOutOfBoundsException e) {
-				LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
+				button = bot.button(text);
+			} catch (Exception e) {
+				LOGGER.warn("Button not found try again");
+				UIThreadRunnable.syncExec(new VoidResult() {
+
+					@Override
+					public void run() {
+						Shell[] shells = Display.getDefault().getShells();
+						shells[shells.length - 1].forceActive();
+					}
+				});
+
+				button = bot.button(text);
 			}
+			LOGGER.trace("Found button " + button);
+			// try {
+			// There is a Try catch for index out bound exeption, to ignore
+			// the event notification error in swtbot.
+			button.click();
+			// } catch (IndexOutOfBoundsException e) {
+			// LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
+			// }
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonByText " + text + " clicked");
 			}
@@ -811,30 +876,11 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			for (StackTraceElement stackTraceElement : trace) {
 				sb.append("\n").append(stackTraceElement.toString());
 			}
+			analyzeWidgets();
 			return sb.toString();
 		}
 		return Boolean.toString(true);
 
-	}
-
-	/**
-	 * The speed of playback in milliseconds. Defaults to 0.
-	 * 
-	 * @param milliseconds
-	 *            for waiting
-	 * 
-	 * @return done on success otherwise an error with the swtbot exception.
-	 */
-	public String setPlayBackTime(String milliseconds) {
-
-		try {
-			SWTBotPreferences.PLAYBACK_DELAY = Long.parseLong(milliseconds);
-		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
-			return "ERROR " + e.getMessage();
-		}
-
-		return Boolean.toString(true);
 	}
 
 	/**
@@ -851,7 +897,13 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("clickButtonById locator:" + locator);
 			}
-			bot.buttonWithId(locator).click();
+			try {
+				bot.buttonWithId(locator).click();
+			} catch (WidgetNotFoundException e) {
+
+				SWTBotToolbarButton toolbarButton = bot.toolbarButtonWithId(locator);
+				toolbarButton.click();
+			}
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
 			return "ERROR " + e.getMessage();
@@ -1064,6 +1116,45 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * Checks the expected row number of given Table.
+	 * 
+	 * @param locator
+	 *            String
+	 * @param expectedRowNumber
+	 *            String
+	 * @return true if expected value equals current value
+	 */
+	public String checkRowNumberOfTable(String locator, String expectedRowNumber) {
+
+		try {
+
+			LOGGER.trace("checkRowNumberOfTable locator: " + locator + " expectedRowNumber: " + expectedRowNumber);
+
+			SWTBotTable table = bot.tableWithId(locator);
+
+			if (table != null) {
+
+				if (table.rowCount() == Integer.parseInt(expectedRowNumber)) {
+					return Boolean.toString(true);
+				} else {
+					LOGGER.info("expectedRowNumber " + expectedRowNumber + " currentRowNumber " + table.rowCount());
+				}
+
+			} else {
+				String message = "ERROR  Table with key " + locator + " not found !";
+				LOGGER.error(message);
+				return message;
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("ERROR " + e.getMessage());
+			return "ERROR " + e.getMessage();
+		}
+
+		return Boolean.toString(false);
+	}
+
+	/**
 	 * Replace all mutated vowel in given text.
 	 * 
 	 * @param text
@@ -1212,14 +1303,18 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			public void run() {
 
 				try {
-					List<? extends Widget> widgets = bot.widgets(allOf(widgetOfType(Widget.class)));
+					List<? extends Widget> widgets = bot.widgets(widgetOfType(Widget.class));
 
 					StringBuilder sb = new StringBuilder();
 
 					for (Widget widget : widgets) {
 
+						if (widget instanceof Table) {
+							sb.append("\n >>> Table gefunden mit " + ((Table) widget).getItems().length + " Zeilen !");
+						}
+
 						sb.append("widgetId: " + widget.getData("org.eclipse.swtbot.widget.key"));
-						sb.append("widgetClass: " + widget.getClass().getSimpleName());
+						sb.append(" widgetClass: " + widget.getClass().getSimpleName());
 						try {
 							Method[] methods = widget.getClass().getMethods();
 							boolean foundGetText = false;
@@ -1234,7 +1329,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								sb.append("\n >>> text value: " + method.invoke(widget, new Object[] {}));
 							}
 						} catch (Exception e) {
-							LOGGER.error(">>>>>>> no tesxxt", e);
+							LOGGER.error(">>>>>>> no text", e);
 						}
 						sb.append(" widget: " + widget).append("\n");
 					}
@@ -1385,6 +1480,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	@Override
 	public void run() {
 		ServerSocket listener;
+		boolean first = true;
 		try {
 			listener = new ServerSocket(SERVER_PORT);
 
@@ -1414,9 +1510,24 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								stopApplication();
 							}
 
+							if (first && Display.getDefault() != null) {
+								UIThreadRunnable.syncExec(new VoidResult() {
+
+									@Override
+									public void run() {
+										Shell[] shells = Display.getDefault().getShells();
+										if (shells.length > 0) {
+											shells[shells.length - 1].forceActive();
+											shells[shells.length - 1].setText("***** AUT running with TE-Agent *****"
+													+ shells[shells.length - 1].getText());
+										}
+									}
+								});
+								first = false;
+							}
+
 							String[] splitCommand = command.split(";");
 							String methodName = splitCommand[0];
-
 							if (methodName.equals("expandTreeItems")) {
 								String[] nodes = splitCommand[1].split(",");
 								out.println(expandTreeItems(nodes));
@@ -1436,6 +1547,10 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								String modificationKeys = splitCommand[2];
 								char key = splitCommand[3].toCharArray()[0];
 								out.println(pressShortcutOfStyledText(locator, modificationKeys, key));
+							} else if (methodName.equals("pressGlobalShortcut")) {
+								String modificationKeys = splitCommand[1];
+								char key = splitCommand[2].toCharArray()[0];
+								out.println(pressGlobalShortcut(modificationKeys, key));
 							} else if (methodName.equals("readAllProjectsInTree")) {
 								out.println(readAllProjectsInTree());
 							} else if (methodName.equals("deleteAllProjects")) {
@@ -1493,7 +1608,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("textIsVisible: " + text);
 		}
-		List<? extends Widget> widgets = bot.widgets(allOf(widgetOfType(Widget.class)));
+		List<? extends Widget> widgets = bot.widgets(widgetOfType(Widget.class));
 
 		StringBuilder sb = new StringBuilder();
 
@@ -1582,11 +1697,10 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("isButtonEnabledByIndex text: " + text + " index: " + index);
 				LOGGER.trace("Result of isButtonEnabledByIndex: " + bot.button(text, index).isEnabled());
-
 			}
 			return Boolean.valueOf(bot.button(text, index).isEnabled()).toString();
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
@@ -1615,7 +1729,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			return Boolean.valueOf(new SWTBotButton((Button) widget).isEnabled()).toString();
 
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			return "ERROR " + e.getMessage();
 		}
 	}
@@ -1635,7 +1749,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 			return Boolean.valueOf(bot.button(text).isEnabled()).toString();
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			return "ERROR " + e.getMessage();
 		}
 	}
@@ -1651,13 +1765,44 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		try {
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("isButtonEnabledById locator:" + locator);
-				LOGGER.trace("Result of isButtonEnabledById: " + bot.buttonWithId(locator).isEnabled());
+				try {
+					LOGGER.trace("Result of isButtonEnabledById: " + bot.buttonWithId(locator).isEnabled());
+				} catch (WidgetNotFoundException e) {
+
+					SWTBotToolbarButton toolbarButton = bot.toolbarButtonWithId(locator);
+					return Boolean.valueOf(toolbarButton.isEnabled()).toString();
+				}
 			}
 			return Boolean.valueOf(bot.buttonWithId(locator).isEnabled()).toString();
 		} catch (Exception e) {
-			LOGGER.error("ERROR " + e.getMessage());
+			LOGGER.error("ERROR " + e.getMessage(), e);
 			analyzeWidgets();
 			return "ERROR " + e.getMessage();
+		}
+	}
+
+	/**
+	 * retrieve the items of a drop down box and check if one equals the given
+	 * value
+	 * 
+	 * @param locator
+	 *            locator for a drop down
+	 * @param checkString
+	 *            string to look for
+	 * @return true, if drop down contains the given value
+	 */
+	public boolean checkDropDownContains(String locator, String checkString) {
+		SWTBotCombo combo = bot.comboBoxWithId(locator);
+		if (combo != null) {
+			String[] items = combo.items();
+			for (String item : items) {
+				if (item.equals(checkString)) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			throw new IllegalArgumentException("no drop down found for locator '" + locator + "'");
 		}
 	}
 

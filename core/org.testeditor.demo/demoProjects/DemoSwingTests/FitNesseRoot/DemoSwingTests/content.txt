@@ -5,13 +5,12 @@
 
 !path ${FIXTURE_LIB_BUNDLE_PATH}/fixture/swing-fixture-*.jar
 !path ${FIXTURE_LIB_BUNDLE_PATH}/lib/*.jar
-!define APPLICATION_PATH {${FIXTURE_LIB_BUNDLE_PATH}/lib/GeburtstagsListenVerwaltung-1.0-jar-with-dependencies.jar}
 
 !define BROWSER_PATH {${path.browser}}
 
 
 !define LOGGING {${LOG4J_RELATIV_PATH}}
-!define COMMAND_PATTERN {java -Dwaits.after.teststep=${waits.afterteststep} -Dwebdriver.ie.driver=${SLIM_CMD_VAR_IEWEBDRIVERSERVER} -Dwebdriver.chrome.driver=${SLIM_CMD_VAR_CHROMEWEBDRIVERSERVER} -Dwebdriver.firefox.bin=${path.browser} -Dlog4j.configuration=file:${SLIM_CMD_VAR_LOG4J_RELATIV_PATH} -cp %p;${APPLICATION_PATH} %m -i org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction }
+!define COMMAND_PATTERN {java -Dwaits.after.teststep=${waits.afterteststep} -Dlog4j.configuration=file:${SLIM_CMD_VAR_LOG4J_RELATIV_PATH} -cp %p %m -i org.testeditor.fixture.core.interaction.TestEditorLoggingInteraction }
 
 !define ELEMENT_LISTE {${APPLICATION_WORK}/DemoSwingTests/ElementList.conf}
 **********!

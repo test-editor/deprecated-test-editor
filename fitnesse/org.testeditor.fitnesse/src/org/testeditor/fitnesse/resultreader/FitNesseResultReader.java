@@ -12,12 +12,13 @@
 package org.testeditor.fitnesse.resultreader;
 
 import java.io.InputStream;
-import java.util.List;
 
 import org.testeditor.core.model.testresult.TestResult;
 
 /**
- * Liest das Resultfile des Tests und erzeugt ein FitNesseResult.
+ * Reads a Fitnesse XML Test result file and creates a bean with the test
+ * summary. Implementations of this interface ere used for test execution
+ * results and test results from history.
  * 
  */
 public interface FitNesseResultReader {
@@ -31,12 +32,4 @@ public interface FitNesseResultReader {
 	 */
 	TestResult readTestResult(InputStream resultStream);
 
-	/**
-	 * gets a list of testresults of a test.
-	 * 
-	 * @param fileInputStream
-	 *            {@link InputStream}
-	 * @return List<TestResult>
-	 */
-	List<TestResult> readResultHistory(InputStream fileInputStream);
 }

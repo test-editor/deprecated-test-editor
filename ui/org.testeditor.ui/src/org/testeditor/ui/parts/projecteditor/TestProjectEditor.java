@@ -31,6 +31,7 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -48,6 +49,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
@@ -729,6 +731,16 @@ public class TestProjectEditor implements ITestStructureEditor {
 	public void setFocus() {
 		if (libraryTypeCombo != null) {
 			libraryTypeCombo.setFocus();
+		}
+		if (mpart.getToolbar() != null) {
+			List<MToolBarElement> children = mpart.getToolbar().getChildren();
+			for (MToolBarElement mToolBarElement : children) {
+				Object widget = mToolBarElement.getWidget();
+				if (widget != null && widget instanceof Widget) {
+					((Widget) widget).setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+							mToolBarElement.getElementId());
+				}
+			}
 		}
 	}
 

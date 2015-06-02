@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.agent.swtbot;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -19,6 +20,7 @@ import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.testing.TestableObject;
 import org.osgi.framework.ServiceReference;
 
@@ -32,6 +34,7 @@ public class AgentApplication implements IApplication {
 
 	private TestableObject testableObject;
 	private TEAgentServer teAgentServer;
+	private static final Logger LOGGER = Logger.getLogger(TEAgentServer.class);
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -45,8 +48,13 @@ public class AgentApplication implements IApplication {
 		testableObject.setTestHarness(teAgentServer);
 
 		teAgentServer.start();
-
-		return app.start(context);
+		try {
+			LOGGER.info("Running with default display: " + Display.getDefault());
+			return app.start(context);
+		} catch (Exception e) {
+			LOGGER.error("Error executing AUT Retrying", e);
+			return new Integer(13);
+		}
 	}
 
 	/**

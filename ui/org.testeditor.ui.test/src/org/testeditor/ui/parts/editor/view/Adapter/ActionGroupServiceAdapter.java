@@ -16,6 +16,7 @@ import java.util.List;
 import org.testeditor.core.model.action.Action;
 import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.Argument;
+import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.TechnicalBindingType;
 import org.testeditor.core.model.teststructure.TestActionGroup;
 import org.testeditor.core.model.teststructure.TestActionGroupTestCase;
@@ -75,7 +76,11 @@ public class ActionGroupServiceAdapter implements ActionGroupService {
 
 	@Override
 	public void addActionLine(TestActionGroup testActionGroup, TestFlow testFlow, String line) {
-		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addProjectActionGroups(ProjectActionGroups projectsActionGroups) {
 
 	}
 

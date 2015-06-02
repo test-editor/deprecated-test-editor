@@ -12,6 +12,7 @@
 package org.testeditor.core.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -32,8 +33,6 @@ import org.testeditor.core.model.teststructure.TestActionGroupTestScenario;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.ActionGroupService;
-import org.testeditor.core.services.interfaces.LibraryDataStoreService;
-import org.testeditor.core.services.interfaces.LibraryReadException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.util.ActionLineSplitter;
 
@@ -43,7 +42,7 @@ import org.testeditor.core.util.ActionLineSplitter;
 public class ActionGroupServiceImpl implements ActionGroupService {
 	private static final Logger LOGGER = Logger.getLogger(ActionGroupServiceImpl.class);
 
-	private LibraryDataStoreService libraryDataStoreService;
+	private HashMap<String, ProjectActionGroups> projectsActionGroups = new HashMap<String, ProjectActionGroups>();
 	private LibraryReaderService libraryReader;
 
 	/**
@@ -55,7 +54,7 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 			return null;
 		}
 		readProjectLibraryIfNeeded(testProject);
-		return libraryDataStoreService.getProjectsActionGroups().get(testProject.getFullName()).getActionGroupList();
+		return projectsActionGroups.get(testProject.getFullName()).getActionGroupList();
 	}
 
 	/**
@@ -69,11 +68,9 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 			ProjectActionGroups projectActionGroups = libraryReader.readBasisLibrary(testProject.getTestProjectConfig()
 					.getProjectLibraryConfig());
 			projectActionGroups.setProjectName(testProject.getName());
-			libraryDataStoreService.addProjectActionGroups(projectActionGroups);
-		} catch (LibraryReadException e) {
-			LOGGER.error("Error reading library :: FAILED", e);
+			this.addProjectActionGroups(projectActionGroups);
 		} catch (SystemException e) {
-			LOGGER.error("Error constructing object-tree :: FAILED", e);
+			LOGGER.error("Error reading Library. object-tree :: FAILED", e);
 		}
 
 	}
@@ -116,10 +113,6 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 			acTypeL.add(action.getTechnicalBindingType());
 		}
 
-		// Comparator<TechnicalBindingType> comp = new
-		// TechnicalBindingTypeComperator();
-		// Collections.sort(acTypeL, comp);
-
 		TechnicalBindingType aType = null;
 		ArrayList<TechnicalBindingType> toRemoved = new ArrayList<TechnicalBindingType>();
 		for (TechnicalBindingType techType : acTypeL) {
@@ -134,38 +127,6 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 		}
 
 		return acTypeL;
-	}
-
-	/**
-	 * this method unbinds the LibraryDataStoreService and is needed for the
-	 * OSGI-Service architecture.
-	 * 
-	 * @param libraryDataStoreService
-	 *            LibraryDataStoreService
-	 */
-	public void unbindLibraryDataStoreService(LibraryDataStoreService libraryDataStoreService) {
-		setLibraryDataStoreService(null);
-	}
-
-	/**
-	 * this method binds the LibraryDataStoreService and is needed for the
-	 * OSGI-Service architecture.
-	 * 
-	 * @param libraryDataStoreService
-	 *            LibraryDataStoreService
-	 */
-	public void bindLibraryDataStoreService(LibraryDataStoreService libraryDataStoreService) {
-		setLibraryDataStoreService(libraryDataStoreService);
-	}
-
-	/**
-	 * primitive setter for the variable libraryDataStoreService.
-	 * 
-	 * @param libraryDataStoreService
-	 *            LibraryDataStoreService
-	 */
-	public void setLibraryDataStoreService(LibraryDataStoreService libraryDataStoreService) {
-		this.libraryDataStoreService = libraryDataStoreService;
 	}
 
 	/**
@@ -389,7 +350,7 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 	 *            the project
 	 */
 	private void readProjectLibraryIfNeeded(TestProject testProject) {
-		if (!libraryDataStoreService.getProjectsActionGroups().containsKey(testProject.getFullName())) {
+		if (!projectsActionGroups.containsKey(testProject.getFullName())) {
 			readProjectLibrary(testProject);
 		}
 	}
@@ -488,5 +449,10 @@ public class ActionGroupServiceImpl implements ActionGroupService {
 		IAction action = getActionByLine(testFlow.getRootElement(), actionGroup, line, new ArrayList<Argument>(),
 				testActionGroup.isScenarioTestActionGroup());
 		testActionGroup.getActionLines().add(action);
+	}
+
+	@Override
+	public void addProjectActionGroups(ProjectActionGroups projectsActionGroups) {
+		this.projectsActionGroups.put(projectsActionGroups.getProjectName(), projectsActionGroups);
 	}
 }

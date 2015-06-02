@@ -250,7 +250,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 * @return Array with Files of the Workspace.
 	 */
 	protected File[] getWorkspaceDirectories() {
-		return Platform.getLocation().toFile().listFiles();
+		return fileLocatorService.getWorkspace().listFiles();
 	}
 
 	/**

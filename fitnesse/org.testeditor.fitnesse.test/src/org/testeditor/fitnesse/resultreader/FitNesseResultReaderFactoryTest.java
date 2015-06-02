@@ -28,11 +28,11 @@ public class FitNesseResultReaderFactoryTest {
 	@Test
 	public void testFactory() {
 
-		FitNesseResultReader reader = FitNesseResultReaderFactory.getReader(TestType.TEST);
-		assertEquals(FitNesseTestResultReader.class, reader.getClass());
+		FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.TEST);
+		assertEquals(FitNesseTestHistoryResultReader.class, reader.getClass());
 
-		reader = FitNesseResultReaderFactory.getReader(TestType.SUITE);
-		assertEquals(FitNesseSuiteResultReader.class, reader.getClass());
+		reader = FitNesseResultReaderFactory.getHistoryReader(TestType.SUITE);
+		assertEquals(FitNesseSuiteHistoryResultReader.class, reader.getClass());
 
 	}
 

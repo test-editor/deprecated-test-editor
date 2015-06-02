@@ -25,9 +25,8 @@ import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
-import org.testeditor.core.services.interfaces.LibraryReadException;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
-import org.testeditor.core.services.interfaces.ObjectTreeConstructionException;
 import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.xmllibrary.domain.binding.TechnicalBindingTypes;
 import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
@@ -40,7 +39,6 @@ import org.xml.sax.SAXException;
  * this class provides the libraryReaderService for the reading of the
  * XML-Library.
  * 
- * @author llipinski
  */
 public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 
@@ -56,8 +54,8 @@ public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 	 * @throws SystemException
 	 */
 	@Override
-	public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws LibraryReadException,
-			ObjectTreeConstructionException {
+	public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
+			LibraryConstructionException {
 		File wsDir = Platform.getLocation().toFile();
 		String userDir = wsDir.getAbsolutePath();
 		String pathXmlActionGroup;
@@ -88,11 +86,11 @@ public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 			technicalBindingTypes = JaxbMarshaller.unmarshal(pathTechnicalBindingsXSD, pathXmlBindings,
 					TechnicalBindingTypes.class);
 		} catch (JAXBException e) {
-			throw new LibraryReadException(e);
+			throw new SystemException(e.getLocalizedMessage(), e);
 		} catch (SAXException e) {
-			throw new LibraryReadException(e);
+			throw new SystemException(e.getLocalizedMessage(), e);
 		} catch (IOException e) {
-			throw new LibraryReadException(e);
+			throw new SystemException(e.getLocalizedMessage(), e);
 		}
 		return createCoreObjects();
 	}
@@ -133,11 +131,11 @@ public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 	 * @param pathXmlBindings
 	 *            fileName with path of the technicalBindingXml
 	 * @return boolean false if one file not exists, else true
-	 * @throws LibraryReadException
+	 * @throws SystemException
 	 *             if a file is not founded
 	 */
 	private boolean testFilesExists(LibraryLoadingStatus libraryLoadingStatus, String pathXsdActionGroup,
-			String pathXmlActionGroup, String pathXsdBindings, String pathXmlBindings) throws LibraryReadException {
+			String pathXmlActionGroup, String pathXsdBindings, String pathXmlBindings) throws SystemException {
 		libraryLoadingStatus.getErrorWhileLoadingList().clear();
 		libraryLoadingStatus.setErrorLessLoaded(true);
 		libraryLoadingStatus.setLoaded(true);
@@ -151,7 +149,7 @@ public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 			for (String fileName : libraryLoadingStatus.getErrorWhileLoadingList()) {
 				messageBuilder.append("File not found: ").append(fileName).append("\n");
 			}
-			throw new LibraryReadException(new SystemException(messageBuilder.toString()));
+			throw new SystemException(messageBuilder.toString());
 		}
 		return libraryLoadingStatus.isErrorLessLoaded();
 	}
@@ -182,10 +180,10 @@ public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
 	 * Creates the core-objects.
 	 * 
 	 * @return the ProjectActionGroups
-	 * @throws ObjectTreeConstructionException
+	 * @throws LibraryConstructionException
 	 *             if the tree couln't constructed
 	 */
-	private ProjectActionGroups createCoreObjects() throws ObjectTreeConstructionException {
+	private ProjectActionGroups createCoreObjects() throws LibraryConstructionException {
 		ProjectActionGroups projectActionGroups = new ProjectActionGroups();
 		for (org.testeditor.xmllibrary.domain.action.ActionGroup actionGroupDomain : allActionGroupsDomain
 				.getActionGroup()) {

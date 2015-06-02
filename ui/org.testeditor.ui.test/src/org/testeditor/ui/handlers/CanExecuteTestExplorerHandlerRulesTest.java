@@ -292,7 +292,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	 * @return TestExplorerMock
 	 */
 	private TestExplorer getTestExplorerMock(final TreeViewer treeviewer) {
-		return new TestExplorer() {
+		return new TestExplorer(null) {
 			@Override
 			public TreeViewer getTreeViewer() {
 				return treeviewer;

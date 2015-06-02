@@ -63,7 +63,7 @@ public class ShareProjectHandlerTest {
 	 * @return StructuredSelection with the testProject.
 	 */
 	private TestExplorer getTestExplorerWith(final TestProject testProject) {
-		return new TestExplorer() {
+		return new TestExplorer(null) {
 
 			@Override
 			public IStructuredSelection getSelection() {
