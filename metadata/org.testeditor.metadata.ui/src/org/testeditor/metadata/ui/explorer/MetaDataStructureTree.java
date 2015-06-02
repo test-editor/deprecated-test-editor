@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.parts.commons.tree;
+package org.testeditor.metadata.ui.explorer;
 
 import java.util.ArrayList;
 import java.util.Iterator;

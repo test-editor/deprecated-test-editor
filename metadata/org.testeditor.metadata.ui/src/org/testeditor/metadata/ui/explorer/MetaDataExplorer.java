@@ -9,10 +9,8 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.parts.testExplorer;
+package org.testeditor.metadata.ui.explorer;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +24,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -37,22 +34,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
-import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.metadata.core.MetaDataService;
-import org.testeditor.teamshare.svn.TeamShareStatus;
-import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
-import org.testeditor.ui.parts.commons.tree.MetaDataStructureTree;
-import org.testeditor.ui.parts.editor.view.TestEditorTestCaseController;
-import org.testeditor.ui.parts.editor.view.TestEditorTestScenarioController;
-import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
-import org.testeditor.ui.parts.testsuite.TestSuiteEditor;
 
 /**
  * The Test-Explorer allows to browse the hierarchy of the test projects
@@ -99,7 +87,6 @@ public class MetaDataExplorer {
 		if (projects.size() > 0) {
 			setSelectionOn(projects.get(0));
 		}
-		reloadSvnStatusForProjects();
 		if (service != null) {
 			service.registerContextMenu(treeViewer.getControl(), "org.testeditor.ui.popupmenu");
 		}
@@ -126,12 +113,10 @@ public class MetaDataExplorer {
 		Object[] expandedElements = metaDataStructureTree.getTreeViewer().getVisibleExpandedElements();
 		TestStructure selectedElement = metaDataStructureTree.getSelectedTestStrucuture();
 		getTreeViewer().getControl().setRedraw(false);
-		List<TestStructure> openedTestStructures = getEveryOpenTestStructure();
 		if (partService != null && !partService.saveAll(true)) {
 			return;
 		}
 		metaDataStructureTree.getTreeViewer().setInput(testProjectService);
-		reloadSvnStatusForProjects();
 		// Restore after refresh the previous ui state as much as possible
 		for (Object expElement : expandedElements) {
 			metaDataStructureTree.getTreeViewer().expandToLevel(expElement, 1);
@@ -139,53 +124,6 @@ public class MetaDataExplorer {
 		metaDataStructureTree.selectTestStructure(selectedElement);
 		getTreeViewer().getControl().setRedraw(true);
 		OpenTestStructureHandler openHandler = ContextInjectionFactory.make(OpenTestStructureHandler.class, context);
-		for (TestStructure ts : openedTestStructures) {
-			if (ts instanceof TestFlow) {
-				openHandler.execute((TestFlow) ts, context);
-			} else if (ts instanceof TestProject) {
-				openHandler.execute((TestProject) ts, context);
-			} else if (ts instanceof TestSuite) {
-				openHandler.execute((TestSuite) ts, context);
-			}
-		}
-	}
-
-	/**
-	 * Loads the SVN Status for all projects.
-	 */
-	public void reloadSvnStatusForProjects() {
-		for (TestProject project : testProjectService.getProjects()) {
-			if (project.getTestProjectConfig().isTeamSharedProject()) {
-				TeamShareStatus shareState = new TeamShareStatus(eventBroker);
-				shareState.setSVNStatusForProject(project);
-			}
-		}
-	}
-
-	/**
-	 * Gives all TestStructure back, which are opened in the testExplorer.
-	 * 
-	 * @return testStructureList
-	 */
-	private List<TestStructure> getEveryOpenTestStructure() {
-		List<TestStructure> testStructureList = new ArrayList<TestStructure>();
-		if (partService == null) {
-			return testStructureList;
-		}
-		Collection<MPart> parts = partService.getParts();
-		if (parts == null) {
-			return testStructureList;
-		}
-		for (MPart p : parts) {
-			if ((p.getElementId().equals(TestEditorTestCaseController.ID)
-					|| p.getElementId().equals(TestProjectEditor.ID)
-					|| p.getElementId().equals(TestEditorTestScenarioController.ID) || p.getElementId().equals(
-					TestSuiteEditor.ID))
-					&& (p.getObject() != null) && (((ITestStructureEditor) p.getObject()).getTestStructure()) != null) {
-				testStructureList.add(((ITestStructureEditor) p.getObject()).getTestStructure());
-			}
-		}
-		return testStructureList;
 	}
 
 	/**
@@ -252,7 +190,6 @@ public class MetaDataExplorer {
 	@Inject
 	@Optional
 	protected void refresh(@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED) String data) {
-		reloadSvnStatusForProjects();
 		getTreeViewer().refresh();
 	}
 
