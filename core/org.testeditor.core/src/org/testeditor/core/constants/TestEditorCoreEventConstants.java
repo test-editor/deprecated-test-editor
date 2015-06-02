@@ -31,7 +31,13 @@ public final class TestEditorCoreEventConstants {
 	/**
 	 * Model of TestStructures is updated.
 	 */
-	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE = TESTSTRUCTURE_MODEL_CHANGED_PREFIX + "/UPDATE";
+	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE = TESTSTRUCTURE_MODEL_CHANGED_PREFIX + "/UPDATE/*";
+
+	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD = TESTSTRUCTURE_MODEL_CHANGED_PREFIX
+			+ "/UPDATE/ADD";
+
+	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY = TESTSTRUCTURE_MODEL_CHANGED_PREFIX
+			+ "/UPDATE/SAVE";
 
 	/**
 	 * List of TestProjects is dropped and fresh loaded from the backend.

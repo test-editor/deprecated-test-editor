@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.testeditor.core.model.teststructure.ScenarioSuite;
+import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -267,6 +268,24 @@ public class CanExecuteTestExplorerHandlerRules {
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
 			if (ts instanceof ScenarioSuite && !((ScenarioSuite) ts).getTestChildren().isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param explorer
+	 *            TestExplorer with selected elements
+	 * @return true on instance of TestFlow otherwise false.
+	 */
+	public boolean canExecuteOnTestFlowRule(TestExplorer explorer) {
+		IStructuredSelection selection = explorer.getSelection();
+		Iterator iter = selection.iterator();
+		while (iter.hasNext()) {
+			TestStructure ts = (TestStructure) iter.next();
+			if (!(ts instanceof TestFlow)) {
 				return false;
 			}
 		}

@@ -195,6 +195,18 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	}
 
 	/**
+	 * Tests the can execute on testflow.
+	 */
+	@Test
+	public void testCanExecuteOnTestFlowRule() {
+		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
+		assertTrue(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockEmptyMock())));
+		assertFalse(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockRoot())));
+		assertFalse(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockWithTestSuite())));
+		assertTrue(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockScenario())));
+	}
+
+	/**
 	 * tests the canExecuteOnTestScenarioRule method.
 	 * 
 	 */
@@ -556,8 +568,16 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 						new TestSuite().addChild(result);
 						return result;
 					}
+
+					@Override
+					public Iterator iterator() {
+						ArrayList<Object> list = new ArrayList<Object>();
+						list.add(getFirstElement());
+						return list.iterator();
+					}
 				};
 			}
+
 		};
 	}
 
