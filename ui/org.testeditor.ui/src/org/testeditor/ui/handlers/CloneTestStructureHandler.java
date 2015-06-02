@@ -20,13 +20,16 @@ import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
+import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -45,7 +48,7 @@ public class CloneTestStructureHandler {
 	private TestFlow lastSelection;
 
 	@Inject
-	private TestStructureContentService testStructureContentService;
+	private TestEditorPlugInService pluginService;
 
 	@Inject
 	private TestProjectService testProjectService;
@@ -65,11 +68,15 @@ public class CloneTestStructureHandler {
 		lastSelection = (TestFlow) explorer.getSelection().getFirstElement();
 		if (lastSelection instanceof TestCase) {
 			NewCaseHandler newCaseHandler = ContextInjectionFactory.make(NewCaseHandler.class, context);
-			ContextInjectionFactory.invoke(newCaseHandler, Execute.class, context);
+			if (context.containsKey(IWorkbench.class)) {
+				ContextInjectionFactory.invoke(newCaseHandler, Execute.class, context);
+			}
 		}
 		if (lastSelection instanceof TestScenario) {
 			NewScenarioHandler newSecHandler = ContextInjectionFactory.make(NewScenarioHandler.class, context);
-			ContextInjectionFactory.invoke(newSecHandler, Execute.class, context);
+			if (context.containsKey(IWorkbench.class)) {
+				ContextInjectionFactory.invoke(newSecHandler, Execute.class, context);
+			}
 		}
 	}
 
@@ -88,12 +95,17 @@ public class CloneTestStructureHandler {
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD) String testStructureFullName) {
 		try {
 			TestFlow newTs = (TestFlow) testProjectService.findTestStructureByFullName(testStructureFullName);
+			TestStructureContentService testStructureContentService = pluginService
+					.getTestStructureContentServiceFor(newTs.getRootElement().getTestProjectConfig().getTestServerID());
+			testStructureContentService.refreshTestCaseComponents(lastSelection);
 			newTs.setTestComponents(lastSelection.getTestComponents());
 			testStructureContentService.saveTestStructureData(newTs);
 		} catch (SystemException e) {
-			LOGGER.trace("deleting items", e);
+			LOGGER.error("saving ", e);
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), translationService.translate("%error"),
 					e.getLocalizedMessage());
+		} catch (TestCycleDetectException e) {
+			LOGGER.error("cycle in: " + lastSelection.getFullName(), e);
 		}
 	}
 

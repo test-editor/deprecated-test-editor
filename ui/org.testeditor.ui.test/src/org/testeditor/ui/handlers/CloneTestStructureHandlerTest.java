@@ -17,19 +17,31 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.Test;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.ui.adapter.TestProjectServiceAdapter;
+import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
+import org.testeditor.ui.adapter.TranslationServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
+import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  *
- * Modul Tests for CloneTestStructure.
+ * Modul/Inregration- Tests for CloneTestStructure.
  *
  */
 public class CloneTestStructureHandlerTest {
@@ -60,6 +72,42 @@ public class CloneTestStructureHandlerTest {
 		assertTrue(handler.canExecute(context));
 		list.add(new TestScenario());
 		assertFalse(handler.canExecute(context));
+	}
+
+	/**
+	 * Tests the clone operation.
+	 */
+	@Test
+	public void testCloneTestCase() {
+		IEclipseContext context = EclipseContextFactory.create();
+		List<TestStructure> list = new ArrayList<TestStructure>();
+		TestCase testCase = new TestCase();
+		list.add(testCase);
+		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock() {
+			@Override
+			public TestStructureContentService getTestStructureContentServiceFor(String testServerID) {
+				return new TestStructureContentServiceAdapter();
+			}
+		});
+		context.set(TestProjectService.class, new TestProjectServiceAdapter() {
+			@Override
+			public TestStructure findTestStructureByFullName(String testStructureFullName) throws SystemException {
+				TestCase testCase = new TestCase();
+				testCase.setName("MyTestCase");
+				TestProject tp = new TestProject();
+				tp.setName("MyPrj");
+				tp.addChild(testCase);
+				TestProjectConfig cfg = new TestProjectConfig();
+				tp.setTestProjectConfig(cfg);
+				return testCase;
+			}
+		});
+		context.set(TestEditorTranslationService.class, new TestEditorTranslationService());
+		context.set(TranslationService.class, new TranslationServiceAdapter().getTranslationService());
+		CloneTestStructureHandler handler = ContextInjectionFactory.make(CloneTestStructureHandler.class, context);
+		handler.execute(context);
+		handler.updateNewTestStructureWithLastSelection("MyPrj.MyTestCase");
 	}
 
 }

@@ -77,7 +77,6 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 		new FitnesseFileSystemTestStructureService().create(testStructure);
 		eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD,
 				testStructure.getFullName());
-
 	}
 
 	/**
