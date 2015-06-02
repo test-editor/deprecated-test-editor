@@ -52,7 +52,8 @@ public abstract class AbstractUpdateOrApproveHandler {
 	@Inject
 	private TestEditorPlugInService plugInService;
 	@Inject
-	private TestEditorTranslationService translationService;
+	protected TestEditorTranslationService translationService;
+
 	private static final Logger LOGGER = Logger.getLogger(AbstractUpdateOrApproveHandler.class);
 
 	private HashSet<TestProject> testProjectSet = new HashSet<TestProject>();

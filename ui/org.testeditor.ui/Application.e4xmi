@@ -49,8 +49,11 @@
                 </children>
               </menus>
               <toolbar xmi:id="_cl21AJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.toolbar.0">
-                <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA"/>
+                <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA">
+                  <persistedState key="org.eclipse.swtbot.widget.key" value="runTest"/>
+                </children>
                 <children xsi:type="menu:DirectToolItem" xmi:id="_jc5lUJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.testExplorerRefreshHandler" iconURI="platform:/plugin/org.testeditor.ui/icons/refresh.gif" tooltip="%handledtoolitem.refresh.tree.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.handler.RefreshTestExplorer"/>
+                <children xsi:type="menu:DirectToolItem" xmi:id="_4CzeYO6sEeS2OYADBOtGQg" elementId="org.testeditor.ui.testexplorer.searchTestStructure" iconURI="platform:/plugin/org.testeditor.ui/icons/search.gif" tooltip="%handledtoolitem.search.tree.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.SearchTestStructureHandler"/>
               </toolbar>
             </children>
           </children>
@@ -176,6 +179,7 @@
   <handlers xmi:id="_CyGeUPtoEeOmHfkQ32ERag" elementId="org.testeditor.ui.configuration.restartUI " contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.systemconfiguration.handler.RestartAndResetUIHandler" command="_9SKD0PtnEeOmHfkQ32ERag"/>
   <handlers xmi:id="_dPDtgGpyEeSOgPsPr_FOyw" elementId="org.testeditor.ui.revert.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.RevertElementHandler" command="_pwlOAGpqEeSOgPsPr_FOyw"/>
   <handlers xmi:id="__ElJUJSqEeSBt7RsTs2qPA" elementId="org.testeditor.ui.showChanges.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.ShowChangesHandler" command="_5P-GYJSqEeSBt7RsTs2qPA"/>
+  <handlers xmi:id="_GloewOeTEeSASaPeHe3Yjw" elementId="org.testeditor.ui.handlers.SearchTestCase" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.SearchTestStructureHandler" command="_6eV80OeSEeSASaPeHe3Yjw"/>
   <bindingTables xmi:id="_vtvnGiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" bindingContext="_vtvnICNOEeKR9Jsu4DQSAw">
     <bindings xmi:id="_vtvnGyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+Q" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
     <bindings xmi:id="_vtvnHSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+S" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
@@ -183,6 +187,7 @@
     <bindings xmi:id="_xlr0sKdTEeKIcI0tdcqdJg" elementId="" keySequence="Delete" command="_8tNH0D69EeKim5Ef38P8Tw"/>
     <bindings xmi:id="_8mhwINggEeKUuehzuHQYMw" elementId="org.testeditor.ui.keybinding.manualcommand" keySequence="F1" command="__FnKENMwEeKEGbLPo3b6ng"/>
     <bindings xmi:id="_krBaAE3kEeOsG7akaQSE_w" elementId="org.testeditor.ui.keybinding.rename" keySequence="F2" command="_Bf-TQD6-EeKim5Ef38P8Tw"/>
+    <bindings xmi:id="_j1oDgOeSEeSASaPeHe3Yjw" elementId="org.testeditor.ui.keybinding.0" keySequence="M1+F" command="_6eV80OeSEeSASaPeHe3Yjw"/>
   </bindingTables>
   <rootContext xmi:id="_vtvnICNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.contexts.dialogAndWindow" contributorURI="platform:/plugin/org.testeditor.ui" name="In Dialog and Windows">
     <children xmi:id="_vtvnISNOEeKR9Jsu4DQSAw" elementId="org.eclipse.ui.contexts.window" contributorURI="platform:/plugin/org.testeditor.ui" name="In Windows"/>
@@ -314,6 +319,7 @@
   <commands xmi:id="_9SKD0PtnEeOmHfkQ32ERag" elementId="org.testeditor.ui.configuration.restartUI" commandName="org.testeditor.ui.configuration.restartUI"/>
   <commands xmi:id="_pwlOAGpqEeSOgPsPr_FOyw" elementId="org.testeditor.ui.revertElement.command" commandName="org.testeditor.ui.revertElement.command"/>
   <commands xmi:id="_5P-GYJSqEeSBt7RsTs2qPA" elementId="org.testeditor.ui.showChanges.command" commandName="org.testeditor.ui.showChanges.command"/>
+  <commands xmi:id="_6eV80OeSEeSASaPeHe3Yjw" elementId="org.testeditor.ui.command.searchTestCase" commandName="org.testeditor.ui.command.searchTestCase"/>
   <addons xmi:id="_vtvnKSNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.core.commands.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_vtvnKiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.contexts.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_vtvnKyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.bindings.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

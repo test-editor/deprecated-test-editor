@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -27,6 +28,16 @@ import org.testeditor.ui.parts.testExplorer.TestExplorer;
  * 
  */
 public class TestExplorerMock extends TestExplorer implements EventHandler {
+
+	/**
+	 * Constructor to create the object.
+	 * 
+	 * @param part
+	 *            of the model.
+	 */
+	public TestExplorerMock(MPart part) {
+		super(part);
+	}
 
 	@Inject
 	private IEventBroker eventBroker;

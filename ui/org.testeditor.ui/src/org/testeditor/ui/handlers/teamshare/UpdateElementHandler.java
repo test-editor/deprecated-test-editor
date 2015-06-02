@@ -21,14 +21,12 @@ import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * executes the update-element event.
  * 
  * 
  */
-@SuppressWarnings("restriction")
 public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 
 	@Inject
@@ -37,15 +35,14 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 	private static final Logger LOGGER = Logger.getLogger(UpdateElementHandler.class);
 
 	@Inject
-	private TestEditorTranslationService translationService;
-
-	@Inject
 	private TranslationService translate;
+
+	private String teamChangeState;
 
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			getTeamService(testStructure).update(testStructure, translate);
+			teamChangeState = getTeamService(testStructure).update(testStructure, translate);
 			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE;
 			eventBroker.post(eventTopic, testStructure.getFullName());
 		} catch (final SystemException e) {
@@ -84,7 +81,6 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	void showCompletedMessage() {
 		MessageDialog.openInformation(getDisplay().getActiveShell(), translationService.translate("%info"),
-				translationService.translate("%update.completed"));
+				translationService.translate("%update.completed") + "\n" + teamChangeState);
 	}
-
 }

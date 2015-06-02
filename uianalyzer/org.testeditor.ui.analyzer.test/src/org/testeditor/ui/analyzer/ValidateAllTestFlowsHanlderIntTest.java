@@ -108,7 +108,7 @@ public class ValidateAllTestFlowsHanlderIntTest {
 	 * @return TestExplorerMock.
 	 */
 	private TestExplorer getTestExplorerMock(final Object selection) {
-		return new TestExplorer() {
+		return new TestExplorer(null) {
 			@Override
 			public IStructuredSelection getSelection() {
 				return new StructuredSelection() {

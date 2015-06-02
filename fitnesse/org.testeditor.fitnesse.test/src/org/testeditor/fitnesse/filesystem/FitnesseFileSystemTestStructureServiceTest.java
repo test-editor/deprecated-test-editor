@@ -22,6 +22,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -459,16 +461,18 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	 * @param testResults
 	 *            List<TestResult>
 	 * @param strs
-	 *            referenz list
+	 *            reference list
+	 * @throws ParseException
+	 *             on wrong testdata
 	 */
-	private void compare(List<TestResult> testResults, String[] strs) {
+	private void compare(List<TestResult> testResults, String[] strs) throws ParseException {
 
 		assertTrue("Arrays not the same length", testResults.size() == strs.length);
 
 		int i = 0;
-
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
 		for (TestResult testResult : testResults) {
-			assertEquals(testResult.getResultDate().toString(), strs[i++]);
+			assertEquals(testResult.getResultDate().toString(), sdf.parse(strs[i++]).toString());
 		}
 
 	}
@@ -487,8 +491,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		assertNotNull(testHistory);
 		assertEquals(3, testHistory.size());
 
-		compare(testHistory, new String[] { "Sun Oct 19 13:55:03 CEST 2014", "Sat Oct 18 13:55:03 CEST 2014",
-				"Fri Oct 17 22:13:15 CEST 2014" });
+		compare(testHistory, new String[] { "13:55:03 19.10.2014", "13:55:03 18.10.2014", "22:13:15 17.10.2014" });
 
 	}
 

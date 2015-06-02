@@ -84,6 +84,9 @@ public class TestHistoryView {
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 
+		tableViewer.getTable().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.HISTORY_TABLE);
+
 		new TableColumn(tableViewer.getTable(), SWT.NONE);
 
 		TableColumn tblclmnDatetime = new TableColumn(tableViewer.getTable(), SWT.NONE);

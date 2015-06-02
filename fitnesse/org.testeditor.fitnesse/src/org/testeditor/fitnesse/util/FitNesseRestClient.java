@@ -11,7 +11,11 @@
  *******************************************************************************/
 package org.testeditor.fitnesse.util;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -29,7 +33,10 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
+import org.testeditor.fitnesse.resultreader.FitNesseResultReader;
+import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
 
 /**
  * Client implementation calls the FitNesse REST service. The interface
@@ -39,7 +46,7 @@ import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService
 public final class FitNesseRestClient {
 
 	/**
-	 * Class can not be intantiated.
+	 * Class can not be instantiated.
 	 */
 	private FitNesseRestClient() {
 	}
@@ -64,7 +71,6 @@ public final class FitNesseRestClient {
 	 *            the port as String
 	 * @return the url to the fitnesse server.
 	 */
-	// TODO [TE-1545] Port
 	private static String getFitnesseUrl(String port) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("http://localhost:").append(port).append("/");
@@ -87,12 +93,127 @@ public final class FitNesseRestClient {
 	 */
 	public static TestResult execute(final TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
+		// TODO We have to switch between batch and online mode at this place.
+		// Until we upgrade to FitNesse Version 20150226 or higher. Which
+		// contains this feature: https://github.com/unclebob/fitnesse/pull/627
+		if (System.getProperty("headlessTE") != null) {
+			return executeBatch(testStructure, monitor);
+		} else {
+			return executeOnline(testStructure, monitor);
+		}
+	}
+
+	/**
+	 * Execute a test case in batch mode. in case of not running test, it will
+	 * be return an default TestResult object
+	 * 
+	 * This returns an xml result, that can be used by third party plug-ins.
+	 * 
+	 * @param testStructure
+	 *            test case @link {@link TestStructure}
+	 * @param monitor
+	 *            monitors cancel of test
+	 * @return test result @link {@link TestResult}
+	 * @throws SystemException
+	 *             is thrown in case of IO or connection exceptions
+	 * @throws InterruptedException
+	 *             will thrown when user terminates the test
+	 */
+	public static TestResult executeBatch(final TestStructure testStructure, IProgressMonitor monitor)
+			throws SystemException, InterruptedException {
+		final File resultFile = new File(new FileLocatorService().getWorkspace().getAbsoluteFile() + File.separator
+				+ ".metadata" + File.separator + "logs", "latestResult.xml");
+		try {
+
+			Thread testExecutor = new Thread() {
+				@Override
+				public void run() {
+					try {
+						URL url = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName() + "?"
+								+ testStructure.getTypeName() + "&format=xml&includehtml");
+						URLConnection con = url.openConnection();
+						InputStream in = con.getInputStream();
+						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+						BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(resultFile));
+						boolean readingResultStream = true;
+						while (readingResultStream) {
+							String line = bufferedReader.readLine();
+							out.write(line.getBytes());
+							out.write("\n".getBytes());
+							readingResultStream = bufferedReader.ready();
+							Thread.sleep(0, 10);
+						}
+						bufferedReader.close();
+						in.close();
+						out.flush();
+						out.close();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				};
+			};
+			testExecutor.start();
+			while (testExecutor.isAlive()) {
+				if (monitor != null && monitor.isCanceled()) {
+
+					// stop test via REST-Call
+					URL urlStopTest = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName() + "?stoptest");
+					URLConnection conStopTest = urlStopTest.openConnection();
+					InputStream inputStream = conStopTest.getInputStream();
+
+					inputStream.close();
+					testExecutor.interrupt();
+					throw new InterruptedException();
+				}
+				Thread.sleep(5);
+			}
+
+			FitNesseResultReader reader = new FitnesseTestExecutionResultReader();
+			FileInputStream fileInputStream = new FileInputStream(resultFile);
+			TestResult result = reader.readTestResult(fileInputStream);
+			fileInputStream.close();
+			boolean isTestSystemExecuted = result.getRight() > 0 | result.getWrong() > 0 | result.getException() > 0;
+			if (isTestSystemExecuted) {
+				return result;
+			} else {
+				return new TestResult();
+			}
+		} catch (InterruptedException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error("Execution error", e);
+			SystemException systemException = new SystemException("execute test failed", e);
+			throw systemException;
+		} finally {
+			if (monitor != null) {
+				monitor.done();
+			}
+		}
+	}
+
+	/**
+	 * Execute a test case in online mode. in case of not running test, it will
+	 * be return an default TestResult object
+	 * 
+	 * This writes an errorLog and for test result is the history element used.
+	 * 
+	 * @param testStructure
+	 *            test case @link {@link TestStructure}
+	 * @param monitor
+	 *            monitors cancel of test
+	 * @return test result @link {@link TestResult}
+	 * @throws SystemException
+	 *             is thrown in case of IO or connection exceptions
+	 * @throws InterruptedException
+	 *             will thrown when user terminates the test
+	 */
+	public static TestResult executeOnline(final TestStructure testStructure, IProgressMonitor monitor)
+			throws SystemException, InterruptedException {
 
 		final String fullName = testStructure.getFullName();
 
 		int testHistoryBeforeTestSize = new FitnesseFileSystemTestStructureService().getTestHistory(testStructure)
 				.size();
-
 		try {
 
 			Thread testExecutor = new Thread() {

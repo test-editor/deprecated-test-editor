@@ -28,9 +28,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.service.prefs.PreferencesService;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.services.interfaces.LibraryReadException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
@@ -172,7 +172,7 @@ public class TestProjectEditorTest {
 		return new LibraryReaderService() {
 
 			@Override
-			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig cfg) throws LibraryReadException {
+			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig cfg) throws SystemException {
 				return new ProjectActionGroups();
 			}
 

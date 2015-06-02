@@ -46,7 +46,6 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
-import org.testeditor.core.services.interfaces.LibraryDataStoreService;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
@@ -219,7 +218,6 @@ public class FitNesseWikiParserTest {
 	 */
 	private IEclipseContext getEclipseContext() {
 		IEclipseContext context = EclipseContextFactory.create();
-		context.set(LibraryDataStoreService.class, ServiceLookUpForTest.getService(LibraryDataStoreService.class));
 		context.set(LibraryReaderService.class, ServiceLookUpForTest.getService(LibraryReaderService.class));
 		context.set(TestEditorPlugInService.class, getTestEditorPluginService());
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));

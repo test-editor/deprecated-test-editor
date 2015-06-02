@@ -37,6 +37,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -90,6 +91,8 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	private ProgressListener listener;
 
 	private IEventBroker eventBroker;
+
+	private TeamShareStatusService teamShareStatusService;
 
 	static {
 
@@ -267,9 +270,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	}
 
 	@Override
-	public void approve(TestStructure testStructure, TranslationService translationService, String svnComment)
+	public String approve(TestStructure testStructure, TranslationService translationService, String svnComment)
 			throws SystemException {
-
+		String resultState = "";
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("testStructure: " + testStructure.getFullName());
 		}
@@ -301,7 +304,8 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			cc.setEventHandler(new SVNLoggingEventHandler(listener, LOGGER));
 			SVNCommitInfo doCommit = cc.doCommit(new File[] { checkinFile }, false, svnComment, null, null, false,
 					true, SVNDepth.INFINITY);
-
+			resultState = translationService.translate("%svn.state.approve",
+					"platform:/plugin/org.testeditor.teamshare.svn") + " " + doCommit.getNewRevision();
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("CommitInfo: " + doCommit.toString());
 			}
@@ -311,14 +315,12 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			String message = substitudeSVNException(e, translationService);
 			throw new SystemException(message);
 		}
-
+		return resultState;
 	}
 
 	@Override
-	public List<TeamChange> update(TestStructure testStructure, TranslationService translationService)
-			throws SystemException {
-
-		final List<TeamChange> result = new ArrayList<TeamChange>();
+	public String update(TestStructure testStructure, TranslationService translationService) throws SystemException {
+		String resultState = "";
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("testStructure: " + testStructure.getFullName());
 		}
@@ -331,40 +333,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			SVNUpdateClient updateClient = clientManager.getUpdateClient();
 			File checkoutFile = getFile(testStructure);
 
-			updateClient.setEventHandler(new SVNLoggingEventHandler(listener, LOGGER) {
-				@Override
-				public void handleEvent(SVNEvent arg0, double arg1) throws SVNException {
-					super.handleEvent(arg0, arg1);
-					TeamChange teamChange = new TeamChange(getTeamChangeTypeFrom(arg0), getRelativePathFrom(arg0),
-							testProject);
-					// We only want the information of chnages not of events
-					// like started update and others.
-					if (teamChange.getTeamChangeType() != null) {
-						result.add(teamChange);
-					}
-				}
-
-				private String getRelativePathFrom(SVNEvent arg0) {
-					return convertFileToFullname(arg0.getFile(), testProject);
-				}
-
-				private TeamChangeType getTeamChangeTypeFrom(SVNEvent arg0) {
-					if (arg0.getAction().equals(SVNEventAction.UPDATE_ADD)) {
-						return TeamChangeType.ADD;
-					}
-					if (arg0.getAction().equals(SVNEventAction.UPDATE_DELETE)) {
-						return TeamChangeType.DELETE;
-					}
-					if (arg0.getAction().equals(SVNEventAction.UPDATE_UPDATE)) {
-						return TeamChangeType.MODIFY;
-					}
-					return null;
-				}
-
-			});
-
 			long revisionNumber = updateClient.doUpdate(checkoutFile, SVNRevision.HEAD, SVNDepth.INFINITY, true, true);
-
+			resultState = translationService.translate("%svn.state.update",
+					"platform:/plugin/org.testeditor.teamshare.svn") + " " + revisionNumber;
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("revisionNumber: " + revisionNumber);
 			}
@@ -383,7 +354,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			String message = substitudeSVNException(e, translationService);
 			throw new SystemException(message, e);
 		}
-		return result;
+		return resultState;
 	}
 
 	/**
@@ -545,8 +516,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			LOGGER.error(e);
 			throw new SystemException(e.getMessage());
 		}
-		TeamShareStatus teamShareStatus = new TeamShareStatus(eventBroker);
-		teamShareStatus.setSVNStatusForProject(testStructure.getRootElement());
+		if (teamShareStatusService != null) {
+			teamShareStatusService.setTeamStatusForProject(testStructure.getRootElement());
+		}
 	}
 
 	@Override
@@ -837,6 +809,9 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
+		}
+		if (teamShareStatusService == null) {
+			teamShareStatusService = context.get(TeamShareStatusService.class);
 		}
 		return this;
 	}

@@ -194,7 +194,8 @@ public class TestLogView {
 					.getTestStructureServiceFor(aTestStructure.getRootElement().getTestProjectConfig()
 							.getTestServerID());
 			try {
-				if ((aTestStructure.isExecutableTestStructure()) && testStructureService.hasTestExecutionLog(aTestStructure)) {
+				if ((aTestStructure.isExecutableTestStructure())
+						&& testStructureService.hasTestExecutionLog(aTestStructure)) {
 					onTestExecutionShowTestLogForLastRun(aTestStructure);
 				}
 			} catch (SystemException e) {

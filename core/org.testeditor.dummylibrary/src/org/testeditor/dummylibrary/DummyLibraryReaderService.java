@@ -13,12 +13,12 @@ package org.testeditor.dummylibrary;
 
 import java.util.ArrayList;
 
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.Action;
 import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.Argument;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.services.interfaces.LibraryReadException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 
 /**
@@ -30,7 +30,7 @@ import org.testeditor.core.services.interfaces.LibraryReaderService;
 public class DummyLibraryReaderService implements LibraryReaderService {
 
 	@Override
-	public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws LibraryReadException {
+	public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException {
 		DummyProjectLibraryConfig projectLibraryConfig = (DummyProjectLibraryConfig) libraryConfig;
 		ProjectActionGroups actionGroups = new ProjectActionGroups();
 		ActionGroup actionGroup = new ActionGroup();
