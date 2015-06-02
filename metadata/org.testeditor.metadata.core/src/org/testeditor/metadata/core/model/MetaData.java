@@ -15,14 +15,23 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.testeditor.core.model.teststructure.TestProject;
+
 public class MetaData {
 
 	private List<MetaDataValue> values;
 	private String key;
 
-	public MetaData(String key, String label) {
+	public TestProject getTestProject() {
+		return testProject;
+	}
+
+	private TestProject testProject;
+
+	public MetaData(String key, String label, TestProject testProject) {
 		this.key = key;
 		this.label = label;
+		this.testProject = testProject;
 		values = new ArrayList<MetaDataValue>();
 	}
 
