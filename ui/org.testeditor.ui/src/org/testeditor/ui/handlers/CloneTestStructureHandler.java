@@ -94,12 +94,16 @@ public class CloneTestStructureHandler {
 	public void updateNewTestStructureWithLastSelection(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD) String testStructureFullName) {
 		try {
-			TestFlow newTs = (TestFlow) testProjectService.findTestStructureByFullName(testStructureFullName);
-			TestStructureContentService testStructureContentService = pluginService
-					.getTestStructureContentServiceFor(newTs.getRootElement().getTestProjectConfig().getTestServerID());
-			testStructureContentService.refreshTestCaseComponents(lastSelection);
-			newTs.setTestComponents(lastSelection.getTestComponents());
-			testStructureContentService.saveTestStructureData(newTs);
+			if (lastSelection != null) {
+				TestFlow newTs = (TestFlow) testProjectService.findTestStructureByFullName(testStructureFullName);
+				TestStructureContentService testStructureContentService = pluginService
+						.getTestStructureContentServiceFor(newTs.getRootElement().getTestProjectConfig()
+								.getTestServerID());
+				testStructureContentService.refreshTestCaseComponents(lastSelection);
+				newTs.setTestComponents(lastSelection.getTestComponents());
+				testStructureContentService.saveTestStructureData(newTs);
+				lastSelection = null;
+			}
 		} catch (SystemException e) {
 			LOGGER.error("saving ", e);
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), translationService.translate("%error"),
