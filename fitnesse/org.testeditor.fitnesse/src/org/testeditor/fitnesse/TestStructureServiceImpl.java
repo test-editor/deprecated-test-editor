@@ -75,8 +75,8 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	@Override
 	public void create(TestStructure testStructure) throws SystemException {
 		new FitnesseFileSystemTestStructureService().create(testStructure);
-		eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, testStructure.getFullName());
-
+		eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD,
+				testStructure.getFullName());
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 			new FitnesseFileSystemTestStructureService().rename(testStructure, newName);
 		}
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE,
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getFullName());
 		}
 	}
