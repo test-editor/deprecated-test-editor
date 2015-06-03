@@ -102,8 +102,15 @@ public class DeleteTestHandler {
 									getMetaDataService().delete(testStructure);
 								}
 							} catch (SystemException | IOException e) {
-								MessageDialog.openError(Display.getCurrent().getActiveShell(),
-										translationService.translate("%error"), e.getLocalizedMessage());
+								LOGGER.error("Error deleting", e);
+								Display.getDefault().asyncExec(new Runnable() {
+
+									@Override
+									public void run() {
+										MessageDialog.openError(Display.getDefault().getActiveShell(),
+												translationService.translate("%error"), e.getLocalizedMessage());
+									}
+								});
 							}
 						}
 					}

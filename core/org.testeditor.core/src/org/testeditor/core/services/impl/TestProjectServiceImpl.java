@@ -238,7 +238,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			List<TestProject> projects = createDemoProject(demoProjectsDirs);
 			testProjects.addAll(projects);
 			if (eventBroker != null) {
-				eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, "");
+				eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY, "");
 			}
 		} catch (IOException e) {
 			throw new SystemException("Error creating Demo Projects", e);
@@ -745,7 +745,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			TestProject testProject = createProjectFrom(destDir);
 			getProjects().add(testProject);
 			if (eventBroker != null) {
-				eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, "");
+				eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY, "");
 			}
 			return getProject(nameNewProject);
 		}
@@ -834,7 +834,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		testProject.setName(newName);
 		testProject.setTestProjectConfig(getProjectConfigFor(newName));
 		if (eventBroker != null) {
-			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, "");
+			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY, "");
 		}
 		return getProject(newName);
 
@@ -1073,7 +1073,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		loadProjectConfigFromFileSystem(testProject, dir);
 		registerProject(testProject);
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE, testProject.getName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+					testProject.getName());
 		}
 	}
 
