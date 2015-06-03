@@ -107,7 +107,6 @@ public class CloneTestStructureHandlerTest {
 		context.set(TranslationService.class, new TranslationServiceAdapter().getTranslationService());
 		CloneTestStructureHandler handler = ContextInjectionFactory.make(CloneTestStructureHandler.class, context);
 		handler.execute(context);
-		handler.updateNewTestStructureWithLastSelection("MyPrj.MyTestCase");
 	}
 
 }
