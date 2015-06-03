@@ -86,9 +86,10 @@ public abstract class NewTestStructureHandler {
 	 *            the actual Eclipse Context.
 	 * @param partService
 	 *            of the active window.
+	 * @return new created TestStructure.
 	 */
 	@Execute
-	public void execute(TestEditorTranslationService teTranslationService, IWorkbench workbench,
+	public TestStructure execute(TestEditorTranslationService teTranslationService, IWorkbench workbench,
 			IEventBroker eventBroker, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell, EPartService partService,
 			IEclipseContext context) {
 		TestExplorer testExplorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW)
@@ -112,10 +113,10 @@ public abstract class NewTestStructureHandler {
 
 		// Show the wizard...
 		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
-
+		TestStructure testStructure = null;
 		// ...and if it wasn't canceled
 		if (wizardDialog.open() == Window.OK) {
-			TestStructure testStructure = createNewTestStructure(context);
+			testStructure = createNewTestStructure(context);
 			if (testStructure != null) {
 				testStructure.setName(newTestStructureName);
 				addChild(testStructure);
@@ -130,6 +131,7 @@ public abstract class NewTestStructureHandler {
 				}
 			}
 		}
+		return testStructure;
 	}
 
 	/**

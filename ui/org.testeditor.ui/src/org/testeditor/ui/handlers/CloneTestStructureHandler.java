@@ -18,19 +18,16 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
+import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
-import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
@@ -51,9 +48,6 @@ public class CloneTestStructureHandler {
 	private TestEditorPlugInService pluginService;
 
 	@Inject
-	private TestProjectService testProjectService;
-
-	@Inject
 	private TestEditorTranslationService translationService;
 
 	/**
@@ -61,56 +55,42 @@ public class CloneTestStructureHandler {
 	 * 
 	 * @param context
 	 *            to lookup the TestExplorer and execute new handler.
+	 * @return cloned TestStructure or null if no one is created.
 	 */
 	@Execute
-	public void execute(IEclipseContext context) {
+	public TestStructure execute(IEclipseContext context) {
+		TestStructure clonedTs = null;
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		lastSelection = (TestFlow) explorer.getSelection().getFirstElement();
+		NewTestStructureHandler newHandler = null;
 		if (lastSelection instanceof TestCase) {
-			NewCaseHandler newCaseHandler = ContextInjectionFactory.make(NewCaseHandler.class, context);
-			if (context.containsKey(IWorkbench.class)) {
-				ContextInjectionFactory.invoke(newCaseHandler, Execute.class, context);
-			}
+			newHandler = ContextInjectionFactory.make(NewCaseHandler.class, context);
 		}
 		if (lastSelection instanceof TestScenario) {
-			NewScenarioHandler newSecHandler = ContextInjectionFactory.make(NewScenarioHandler.class, context);
-			if (context.containsKey(IWorkbench.class)) {
-				ContextInjectionFactory.invoke(newSecHandler, Execute.class, context);
+			newHandler = ContextInjectionFactory.make(NewScenarioHandler.class, context);
+		}
+		if (context.containsKey(IWorkbench.class)) {
+			Object result = ContextInjectionFactory.invoke(newHandler, Execute.class, context);
+			if (result != null) {
+				try {
+					TestFlow testFlow = (TestFlow) result;
+					TestStructureContentService testStructureContentService = pluginService
+							.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig()
+									.getTestServerID());
+					testStructureContentService.refreshTestCaseComponents(lastSelection);
+					testFlow.setTestComponents(lastSelection.getTestComponents());
+					testStructureContentService.saveTestStructureData(testFlow);
+					clonedTs = testFlow;
+				} catch (SystemException e) {
+					LOGGER.error("saving ", e);
+					MessageDialog.openError(Display.getCurrent().getActiveShell(),
+							translationService.translate("%error"), e.getLocalizedMessage());
+				} catch (TestCycleDetectException e) {
+					LOGGER.error("cycle in: " + lastSelection.getFullName(), e);
+				}
 			}
 		}
-	}
-
-	/**
-	 * Consumes the event:
-	 * <code>TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD</code>
-	 * and stores the content of the last selected TestStructure in the new one.
-	 * 
-	 * 
-	 * @param testStructureFullName
-	 *            of the new created one.
-	 */
-	@Inject
-	@Optional
-	public void updateNewTestStructureWithLastSelection(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD) String testStructureFullName) {
-		try {
-			if (lastSelection != null) {
-				TestFlow newTs = (TestFlow) testProjectService.findTestStructureByFullName(testStructureFullName);
-				TestStructureContentService testStructureContentService = pluginService
-						.getTestStructureContentServiceFor(newTs.getRootElement().getTestProjectConfig()
-								.getTestServerID());
-				testStructureContentService.refreshTestCaseComponents(lastSelection);
-				newTs.setTestComponents(lastSelection.getTestComponents());
-				testStructureContentService.saveTestStructureData(newTs);
-				lastSelection = null;
-			}
-		} catch (SystemException e) {
-			LOGGER.error("saving ", e);
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), translationService.translate("%error"),
-					e.getLocalizedMessage());
-		} catch (TestCycleDetectException e) {
-			LOGGER.error("cycle in: " + lastSelection.getFullName(), e);
-		}
+		return clonedTs;
 	}
 
 	/**
