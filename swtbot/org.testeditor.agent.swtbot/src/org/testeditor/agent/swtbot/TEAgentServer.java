@@ -1794,7 +1794,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 
 	/**
 	 * retrieve the items of a drop down box and check if one equals the given
-	 * value
+	 * value.
 	 * 
 	 * @param locator
 	 *            locator for a drop down
