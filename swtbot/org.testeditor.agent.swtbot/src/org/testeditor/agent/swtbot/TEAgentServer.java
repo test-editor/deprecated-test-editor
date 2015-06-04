@@ -377,6 +377,15 @@ public class TEAgentServer extends Thread implements ITestHarness {
 					LOGGER.trace("expandTreeItems node: " + node);
 				}
 			}
+			UIThreadRunnable.syncExec(new VoidResult() {
+
+				@Override
+				public void run() {
+					Shell[] shells = Display.getDefault().getShells();
+					LOGGER.trace(">>>>>> Shell count: " + shells.length);
+					shells[shells.length - 1].forceActive();
+				}
+			});
 			if (nodes[0].startsWith("ID")) {
 				String treeId = nodes[0].split(":")[1];
 				LOGGER.trace("selecting tree with id: " + treeId);
@@ -863,6 +872,8 @@ public class TEAgentServer extends Thread implements ITestHarness {
 				// the event notification error in swtbot.
 				button.click();
 			} catch (IndexOutOfBoundsException e) {
+				LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
+			} catch (IllegalStateException e) {
 				LOGGER.trace("SWTBot event notification error catched. Operation was successfull.");
 			}
 			if (LOGGER.isTraceEnabled()) {
