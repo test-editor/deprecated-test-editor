@@ -87,7 +87,7 @@ public class HeadlessTestRunnerApplicationTest {
 		testResult.setWrong(0);
 		testResult.setException(0);
 		String result = "\n*******************************************************************\n"
-				+ "Test executed with: true in 1s details:\n" + "0 of 0 are failed."
+				+ "Test executed with: true in 00:01s details:\n" + "0 Tests passed."
 				+ "\n*******************************************************************";
 		assertEquals(result, headlessApp.getTestSummaryFrom(testResult));
 	}
@@ -114,14 +114,14 @@ public class HeadlessTestRunnerApplicationTest {
 		innerResult.setException(0);
 		testResult.add(innerResult);
 		String result = "\n*******************************************************************\n"
-				+ "Test executed with: true in 23s details:\n" + "0 of 2 are failed."
+				+ "Test executed with: true in 00:23s details:\n" + "2 Tests passed."
 				+ "\n*******************************************************************";
 		assertEquals(result, headlessApp.getTestSummaryFrom(testResult));
 		innerResult.setWrong(1);
 		innerResult.setFullName("MyWrongTest");
 		result = "\n*******************************************************************\n"
-				+ "Test executed with: true in 23s details:\n" + "MyWrongTest	 with: 	false\n" + "1 of 2 are failed."
-				+ "\n*******************************************************************";
+				+ "Test executed with: true in 00:23s details:\n" + "MyWrongTest	 with: 	false\n"
+				+ "1 of 2 are failed." + "\n*******************************************************************";
 		assertEquals(result, headlessApp.getTestSummaryFrom(testResult));
 	}
 
