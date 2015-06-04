@@ -18,7 +18,6 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
@@ -42,8 +41,6 @@ public class CloneTestStructureHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(CloneTestStructureHandler.class);
 
-	private TestFlow lastSelection;
-
 	@Inject
 	private TestEditorPlugInService pluginService;
 
@@ -61,36 +58,47 @@ public class CloneTestStructureHandler {
 	public TestStructure execute(IEclipseContext context) {
 		TestStructure clonedTs = null;
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		lastSelection = (TestFlow) explorer.getSelection().getFirstElement();
-		NewTestStructureHandler newHandler = null;
-		if (lastSelection instanceof TestCase) {
-			newHandler = ContextInjectionFactory.make(NewCaseHandler.class, context);
-		}
-		if (lastSelection instanceof TestScenario) {
-			newHandler = ContextInjectionFactory.make(NewScenarioHandler.class, context);
-		}
-		if (context.containsKey(IWorkbench.class)) {
-			Object result = ContextInjectionFactory.invoke(newHandler, Execute.class, context);
-			if (result != null) {
-				try {
-					TestFlow testFlow = (TestFlow) result;
-					TestStructureContentService testStructureContentService = pluginService
-							.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig()
-									.getTestServerID());
-					testStructureContentService.refreshTestCaseComponents(lastSelection);
-					testFlow.setTestComponents(lastSelection.getTestComponents());
-					testStructureContentService.saveTestStructureData(testFlow);
-					clonedTs = testFlow;
-				} catch (SystemException e) {
-					LOGGER.error("saving ", e);
-					MessageDialog.openError(Display.getCurrent().getActiveShell(),
-							translationService.translate("%error"), e.getLocalizedMessage());
-				} catch (TestCycleDetectException e) {
-					LOGGER.error("cycle in: " + lastSelection.getFullName(), e);
-				}
+		TestFlow lastSelection = (TestFlow) explorer.getSelection().getFirstElement();
+		NewTestStructureHandler newHandler = createNewTestStructureHandler(lastSelection, context);
+		Object result = ContextInjectionFactory.invoke(newHandler, Execute.class, context);
+		if (result != null) {
+			try {
+				TestFlow testFlow = (TestFlow) result;
+				TestStructureContentService testStructureContentService = pluginService
+						.getTestStructureContentServiceFor(lastSelection.getRootElement().getTestProjectConfig()
+								.getTestServerID());
+				testStructureContentService.refreshTestCaseComponents(lastSelection);
+				testFlow.setTestComponents(lastSelection.getTestComponents());
+				testStructureContentService.saveTestStructureData(testFlow);
+				clonedTs = testFlow;
+			} catch (SystemException e) {
+				LOGGER.error("saving ", e);
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), translationService.translate("%error"),
+						e.getLocalizedMessage());
+			} catch (TestCycleDetectException e) {
+				LOGGER.error("cycle in: " + lastSelection.getFullName(), e);
 			}
 		}
 		return clonedTs;
+	}
+
+	/**
+	 * Builder method to create the matching new handler.
+	 * 
+	 * @param context
+	 *            EclipseContext to create the new handler.
+	 * @param lastSelection
+	 *            TestStructure to be cloned.
+	 * @return new handler matching the teststructure.
+	 */
+	protected NewTestStructureHandler createNewTestStructureHandler(TestFlow lastSelection, IEclipseContext context) {
+		if (lastSelection instanceof TestCase) {
+			return ContextInjectionFactory.make(NewCaseHandler.class, context);
+		}
+		if (lastSelection instanceof TestScenario) {
+			return ContextInjectionFactory.make(NewScenarioHandler.class, context);
+		}
+		return null;
 	}
 
 	/**
