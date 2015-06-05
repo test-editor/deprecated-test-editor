@@ -247,6 +247,9 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
 		String plugInID = properties.getProperty(TestEditorPlugInService.TEAMSHARE_ID);
 		TeamShareConfigurationService teamShareConfigurationService = teamShareConfigurationServices.get(plugInID);
+		if (teamShareConfigurationService == null) {
+			return null;
+		}
 		return teamShareConfigurationService.createTeamShareConfigFrom(properties);
 	}
 

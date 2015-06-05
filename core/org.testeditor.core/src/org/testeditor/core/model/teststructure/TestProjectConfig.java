@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 
 /**
  * Configuration of a TestProject. Beans of this class contains informations
