@@ -58,7 +58,11 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 		cycleFound = false;
 		new FitnesseFileSystemTestStructureContentService().refreshTestCaseComponents(testStructure);
 		if (cycleFound) {
-			throw new TestCycleDetectException(seenflows);
+			List<String> seenFlowNames = new ArrayList<String>();
+			for (TestFlow testFlow : seenflows) {
+				seenFlowNames.add(testFlow.getFullName());
+			}
+			throw new TestCycleDetectException(seenFlowNames);
 		}
 	}
 

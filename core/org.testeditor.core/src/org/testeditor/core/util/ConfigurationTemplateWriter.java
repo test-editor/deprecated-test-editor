@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 
 /**
  * this class writes a configuration by replacing the place-holders in the

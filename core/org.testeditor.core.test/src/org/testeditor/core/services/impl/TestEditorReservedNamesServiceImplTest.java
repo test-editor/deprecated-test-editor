@@ -16,8 +16,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.TestEditorReservedNamesService;
 
 /**
