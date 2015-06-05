@@ -12,19 +12,20 @@
 package org.testeditor.core.model.teststructure;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * list with the result of the testdata-evaluation.
  */
 public class TestDataEvaluationReturnList {
-	private HashSet<String> columnHeadersOnlyInTargetTable = new HashSet<String>();
-	private HashSet<String> columnHeadersOnlyInSourceTable = new HashSet<String>();
+	private Set<String> columnHeadersOnlyInTargetTable = new HashSet<String>();
+	private Set<String> columnHeadersOnlyInSourceTable = new HashSet<String>();
 	private boolean dataRowColumnCountEqualsHeaderRowColumnCount = true;
 
 	/**
 	 * @return the HashSet with the Columns only in the target table.
 	 */
-	public HashSet<String> getColumnHeadersOnlyInTargetTable() {
+	public Set<String> getColumnHeadersOnlyInTargetTable() {
 		return columnHeadersOnlyInTargetTable;
 	}
 
@@ -43,7 +44,7 @@ public class TestDataEvaluationReturnList {
 	 * 
 	 * @return the content of the columnHeadersOnlyInSourceTable.
 	 */
-	public HashSet<String> getColumnHeadersOnlyInSourceTable() {
+	public Set<String> getColumnHeadersOnlyInSourceTable() {
 		return columnHeadersOnlyInSourceTable;
 	}
 

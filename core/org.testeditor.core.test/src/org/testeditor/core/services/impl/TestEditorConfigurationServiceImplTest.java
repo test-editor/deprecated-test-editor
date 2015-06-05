@@ -21,9 +21,9 @@ import java.util.Map;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 
 /**
  * Module and Integration Tests for TestEditorConfigurationServiceImple.
