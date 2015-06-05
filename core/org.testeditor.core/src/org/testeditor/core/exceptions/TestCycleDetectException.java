@@ -13,8 +13,6 @@ package org.testeditor.core.exceptions;
 
 import java.util.List;
 
-import org.testeditor.core.model.teststructure.TestFlow;
-
 /**
  * 
  * Exception for Cycle in TestStructure Call hierarchies.
@@ -28,7 +26,7 @@ public class TestCycleDetectException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<TestFlow> testFlowStack;
+	private List<String> testFlowStack;
 
 	/**
 	 * Creates the TestCycleDetectException.
@@ -36,7 +34,7 @@ public class TestCycleDetectException extends Exception {
 	 * @param testFlowStack
 	 *            stack of testflows containing the cycle.
 	 */
-	public TestCycleDetectException(List<TestFlow> testFlowStack) {
+	public TestCycleDetectException(List<String> testFlowStack) {
 		this.testFlowStack = testFlowStack;
 	}
 
@@ -47,13 +45,13 @@ public class TestCycleDetectException extends Exception {
 	public String getCycleString() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
-		for (TestFlow testFlow : testFlowStack) {
+		for (String testFlow : testFlowStack) {
 			if (first) {
 				first = false;
 			} else {
 				sb.append(", \n");
 			}
-			sb.append(testFlow.getFullName());
+			sb.append(testFlow);
 		}
 		return sb.toString();
 	}

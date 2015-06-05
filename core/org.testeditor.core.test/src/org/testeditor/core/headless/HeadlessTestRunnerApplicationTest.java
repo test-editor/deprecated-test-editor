@@ -20,13 +20,13 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 import org.osgi.service.prefs.BackingStoreException;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.impl.TestProjectServiceImpl;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 
