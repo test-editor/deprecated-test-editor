@@ -12,10 +12,10 @@
 package org.testeditor.ui.parts.commons;
 
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 
 /**
  * 
