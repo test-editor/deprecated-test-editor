@@ -18,7 +18,7 @@ import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 
 /**
  * tests the methods of the ConfigurationTemplateWriter.

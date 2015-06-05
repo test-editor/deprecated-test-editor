@@ -27,9 +27,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 
 /**
  * Utlitity Class for common File Operations.

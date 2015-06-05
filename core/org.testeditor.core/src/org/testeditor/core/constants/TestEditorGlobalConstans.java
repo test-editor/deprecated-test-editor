@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.core.services.interfaces;
+package org.testeditor.core.constants;
 
 /**
  * interface for global constants.

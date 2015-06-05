@@ -14,7 +14,7 @@ package org.testeditor.core.services.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.TestEditorReservedNamesService;
 
 /**
