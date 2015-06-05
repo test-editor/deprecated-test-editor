@@ -17,7 +17,6 @@ import java.util.ArrayList;
  * 
  * this class contains after the loading of the library the loading-status.
  * 
- * @author llipinski
  */
 public class LibraryLoadingStatus {
 

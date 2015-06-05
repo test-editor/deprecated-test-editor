@@ -16,7 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.prefs.BackingStoreException;
+import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.testresult.TestResult;
@@ -36,7 +39,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
-import org.testeditor.core.services.interfaces.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
@@ -148,9 +150,10 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 */
 	protected String getTestSummaryFrom(TestResult testResult) {
 		StringBuilder sb = new StringBuilder();
+		Date runtime = new Date(testResult.getRunTimesSec() * 1000);
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 		sb.append("\n*******************************************************************\nTest executed with: ")
-				.append(testResult.isSuccessfully()).append(" in ").append(testResult.getRunTimesSec())
-				.append("s details:\n");
+				.append(testResult.isSuccessfully()).append(" in ").append(sdf.format(runtime)).append("s details:\n");
 		List<TestResult> children = testResult.getChildren();
 		int count = 0;
 		int failed = 0;
@@ -165,7 +168,11 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		for (TestResult failedTest : failedTests) {
 			sb.append(failedTest.getFullName()).append("\t with: \t").append(failedTest.isSuccessfully()).append("\n");
 		}
-		sb.append(failed).append(" of ").append(count).append(" are failed.");
+		if (failed > 0) {
+			sb.append(failed).append(" of ").append(count).append(" are failed.");
+		} else {
+			sb.append(count).append(" Tests passed.");
+		}
 		sb.append("\n*******************************************************************");
 		return sb.toString();
 	}

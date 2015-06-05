@@ -43,7 +43,11 @@ public class TestCycleDetectExceptionTest {
 		ts2.setName("TestScenario2");
 		flowStack.add(ts2);
 		flowStack.add(ts1);
-		String cycleString = new TestCycleDetectException(flowStack).getCycleString();
+		List<String> flowNames = new ArrayList<String>();
+		for (TestFlow testFlow : flowStack) {
+			flowNames.add(testFlow.getFullName());
+		}
+		String cycleString = new TestCycleDetectException(flowNames).getCycleString();
 		assertEquals("TestCase, \nTestScenario1, \nTestScenario2, \nTestScenario1", cycleString);
 	}
 
