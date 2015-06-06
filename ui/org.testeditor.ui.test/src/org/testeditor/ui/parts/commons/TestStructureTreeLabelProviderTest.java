@@ -16,6 +16,7 @@ import static org.junit.Assert.assertSame;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
@@ -47,6 +48,7 @@ public class TestStructureTreeLabelProviderTest {
 	public void setUp() {
 		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
 				TestStructureTree.class).getBundleContext());
+		context.set(Logger.class, null);
 		labelProvider = ContextInjectionFactory.make(TestStructureTreeLabelProvider.class, context);
 	}
 
