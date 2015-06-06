@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
@@ -101,6 +102,7 @@ public class TestStructureTreeTest {
 	private IEclipseContext getContext() {
 		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
 				.getBundleContext());
+		context.set(Logger.class, null);
 		return context;
 	}
 
