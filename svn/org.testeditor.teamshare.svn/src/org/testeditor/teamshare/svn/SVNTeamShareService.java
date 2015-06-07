@@ -121,6 +121,13 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 
 	}
 
+	/**
+	 * Creates an instance of the svn client manager to work with svn.
+	 * 
+	 * @param testProject
+	 *            used to identify the svn.
+	 * @return client to access the svn.
+	 */
 	private SVNClientManager getSVNClientManager(TestProject testProject) {
 
 		String username = ((SVNTeamShareConfig) (testProject.getTestProjectConfig().getTeamShareConfig()))
