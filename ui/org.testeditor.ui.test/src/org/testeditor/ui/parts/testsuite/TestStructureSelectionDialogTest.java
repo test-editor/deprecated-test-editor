@@ -27,11 +27,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -146,7 +146,8 @@ public class TestStructureSelectionDialogTest {
 				};
 			}
 		};
-		IEclipseContext context = EclipseContextFactory.create();
+		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
+				TestStructureSelectionDialog.class).getBundleContext());
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
 			@Override
 			public String translate(String key, Object... params) {
@@ -154,7 +155,6 @@ public class TestStructureSelectionDialogTest {
 			}
 		});
 		context.set(Logger.class, null);
-		context.set(TestProjectService.class, null);
 		ContextInjectionFactory.inject(dialog, context);
 		return dialog;
 	}
