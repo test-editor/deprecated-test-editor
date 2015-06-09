@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -138,8 +139,8 @@ public final class FitNesseRestClient {
 						boolean readingResultStream = true;
 						while (readingResultStream) {
 							String line = bufferedReader.readLine();
-							out.write(line.getBytes());
-							out.write("\n".getBytes());
+							out.write(line.getBytes(Charset.forName("UTF-8")));
+							out.write("\n".getBytes(Charset.forName("UTF-8")));
 							readingResultStream = bufferedReader.ready();
 							Thread.sleep(0, 10);
 						}
