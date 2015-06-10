@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Testeditor XML-Library
 Bundle-SymbolicName: org.testeditor.xmllibrary
 Bundle-Version: 1.7.2.qualifier
-Bundle-Activator: org.testeditor.xmllibrary.activator.XMLLibraryActivator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.inject;version="1.0.0",
