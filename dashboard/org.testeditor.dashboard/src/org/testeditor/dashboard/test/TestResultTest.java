@@ -16,13 +16,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.testeditor.dashboard.AllRunsResult;
 import org.testeditor.dashboard.TestResult;
 
 /**
- * Tests for {@link TestResult} and {@link AllRunsResult}.
+ * Tests for {@link TestResult} and AllRunsResult.
  * 
- * @author nalpert
  * 
  */
 public final class TestResultTest {
@@ -120,7 +118,7 @@ public final class TestResultTest {
 	}
 
 	/**
-	 * Fill test result values
+	 * Fill test result values.
 	 * 
 	 * @param tr
 	 *            test result to fill
