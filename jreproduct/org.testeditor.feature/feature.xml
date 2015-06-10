@@ -388,6 +388,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.testeditor.metadata.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.emf.ecore"
          download-size="0"
          install-size="0"
@@ -429,13 +436,6 @@
 
    <plugin
          id="org.testeditor.metadata.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.testeditor.metadata.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

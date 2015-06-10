@@ -13,3 +13,4 @@ Require-Bundle: org.testeditor.core;bundle-version="1.7.0",
 Service-Component: OSGI-INF/MetaDataService.xml
 Export-Package: org.testeditor.metadata.core,
  org.testeditor.metadata.core.model
+Bundle-ActivationPolicy: lazy
