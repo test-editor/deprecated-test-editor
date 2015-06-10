@@ -210,6 +210,7 @@ public class TestStructureServiceImplTest {
 	/**
 	 * 
 	 * @param set
+	 *            used to inform the test about operations calls.
 	 * @return team share service mock.
 	 */
 	private TeamShareService getTEamShareServiceMock(final HashSet<String> set) {
