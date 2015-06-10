@@ -146,7 +146,7 @@ public class ApplicationLifeCycleHandler {
 						LOGGER.error("Interrupt on waiting for ui.", e);
 					}
 				}
-				shell.getDisplay().asyncExec(new Runnable() {
+				Display.getDefault().asyncExec(new Runnable() {
 
 					@Override
 					public void run() {

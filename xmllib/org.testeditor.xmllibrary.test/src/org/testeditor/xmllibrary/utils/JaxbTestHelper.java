@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
-import org.testeditor.xmllibrary.activator.XMLLibraryActivator;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * 
@@ -24,28 +24,28 @@ import org.testeditor.xmllibrary.activator.XMLLibraryActivator;
  * 
  */
 public final class JaxbTestHelper {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(JaxbTestHelper.class);
-	
+
 	/**
 	 * no supposed to build an instance.
 	 */
 	private JaxbTestHelper() {
 	}
-	
+
 	/**
 	 * 
 	 * @return the Bundlel ocation as string
 	 */
 	public static String getBundleLocation() {
-	String path = null;
-	try {
-		File bundleFile = FileLocator.getBundleFile(XMLLibraryActivator.getContext().getBundle());
-		path = bundleFile.getAbsolutePath();
-	} catch (IOException e) {
-		LOGGER.error("Error get bundleLocation:: FAILED", e);
+		String path = null;
+		try {
+			File bundleFile = FileLocator.getBundleFile(FrameworkUtil.getBundle(JaxbTestHelper.class));
+			path = bundleFile.getAbsolutePath();
+		} catch (IOException e) {
+			LOGGER.error("Error get bundleLocation:: FAILED", e);
+		}
+		return path;
 	}
-	return path;
-}
 
 }
