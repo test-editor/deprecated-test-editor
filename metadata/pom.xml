@@ -16,7 +16,6 @@
 		<module>org.testeditor.metadata.core</module>
 		<module>org.testeditor.metadata.core.test</module>
  		<module>org.testeditor.metadata.ui</module>
-		<module>org.testeditor.metadata.ui.test</module>
 	</modules>
 	
 </project>
