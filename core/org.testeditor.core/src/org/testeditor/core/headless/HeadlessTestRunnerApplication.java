@@ -208,7 +208,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		String projectName = testStructureName.substring(0, testStructureName.indexOf("."));
 		TestProject testProject = prjService.getProjectWithName(projectName);
 		if (testProject == null) {
-			throw new InvalidArgumentException("No Project with name .");
+			throw new InvalidArgumentException("No Project with name: " + projectName);
 		}
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.startTestServer(testProject);
