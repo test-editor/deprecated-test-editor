@@ -21,16 +21,17 @@ import java.util.List;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -145,14 +146,15 @@ public class TestStructureSelectionDialogTest {
 				};
 			}
 		};
-		IEclipseContext context = EclipseContextFactory.create();
+		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
+				TestStructureSelectionDialog.class).getBundleContext());
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
 			@Override
 			public String translate(String key, Object... params) {
 				return key;
 			}
 		});
-		context.set(TestProjectService.class, null);
+		context.set(Logger.class, null);
 		ContextInjectionFactory.inject(dialog, context);
 		return dialog;
 	}
