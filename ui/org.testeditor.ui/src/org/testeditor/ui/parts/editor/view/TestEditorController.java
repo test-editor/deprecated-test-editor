@@ -337,12 +337,14 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		testEditViewArea.createUI(compositeForView);
 		item1.setControl(testEditViewArea.getStyledText());
 
-		TabItem item2 = new TabItem((TabFolder) compositeForView, SWT.NONE);
-		item2.setText(getTestEditorTab().getLabel(translationService));
-		Composite composite = getTestEditorTab().createTab((TabFolder) compositeForView, mpart, translationService);
+		if (getTestEditorTab() != null) {
+			TabItem item2 = new TabItem((TabFolder) compositeForView, SWT.NONE);
+			item2.setText(getTestEditorTab().getLabel(translationService));
 
-		item2.setControl(composite);
+			Composite composite = getTestEditorTab().createTab((TabFolder) compositeForView, mpart, translationService);
 
+			item2.setControl(composite);
+		}
 		LOGGER.trace("Check if this editor should restore an older state.");
 		String testStructureFullName = mpart.getPersistedState().get(EDITOR_OBJECT_ID_FOR_RESTORE);
 
