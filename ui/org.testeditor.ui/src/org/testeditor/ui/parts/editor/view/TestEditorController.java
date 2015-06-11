@@ -174,7 +174,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
 			testStructureContentService.saveTestStructureData(testFlow);
-			getTestEditorTab().save();
+			if (getTestEditorTab() != null) {
+				getTestEditorTab().save();
+			}
 			mpart.setDirty(false);
 		} catch (SystemException e) {
 			String message = translationService.translate("%editController.ErrorStoringTestFlow");
@@ -386,7 +388,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		this.testFlow = testFlow;
 
-		getTestEditorTab().setTestFlow(testFlow);
+		if (getTestEditorTab() != null) {
+			getTestEditorTab().setTestFlow(testFlow);
+		}
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();
 		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
@@ -1471,10 +1475,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 * 
 	 * @return the service
 	 */
-	private ITestEditorTab getTestEditorTab() throws RuntimeException {
+	private ITestEditorTab getTestEditorTab() {
 		if (iTestEditorTab == null) {
-			throw new RuntimeException(
-					"MetaDataTab ist not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
+			LOGGER.info("MetaDataTab is not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
 		}
 		return iTestEditorTab;
 	}

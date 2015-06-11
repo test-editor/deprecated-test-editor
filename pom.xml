@@ -21,11 +21,11 @@
 		<module>svn</module>
  		<module>ui</module>
  		<module>uianalyzer</module>
+		<module>metadata</module>
  		<module>uiscanner</module>
  		<module>dashboard</module>
 		<module>product</module>
 		<module>jreproduct</module>
-		<module>metadata</module>
 	</modules>
 	
 </project>
