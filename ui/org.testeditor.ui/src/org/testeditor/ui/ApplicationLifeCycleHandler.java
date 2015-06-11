@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
+import org.testeditor.core.services.interfaces.FileWatchService;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -73,6 +74,9 @@ public class ApplicationLifeCycleHandler {
 
 	@Inject
 	private TranslationService translationService;
+
+	@Inject
+	private FileWatchService fileWatchService;
 
 	/**
 	 * Inititalization of the Application.
@@ -180,6 +184,10 @@ public class ApplicationLifeCycleHandler {
 			List<TestProject> projects = testProjectService.getProjects();
 			for (TestProject testProject : projects) {
 				startBackendServer(starter, testProject);
+
+				// Testcode for filewatcher !!!!!
+				fileWatchService.watch(testProject);
+
 			}
 		} catch (IOException | URISyntaxException e) {
 			LOGGER.trace("Error starting Test Server", e);
