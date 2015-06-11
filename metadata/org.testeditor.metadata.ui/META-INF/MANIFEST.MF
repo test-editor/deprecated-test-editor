@@ -28,3 +28,4 @@ Service-Component: OSGI-INF/ITestEditorTab.xml
 Bundle-ClassPath: .
 Export-Package: org.testeditor.metadata.ui.explorer,
  org.testeditor.metadata.ui.handler
+Bundle-ActivationPolicy: lazy
