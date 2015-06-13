@@ -13,6 +13,7 @@ package org.testeditor.ui.parts.testhistory;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,6 +30,7 @@ public class TestExecutionResultViewPartTest {
 	 *             on Testfailure
 	 */
 	@Test
+	@Ignore
 	public void testCreateInit() throws Exception {
 		TestExecutionResultViewPart testExecutionResultViewPart = new TestExecutionResultViewPart();
 		Shell shell = new Shell(Display.getDefault());
