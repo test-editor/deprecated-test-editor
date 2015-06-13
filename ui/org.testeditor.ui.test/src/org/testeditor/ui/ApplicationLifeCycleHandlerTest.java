@@ -26,6 +26,7 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.eclipse.e4.ui.workbench.IWorkbench;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
@@ -146,7 +147,7 @@ public class ApplicationLifeCycleHandlerTest {
 		context.set(PreferencesService.class, new PreferencesServiceMock());
 		IEventBroker eventBroker = new EventBroker();
 		context.set(IEventBroker.class, eventBroker);
-		context.set(IServiceConstants.ACTIVE_SHELL, new Shell());
+		context.set(IServiceConstants.ACTIVE_SHELL, new Shell(Display.getDefault()));
 		TestProjectServiceAdapter testProjectServiceAdapter = new TestProjectServiceAdapter();
 		context.set(TestProjectService.class, testProjectServiceAdapter);
 		return context;
