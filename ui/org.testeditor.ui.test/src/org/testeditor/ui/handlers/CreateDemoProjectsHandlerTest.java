@@ -23,6 +23,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.internal.events.EventBroker;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
@@ -49,7 +50,7 @@ public class CreateDemoProjectsHandlerTest {
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(IEventBroker.class, new EventBroker());
 		context.set(TestProjectService.class, getTestProjectServiceMock());
-		context.set(IServiceConstants.ACTIVE_SHELL, new Shell());
+		context.set(IServiceConstants.ACTIVE_SHELL, new Shell(Display.getDefault()));
 		ContextInjectionFactory.make(CreateDemoProjectsHandler.class, context);
 	}
 
