@@ -37,6 +37,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -332,9 +334,12 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		TabItem item1 = new TabItem((TabFolder) compositeForView, SWT.NONE);
 		item1.setText(translationService.translate("%testeditor.tab.editor.label"));
-		testEditViewArea = ContextInjectionFactory.make(TestEditView.class, context);
-		testEditViewArea.setTestCaseController(this);
-		testEditViewArea.createUI(compositeForView);
+
+		messsageArea = new Composite(compositeForView, SWT.NONE);
+		messsageArea.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+		messsageArea.setLayout(new FillLayout());
+		createTestCaseView();
+
 		item1.setControl(testEditViewArea.getStyledText());
 
 		if (getTestEditorTab() != null) {
