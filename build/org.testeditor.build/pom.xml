@@ -12,6 +12,20 @@
 
 	<name>Testeditor Parent</name>
 
+	<profiles>
+		<profile>
+			<id>macosx-jvm-flags</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<os-jvm-flags>-XstartOnFirstThread</os-jvm-flags>
+			</properties>
+		</profile>
+	</profiles>
+
 	<properties>
 		<tycho-version>0.21.0</tycho-version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
@@ -19,6 +33,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<testeditor.build>build/org.testeditor.build</testeditor.build>
 		<te-target>file:///${basedir}/../../../te.target</te-target>
+		<os-jvm-flags />
 	</properties>
 
 	<repositories>
@@ -156,39 +171,4 @@
 
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>macosx-jvm-flags</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<os-jvm-flags>-XstartOnFirstThread</os-jvm-flags>
-			</properties>
-		</profile>
-		<profile>
-			<id>linux-jvm-flags</id>
-			<activation>
-				<os>
-					<family>unix</family>
-				</os>
-			</activation>
-			<properties>
-				<os-jvm-flags>-Xss2m -XX:PermSize=1024m -XX:MaxPermSize=1024m -XX:+UseParallelGC</os-jvm-flags>
-			</properties>
-		</profile>
-		<profile>
-			<id>windows-jvm-flags</id>
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
-			<properties>
-				<os-jvm-flags></os-jvm-flags>
-			</properties>
-		</profile>
-	</profiles>
 </project>
