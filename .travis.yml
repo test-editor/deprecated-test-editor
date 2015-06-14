@@ -1,3 +1,6 @@
+os:
+  - linux
+  - osx
 before_install: 
   - git clone https://github.com/test-editor/te.target.git ../te.target 
   - git clone https://github.com/test-editor/test-editor-tests ../test-editor-tests 
