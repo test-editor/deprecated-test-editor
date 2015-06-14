@@ -110,7 +110,7 @@
 				<configuration>
 					<useUIHarness>false</useUIHarness>
 					<useUIThread>true</useUIThread>
-					<argLine>-Xms40m -Xmx1G ${os-jvm-flags}</argLine>
+					<argLine>${tycho.testArgLine} -Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=n -Xms40m -Xmx1G ${os-jvm-flags}</argLine>
 				</configuration>
 			</plugin>
 
