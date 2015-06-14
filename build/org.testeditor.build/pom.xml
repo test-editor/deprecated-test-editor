@@ -95,7 +95,7 @@
 				<configuration>
 					<useUIHarness>false</useUIHarness>
 					<useUIThread>true</useUIThread>
-					<argLine>-Xms40m -Xmx1G</argLine>
+					<argLine>-Xms40m -Xmx1G ${os-jvm-flags}</argLine>
 				</configuration>
 			</plugin>
 
@@ -176,7 +176,7 @@
 				</os>
 			</activation>
 			<properties>
-				<os-jvm-flags></os-jvm-flags>
+				<os-jvm-flags>-Xss2m -XX:PermSize=1024m -XX:MaxPermSize=1024m -XX:+UseParallelGC</os-jvm-flags>
 			</properties>
 		</profile>
 		<profile>
