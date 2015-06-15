@@ -1648,10 +1648,11 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	public String compareTextInStyledById(String locator, String searched) {
 		boolean compResult = false;
 		try {
+			String text = bot.styledTextWithId(locator).getText();
 			if (LOGGER.isTraceEnabled()) {
-				LOGGER.trace("compareTextInStyledById locator: " + locator + " text: " + searched);
+				LOGGER.trace("compareTextInStyledById locator: " + locator + " text: " + searched + " in:\n " + text);
 			}
-			compResult = bot.styledTextWithId(locator).getText().contains(searched);
+			compResult = text.contains(searched);
 		} catch (Exception e) {
 			LOGGER.error("ERROR " + e.getMessage());
 			return "ERROR " + e.getMessage();
