@@ -223,9 +223,14 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			if (userWantsToReplaceContent()) {
 				loadAndRerender();
 			}
-		} else {
-			loadAndRerender();
 		}
+	}
+
+	@Inject
+	//@Optional
+	public void reloadLibrary(
+			@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
+		LOGGER.info("library for project " + testProject.getName() + " must be reloaded");
 	}
 
 	/**

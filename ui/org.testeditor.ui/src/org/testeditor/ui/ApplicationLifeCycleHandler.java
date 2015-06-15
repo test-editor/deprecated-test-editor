@@ -75,8 +75,8 @@ public class ApplicationLifeCycleHandler {
 	@Inject
 	private TranslationService translationService;
 
-	@Inject
-	private FileWatchService fileWatchService;
+//	@Inject
+//	private FileWatchService fileWatchService;
 
 	/**
 	 * Inititalization of the Application.
@@ -184,10 +184,6 @@ public class ApplicationLifeCycleHandler {
 			List<TestProject> projects = testProjectService.getProjects();
 			for (TestProject testProject : projects) {
 				startBackendServer(starter, testProject);
-
-				// Testcode for filewatcher !!!!!
-				fileWatchService.watch(testProject);
-
 			}
 		} catch (IOException | URISyntaxException e) {
 			LOGGER.trace("Error starting Test Server", e);
