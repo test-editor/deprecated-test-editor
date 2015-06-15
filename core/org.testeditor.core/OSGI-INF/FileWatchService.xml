@@ -3,5 +3,6 @@
    <implementation class="org.testeditor.core.services.impl.FileWatchServiceImpl"/>
    <service>
       <provide interface="org.testeditor.core.services.interfaces.FileWatchService"/>
+       <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
 </scr:component>

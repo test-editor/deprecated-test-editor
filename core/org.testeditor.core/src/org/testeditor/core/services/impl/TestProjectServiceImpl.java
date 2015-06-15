@@ -27,8 +27,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -41,6 +44,7 @@ import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.FileWatchService;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -68,6 +72,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 	private List<TestProject> oldTestProjects = new ArrayList<TestProject>();
 	private TestServerService testServerService;
+	
+	private FileWatchService fileWatchService;
 
 	/**
 	 * 
@@ -100,6 +106,29 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		this.fileLocatorService = fileLocatorService;
 		LOGGER.info("Bind FileLocatorService");
 	}
+	
+	/**
+	 * 
+	 * @param fileLocatorService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(FileWatchService fileWatchService) {
+		this.fileWatchService = fileWatchService;
+		LOGGER.info("Bind FileWatchService");
+	}
+	
+	/**
+	 * 
+	 * @param fileLocatorService
+	 *            used in this service
+	 * 
+	 */
+	public void unBind(FileWatchService fileWatchService) {
+		this.fileWatchService = null;
+		LOGGER.info("Unbind FileWatchService");
+	}
+
 
 	/**
 	 * 
@@ -214,9 +243,17 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
+		
+		System.out.println("------------------ CREATEPROJECT  --------------------");
+		
+		// Testcode for filewatcher !!!!!
+		fileWatchService.watch(testProject);
+		
 		return testProject;
 	}
+	
 
+	
 	/**
 	 * Set the port from archived {@link TestProject} Object to new generated
 	 * {@link TestProject} object.

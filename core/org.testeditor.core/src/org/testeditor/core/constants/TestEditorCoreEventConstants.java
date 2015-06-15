@@ -58,6 +58,11 @@ public final class TestEditorCoreEventConstants {
 	public static final String TEAM_STATE_LOADED = "TEAM/STATE/LOADED";
 
 	public static final String TESTSTRUCTURE_HISTORY_DELETED = "TESTHISTORY/DELETED";
+	
+	/**
+	 * Defined Library files were changed
+	 */
+	public static final String LIBRARY_FILES_CHANGED_MODIFIED = "LIBRARY/CHANGED/modified";
 
 	/**
 	 * Private Constructor.
