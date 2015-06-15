@@ -14,18 +14,27 @@ package org.testeditor.core.services.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.FileWatchService;
 
-public class FileWatchServiceImpl implements FileWatchService {
+public class FileWatchServiceImpl implements FileWatchService, IContextFunction {
 
 	Map<TestProject, FileWatcher> pool = new HashMap<TestProject, FileWatcher>();
+	private IEclipseContext context;
 
 	@Override
 	public void watch(TestProject testProject) {
 
 		if (!pool.containsKey(testProject)) {
-			FileWatcher fileWatcher = new FileWatcher(testProject);
+		
+			context.set(TestProject.class, testProject);
+			FileWatcher fileWatcher = ContextInjectionFactory.make(FileWatcher.class, context);
+			
+			
+			//FileWatcher fileWatcher = new FileWatcher(testProject);
 			pool.put(testProject, fileWatcher);
 			try {
 				fileWatcher.watch();
@@ -34,5 +43,11 @@ public class FileWatchServiceImpl implements FileWatchService {
 			}
 		}
 
+	}
+
+	@Override
+	public Object compute(IEclipseContext context, String contextKey) {
+		this.context = context;
+		return this;
 	}
 }

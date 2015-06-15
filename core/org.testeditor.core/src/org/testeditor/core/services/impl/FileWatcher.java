@@ -5,20 +5,27 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.eclipse.e4.core.services.events.IEventBroker;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestProject;
 
 public class FileWatcher {
-	// A hardcoded path to a folder you are monitoring .
-	public static final String FOLDER = "c:/transfer/";
+
 	public static final List<String> WATCH_FILE_LIST = Arrays.asList("AllActionGroups.xml",
 			"TechnicalBindingTypeCollection.xml");
 
 	private TestProject testProjekt;
+	
+	@Inject
+	private IEventBroker eventBroker;
 
+	@Inject
 	public FileWatcher(TestProject testProjekt) {
 		this.testProjekt = testProjekt;
 
@@ -51,6 +58,13 @@ public class FileWatcher {
 						System.out.println("-------------------------------------------------------------");
 						System.out.println("File changed: " + file.getCanonicalPath());
 						System.out.println("File still exists in location: " + file.exists());
+						
+						if (eventBroker != null) {
+							eventBroker.post(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED,
+									testProjekt);
+						}
+						
+						
 					} catch (IOException e) {
 						e.printStackTrace(System.err);
 					}
