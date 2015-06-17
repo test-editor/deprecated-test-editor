@@ -7,6 +7,14 @@
       <children xsi:type="advanced:Perspective" xmi:id="_vtvnBCNOEeKR9Jsu4DQSAw" elementId="org.testeditor.perspective.testeditor" contributorURI="platform:/plugin/org.testeditor.ui" selectedElement="_vtvnBSNOEeKR9Jsu4DQSAw" label="">
         <children xsi:type="basic:PartSashContainer" xmi:id="_vtvnBSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" containerData="30" selectedElement="_vtvnBiNOEeKR9Jsu4DQSAw" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_vtvnBiNOEeKR9Jsu4DQSAw" elementId="PartStack.org.testeditor.testexplorer" contributorURI="platform:/plugin/org.testeditor.ui" containerData="20" selectedElement="_vtvnByNOEeKR9Jsu4DQSAw">
+          <!--
+            <children xsi:type="basic:Part"
+            	xmi:id="_vtvnByNOEeKR9Jsu4DQSAw"
+            	elementId="org.testeditor.metadata.explorer.metadataexplorer"
+            	contributorURI="platform:/plugin/org.testeditor.metadata.ui" containerData="50" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.explorer.MetaDataExplorer"
+            	label="%part.label.metadataexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif">
+            </children>
+            -->
             <children xsi:type="basic:Part" xmi:id="_vtvnByNOEeKR9Jsu4DQSAw" elementId="org.testeditor.ui.part.testexplorer" contributorURI="platform:/plugin/org.testeditor.ui" containerData="40" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.parts.testExplorer.TestExplorer" label="%part.label.testexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif">
               <menus xsi:type="menu:PopupMenu" xmi:id="_By15wC5IEeKVW5gnB3v2mQ" elementId="org.testeditor.ui.popupmenu" label="%command.description.testexplorerpopupmenudescription" iconURI="" tooltip="" mnemonics="">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_lEX_4D6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.handledmenuitem.opentestcase" label="%popupmenu.label.open.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/open.png" mnemonics="" command="_K6bh4D7GEeKXX6nM9hjBXQ"/>
@@ -152,7 +160,6 @@
   <handlers xmi:id="_IOLXcNM5EeKXiZqlHm_U4g" elementId="org.testeditor.ui.handler.openLogData" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenTestLogHandler" command="_hPrA0KdZEeKIcI0tdcqdJg"/>
   <handlers xmi:id="_pFIKwNcoEeKeqebfDEIM4g" elementId="org.testeditor.ui.newtestscenario.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewScenarioHandler" command="_lZqloNcoEeKeqebfDEIM4g"/>
   <handlers xmi:id="_RGuA8PRgEeKhvJHgD3On6A" elementId="org.testeditor.ui.showScenarioUsage.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.TestScenarioUsageHandler" command="_TcLccPRgEeKhvJHgD3On6A"/>
-  <handlers xmi:id="_KSAVIPhAEeK3HvD7VxkhpA" elementId="org.testeditor.ui.restartFitnesse.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.RestartTestServerHandler" command="_WB2ncPhAEeK3HvD7VxkhpA"/>
   <handlers xmi:id="_VWX5IPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.reloadLibrary.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ReloadLibraryHandler" command="_eX6LEPhOEeK3HvD7VxkhpA"/>
   <handlers xmi:id="_e11XADflEeOL5qr8nwU3qA" elementId="org.testeditor.ui.createDemoProjects.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.CreateDemoProjectsHandler" command="_sN6LYDflEeOL5qr8nwU3qA"/>
   <handlers xmi:id="_A5LAwDvcEeO9FbJw7O3mmA" elementId="org.testeditor.ui.newproject.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewProjectHandler" command="_4IcyADvbEeO9FbJw7O3mmA"/>
@@ -196,7 +203,6 @@
     <toolbar xmi:id="_qMBlQPhBEeK3HvD7VxkhpA" elementId="org.testeditor.ui.toolbar.1">
       <children xsi:type="menu:HandledToolItem" xmi:id="_nE1woAA-EeOqq_-fy73ryQ" contributorURI="platform:/plugin/org.testeditor.ui" iconURI="platform:/plugin/org.testeditor.ui/icons/save.gif" tooltip="%handledmenuitem.label.save" enabled="false" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
       <children xsi:type="menu:ToolBarSeparator" xmi:id="_oniScAA-EeOqq_-fy73ryQ" elementId="org.testeditor.ui.toolbarseparator.0"/>
-      <children xsi:type="menu:HandledToolItem" xmi:id="_4DRB4PhBEeK3HvD7VxkhpA" elementId="org.testeditor.ui.RestartFitnesseServer.handledtoolitem" label="" iconURI="platform:/plugin/org.testeditor.ui/icons/fitnesse_restart.gif" tooltip="%testprojecteditor.restart" command="_WB2ncPhAEeK3HvD7VxkhpA"/>
       <children xsi:type="menu:HandledToolItem" xmi:id="_GQ4gsPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.reloadLibrary.handledtoolitem" iconURI="platform:/plugin/org.testeditor.ui/icons/library_reload.gif" tooltip="%testprojecteditor.reloadLibrary" command="_eX6LEPhOEeK3HvD7VxkhpA"/>
     </toolbar>
   </descriptors>
@@ -291,7 +297,6 @@
   <commands xmi:id="__FnKENMwEeKEGbLPo3b6ng" elementId="org.testeditor.ui.user.manual.command" commandName="org.testeditor.ui.user.manual.command"/>
   <commands xmi:id="_jKqBYKhjEeORF59bxsdf3g" elementId="org.testeditor.ui.admin.manual.command" commandName="org.testeditor.ui.admin.manual.command"/>
   <commands xmi:id="_TcLccPRgEeKhvJHgD3On6A" elementId="org.testeditor.ui.showScenarioUsage.command" commandName="org.testeditor.ui.showScenarioUsage.command"/>
-  <commands xmi:id="_WB2ncPhAEeK3HvD7VxkhpA" elementId="org.testeditor.ui.restartFitnesse.command" commandName="org.testeditor.ui.restartFitnesse.command"/>
   <commands xmi:id="_eX6LEPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.relaodLibrary.command" commandName="org.testeditor.ui.relaodLibrary.command"/>
   <commands xmi:id="_uJkkkPkgEeKll5S8D7QlyA" elementId="org.testeditor.ui.editor.view.cut.command" commandName="org.testeditor.ui.editor.view.cut.command"/>
   <commands xmi:id="_aDH-QPkhEeKll5S8D7QlyA" elementId="org.testeditor.ui.test.editor.view.copy.command" commandName="org.testeditor.ui.test.editor.view.copy.command"/>

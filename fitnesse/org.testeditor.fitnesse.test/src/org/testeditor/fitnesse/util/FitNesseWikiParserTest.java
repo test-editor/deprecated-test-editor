@@ -26,7 +26,6 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
@@ -143,7 +142,6 @@ public class FitNesseWikiParserTest {
 	 * @throws SystemException
 	 *             is thrown in case of IO or connection exceptions
 	 */
-	@Ignore
 	@Test
 	public void parseSimpleTestaktionStringThree() throws SystemException {
 		final String content = "# Maske: Browser\n-!|script|\n|starte Browser|firefox|\n";
@@ -156,7 +154,7 @@ public class FitNesseWikiParserTest {
 		TestActionGroup testAcGr = (TestActionGroup) comp;
 		assertTrue(testAcGr.getActionGroupName().equalsIgnoreCase("Browser"));
 		List<String> texts = testAcGr.getTexts();
-		assertEquals("starte Browser ", texts.get(0));
+		assertTrue(texts.get(0).contains("starte Browser"));
 
 	}
 

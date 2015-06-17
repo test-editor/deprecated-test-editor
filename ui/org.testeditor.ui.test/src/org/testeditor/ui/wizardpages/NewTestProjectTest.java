@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -39,10 +38,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * test class to test the NewProjectWizard.
  * 
- * @author llipinski
  * 
  */
-@Ignore
 public class NewTestProjectTest {
 
 	private Shell shell;

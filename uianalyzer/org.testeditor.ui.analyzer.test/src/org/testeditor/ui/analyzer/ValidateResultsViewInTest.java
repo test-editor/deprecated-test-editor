@@ -18,6 +18,7 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Assert;
@@ -60,7 +61,7 @@ public class ValidateResultsViewInTest {
 	 */
 	@Before
 	public void setup() {
-		shell = new Shell();
+		shell = new Shell(Display.getDefault());
 	}
 
 	/**

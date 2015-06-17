@@ -19,7 +19,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
@@ -65,7 +64,6 @@ public class TestEditorConfigurationServiceImplTest {
 	 *             on Test abort
 	 */
 	@Test
-	@Ignore
 	public void testUpdatePairWithWhiteSpace() throws Exception {
 		String key = "myTestKey";
 		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
@@ -75,11 +73,6 @@ public class TestEditorConfigurationServiceImplTest {
 		testEditorConfigurationService.updatePair(TestEditorGlobalConstans.LOG4J_PATH_VARIABLE, "Foo Bar");
 		assertEquals("Expecting origanal property value", "Foo Bar",
 				System.getProperty(TestEditorGlobalConstans.LOG4J_PATH_VARIABLE));
-		assertEquals(
-				"Expecting quated blank in property value",
-				"Foo%20Bar",
-				System.getProperty(TestEditorConfigurationServiceImpl.SLIM_CMD_PREFIX
-						+ TestEditorGlobalConstans.LOG4J_PATH_VARIABLE));
 	}
 
 	/**

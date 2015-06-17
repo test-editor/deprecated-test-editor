@@ -11,7 +11,9 @@ Require-Bundle: org.eclipse.jface;bundle-version="3.9.1",
  org.testeditor.core;bundle-version="1.7.1",
  org.testeditor.ui;bundle-version="1.7.1",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.0.1",
- org.apache.log4j;bundle-version="1.2.15"
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.jface.databinding;bundle-version="1.6.200",
+ org.eclipse.core.databinding;bundle-version="1.4.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.annotation;version="1.1.0",

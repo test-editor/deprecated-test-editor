@@ -7,6 +7,10 @@ Bundle-ClassPath: .
 Bundle-Activator: org.testeditor.ui.Activator
 Export-Package: org.testeditor.ui.constants,
  org.testeditor.ui.handlers,
+ org.testeditor.ui.parts.commons,
+ org.testeditor.ui.parts.commons.tree.filter,
+ org.testeditor.ui.parts.editor,
+ org.testeditor.ui.parts.inputparts.actioninput,
  org.testeditor.ui.parts.testExplorer,
  org.testeditor.ui.utilities
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
@@ -48,5 +52,7 @@ Import-Package: javax.annotation;version="1.0.0",
  org.testeditor.core.model.testresult,
  org.testeditor.core.model.teststructure,
  org.testeditor.core.services.interfaces,
- org.testeditor.core.util
+ org.testeditor.core.util,
+ org.testeditor.metadata.core,
+ org.testeditor.metadata.core.model
 Bundle-ActivationPolicy: lazy

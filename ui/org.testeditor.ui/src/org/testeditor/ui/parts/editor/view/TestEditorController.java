@@ -73,6 +73,7 @@ import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.editor.ITestEditorController;
+import org.testeditor.ui.parts.editor.ITestEditorTab;
 import org.testeditor.ui.parts.editor.view.handler.TestEditorInputObject;
 import org.testeditor.ui.parts.inputparts.actioninput.TestEditorActionInputController;
 import org.testeditor.ui.parts.inputparts.descriptioninput.TestEditorDescriptionInputController;
@@ -113,6 +114,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private TestScenarioService testScenarioService;
 	@Inject
 	private TestStructureContentService testStructureContentService;
+
+	private ITestEditorTab iTestEditorTab;
 
 	private TestEditorActionInputController actionInputController;
 
@@ -171,6 +174,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
 			testStructureContentService.saveTestStructureData(testFlow);
+			if (getTestEditorTab() != null) {
+				getTestEditorTab().save();
+			}
 			mpart.setDirty(false);
 		} catch (SystemException e) {
 			String message = translationService.translate("%editController.ErrorStoringTestFlow");
@@ -334,7 +340,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		messsageArea.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		messsageArea.setLayout(new FillLayout());
 		createTestCaseView();
-
 		LOGGER.trace("Check if this editor should restore an older state.");
 		String testStructureFullName = mpart.getPersistedState().get(EDITOR_OBJECT_ID_FOR_RESTORE);
 
@@ -380,6 +385,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		this.testFlow = testFlow;
 
+		if (getTestEditorTab() != null) {
+			getTestEditorTab().setTestFlow(testFlow);
+		}
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();
 		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
@@ -1456,6 +1464,19 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	protected TestEditorDescriptionInputController getDescriptionController() {
 		return descriptionController;
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set and throws
+	 * an Exception with a message if the service was not configured.
+	 * 
+	 * @return the service
+	 */
+	private ITestEditorTab getTestEditorTab() {
+		if (iTestEditorTab == null) {
+			LOGGER.info("MetaDataTab is not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
+		}
+		return iTestEditorTab;
 	}
 
 }

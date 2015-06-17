@@ -111,7 +111,7 @@ public class TestEditorTestScenarioController extends TestEditorController imple
 	}
 
 	/**
-	 * saves the changes TestScenario. if a scenario, is persist, than refresh
+	 * Saves the changes TestScenario. if a scenario, is persist, than refresh
 	 * also the scenarioSelectionCache.
 	 */
 	@Override

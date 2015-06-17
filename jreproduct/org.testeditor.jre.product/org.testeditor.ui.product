@@ -8,14 +8,19 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-data @user.home/.testeditor</programArgs>
+      <programArgs>-data @user.home/.testeditor
+      </programArgs>
       <programArgsLin>-vm
-jre/bin/java</programArgsLin>
+jre/bin/java
+      </programArgsLin>
       <programArgsMac>-vm
-../../../jre/Contents/Home/bin/java</programArgsMac>
+../../../jre/Contents/Home/bin/java
+      </programArgsMac>
       <programArgsWin>-vm
-jre\bin\javaw.exe</programArgsWin>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+jre\bin\javaw.exe
+      </programArgsWin>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages/>
@@ -283,6 +288,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.osgi.services" autoStart="true" startLevel="0" />
       <plugin id="org.testeditor.core" autoStart="true" startLevel="0" />
       <plugin id="org.testeditor.fitnesse" autoStart="true" startLevel="3" />
+      <plugin id="org.testeditor.metadata.ui" autoStart="true" startLevel="5" />
       <plugin id="org.testeditor.ui" autoStart="true" startLevel="4" />
    </configurations>
 

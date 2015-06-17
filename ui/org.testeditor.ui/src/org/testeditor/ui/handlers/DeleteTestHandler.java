@@ -18,12 +18,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -37,6 +40,7 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -48,6 +52,10 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 public class DeleteTestHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(DeleteTestHandler.class);
+
+	@Inject
+	@Optional
+	private MetaDataService metaDataService;
 
 	/**
 	 * Executes the deleteTestcase action.
@@ -91,6 +99,7 @@ public class DeleteTestHandler {
 									testProjectService.deleteProject((TestProject) testStructure);
 								} else {
 									testStructureService.delete(testStructure);
+									getMetaDataService().delete(testStructure);
 								}
 							} catch (SystemException | IOException e) {
 								LOGGER.error("Error deleting", e);
@@ -237,6 +246,23 @@ public class DeleteTestHandler {
 		return rules.canExecuteOnOneOrManyElementRule(explorer)
 				&& !rules.canExecuteOnProjectMainScenarioSuite(explorer) && rules.canExecuteOnUnusedScenario(explorer)
 				&& rules.canExecuteOnNonScenarioSuiteParents(explorer);
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set and throws
+	 * an Exception with a message if the service was not configured.
+	 * 
+	 * @return the service
+	 * @throws SystemException
+	 *             - exception if the service is not configured
+	 */
+	private MetaDataService getMetaDataService() throws SystemException {
+		if (metaDataService == null) {
+			throw new SystemException(
+					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
+
 	}
 
 }
