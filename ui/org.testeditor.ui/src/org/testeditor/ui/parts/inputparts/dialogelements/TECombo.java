@@ -447,6 +447,14 @@ public class TECombo extends ActionLineTextContainsInvalidText implements IActio
 		return this.containsActionNames;
 	}
 
-	// CHECKSTYLE:ON
+	/**
+	 * Returns the original combo-object
+	 * 
+	 * 
+	 * @return the combo-object
+	 */
+	public Combo getWrappedCombo() {
+		return wrappedCombo;
+	}
 
 }

@@ -22,11 +22,12 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
+import org.eclipse.jface.window.Window; 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -38,6 +39,7 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
@@ -62,6 +64,9 @@ public abstract class AbstractRenameHandler {
 	private TestStructureService testStructureService;
 	@Inject
 	private EPartService partService;
+	@Inject
+	@Optional
+	private MetaDataService metaDataService;
 
 	private boolean selectedStructureWasOpen = false;
 
@@ -144,6 +149,7 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
+		getMetaDataService().rename(selectedTestStructure, sbname);
 		testStructureService.rename(selectedTestStructure, sbname);
 	}
 
@@ -302,5 +308,20 @@ public abstract class AbstractRenameHandler {
 	 * @return the NewTestStructureWizardPage.
 	 */
 	protected abstract AbstractRenameTestStructureWizardPage getRenameTestStructureWizardPage(TestStructure selectedTS);
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set and throws
+	 * an Exception with a message if the service was not configured.
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			throw new RuntimeException(
+					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
+
+	}
 
 }

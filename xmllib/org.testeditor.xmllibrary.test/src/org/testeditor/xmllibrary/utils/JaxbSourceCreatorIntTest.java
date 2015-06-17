@@ -22,7 +22,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.testeditor.xmllibrary.activator.XMLLibraryActivator;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Tests the creation of JAXB sources via the console invoke "xjc". Sources
@@ -63,7 +63,7 @@ public class JaxbSourceCreatorIntTest {
 	 * @return path to test bundle
 	 */
 	private static String getPathToTestBundle() {
-		BundleContext context = XMLLibraryActivator.getContext();
+		BundleContext context = FrameworkUtil.getBundle(JaxbSourceCreatorIntTest.class).getBundleContext();
 		Bundle[] bundles = context.getBundles();
 		for (Bundle bundle : bundles) {
 			if (bundle.getSymbolicName().equals("org.testeditor.xmllibrary.test")) {

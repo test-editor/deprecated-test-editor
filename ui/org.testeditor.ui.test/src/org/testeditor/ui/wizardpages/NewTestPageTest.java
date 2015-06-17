@@ -29,7 +29,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.teststructure.TestCase;
@@ -49,7 +48,6 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * Integrationtests for the first Page of a new Teststructure Wizard.
  * 
  */
-@Ignore
 public class NewTestPageTest {
 
 	private Shell shell;
