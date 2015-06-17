@@ -7,7 +7,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-codec-1.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-collections-3.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-exec-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-io-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-jxpath-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-lang3-3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/selenium-2.39.0/libs/commons-logging-1.1.1.jar"/>
