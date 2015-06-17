@@ -39,13 +39,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
@@ -115,8 +114,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private TestScenarioService testScenarioService;
 	@Inject
 	private TestStructureContentService testStructureContentService;
-	@Inject
-	@Optional
+
 	private ITestEditorTab iTestEditorTab;
 
 	private TestEditorActionInputController actionInputController;
@@ -330,26 +328,18 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@PostConstruct
 	public void createControls(Composite parent) {
 
-		compositeForView = new TabFolder(parent, SWT.NONE);
-
-		TabItem item1 = new TabItem((TabFolder) compositeForView, SWT.NONE);
-		item1.setText(translationService.translate("%testeditor.tab.editor.label"));
-
+		parent.setLayout(new GridLayout(1, false));
+		GridLayout gridLayout = new GridLayout(1, false);
+		compositeForView = new Composite(parent, SWT.BORDER);
+		compositeForView.setLayout(gridLayout);
+		GridData gridDataInner = new GridData(GridData.FILL_BOTH);
+		gridDataInner.grabExcessVerticalSpace = true;
+		gridDataInner.grabExcessHorizontalSpace = true;
+		compositeForView.setLayoutData(gridDataInner);
 		messsageArea = new Composite(compositeForView, SWT.NONE);
 		messsageArea.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		messsageArea.setLayout(new FillLayout());
 		createTestCaseView();
-
-		item1.setControl(testEditViewArea.getStyledText());
-
-		if (getTestEditorTab() != null) {
-			TabItem item2 = new TabItem((TabFolder) compositeForView, SWT.NONE);
-			item2.setText(getTestEditorTab().getLabel(translationService));
-
-			Composite composite = getTestEditorTab().createTab((TabFolder) compositeForView, mpart, translationService);
-
-			item2.setControl(composite);
-		}
 		LOGGER.trace("Check if this editor should restore an older state.");
 		String testStructureFullName = mpart.getPersistedState().get(EDITOR_OBJECT_ID_FOR_RESTORE);
 
