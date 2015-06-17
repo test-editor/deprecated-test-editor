@@ -59,5 +59,6 @@ Bundle-ClassPath: .,
  lib/selenium-2.39.0/libs/xercesImpl-2.10.0.jar,
  lib/selenium-2.39.0/libs/xml-apis-1.4.01.jar,
  lib/selenium-2.39.0/selenium-java-2.39.0.jar
-Import-Package: javax.annotation;version="1.1.0"
+Import-Package: javax.annotation;version="1.1.0",
+ org.apache.commons.io;version="2.2.0"
 Bundle-ActivationPolicy: lazy
