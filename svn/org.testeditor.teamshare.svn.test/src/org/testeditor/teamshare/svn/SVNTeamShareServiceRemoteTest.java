@@ -28,7 +28,6 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -314,7 +313,6 @@ public class SVNTeamShareServiceRemoteTest {
 	 *             IO failure
 	 */
 	@Ignore("only for debugging")
-	@Test
 	public void testRevertWithAddedTestcase() throws SystemException, IOException {
 		String testPageName = "MyFirstTestRevertTest";
 

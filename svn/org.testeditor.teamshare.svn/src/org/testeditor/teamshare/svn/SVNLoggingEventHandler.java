@@ -29,7 +29,7 @@ public class SVNLoggingEventHandler implements ISVNEventHandler {
 	private Logger logger;
 
 	/**
-	 * Constructor of the SVNLoggingEventHanlder
+	 * Constructor of the SVNLoggingEventHanlder.
 	 * 
 	 * @param listener
 	 *            listener of the ui to show progress details.
