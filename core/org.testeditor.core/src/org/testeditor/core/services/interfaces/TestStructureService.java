@@ -150,12 +150,4 @@ public interface TestStructureService {
 	 */
 	Runnable getTestProjectLazyLoader(TestCompositeStructure toBeLoadedLazy);
 
-	/**
-	 * This id is used to identify the TestStructureService plug-in. It must
-	 * match the ID in the <code>TestProjectConfig</code>.
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
-
 }

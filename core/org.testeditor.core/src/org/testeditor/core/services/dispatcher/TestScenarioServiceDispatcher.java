@@ -9,63 +9,57 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.mocks;
+package org.testeditor.core.services.dispatcher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 
-/**
- * 
- * Mock object which says scenario with the names used is a used scenario.
- * 
- */
-public class TestScenarioServiceMock implements TestScenarioService {
+public class TestScenarioServiceDispatcher implements TestScenarioService {
 
 	@Override
-	public boolean isLinkToScenario(TestProject testProject, String linkToFile) {
+	public boolean isLinkToScenario(TestProject testProject, String linkToFile) throws SystemException {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public List<String> getUsedOfTestSceneario(TestScenario testScenario) {
-		ArrayList<String> usedList = new ArrayList<String>();
-		if (testScenario.getName().equals("used")) {
-			usedList.add(new TestCase().getName());
-		}
-		return usedList;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean isDescendantFromTestScenariosSuite(TestStructure testStructure) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public TestScenario getScenarioByFullName(TestProject testProject, String includeOfScenario) {
-		TestScenario testScenario = new TestScenario();
-		testScenario.setName("MyScenario");
-		return testScenario;
+	public TestScenario getScenarioByFullName(TestProject testProject, String includeOfScenario) throws SystemException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean isSuiteForScenarios(TestStructure element) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isReservedNameForRootSceanrioSuite(String pageName) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void readTestScenario(TestScenario testScenario, String testStructureText) throws SystemException {
+		// TODO Auto-generated method stub
 
 	}
 

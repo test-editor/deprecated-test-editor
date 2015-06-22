@@ -17,6 +17,9 @@ import java.util.Properties;
 
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
 /**
  * 
@@ -56,7 +59,7 @@ public interface TestEditorPlugInService {
 	 * @return a Collection of all registered
 	 *         <code>LibraryConfigurationService</code> Service objects.
 	 */
-	Collection<LibraryConfigurationService> getAllLibraryConfigurationServices();
+	Collection<LibraryConfigurationServicePlugIn> getAllLibraryConfigurationServices();
 
 	/**
 	 * Lookup the LibraryConfigurationService with for the id.
@@ -66,7 +69,7 @@ public interface TestEditorPlugInService {
 	 * 
 	 * @return LibraryConfigurationService that has the same id.
 	 */
-	LibraryConfigurationService getLibraryConfigurationServiceFor(String id);
+	LibraryConfigurationServicePlugIn getLibraryConfigurationServiceFor(String id);
 
 	/**
 	 * TeamShare Plug-Ins have to implement the interface
@@ -76,7 +79,7 @@ public interface TestEditorPlugInService {
 	 * @return a Collection of all registered
 	 *         <code>TeamShareConfigurationService</code> Service objects.
 	 */
-	Collection<TeamShareConfigurationService> getAllTeamShareConfigurationServices();
+	Collection<TeamShareConfigurationServicePlugIn> getAllTeamShareConfigurationServices();
 
 	/**
 	 * This Method returns all registered implementations of the
@@ -87,7 +90,7 @@ public interface TestEditorPlugInService {
 	 * @return a Collection of all registered <code>TeamShareService</code>
 	 *         Service objects.
 	 */
-	Collection<TeamShareService> getAllTeamShareServices();
+	Collection<TeamShareServicePlugIn> getAllTeamShareServices();
 
 	/**
 	 * Lookup the TeamShareConfigurationService with for the id.
@@ -97,7 +100,7 @@ public interface TestEditorPlugInService {
 	 * 
 	 * @return TeamShareConfigurationService that has the same id.
 	 */
-	TeamShareConfigurationService getTeamShareConfigurationServiceFor(String id);
+	TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id);
 
 	/**
 	 * Lookup the TeamShareService with for the id.

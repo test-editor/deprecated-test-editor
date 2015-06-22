@@ -41,11 +41,11 @@ import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.core.util.ConfigurationTemplateWriter;
 import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.core.util.FileUtils;
@@ -666,7 +666,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			TeamShareConfig teamShareConfig = config.getTeamShareConfig();
 			String templateForTeamshareConfiguration = "";
 			if (teamShareConfig != null) {
-				TeamShareConfigurationService teamShareConfigurationServiceFor = plugInservice
+				TeamShareConfigurationServicePlugIn teamShareConfigurationServiceFor = plugInservice
 						.getTeamShareConfigurationServiceFor(config.getTeamShareConfig().getId());
 				if (teamShareConfigurationServiceFor != null) {
 					templateForTeamshareConfiguration = teamShareConfigurationServiceFor.getTemplateForConfiguration();

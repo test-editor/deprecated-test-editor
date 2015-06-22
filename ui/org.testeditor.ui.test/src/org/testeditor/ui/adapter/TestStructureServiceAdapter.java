@@ -94,11 +94,6 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public String getId() {
-		return null;
-	}
-
-	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return false;
 	}

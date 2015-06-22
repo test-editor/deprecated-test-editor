@@ -18,6 +18,7 @@ Import-Package: com.google.gson;version="2.1.0",
  org.testeditor.core.model.testresult,
  org.testeditor.core.model.teststructure,
  org.testeditor.core.services.interfaces,
+ org.testeditor.core.services.plugins,
  org.testeditor.core.util,
  org.w3c.dom
 Require-Bundle: javax.inject;bundle-version="1.0.0",

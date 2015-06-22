@@ -20,9 +20,8 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 
 /**
- * a mockup for the TestScenarioService.
+ * A mock for the TestScenarioService.
  * 
- * @author llipinski
  * 
  */
 public class TestScenarioServiceAdapter implements TestScenarioService {
@@ -62,8 +61,4 @@ public class TestScenarioServiceAdapter implements TestScenarioService {
 
 	}
 
-	@Override
-	public String getId() {
-		return null;
-	}
 }

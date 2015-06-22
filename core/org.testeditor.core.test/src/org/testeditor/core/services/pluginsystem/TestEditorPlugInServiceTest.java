@@ -29,6 +29,7 @@ import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 
 /**
  * 
@@ -89,7 +90,8 @@ public class TestEditorPlugInServiceTest {
 		LibraryConfigurationService libraryConfigurationService = service.getLibraryConfigurationServiceFor(config
 				.getId());
 		assertNotNull("Plug-In System has a LibraryConfiguration", libraryConfigurationService);
-		assertEquals("Has the same ID", config.getId(), libraryConfigurationService.getId());
+		assertEquals("Has the same ID", config.getId(),
+				((LibraryConfigurationServicePlugIn) libraryConfigurationService).getId());
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class TestEditorPlugInServiceTest {
 	 * @return Mock for Test
 	 */
 	private static LibraryConfigurationService getLibConfigMock() {
-		return new LibraryConfigurationService() {
+		return new LibraryConfigurationServicePlugIn() {
 
 			@Override
 			public String getId() {
