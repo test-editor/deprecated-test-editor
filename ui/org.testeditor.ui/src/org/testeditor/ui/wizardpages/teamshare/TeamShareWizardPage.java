@@ -43,6 +43,7 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -262,10 +263,10 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 * sorted by name.
 	 */
 	protected void fillTeamShareTypeCombo() {
-		Collection<TeamShareConfigurationService> allTeamShareConfigurationServices = plugInService
+		Collection<TeamShareConfigurationServicePlugIn> allTeamShareConfigurationServices = plugInService
 				.getAllTeamShareConfigurationServices();
 		teamShareConfigPlugInNameIdMap = new HashMap<String, String>();
-		for (TeamShareConfigurationService teamShareConfigService : allTeamShareConfigurationServices) {
+		for (TeamShareConfigurationServicePlugIn teamShareConfigService : allTeamShareConfigurationServices) {
 			teamShareConfigPlugInNameIdMap.put(
 					teamShareConfigService.getTranslatedHumanReadablePlugInName(translationService),
 					teamShareConfigService.getId());

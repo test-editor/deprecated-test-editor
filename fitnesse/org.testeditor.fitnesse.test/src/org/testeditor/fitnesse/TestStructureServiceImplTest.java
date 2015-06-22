@@ -40,8 +40,8 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
 /**
  * 
@@ -189,7 +189,7 @@ public class TestStructureServiceImplTest {
 		IEclipseContext context = EclipseContextFactory.create();
 		service.compute(context, null);
 		HashSet<String> set = new HashSet<String>();
-		TeamShareService serviceMock = getTEamShareServiceMock(set);
+		TeamShareServicePlugIn serviceMock = getTEamShareServiceMock(set);
 		service.bind(serviceMock);
 		TestProject tp = new TestProject();
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
@@ -213,8 +213,8 @@ public class TestStructureServiceImplTest {
 	 *            used to inform the test about operations calls.
 	 * @return team share service mock.
 	 */
-	private TeamShareService getTEamShareServiceMock(final HashSet<String> set) {
-		return new TeamShareService() {
+	private TeamShareServicePlugIn getTEamShareServiceMock(final HashSet<String> set) {
+		return new TeamShareServicePlugIn() {
 
 			@Override
 			public void disconnect(TestProject testProject, TranslationService translationService,

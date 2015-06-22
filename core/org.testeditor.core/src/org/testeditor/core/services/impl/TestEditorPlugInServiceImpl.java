@@ -20,13 +20,19 @@ import org.apache.log4j.Logger;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.services.interfaces.LibraryConfigurationService;
-import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.LibraryReaderServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TestScenarioServicePlugIn;
+import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
+import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 
 /**
  * 
@@ -36,13 +42,13 @@ import org.testeditor.core.services.interfaces.TestStructureService;
 public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 
 	private static final Logger LOGGER = Logger.getLogger(TestEditorPlugInServiceImpl.class);
-	private Map<String, LibraryReaderService> libraryReaderServices = new HashMap<String, LibraryReaderService>();
-	private Map<String, LibraryConfigurationService> libraryConfigurationServices = new HashMap<String, LibraryConfigurationService>();
-	private Map<String, TeamShareConfigurationService> teamShareConfigurationServices = new HashMap<String, TeamShareConfigurationService>();
-	private Map<String, TeamShareService> teamShareServices = new HashMap<String, TeamShareService>();
-	private Map<String, TestStructureService> testStructureServices = new HashMap<String, TestStructureService>();
-	private Map<String, TestStructureContentService> testStructureContentServices = new HashMap<String, TestStructureContentService>();
-	private Map<String, TestScenarioService> testScenarioServices = new HashMap<String, TestScenarioService>();
+	private Map<String, LibraryReaderServicePlugIn> libraryReaderServices = new HashMap<String, LibraryReaderServicePlugIn>();
+	private Map<String, LibraryConfigurationServicePlugIn> libraryConfigurationServices = new HashMap<String, LibraryConfigurationServicePlugIn>();
+	private Map<String, TeamShareConfigurationServicePlugIn> teamShareConfigurationServices = new HashMap<String, TeamShareConfigurationServicePlugIn>();
+	private Map<String, TeamShareServicePlugIn> teamShareServices = new HashMap<String, TeamShareServicePlugIn>();
+	private Map<String, TestStructureServicePlugIn> testStructureServices = new HashMap<String, TestStructureServicePlugIn>();
+	private Map<String, TestStructureContentServicePlugIn> testStructureContentServices = new HashMap<String, TestStructureContentServicePlugIn>();
+	private Map<String, TestScenarioServicePlugIn> testScenarioServices = new HashMap<String, TestScenarioServicePlugIn>();
 
 	@Override
 	public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {
@@ -60,7 +66,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param teamShareConfigurationService
 	 *            to be bind to this service.
 	 */
-	public void bind(TeamShareConfigurationService teamShareConfigurationService) {
+	public void bind(TeamShareConfigurationServicePlugIn teamShareConfigurationService) {
 		teamShareConfigurationServices.put(teamShareConfigurationService.getId(), teamShareConfigurationService);
 		LOGGER.info("Binding TeamShareConfigurationService Plug-In "
 				+ teamShareConfigurationService.getClass().getName());
@@ -71,7 +77,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param teamShareConfigurationService
 	 *            to be removed.
 	 */
-	public void unBind(TeamShareConfigurationService teamShareConfigurationService) {
+	public void unBind(TeamShareConfigurationServicePlugIn teamShareConfigurationService) {
 		teamShareConfigurationServices.remove(teamShareConfigurationService.getId());
 		LOGGER.info("Removing TeamShareConfigurationService Plug-In "
 				+ teamShareConfigurationService.getClass().getName());
@@ -82,7 +88,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param teamShareService
 	 *            to be bind to this service.
 	 */
-	public void bind(TeamShareService teamShareService) {
+	public void bind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.put(teamShareService.getId(), teamShareService);
 		LOGGER.info("Binding TeamShareService Plug-In " + teamShareService.getClass().getName());
 	}
@@ -92,7 +98,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param teamShareService
 	 *            to be removed.
 	 */
-	public void unBind(TeamShareService teamShareService) {
+	public void unBind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.remove(teamShareService.getId());
 		LOGGER.info("Removing TeamShareService Plug-In " + teamShareService.getClass().getName());
 	}
@@ -102,7 +108,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param libraryConfigurationService
 	 *            to be bind to this service.
 	 */
-	public void bind(LibraryConfigurationService libraryConfigurationService) {
+	public void bind(LibraryConfigurationServicePlugIn libraryConfigurationService) {
 		libraryConfigurationServices.put(libraryConfigurationService.getId(), libraryConfigurationService);
 		LOGGER.info("Binding LibraryConfigurationService Plug-In " + libraryConfigurationService.getClass().getName());
 	}
@@ -112,7 +118,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param libraryConfigurationService
 	 *            to be removed.
 	 */
-	public void unBind(LibraryConfigurationService libraryConfigurationService) {
+	public void unBind(LibraryConfigurationServicePlugIn libraryConfigurationService) {
 		libraryConfigurationServices.remove(libraryConfigurationService.getId());
 		LOGGER.info("Removing LibraryConfigurationService Plug-In " + libraryConfigurationService.getClass().getName());
 	}
@@ -122,7 +128,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param readerService
 	 *            to be bind to this service.
 	 */
-	public void bind(LibraryReaderService readerService) {
+	public void bind(LibraryReaderServicePlugIn readerService) {
 		libraryReaderServices.put(readerService.getId(), readerService);
 		LOGGER.info("Binding LibraryReaderService Plug-In " + readerService.getClass().getName());
 	}
@@ -132,7 +138,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param readerService
 	 *            to be removed.
 	 */
-	public void unBind(LibraryReaderService readerService) {
+	public void unBind(LibraryReaderServicePlugIn readerService) {
 		libraryReaderServices.remove(readerService.getId());
 		LOGGER.info("Removing LibraryReaderService Plug-In " + readerService.getClass().getName());
 	}
@@ -143,7 +149,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 *            used in this service
 	 * 
 	 */
-	public void bind(TestStructureService testStructureService) {
+	public void bind(TestStructureServicePlugIn testStructureService) {
 		this.testStructureServices.put(testStructureService.getId(), testStructureService);
 		LOGGER.info("Bind TestStructureService Plug-In" + testStructureService.getClass().getName());
 	}
@@ -153,7 +159,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param testStructureContentService
 	 *            removed from system
 	 */
-	public void unBind(TestStructureContentService testStructureContentService) {
+	public void unBind(TestStructureContentServicePlugIn testStructureContentService) {
 		this.testStructureContentServices.remove(testStructureContentService.getId());
 		LOGGER.info("UnBind TestStructureContentService Plug-In" + testStructureContentService.getClass().getName());
 	}
@@ -164,7 +170,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 *            used in this service
 	 * 
 	 */
-	public void bind(TestStructureContentService testStructureContentService) {
+	public void bind(TestStructureContentServicePlugIn testStructureContentService) {
 		this.testStructureContentServices.put(testStructureContentService.getId(), testStructureContentService);
 		LOGGER.info("Bind TestStructureContentService Plug-In" + testStructureContentService.getClass().getName());
 	}
@@ -174,7 +180,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param testStructureService
 	 *            removed from system
 	 */
-	public void unBind(TestStructureService testStructureService) {
+	public void unBind(TestStructureServicePlugIn testStructureService) {
 		this.testStructureServices.remove(testStructureService.getId());
 		LOGGER.info("UnBind TestStructureService Plug-In" + testStructureService.getClass().getName());
 	}
@@ -185,7 +191,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 *            used in this service
 	 * 
 	 */
-	public void bind(TestScenarioService testScenarioService) {
+	public void bind(TestScenarioServicePlugIn testScenarioService) {
 		this.testScenarioServices.put(testScenarioService.getId(), testScenarioService);
 		LOGGER.info("Bind TestScenarioService Plug-In" + testScenarioService.getClass().getName());
 	}
@@ -195,7 +201,7 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	 * @param testScenarioService
 	 *            removed from system
 	 */
-	public void unBind(TestScenarioService testScenarioService) {
+	public void unBind(TestScenarioServicePlugIn testScenarioService) {
 		this.testStructureServices.remove(testScenarioService.getId());
 		LOGGER.info("UnBind TestScenarioService Plug-In" + testScenarioService.getClass().getName());
 	}
@@ -210,27 +216,27 @@ public class TestEditorPlugInServiceImpl implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
+	public Collection<LibraryConfigurationServicePlugIn> getAllLibraryConfigurationServices() {
 		return libraryConfigurationServices.values();
 	}
 
 	@Override
-	public LibraryConfigurationService getLibraryConfigurationServiceFor(String id) {
+	public LibraryConfigurationServicePlugIn getLibraryConfigurationServiceFor(String id) {
 		return libraryConfigurationServices.get(id);
 	}
 
 	@Override
-	public Collection<TeamShareConfigurationService> getAllTeamShareConfigurationServices() {
+	public Collection<TeamShareConfigurationServicePlugIn> getAllTeamShareConfigurationServices() {
 		return teamShareConfigurationServices.values();
 	}
 
 	@Override
-	public Collection<TeamShareService> getAllTeamShareServices() {
+	public Collection<TeamShareServicePlugIn> getAllTeamShareServices() {
 		return teamShareServices.values();
 	}
 
 	@Override
-	public TeamShareConfigurationService getTeamShareConfigurationServiceFor(String id) {
+	public TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id) {
 		return teamShareConfigurationServices.get(id);
 	}
 

@@ -102,11 +102,4 @@ public interface TestScenarioService {
 	 */
 	void readTestScenario(TestScenario testScenario, String testStructureText) throws SystemException;
 
-	/**
-	 * This id is used to identify the TeestStructureServer plug-in. It must the
-	 * same ID in the <code>TestProjectConfig</code>.
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
 }

@@ -336,8 +336,8 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(testResultsDirOfTestStructure)) {
 
 			for (Path path : stream) {
-				FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType.valueOf(testStructure
-						.getPageType().toUpperCase()));
+				FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType
+						.valueOf(testStructure.getPageType().toUpperCase()));
 				FileInputStream fileInputStream = new FileInputStream(path.toFile());
 				TestResult testResult = reader.readTestResult(fileInputStream);
 				String timestampString = path.getFileName().toString().substring(0, 14);
@@ -441,11 +441,6 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 			}
 
 		};
-	}
-
-	@Override
-	public String getId() {
-		return FitnesseFileSystemConstants.PLUGIN_ID;
 	}
 
 	@Override

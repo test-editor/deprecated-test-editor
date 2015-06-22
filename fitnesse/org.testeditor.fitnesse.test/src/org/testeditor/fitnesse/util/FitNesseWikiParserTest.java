@@ -44,16 +44,17 @@ import org.testeditor.core.model.teststructure.TestScenarioParameters;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ActionGroupService;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.fitnesse.TestProjectDataFactory;
 
 /**
@@ -252,12 +253,12 @@ public class FitNesseWikiParserTest {
 			}
 
 			@Override
-			public TeamShareConfigurationService getTeamShareConfigurationServiceFor(String id) {
+			public TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id) {
 				return null;
 			}
 
 			@Override
-			public LibraryConfigurationService getLibraryConfigurationServiceFor(String id) {
+			public LibraryConfigurationServicePlugIn getLibraryConfigurationServiceFor(String id) {
 				return null;
 			}
 
@@ -272,17 +273,17 @@ public class FitNesseWikiParserTest {
 			}
 
 			@Override
-			public Collection<TeamShareService> getAllTeamShareServices() {
+			public Collection<TeamShareServicePlugIn> getAllTeamShareServices() {
 				return null;
 			}
 
 			@Override
-			public Collection<TeamShareConfigurationService> getAllTeamShareConfigurationServices() {
+			public Collection<TeamShareConfigurationServicePlugIn> getAllTeamShareConfigurationServices() {
 				return null;
 			}
 
 			@Override
-			public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
+			public Collection<LibraryConfigurationServicePlugIn> getAllLibraryConfigurationServices() {
 				return null;
 			}
 
@@ -347,10 +348,6 @@ public class FitNesseWikiParserTest {
 				return new TestScenario();
 			}
 
-			@Override
-			public String getId() {
-				return null;
-			}
 		};
 	}
 

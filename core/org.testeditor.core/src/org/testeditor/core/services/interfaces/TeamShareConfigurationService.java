@@ -34,13 +34,6 @@ public interface TeamShareConfigurationService {
 	String getTranslatedHumanReadablePlugInName(TranslationService translationService);
 
 	/**
-	 * The Plug-In needs the same ID for their services to identity the Plug-In.
-	 * 
-	 * @return Plug-In ID
-	 */
-	String getId();
-
-	/**
 	 * 
 	 * @return a new and empty <code>TeamShareConfig</code> of the specific
 	 *         Plug-In.
@@ -76,13 +69,5 @@ public interface TeamShareConfigurationService {
 	 * @return TeamShareConfig
 	 */
 	TeamShareConfig createTeamShareConfigFrom(Properties properties);
-
-	/**
-	 * Template for the config.tpr to allow this file to be well formed and
-	 * formatted.
-	 * 
-	 * @return the template for the configuration
-	 */
-	String getTemplateForConfiguration();
 
 }

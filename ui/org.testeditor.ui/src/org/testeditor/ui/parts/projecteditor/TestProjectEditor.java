@@ -62,6 +62,7 @@ import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -302,7 +303,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				LibraryConfigurationService configurationService = plugInService
+				LibraryConfigurationServicePlugIn configurationService = plugInService
 						.getLibraryConfigurationServiceFor(libraryPlugInNameIdMap.get(libraryTypeCombo.getText()));
 				if (newTestProjectConfig != null && configurationService != null) {
 					if (newTestProjectConfig.getProjectLibraryConfig() != null) {
@@ -330,10 +331,10 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 * Services names are sorted by name.
 	 */
 	protected void fillLibraryTypeCombo() {
-		Collection<LibraryConfigurationService> allLibraryConfigurationService = plugInService
+		Collection<LibraryConfigurationServicePlugIn> allLibraryConfigurationService = plugInService
 				.getAllLibraryConfigurationServices();
 		libraryPlugInNameIdMap = new HashMap<String, String>();
-		for (LibraryConfigurationService libraryConfigurationService : allLibraryConfigurationService) {
+		for (LibraryConfigurationServicePlugIn libraryConfigurationService : allLibraryConfigurationService) {
 			libraryPlugInNameIdMap.put(
 					libraryConfigurationService.getTranslatedHumanReadableLibraryPlugInName(translationService),
 					libraryConfigurationService.getId());
