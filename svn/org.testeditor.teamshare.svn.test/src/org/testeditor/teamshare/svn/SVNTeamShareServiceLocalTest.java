@@ -1197,16 +1197,6 @@ public class SVNTeamShareServiceLocalTest {
 			}
 
 			@Override
-			public String getTemplateForConfiguration() {
-				return null;
-			}
-
-			@Override
-			public String getId() {
-				return null;
-			}
-
-			@Override
 			public List<FieldMappingExtension> getFieldMappingExtensions() {
 				return null;
 			}

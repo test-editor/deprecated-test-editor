@@ -25,8 +25,8 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.core.services.plugins.TestScenarioServicePlugIn;
 import org.testeditor.fitnesse.usedbyreader.FitNesseUsedByReaderImpl;
 import org.testeditor.fitnesse.util.FitNesseRestClient;
 
@@ -35,7 +35,7 @@ import org.testeditor.fitnesse.util.FitNesseRestClient;
  * This class implements the ScenarioService.
  * 
  */
-public class TestScenarioServiceImpl implements TestScenarioService {
+public class TestScenarioServiceImpl implements TestScenarioServicePlugIn {
 
 	private static final Logger LOGGER = Logger.getLogger(TestScenarioServiceImpl.class);
 	private TestStructureContentService testStructureContentService;

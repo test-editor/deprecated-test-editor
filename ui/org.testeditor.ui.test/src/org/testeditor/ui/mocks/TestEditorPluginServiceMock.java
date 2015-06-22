@@ -21,13 +21,14 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
 /**
  * 
@@ -35,7 +36,6 @@ import org.testeditor.core.services.interfaces.TestStructureService;
  * teamshare.
  * 
  */
-@SuppressWarnings("restriction")
 public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	@Override
 	public Map<String, String> getAsProperties(ProjectLibraryConfig projectLibraryConfig) {
@@ -43,8 +43,8 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
-		ArrayList<LibraryConfigurationService> result = new ArrayList<LibraryConfigurationService>();
+	public Collection<LibraryConfigurationServicePlugIn> getAllLibraryConfigurationServices() {
+		ArrayList<LibraryConfigurationServicePlugIn> result = new ArrayList<LibraryConfigurationServicePlugIn>();
 		result.add(getLibraryConfigurationServiceMock("xmlservice", "XML"));
 		result.add(getLibraryConfigurationServiceMock("dbservice", "DB"));
 		return result;
@@ -58,8 +58,9 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	 *            of the library plugin Mock
 	 * @return library plugin Mock
 	 */
-	private LibraryConfigurationService getLibraryConfigurationServiceMock(final String id, final String pluginName) {
-		return new LibraryConfigurationService() {
+	private LibraryConfigurationServicePlugIn getLibraryConfigurationServiceMock(final String id,
+			final String pluginName) {
+		return new LibraryConfigurationServicePlugIn() {
 
 			@Override
 			public String getId() {
@@ -104,8 +105,8 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public LibraryConfigurationService getLibraryConfigurationServiceFor(String id) {
-		for (LibraryConfigurationService service : getAllLibraryConfigurationServices()) {
+	public LibraryConfigurationServicePlugIn getLibraryConfigurationServiceFor(String id) {
+		for (LibraryConfigurationServicePlugIn service : getAllLibraryConfigurationServices()) {
 			if (service.getId().equals(id)) {
 				return service;
 			}
@@ -114,9 +115,9 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<TeamShareConfigurationService> getAllTeamShareConfigurationServices() {
-		List<TeamShareConfigurationService> result = new ArrayList<TeamShareConfigurationService>();
-		result.add(new TeamShareConfigurationService() {
+	public Collection<TeamShareConfigurationServicePlugIn> getAllTeamShareConfigurationServices() {
+		List<TeamShareConfigurationServicePlugIn> result = new ArrayList<TeamShareConfigurationServicePlugIn>();
+		result.add(new TeamShareConfigurationServicePlugIn() {
 
 			@Override
 			public String getTranslatedHumanReadablePlugInName(TranslationService translationService) {
@@ -157,12 +158,12 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<TeamShareService> getAllTeamShareServices() {
+	public Collection<TeamShareServicePlugIn> getAllTeamShareServices() {
 		return null;
 	}
 
 	@Override
-	public TeamShareConfigurationService getTeamShareConfigurationServiceFor(String id) {
+	public TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id) {
 		return null;
 	}
 

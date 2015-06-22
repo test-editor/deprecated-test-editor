@@ -11,7 +11,8 @@
  *******************************************************************************/
 package org.testeditor.teamshare.svn;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
@@ -20,6 +21,8 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
 /**
  * Integration Tests to check the Registration of the Services of the SVN Team
@@ -40,7 +43,7 @@ public class ServiceRegistrationTest {
 	public void testTeamShareConfigurationServiceRegistrationTest() throws Exception {
 		TestEditorPlugInService plugInService = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
 		boolean found = false;
-		Collection<TeamShareConfigurationService> allTeamShareConfigurationServices = plugInService
+		Collection<TeamShareConfigurationServicePlugIn> allTeamShareConfigurationServices = plugInService
 				.getAllTeamShareConfigurationServices();
 		for (TeamShareConfigurationService teamShareConfigurationService : allTeamShareConfigurationServices) {
 			if (teamShareConfigurationService instanceof SVNTeamShareConfigurationService) {
@@ -61,7 +64,7 @@ public class ServiceRegistrationTest {
 	public void testTeamShareServiceRegistrationTest() throws Exception {
 		TestEditorPlugInService plugInService = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
 		boolean found = false;
-		Collection<TeamShareService> allTeamShareServices = plugInService.getAllTeamShareServices();
+		Collection<TeamShareServicePlugIn> allTeamShareServices = plugInService.getAllTeamShareServices();
 		for (TeamShareService teamShareService : allTeamShareServices) {
 			if (teamShareService instanceof SVNTeamShareService) {
 				found = true;

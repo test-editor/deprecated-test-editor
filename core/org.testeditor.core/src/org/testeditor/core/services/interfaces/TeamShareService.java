@@ -110,15 +110,6 @@ public interface TeamShareService {
 			TeamAuthentificationException;
 
 	/**
-	 * This id is used to identify the Team Share plug-in. It must the same ID
-	 * in the <code>TeamShareConfig</code> and in the
-	 * <code>TeamShareConfigurationService</code>
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
-
-	/**
 	 * deletes the {@link TestStructure} given by the parameter.
 	 * 
 	 * @param testStructure

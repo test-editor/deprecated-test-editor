@@ -1,0 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Signal Iduna Corporation - initial API and implementation
+ * akquinet AG
+ *******************************************************************************/
+package org.testeditor.core.services.dispatcher;
+
+import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.model.action.ProjectActionGroups;
+import org.testeditor.core.model.action.ProjectLibraryConfig;
+import org.testeditor.core.services.interfaces.LibraryConstructionException;
+import org.testeditor.core.services.interfaces.LibraryReaderService;
+
+public class LibraryReaderServiceDispatcher implements LibraryReaderService {
+
+	@Override
+	public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
+			LibraryConstructionException {
+		libraryConfig.getId();
+		return null;
+	}
+}
