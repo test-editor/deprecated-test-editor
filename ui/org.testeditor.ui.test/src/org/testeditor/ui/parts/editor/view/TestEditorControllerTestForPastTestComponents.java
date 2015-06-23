@@ -40,7 +40,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
-import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
@@ -50,7 +50,6 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * test of testEditorController.
  * 
- * @author llipinski
  * 
  */
 public class TestEditorControllerTestForPastTestComponents {
@@ -152,14 +151,13 @@ public class TestEditorControllerTestForPastTestComponents {
 	@Before
 	public void setup() {
 		shell = new Shell();
+		TestStructureContentServiceAdapter contentServiceAdapter = getSpecialTestStructureContentServiceAdapter();
+		FrameworkUtil.getBundle(getClass()).getBundleContext()
+				.registerService(TestStructureContentServicePlugIn.class.getName(), contentServiceAdapter, null);
 		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
 				TestEditorViewKeyHandler.class).getBundleContext());
 		context.set(EPartService.class, new PartServiceAdapter());
 		context.set(TestEditorTranslationService.class, null);
-		TestStructureContentServiceAdapter contentServiceAdapter = getSpecialTestStructureContentServiceAdapter();
-		context.set(TestStructureContentService.class, contentServiceAdapter);
-		FrameworkUtil.getBundle(getClass()).getBundleContext()
-				.registerService(TestStructureContentService.class.getName(), contentServiceAdapter, null);
 		context.set(ActionGroupService.class, null);
 		context.set(TestScenarioService.class, null);
 		context.set(IEventBroker.class, new EventBroker());

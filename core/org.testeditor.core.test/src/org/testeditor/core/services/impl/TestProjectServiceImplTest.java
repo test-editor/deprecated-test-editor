@@ -123,7 +123,7 @@ public class TestProjectServiceImplTest {
 	 * 
 	 * @return TeamShareConfigurationServiceMock.
 	 */
-	private TeamShareConfigurationService getTeamServiceConfigurationMock() {
+	private TeamShareConfigurationServicePlugIn getTeamServiceConfigurationMock() {
 		return new TeamShareConfigurationServicePlugIn() {
 
 			@Override
@@ -179,7 +179,7 @@ public class TestProjectServiceImplTest {
 	@Test
 	public void testGetProjectConfigWithTeamShareOptionFromProperties() throws IOException {
 		FrameworkUtil.getBundle(getClass()).getBundleContext()
-				.registerService(TeamShareConfigurationService.class, getTeamServiceConfigurationMock(), null);
+				.registerService(TeamShareConfigurationServicePlugIn.class, getTeamServiceConfigurationMock(), null);
 		Properties props = new Properties();
 		props.put(TestEditorPlugInService.TEAMSHARE_ID, "myTeamId");
 		props.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);

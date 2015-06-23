@@ -44,7 +44,7 @@ public class TestEditorPlugInServiceTest {
 	@BeforeClass
 	public static void prepareTestsystem() {
 		FrameworkUtil.getBundle(TestEditorPlugInServiceTest.class).getBundleContext()
-				.registerService(LibraryConfigurationService.class, getLibConfigMock(), null);
+				.registerService(LibraryConfigurationServicePlugIn.class, getLibConfigMock(), null);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class TestEditorPlugInServiceTest {
 	 * 
 	 * @return Mock for Test
 	 */
-	private static LibraryConfigurationService getLibConfigMock() {
+	private static LibraryConfigurationServicePlugIn getLibConfigMock() {
 		return new LibraryConfigurationServicePlugIn() {
 
 			@Override
