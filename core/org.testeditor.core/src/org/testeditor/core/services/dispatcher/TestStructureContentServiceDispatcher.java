@@ -11,16 +11,27 @@
  *******************************************************************************/
 package org.testeditor.core.services.dispatcher;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
 
+/**
+ * Dispatcher to look up the right plug-on of TestStructureContentService.
+ *
+ */
 public class TestStructureContentServiceDispatcher implements TestStructureContentService {
+
+	private static final Logger LOGGER = Logger.getLogger(TestStructureContentServiceDispatcher.class);
+	private Map<String, TestStructureContentServicePlugIn> testStructureContentServices = new HashMap<String, TestStructureContentServicePlugIn>();
 
 	@Override
 	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException, TestCycleDetectException {
@@ -42,14 +53,35 @@ public class TestStructureContentServiceDispatcher implements TestStructureConte
 
 	@Override
 	public List<TestComponent> parseFromString(TestFlow testFlow, String storedTestComponents) throws SystemException {
-		// TODO Auto-generated method stub
-		return null;
+		return testStructureContentServices.get(testFlow.getRootElement().getTestProjectConfig().getTestServerID())
+				.parseFromString(testFlow, storedTestComponents);
 	}
 
 	@Override
 	public String getTestStructureAsSourceText(TestStructure testStructure) throws SystemException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param testStructureContentService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(TestStructureContentServicePlugIn testStructureContentService) {
+		this.testStructureContentServices.put(testStructureContentService.getId(), testStructureContentService);
+		LOGGER.info("Bind TestStructureContentService Plug-In" + testStructureContentService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param testStructureService
+	 *            removed from system
+	 */
+	public void unBind(TestStructureContentServicePlugIn testStructureContentService) {
+		this.testStructureContentServices.remove(testStructureContentService.getId());
+		LOGGER.info("UnBind TestStructureContentService Plug-In" + testStructureContentService.getClass().getName());
 	}
 
 }
