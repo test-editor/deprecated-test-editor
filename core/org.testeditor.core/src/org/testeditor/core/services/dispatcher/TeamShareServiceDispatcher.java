@@ -20,14 +20,12 @@ import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 
 public class TeamShareServiceDispatcher implements TeamShareService {
 
 	@Override
-	public void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
+	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
 		// TODO Auto-generated method stub
 
 	}

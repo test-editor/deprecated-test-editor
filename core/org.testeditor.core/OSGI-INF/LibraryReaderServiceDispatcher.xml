@@ -4,4 +4,5 @@
    <service>
       <provide interface="org.testeditor.core.services.interfaces.LibraryReaderService"/>
    </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.LibraryReaderServicePlugIn" name="LibraryReaderServicePlugIn" policy="dynamic" unbind="unBind"/>
 </scr:component>

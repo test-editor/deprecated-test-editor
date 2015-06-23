@@ -661,8 +661,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
+	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
 		testProject.getTestProjectConfig().setTeamShareConfig(null);
 		deleteSvnMetaData(testProject);
 		List<TestStructure> childrenWithScenarios = testProject.getAllTestChildrenWithScenarios();

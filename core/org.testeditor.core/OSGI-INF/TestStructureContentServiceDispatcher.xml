@@ -4,4 +4,5 @@
    <service>
       <provide interface="org.testeditor.core.services.interfaces.TestStructureContentService"/>
    </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestStructureContentServicePlugIn" name="TestStructureContentServicePlugIn" policy="dynamic" unbind="unBind"/>
 </scr:component>

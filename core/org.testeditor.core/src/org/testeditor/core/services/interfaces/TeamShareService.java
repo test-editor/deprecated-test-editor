@@ -38,14 +38,11 @@ public interface TeamShareService {
 	 *            to be disconnect.
 	 * @param translationService
 	 *            {@link TranslationService}
-	 * @param teamShareConfigurationService
-	 *            TeamShareConfigurationService
 	 * 
 	 * @throws SystemException
 	 *             if the sharing of the project fails
 	 */
-	void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException;
+	void disconnect(TestProject testProject, TranslationService translationService) throws SystemException;
 
 	/**
 	 * Shares a TestProject with a Team Share Backendsystem.
