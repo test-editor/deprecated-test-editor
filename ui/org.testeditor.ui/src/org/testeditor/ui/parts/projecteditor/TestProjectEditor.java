@@ -58,11 +58,10 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -197,7 +196,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 *            used to get the Fields to display in the detail Composite for
 	 *            Team-Sharing-Configuration.
 	 */
-	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
+	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationServicePlugIn configurationService) {
 		List<FieldMappingExtension> fields = configurationService.getFieldMappingExtensions();
 		for (FieldMappingExtension field : fields) {
 			createTeamShareField(field);
@@ -535,7 +534,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 			if (teamShareConfig == null) {
 				teamShareTypeLabel.setText("local");
 			} else {
-				TeamShareConfigurationService configurationService = plugInService
+				TeamShareConfigurationServicePlugIn configurationService = plugInService
 						.getTeamShareConfigurationServiceFor(teamShareConfig.getId());
 				createTeamShareSpeceficDetailComposite(configurationService);
 				teamShareTypeLabel.setText(configurationService
@@ -560,7 +559,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 			libraryDetailComposite.setLayoutData(gd);
 			libraryDetailComposite.setLayout(new GridLayout(2, false));
 			updateLibraryTypeComboSelection(projectLibraryConfig.getId());
-			LibraryConfigurationService libraryConfigurationService = plugInService
+			LibraryConfigurationServicePlugIn libraryConfigurationService = plugInService
 					.getLibraryConfigurationServiceFor(projectLibraryConfig.getId());
 			List<FieldMappingExtension> fields = libraryConfigurationService.getConfigUIExtensions();
 			addWorkspacepathWidgets();

@@ -26,7 +26,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
@@ -73,8 +72,8 @@ public class TestEditorPlugInServiceTest {
 	public void testGetLibraryConfigurationServiceFor() throws Exception {
 		TestEditorPlugInService service = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
 		ProjectLibraryConfig config = getProjectLibraryConfigMock();
-		LibraryConfigurationService libraryConfigurationService = service.getLibraryConfigurationServiceFor(config
-				.getId());
+		LibraryConfigurationServicePlugIn libraryConfigurationService = service
+				.getLibraryConfigurationServiceFor(config.getId());
 		assertNotNull("Plug-In System has a LibraryConfiguration", libraryConfigurationService);
 		assertEquals("Has the same ID", config.getId(),
 				((LibraryConfigurationServicePlugIn) libraryConfigurationService).getId());

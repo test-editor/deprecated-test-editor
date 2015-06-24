@@ -13,6 +13,12 @@ package org.testeditor.core.services.plugins;
 
 import org.testeditor.core.services.interfaces.TestStructureService;
 
+/**
+ * 
+ * Plug-In extension of the TestStructureService. Plug-In Provider must
+ * implement this interface and not the TestStructureService.
+ *
+ */
 public interface TestStructureServicePlugIn extends TestStructureService {
 
 	/**

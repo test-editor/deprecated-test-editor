@@ -11,10 +11,61 @@
  *******************************************************************************/
 package org.testeditor.core.services.plugins;
 
-import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-public interface LibraryConfigurationServicePlugIn extends LibraryConfigurationService {
+import org.eclipse.e4.core.services.translation.TranslationService;
+import org.testeditor.core.model.action.ProjectLibraryConfig;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
+
+/**
+ * Provide functionality to load and save configurations that are used by an
+ * implementation of the <code>LibraryReaderService</code> interface.
+ * 
+ */
+public interface LibraryConfigurationServicePlugIn {
+
+	/**
+	 * 
+	 * Create a new ProjectLibraryConfig and fills this bean with values from
+	 * the properties.
+	 * 
+	 * @param properties
+	 *            with the values for the config.
+	 * @return new ProjectLibraryConfig with the values of the properties.
+	 */
+	ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties);
+
+	/**
+	 * This method is called for to store the config of the library in the
+	 * project properties.
+	 * 
+	 * @param projectLibraryConfig
+	 *            to be transformed in a map
+	 * @return ProjectLibraryConfig as Map to be stored as properties.
+	 */
+	Map<String, String> getAsProperties(ProjectLibraryConfig projectLibraryConfig);
+
+	/**
+	 * The Name of the Library-Plug-In shown in the UI.
+	 * 
+	 * @param translationService
+	 *            used to translate the Library Plug-In name.
+	 * 
+	 * @return the Human readable Name of the Plug-In
+	 */
+	String getTranslatedHumanReadableLibraryPlugInName(TranslationService translationService);
+
+	/**
+	 * The UI uses this method to get a List of <code>FieldDeclaration</code>.
+	 * This FieldDeclaration are used by the UI to display and update the
+	 * Plug-In Configuration.
+	 * 
+	 * @return List with FieldDeclaration for the UI od the Plug-In
+	 *         configuration.
+	 */
+	List<FieldMappingExtension> getConfigUIExtensions();
 
 	/**
 	 * This id is used to identify the library plug-in. It must the same ID in
