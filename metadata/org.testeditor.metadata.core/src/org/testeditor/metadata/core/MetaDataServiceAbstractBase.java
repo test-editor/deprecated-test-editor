@@ -87,8 +87,7 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		if (getAllMetaDataValues(project.getFullName()).containsKey(metaDataTag.getGlobalKey())) {
 			return getAllMetaDataValues(project.getFullName()).get(metaDataTag.getGlobalKey());
 		}
-		throw new IllegalArgumentException("No values found for metaDataTage with global key "
-				+ metaDataTag.getGlobalKey());
+		return null;
 	}
 
 	@Override
