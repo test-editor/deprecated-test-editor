@@ -17,7 +17,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +26,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
@@ -36,8 +34,6 @@ import org.testeditor.core.model.teststructure.TestDataRow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
@@ -206,34 +202,6 @@ public class TestEditorViewTableViewerTest {
 		} catch (Exception e) {
 			fail("Expecting no exception on null file");
 		}
-	}
-
-	/**
-	 * Test the import of a dummy File.
-	 * 
-	 * @throws Exception
-	 *             on file access.
-	 */
-	@Test
-	@Ignore
-	public void testHandleFileImportWithFile() throws Exception {
-		TestScenarioParameterTable paramTable = new TestScenarioParameterTable();
-		TestEditorTranslationService translationService = new TestEditorTranslationService() {
-			@Override
-			public String translate(String key, Object... params) {
-				return "";
-			}
-		};
-		paramTable.addParameterLine("|TextVorhanden|Name|TextNichtVorhanden|Land|Passwort");
-		TestEditorViewTableViewer tableViewer = new TestEditorViewTableViewer(shell, paramTable, translationService,
-				testFlow, new MPartAdapter(), eventBroker);
-		String demoBundlePath = ServiceLookUpForTest.getService(FileLocatorService.class)
-				.findBundleFileLocationAsString("org.testeditor.demo");
-		File importFile = new File(demoBundlePath + File.separator + "demoProjects" + File.separator + "DemoWebTests"
-				+ File.separator + "ExampleImportFiles" + File.separator + "CSVImport_Valid.csv");
-		assertTrue("Demo File doesn't exists", importFile.exists());
-		tableViewer.handleFileImport(importFile);
-		assertEquals("Moxen", tableViewer.getTestComp().getDataTable().getDataRows().get(3).getList().get(1));
 	}
 
 	/**

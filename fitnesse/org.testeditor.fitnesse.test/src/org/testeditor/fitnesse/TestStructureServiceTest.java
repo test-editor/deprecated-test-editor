@@ -12,17 +12,11 @@
 package org.testeditor.fitnesse;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
@@ -106,78 +100,6 @@ public class TestStructureServiceTest {
 				testStructureContentService.refreshTestCaseComponents(testStructure);
 			}
 		}
-	}
-
-	/**
-	 * Tests the Function to create, rename and remove a TestStructure.
-	 * 
-	 * @throws SystemException
-	 *             for Test
-	 */
-	@Test
-	@Ignore
-	// No Centent found on server after move fitnesse lib to fixturelib
-	public void testCreateRenameRemoveTestStructure() throws SystemException {
-		// Initializing for the Test
-		final String name = "JuniTestCreateTestStructure";
-		final String newName = "JuniTestRemoveTestStructure";
-		// final int parent = 0;
-		TestStructure testStructure = new TestCase();
-		testStructure.setName(name);
-
-		TestProject testProject = getTestProject();
-		testStructureService.loadChildrenInto(testProject);
-		int beforeCreate = testProject.getTestChildren().size();
-		testProject.addChild(testStructure);
-
-		// Tests the Function to create the new testStructure
-		testStructureService.create(testStructure);
-
-		testProject = getTestProject();
-		testStructureService.loadChildrenInto(testProject);
-		int afterCreate = testProject.getTestChildren().size();
-		assertTrue("testStructure was not created", beforeCreate < afterCreate);
-
-		// Tests the Function to rename the new testStructre
-		testStructureService.rename(testStructure, newName);
-		// TestSuite testSuiteCheck =
-		// (TestSuite)testStructureService.getTestStructures().get(parent);
-		// TODO for-schleife um das element wieder zu finden
-		// String checkNewName =
-		// testSuiteCheck.getTestChildren().get(afterCreate - 1).getName();
-		// assertTrue("testStructure was not renamed",
-		// newName.equals(checkNewName));
-
-		testStructure.setName(newName);
-		// Tests the Function to remove the new testStructre
-		testStructureService.delete(testStructure);
-
-		testProject = getTestProject();
-		testStructureService.loadChildrenInto(testProject);
-		afterCreate = testProject.getTestChildren().size();
-		assertTrue("testStructure was not removed", beforeCreate == afterCreate);
-
-	}
-
-	/**
-	 * Tests the get test structure.
-	 * 
-	 * @throws SystemException
-	 *             is thrown if a system exception occurred (e.g. third party
-	 *             system unavailable)
-	 */
-	@Test
-	@Ignore
-	// No Centent found on server after move fitnesse lib to fixturelib
-	public void testLoadTestStructuresChildrenFor() throws SystemException {
-		TestProject projectMock = getTestProject();
-		testStructureService.loadChildrenInto(projectMock);
-		List<TestStructure> testStructures = projectMock.getTestChildren();
-
-		assertNotNull("test struture is null", testStructures);
-		assertTrue("test structure is empty", !testStructures.isEmpty());
-
-		assertTrue("invalid size of children", projectMock.getTestChildren().size() > 0);
 	}
 
 	/**
