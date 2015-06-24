@@ -11,11 +11,15 @@
  *******************************************************************************/
 package org.testeditor.core.services.dispatcher;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.ContextFunction;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestComponent;
@@ -28,27 +32,28 @@ import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
  * Dispatcher to look up the right plug-on of TestStructureContentService.
  *
  */
-public class TestStructureContentServiceDispatcher implements TestStructureContentService {
+public class TestStructureContentServiceDispatcher extends ContextFunction implements TestStructureContentService,
+		IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(TestStructureContentServiceDispatcher.class);
 	private Map<String, TestStructureContentServicePlugIn> testStructureContentServices = new HashMap<String, TestStructureContentServicePlugIn>();
 
 	@Override
 	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException, TestCycleDetectException {
-		// TODO Auto-generated method stub
-
+		testStructureContentServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.refreshTestCaseComponents(testStructure);
 	}
 
 	@Override
 	public void saveTestStructureData(TestStructure testStructure) throws SystemException {
-		// TODO Auto-generated method stub
-
+		testStructureContentServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.saveTestStructureData(testStructure);
 	}
 
 	@Override
 	public void reparseChangedTestFlow(TestFlow testFlow) throws SystemException {
-		// TODO Auto-generated method stub
-
+		testStructureContentServices.get(testFlow.getRootElement().getTestProjectConfig().getTestServerID())
+				.reparseChangedTestFlow(testFlow);
 	}
 
 	@Override
@@ -59,8 +64,9 @@ public class TestStructureContentServiceDispatcher implements TestStructureConte
 
 	@Override
 	public String getTestStructureAsSourceText(TestStructure testStructure) throws SystemException {
-		// TODO Auto-generated method stub
-		return null;
+		return testStructureContentServices
+				.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.getTestStructureAsSourceText(testStructure);
 	}
 
 	/**
@@ -76,7 +82,7 @@ public class TestStructureContentServiceDispatcher implements TestStructureConte
 
 	/**
 	 * 
-	 * @param testStructureService
+	 * @param testStructureContentService
 	 *            removed from system
 	 */
 	public void unBind(TestStructureContentServicePlugIn testStructureContentService) {
@@ -84,4 +90,14 @@ public class TestStructureContentServiceDispatcher implements TestStructureConte
 		LOGGER.info("UnBind TestStructureContentService Plug-In" + testStructureContentService.getClass().getName());
 	}
 
+	@Override
+	public Object compute(IEclipseContext context, String contextKey) {
+		Collection<TestStructureContentServicePlugIn> plugins = testStructureContentServices.values();
+		for (TestStructureContentServicePlugIn plugin : plugins) {
+			if (plugin instanceof IContextFunction) {
+				((IContextFunction) plugin).compute(context, contextKey);
+			}
+		}
+		return this;
+	}
 }

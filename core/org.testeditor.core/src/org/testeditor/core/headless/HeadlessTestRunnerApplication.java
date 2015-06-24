@@ -39,7 +39,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
@@ -97,9 +96,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 			URISyntaxException, SystemException, InterruptedException {
 		initializeSystemConfiguration();
 		TestStructure test = getTestStructureToExecute(args);
-		TestEditorPlugInService plugInService = getService(TestEditorPlugInService.class);
-		TestStructureService testStructureService = plugInService.getTestStructureServiceFor(test.getRootElement()
-				.getTestProjectConfig().getTestServerID());
+		TestStructureService testStructureService = getService(TestStructureService.class);
 		InterActionLogWatcherRunnable interActionLogWatcherRunnable = new InterActionLogWatcherRunnable(
 				new NullProgressMonitor());
 		if (test instanceof TestSuite) {

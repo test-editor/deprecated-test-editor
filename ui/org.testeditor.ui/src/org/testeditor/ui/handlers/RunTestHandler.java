@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.TestProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -51,7 +50,7 @@ public class RunTestHandler {
 	private static TestEditorTranslationService translationService;
 
 	@Inject
-	private TestEditorPlugInService testEditorPluginService;
+	private TestStructureService testStructureService;
 
 	private TestResult testResult;
 
@@ -98,10 +97,6 @@ public class RunTestHandler {
 		try {
 			if (partService.saveAll(true)) {
 				LOGGER.info("Running Test: " + selectedTestStructure);
-
-				final TestStructureService testStructureService = testEditorPluginService
-						.getTestStructureServiceFor(selectedTestStructure.getRootElement().getTestProjectConfig()
-								.getTestServerID());
 
 				context.set("ActualTCService", testStructureService);
 				TestExecutionProgressDialog dlg = ContextInjectionFactory.make(TestExecutionProgressDialog.class,

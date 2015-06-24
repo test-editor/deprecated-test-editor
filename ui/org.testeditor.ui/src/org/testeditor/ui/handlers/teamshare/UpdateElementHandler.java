@@ -42,7 +42,7 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			teamChangeState = getTeamService(testStructure).update(testStructure, translate);
+			teamChangeState = getTeamService().update(testStructure, translate);
 			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
 			eventBroker.post(eventTopic, testStructure.getFullName());
 		} catch (final SystemException e) {

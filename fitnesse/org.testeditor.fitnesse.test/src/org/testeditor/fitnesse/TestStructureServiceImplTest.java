@@ -73,9 +73,9 @@ public class TestStructureServiceImplTest {
 	@Test
 	public void testIsReservedName() throws Exception {
 		TestStructureService service = new TestStructureServiceImpl();
-		assertTrue(service.isReservedName("SetUp"));
-		assertTrue(service.isReservedName("PageHeader"));
-		assertFalse(service.isReservedName("MyTest"));
+		assertTrue(service.isReservedName(null, "SetUp"));
+		assertTrue(service.isReservedName(null, "PageHeader"));
+		assertFalse(service.isReservedName(null, "MyTest"));
 	}
 
 	/**
@@ -262,7 +262,7 @@ public class TestStructureServiceImplTest {
 			}
 
 			@Override
-			public void addProgressListener(ProgressListener listener) {
+			public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
 			}
 
 			@Override

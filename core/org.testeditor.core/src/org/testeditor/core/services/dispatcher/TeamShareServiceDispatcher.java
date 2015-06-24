@@ -11,8 +11,14 @@
  *******************************************************************************/
 package org.testeditor.core.services.dispatcher;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
@@ -21,86 +27,166 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
-public class TeamShareServiceDispatcher implements TeamShareService {
+/**
+ * Dispatcher to lookup the right plugIn of the TeamShareService.
+ *
+ */
+public class TeamShareServiceDispatcher implements TeamShareService, IContextFunction {
+
+	private static final Logger LOGGER = Logger.getLogger(TeamShareServiceDispatcher.class);
+	private Map<String, TeamShareServicePlugIn> teamShareServices = new HashMap<String, TeamShareServicePlugIn>();
+
+	/**
+	 * 
+	 * @param teamShareService
+	 *            to be bind to this service.
+	 */
+	public void bind(TeamShareServicePlugIn teamShareService) {
+		teamShareServices.put(teamShareService.getId(), teamShareService);
+		LOGGER.info("Binding TeamShareService Plug-In " + teamShareService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param teamShareService
+	 *            to be removed.
+	 */
+	public void unBind(TeamShareServicePlugIn teamShareService) {
+		teamShareServices.remove(teamShareService.getId());
+		LOGGER.info("Removing TeamShareService Plug-In " + teamShareService.getClass().getName());
+	}
 
 	@Override
 	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
-		// TODO Auto-generated method stub
-
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
+				.getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.disconnect(testProject, translationService);
+		}
 	}
 
 	@Override
 	public void share(TestProject testProject, TranslationService translationService, String comment)
 			throws SystemException {
-		// TODO Auto-generated method stub
-
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
+				.getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.share(testProject, translationService, comment);
+		}
 	}
 
 	@Override
 	public String approve(TestStructure testStructure, TranslationService translationService, String comment)
 			throws SystemException {
-		// TODO Auto-generated method stub
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			return teamShareService.approve(testStructure, translationService, comment);
+		}
 		return null;
 	}
 
 	@Override
 	public String update(TestStructure testStructure, TranslationService translationService) throws SystemException {
-		// TODO Auto-generated method stub
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			return teamShareService.update(testStructure, translationService);
+		}
 		return null;
 	}
 
 	@Override
 	public void checkout(TestProject testProject, TranslationService translationService) throws SystemException,
 			TeamAuthentificationException {
-		// TODO Auto-generated method stub
-
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
+				.getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.checkout(testProject, translationService);
+		}
 	}
 
 	@Override
 	public void delete(TestStructure testStructure, TranslationService translationService) throws SystemException {
-		// TODO Auto-generated method stub
-
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.delete(testStructure, translationService);
+		}
 	}
 
 	@Override
 	public String getStatus(TestStructure testStructure, TranslationService translationService) throws SystemException {
-		// TODO Auto-generated method stub
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.getStatus(testStructure, translationService);
+		}
 		return null;
 	}
 
 	@Override
-	public void addProgressListener(ProgressListener listener) {
-		// TODO Auto-generated method stub
-
+	public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.addProgressListener(testStructure, listener);
+		}
 	}
 
 	@Override
 	public void addChild(TestStructure testStructureChild, TranslationService translationService)
 			throws SystemException {
-		// TODO Auto-generated method stub
-
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructureChild.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.addChild(testStructureChild, translationService);
+		}
 	}
 
 	@Override
 	public boolean validateConfiguration(TestProject testProject, TranslationService translationService)
 			throws SystemException {
-		// TODO Auto-generated method stub
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
+				.getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			return teamShareService.validateConfiguration(testProject, translationService);
+		}
 		return false;
 	}
 
 	@Override
 	public List<TeamChange> revert(TestStructure testStructure, TranslationService translationService)
 			throws SystemException {
-		// TODO Auto-generated method stub
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			return teamShareService.revert(testStructure, translationService);
+		}
 		return null;
 	}
 
 	@Override
 	public void rename(TestStructure testStructure, String newName, TranslationService translationService)
 			throws SystemException {
-		// TODO Auto-generated method stub
+		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
+				.getTestProjectConfig().getTeamShareConfig().getId());
+		if (teamShareService != null) {
+			teamShareService.rename(testStructure, newName, translationService);
+		}
+	}
 
+	@Override
+	public Object compute(IEclipseContext context, String contextKey) {
+		Collection<TeamShareServicePlugIn> plugins = teamShareServices.values();
+		for (TeamShareServicePlugIn plugin : plugins) {
+			if (plugin instanceof IContextFunction) {
+				((IContextFunction) plugin).compute(context, contextKey);
+			}
+		}
+		return this;
 	}
 
 }

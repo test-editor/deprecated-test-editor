@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
@@ -54,7 +53,7 @@ public class TestLogView {
 	private static final Logger LOGGER = Logger.getLogger(TestLogView.class);
 
 	@Inject
-	private TestEditorPlugInService testEditorPlugInService;
+	private TestStructureService testStructureService;
 
 	private TestStructure testStructure;
 
@@ -100,8 +99,6 @@ public class TestLogView {
 	public void setTestStructure(TestStructure testStructure) {
 		this.testStructure = testStructure;
 		try {
-			TestStructureService testStructureService = testEditorPlugInService
-					.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig().getTestServerID());
 			String logData = testStructureService.getTestExecutionLog(testStructure);
 			part.setLabel("Test log: " + testStructure.getName());
 			testLog.setText(logData);
@@ -190,9 +187,6 @@ public class TestLogView {
 	public void onActiveEditorChanged(
 			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
 		if (aTestStructure != null) {
-			TestStructureService testStructureService = testEditorPlugInService
-					.getTestStructureServiceFor(aTestStructure.getRootElement().getTestProjectConfig()
-							.getTestServerID());
 			try {
 				if ((aTestStructure.isExecutableTestStructure())
 						&& testStructureService.hasTestExecutionLog(aTestStructure)) {

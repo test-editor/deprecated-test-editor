@@ -44,6 +44,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.ScenarioSuite;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
@@ -71,14 +72,12 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	@Override
 	public void loadChildrenInto(TestCompositeStructure testCompositeStructure) throws SystemException {
 		Path path = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testCompositeStructure));
-
 		if (Files.exists(path)) {
-
 			try (DirectoryStream<Path> newDirectoryStream = Files.newDirectoryStream(path)) {
 				for (Path file : newDirectoryStream) {
 					if (file.toFile().isDirectory()) {
 						String name = file.toFile().getName();
-						if (!(name.startsWith(".") || isReservedName(name))) {
+						if (!(name.startsWith(".") || isReservedName(testCompositeStructure.getRootElement(), name))) {
 							File[] listFiles = file.toFile().listFiles(FitnesseFileSystemUtility.getPropertyFiler());
 							if (listFiles.length > 0) {
 								TestStructure structure = createTestStructureFrom(listFiles[0]);
@@ -89,7 +88,6 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 						}
 					}
 				}
-
 			} catch (IOException e) {
 				LOGGER.error("Unable to scan directory", e);
 				throw new SystemException("Unable to scan directory", e);
@@ -386,7 +384,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public boolean isReservedName(String name) {
+	public boolean isReservedName(TestProject testProject, String name) {
 		return getSpecialPages().contains(name);
 	}
 

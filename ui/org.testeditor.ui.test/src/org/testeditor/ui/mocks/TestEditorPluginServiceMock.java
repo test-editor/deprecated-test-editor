@@ -21,14 +21,9 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
-import org.testeditor.core.services.interfaces.TestScenarioService;
-import org.testeditor.core.services.interfaces.TestStructureContentService;
-import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
-import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
 /**
  * 
@@ -158,11 +153,6 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public Collection<TeamShareServicePlugIn> getAllTeamShareServices() {
-		return null;
-	}
-
-	@Override
 	public TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id) {
 		return null;
 	}
@@ -174,26 +164,6 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 
 	@Override
 	public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
-		return null;
-	}
-
-	@Override
-	public TeamShareService getTeamShareServiceFor(String id) {
-		return null;
-	}
-
-	@Override
-	public TestStructureService getTestStructureServiceFor(String testServerID) {
-		return null;
-	}
-
-	@Override
-	public TestStructureContentService getTestStructureContentServiceFor(String testServerID) {
-		return null;
-	}
-
-	@Override
-	public TestScenarioService getTestScenarioService(String testServerID) {
 		return null;
 	}
 

@@ -52,11 +52,6 @@ public class TestScenarioServiceAdapter implements TestScenarioService {
 	}
 
 	@Override
-	public boolean isReservedNameForRootSceanrioSuite(String pageName) {
-		return false;
-	}
-
-	@Override
 	public void readTestScenario(TestScenario testScenario, String testStructureText) throws SystemException {
 
 	}

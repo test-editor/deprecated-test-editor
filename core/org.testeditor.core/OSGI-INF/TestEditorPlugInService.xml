@@ -4,11 +4,6 @@
    <service>
       <provide interface="org.testeditor.core.services.interfaces.TestEditorPlugInService"/>
    </service>
-   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.LibraryReaderServicePlugIn" name="LibraryReaderService" policy="dynamic" unbind="unBind"/>
    <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn" name="LibraryConfigurationService" policy="dynamic" unbind="unBind"/>
    <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn" name="TeamShareConfigurationService" policy="dynamic" unbind="unBind"/>
-   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TeamShareServicePlugIn" name="TeamShareService" policy="dynamic" unbind="unBind"/>
-   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestStructureServicePlugIn" name="TestStructureService" policy="dynamic" unbind="unBind"/>
-   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestStructureContentServicePlugIn" name="TestStructureContentService" policy="dynamic" unbind="unBind"/>
-   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestScenarioServicePlugIn" name="TestScenarioService" policy="dynamic" unbind="unBind"/>
 </scr:component>
