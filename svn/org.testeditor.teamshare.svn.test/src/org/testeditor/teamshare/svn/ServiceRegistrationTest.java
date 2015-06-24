@@ -19,7 +19,6 @@ import java.util.Collection;
 import org.junit.Test;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
@@ -62,15 +61,8 @@ public class ServiceRegistrationTest {
 	 */
 	@Test
 	public void testTeamShareServiceRegistrationTest() throws Exception {
-		TestEditorPlugInService plugInService = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
-		boolean found = false;
-		Collection<TeamShareServicePlugIn> allTeamShareServices = plugInService.getAllTeamShareServices();
-		for (TeamShareService teamShareService : allTeamShareServices) {
-			if (teamShareService instanceof SVNTeamShareService) {
-				found = true;
-			}
-		}
-		assertTrue("Expect SVNTeamShareService as an OSGi-Service", found);
+		TeamShareServicePlugIn teamShareService = ServiceLookUpForTest.getService(TeamShareServicePlugIn.class);
+		assertTrue("Expect SVNTeamShareService as an OSGi-Service", teamShareService instanceof SVNTeamShareService);
 	}
 
 	/**

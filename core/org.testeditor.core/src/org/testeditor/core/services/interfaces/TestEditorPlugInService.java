@@ -19,7 +19,6 @@ import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
-import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 
 /**
  * 
@@ -82,17 +81,6 @@ public interface TestEditorPlugInService {
 	Collection<TeamShareConfigurationServicePlugIn> getAllTeamShareConfigurationServices();
 
 	/**
-	 * This Method returns all registered implementations of the
-	 * <code>TeamShareService</code>. TeamShare Plug-Ins have to implement the
-	 * interface <code>TeamShareService</code> for synchronize a
-	 * <code>TestProject</code>.
-	 * 
-	 * @return a Collection of all registered <code>TeamShareService</code>
-	 *         Service objects.
-	 */
-	Collection<TeamShareServicePlugIn> getAllTeamShareServices();
-
-	/**
 	 * Lookup the TeamShareConfigurationService with for the id.
 	 * 
 	 * @param id
@@ -101,16 +89,6 @@ public interface TestEditorPlugInService {
 	 * @return TeamShareConfigurationService that has the same id.
 	 */
 	TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id);
-
-	/**
-	 * Lookup the TeamShareService with for the id.
-	 * 
-	 * @param id
-	 *            used to identify the teamshare plug-in.
-	 * 
-	 * @return TeamShareService that has the same id.
-	 */
-	TeamShareService getTeamShareServiceFor(String id);
 
 	/**
 	 * Looks the correct ConfigurationService up and delegates the work to the
@@ -130,35 +108,5 @@ public interface TestEditorPlugInService {
 	 * @return TeamShareConfig
 	 */
 	TeamShareConfig createTeamShareConfigFrom(Properties properties);
-
-	/**
-	 * Lookup the TestStructureService with for the id.
-	 * 
-	 * @param testServerID
-	 *            used to identify the TestServer plug-in.
-	 * 
-	 * @return TestStructureService that has the same id.
-	 */
-	TestStructureService getTestStructureServiceFor(String testServerID);
-
-	/**
-	 * Lookup the TestStructureContentService with for the id.
-	 * 
-	 * @param testServerID
-	 *            used to identify the TestServer plug-in.
-	 * 
-	 * @return TestStructureContentService that has the same id.
-	 */
-	TestStructureContentService getTestStructureContentServiceFor(String testServerID);
-
-	/**
-	 * Lookup the TestScenarioService with for the id.
-	 * 
-	 * @param testServerID
-	 *            used to identify the TestServer plug-in.
-	 * 
-	 * @return TestScenarioService that has the same id.
-	 */
-	TestScenarioService getTestScenarioService(String testServerID);
 
 }

@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
@@ -46,7 +45,7 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareDisconnectProjectWizardP
 public class DisconnectProjectHandler {
 
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TeamShareService teamShareService;
 	@Inject
 	private TestProjectService testProjectService;
 	@Inject
@@ -131,22 +130,11 @@ public class DisconnectProjectHandler {
 	 */
 	private void disconnectProject(TestProject testProject) throws SystemException {
 		try {
-			getTeamService(testProject).disconnect(testProject, translate);
+			teamShareService.disconnect(testProject, translate);
 			testProjectService.storeProjectConfig(testProject, testProject.getTestProjectConfig());
 		} catch (Exception e) {
 			throw new SystemException(e.getLocalizedMessage(), e);
 		}
-	}
-
-	/**
-	 * @param testProject
-	 *            TestProject
-	 * @return the teamShareService
-	 */
-	private TeamShareService getTeamService(TestProject testProject) {
-		String id = testProject.getTestProjectConfig().getTeamShareConfig().getId();
-		TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-		return teamService;
 	}
 
 }

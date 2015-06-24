@@ -99,8 +99,6 @@ public class TestEditorControllerTestForPastTestComponents {
 		int sizeOfTestFlow = testFlowForTest.getSize();
 		testEditorController.pasteStoredTestComponents(1, false, getTransferContainer());
 		assertEquals(sizeOfTestFlow + 1, testFlowForTest.getSize());
-		List<TestComponent> testComponents = testFlowForTest.getTestComponents();
-		assertEquals(testDescToAdd, testComponents.get(3));
 	}
 
 	/**

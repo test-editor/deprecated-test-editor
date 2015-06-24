@@ -48,7 +48,9 @@ public class RenameTestStructureWizardTest {
 	 */
 	@Test
 	public void testIsNameValidRenameWithNotSameNameInTree() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("FooBar");
 		TestCase testCase = new TestCase();
 		testCase.setName("HelloWorld");
@@ -72,8 +74,10 @@ public class RenameTestStructureWizardTest {
 	 */
 	@Test
 	public void testIsNameValidRenameTestCaseWithNotSuiteInTheName() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName("FooBar");
+		tp.addChild(testSuite);
 		TestCase testCase = new TestCase();
 		testCase.setName("HelloWorld");
 		TestCase testCase2 = new TestCase();
@@ -122,7 +126,9 @@ public class RenameTestStructureWizardTest {
 	 */
 	@Test
 	public void testIsNameValidRenameTestScenarioWithNotTestInTheName() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("TestKomponent");
 		TestScenario testScenario = new TestScenario();
 		testScenario.setName("HelloWorld");
@@ -143,7 +149,9 @@ public class RenameTestStructureWizardTest {
 	 */
 	@Test
 	public void testIsNameValidRenameTestScenarioWithNotSuiteInTheName() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("TestKomponent");
 		TestScenario testScenario = new TestScenario();
 		testScenario.setName("HelloWorld");

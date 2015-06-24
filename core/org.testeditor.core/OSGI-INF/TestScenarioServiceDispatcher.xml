@@ -4,4 +4,5 @@
    <service>
       <provide interface="org.testeditor.core.services.interfaces.TestScenarioService"/>
    </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestScenarioServicePlugIn" name="TestScenarioServicePlugIn" policy="dynamic" unbind="unBind"/>
 </scr:component>

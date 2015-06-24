@@ -3,5 +3,7 @@
    <implementation class="org.testeditor.core.services.dispatcher.TeamShareServiceDispatcher"/>
    <service>
       <provide interface="org.testeditor.core.services.interfaces.TeamShareService"/>
+      <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TeamShareServicePlugIn" name="TeamShareServicePlugIn" policy="dynamic" unbind="unBind"/>
 </scr:component>
