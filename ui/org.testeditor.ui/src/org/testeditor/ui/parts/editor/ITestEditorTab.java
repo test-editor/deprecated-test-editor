@@ -12,8 +12,8 @@
 package org.testeditor.ui.parts.editor;
 
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabFolder;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -36,7 +36,7 @@ public interface ITestEditorTab {
 	 *            in the tab.
 	 * @return the composite
 	 */
-	Composite createTab(TabFolder parent, MPart mpart, TestEditorTranslationService translationService);
+	Composite createTab(CTabFolder parent, MPart mpart, TestEditorTranslationService translationService);
 
 	/**
 	 * Sets the testFlow for the tab.
