@@ -33,7 +33,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
-import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -148,7 +147,6 @@ public abstract class NewTestStructureHandler {
 	 */
 	protected void createAndOpenTestStructure(TestStructure testStructure, IEclipseContext context)
 			throws SystemException {
-		TestProject testProject = testStructure.getRootElement();
 		testStructureService.create(testStructure);
 	}
 

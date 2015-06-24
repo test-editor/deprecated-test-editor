@@ -18,7 +18,6 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
@@ -44,7 +43,7 @@ public class ServiceRegistrationTest {
 		boolean found = false;
 		Collection<TeamShareConfigurationServicePlugIn> allTeamShareConfigurationServices = plugInService
 				.getAllTeamShareConfigurationServices();
-		for (TeamShareConfigurationService teamShareConfigurationService : allTeamShareConfigurationServices) {
+		for (TeamShareConfigurationServicePlugIn teamShareConfigurationService : allTeamShareConfigurationServices) {
 			if (teamShareConfigurationService instanceof SVNTeamShareConfigurationService) {
 				found = true;
 			}

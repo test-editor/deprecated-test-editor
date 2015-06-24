@@ -188,7 +188,7 @@ public class TestLogView {
 			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
 		if (aTestStructure != null) {
 			try {
-				if ((aTestStructure.isExecutableTestStructure())
+				if (aTestStructure.isExecutableTestStructure()
 						&& testStructureService.hasTestExecutionLog(aTestStructure)) {
 					onTestExecutionShowTestLogForLastRun(aTestStructure);
 				}
