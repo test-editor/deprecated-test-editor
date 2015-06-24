@@ -35,7 +35,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
@@ -593,7 +592,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 * (org.testeditor.core.services.interfaces.ProgressListener)
 	 */
 	@Override
-	public void addProgressListener(ProgressListener listener) {
+	public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
 		this.listener = listener;
 	}
 

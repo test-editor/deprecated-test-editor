@@ -60,8 +60,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
-				.getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			teamShareService.disconnect(testProject, translationService);
 		}
@@ -70,8 +69,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	@Override
 	public void share(TestProject testProject, TranslationService translationService, String comment)
 			throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
-				.getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			teamShareService.share(testProject, translationService, comment);
 		}
@@ -80,8 +78,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	@Override
 	public String approve(TestStructure testStructure, TranslationService translationService, String comment)
 			throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			return teamShareService.approve(testStructure, translationService, comment);
 		}
@@ -90,8 +87,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public String update(TestStructure testStructure, TranslationService translationService) throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			return teamShareService.update(testStructure, translationService);
 		}
@@ -101,8 +97,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	@Override
 	public void checkout(TestProject testProject, TranslationService translationService) throws SystemException,
 			TeamAuthentificationException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
-				.getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			teamShareService.checkout(testProject, translationService);
 		}
@@ -110,8 +105,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public void delete(TestStructure testStructure, TranslationService translationService) throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			teamShareService.delete(testStructure, translationService);
 		}
@@ -119,8 +113,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public String getStatus(TestStructure testStructure, TranslationService translationService) throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			teamShareService.getStatus(testStructure, translationService);
 		}
@@ -129,8 +122,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			teamShareService.addProgressListener(testStructure, listener);
 		}
@@ -139,18 +131,31 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	@Override
 	public void addChild(TestStructure testStructureChild, TranslationService translationService)
 			throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructureChild.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructureChild.getRootElement());
 		if (teamShareService != null) {
 			teamShareService.addChild(testStructureChild, translationService);
 		}
 	}
 
+	/**
+	 * 
+	 * @param testProject
+	 *            used to look up the team share plugin.
+	 * @return null if no team share config is present or there is no plugin
+	 *         registered on that id otherwise it returns the team share plugin
+	 *         for the project.
+	 */
+	private TeamShareServicePlugIn getTeamShare(TestProject testProject) {
+		if (testProject.getTestProjectConfig().getTeamShareConfig() != null) {
+			return teamShareServices.get(testProject.getTestProjectConfig().getTeamShareConfig().getId());
+		}
+		return null;
+	}
+
 	@Override
 	public boolean validateConfiguration(TestProject testProject, TranslationService translationService)
 			throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testProject.getTestProjectConfig()
-				.getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			return teamShareService.validateConfiguration(testProject, translationService);
 		}
@@ -160,8 +165,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	@Override
 	public List<TeamChange> revert(TestStructure testStructure, TranslationService translationService)
 			throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			return teamShareService.revert(testStructure, translationService);
 		}
@@ -171,8 +175,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	@Override
 	public void rename(TestStructure testStructure, String newName, TranslationService translationService)
 			throws SystemException {
-		TeamShareServicePlugIn teamShareService = teamShareServices.get(testStructure.getRootElement()
-				.getTestProjectConfig().getTeamShareConfig().getId());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			teamShareService.rename(testStructure, newName, translationService);
 		}
