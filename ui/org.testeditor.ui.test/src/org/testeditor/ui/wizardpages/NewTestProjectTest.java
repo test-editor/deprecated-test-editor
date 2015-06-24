@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorReservedNamesService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -68,34 +69,17 @@ public class NewTestProjectTest {
 	 */
 	@Test
 	public void testNewTestProjectinvalidNameNoCapitalLetter() {
-		NewTestProjectWizardPage page = ContextInjectionFactory.make(NewTestProjectWizardPage.class, getContextMock());
+		NewTestProjectWizardPage page = new NewTestProjectWizardPage() {
+			@Override
+			public TestStructure getSelectedTestStrucutureElement() {
+				TestProject tp = new TestProject();
+				return tp;
+			}
+		};
+		ContextInjectionFactory.inject(page, getContextMock());
 		assertFalse(page.isNameValid("otto"));
-	}
-
-	/**
-	 * test invalid name with only one capital letter.
-	 */
-	@Test
-	public void testNewTestProjectinvalidNameOnlyOneCapitalLetter() {
-		NewTestProjectWizardPage page = ContextInjectionFactory.make(NewTestProjectWizardPage.class, getContextMock());
 		assertFalse(page.isNameValid("Otto"));
-	}
-
-	/**
-	 * test invalid name with double capital letter.
-	 */
-	@Test
-	public void testNewTestProjectinvalidNameDoubleCapitalLetter() {
-		NewTestProjectWizardPage page = ContextInjectionFactory.make(NewTestProjectWizardPage.class, getContextMock());
 		assertFalse(page.isNameValid("OTto"));
-	}
-
-	/**
-	 * test invalid name with correct writing.
-	 */
-	@Test
-	public void testNewTestProjectCorrectWrintingOfTheName() {
-		NewTestProjectWizardPage page = ContextInjectionFactory.make(NewTestProjectWizardPage.class, getContextMock());
 		assertTrue(page.isNameValid("OttO"));
 	}
 

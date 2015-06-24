@@ -35,14 +35,12 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
 import org.testeditor.ui.adapter.TranslationServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -93,12 +91,7 @@ public class CloneTestStructureHandlerTest {
 		tp.addChild(testCase);
 		list.add(testCase);
 		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock() {
-			@Override
-			public TestStructureContentService getTestStructureContentServiceFor(String testServerID) {
-				return new TestStructureContentServiceAdapter();
-			}
-		});
+		context.set(TestStructureContentService.class, new TestStructureContentServiceAdapter());
 		context.set(TestProjectService.class, new TestProjectServiceAdapter());
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService());
 		context.set(TranslationService.class, new TranslationServiceAdapter().getTranslationService());

@@ -36,6 +36,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
+import org.testeditor.core.services.plugins.LibraryReaderServicePlugIn;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.mocks.PreferencesServiceMock;
@@ -169,7 +170,7 @@ public class TestProjectEditorTest {
 	 * @return Mock for LibraryReaderService
 	 */
 	private LibraryReaderService getLibraryReaderServiceMock() {
-		return new LibraryReaderService() {
+		return new LibraryReaderServicePlugIn() {
 
 			@Override
 			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig cfg) throws SystemException {

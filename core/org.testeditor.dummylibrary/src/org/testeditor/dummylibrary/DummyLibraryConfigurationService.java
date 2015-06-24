@@ -19,7 +19,7 @@ import java.util.Properties;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 
 /**
  * 
@@ -27,7 +27,7 @@ import org.testeditor.core.services.interfaces.LibraryConfigurationService;
  * class is only a dummy, to show the usage of the framework.
  * 
  */
-public class DummyLibraryConfigurationService implements LibraryConfigurationService {
+public class DummyLibraryConfigurationService implements LibraryConfigurationServicePlugIn {
 
 	@Override
 	public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {

@@ -42,14 +42,13 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
 import org.testeditor.ui.adapter.TranslationServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 
 /**
  * 
@@ -215,7 +214,7 @@ public class NewTestStructureHandlerTest {
 		context.set(EPartService.class, null);
 		context.set(TestProjectService.class, getTestProjectServiceMock(empty));
 		context.set(IServiceConstants.ACTIVE_SHELL, shell);
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock());
+		context.set(TeamShareService.class, null);
 		context.set(IEventBroker.class, new EventBroker());
 		return ContextInjectionFactory.make(NewScenarioHandler.class, context);
 	}

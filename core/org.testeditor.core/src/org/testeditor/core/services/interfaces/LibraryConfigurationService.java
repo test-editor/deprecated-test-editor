@@ -37,15 +37,6 @@ public interface LibraryConfigurationService {
 	ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties);
 
 	/**
-	 * This id is used to identify the library plug-in. It must the same ID in
-	 * the <code>ProjectLibraryConfig</code> and in the
-	 * <code>LibraryReaderService</code>
-	 * 
-	 * @return the id of the implementation
-	 */
-	String getId();
-
-	/**
 	 * This method is called for to store the config of the library in the
 	 * project properties.
 	 * 
@@ -74,20 +65,5 @@ public interface LibraryConfigurationService {
 	 *         configuration.
 	 */
 	List<FieldMappingExtension> getConfigUIExtensions();
-
-	/**
-	 * 
-	 * @return an empty Plug-In specific implementation of
-	 *         <code>ProjectLibraryConfig</code>.
-	 */
-	ProjectLibraryConfig createEmptyProjectLibraryConfig();
-
-	/**
-	 * Template for the config.tpr to allow this file to be well formed and
-	 * formatted.
-	 * 
-	 * @return the template for the configuration
-	 */
-	String getTemplateForConfiguration();
 
 }

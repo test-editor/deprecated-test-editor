@@ -16,11 +16,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
@@ -28,8 +25,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
 import org.testeditor.core.model.teststructure.TestActionGroup;
 import org.testeditor.core.model.teststructure.TestCase;
@@ -44,16 +39,10 @@ import org.testeditor.core.model.teststructure.TestScenarioParameters;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ActionGroupService;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
-import org.testeditor.core.services.interfaces.TestStructureContentService;
-import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.fitnesse.TestProjectDataFactory;
 
 /**
@@ -217,85 +206,10 @@ public class FitNesseWikiParserTest {
 	private IEclipseContext getEclipseContext() {
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(LibraryReaderService.class, ServiceLookUpForTest.getService(LibraryReaderService.class));
-		context.set(TestEditorPlugInService.class, getTestEditorPluginService());
+		context.set(TestScenarioService.class, getScenarioServiceMock());
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(ActionGroupService.class, ServiceLookUpForTest.getService(ActionGroupService.class));
 		return context;
-	}
-
-	/**
-	 * Mock object of the Plug-In Service.
-	 * 
-	 * @return the Mock of the Plugin-In service.
-	 */
-	private TestEditorPlugInService getTestEditorPluginService() {
-		return new TestEditorPlugInService() {
-
-			@Override
-			public TestStructureService getTestStructureServiceFor(String testServerID) {
-				return null;
-			}
-
-			@Override
-			public TestStructureContentService getTestStructureContentServiceFor(String testServerID) {
-				return null;
-			}
-
-			@Override
-			public TestScenarioService getTestScenarioService(String testServerID) {
-				return getScenarioServiceMock();
-			}
-
-			@Override
-			public TeamShareService getTeamShareServiceFor(String id) {
-				return null;
-			}
-
-			@Override
-			public TeamShareConfigurationService getTeamShareConfigurationServiceFor(String id) {
-				return null;
-			}
-
-			@Override
-			public LibraryConfigurationService getLibraryConfigurationServiceFor(String id) {
-				return null;
-			}
-
-			@Override
-			public Map<String, String> getAsProperties(TeamShareConfig teamShareConfig) {
-				return null;
-			}
-
-			@Override
-			public Map<String, String> getAsProperties(ProjectLibraryConfig projectLibraryConfig) {
-				return null;
-			}
-
-			@Override
-			public Collection<TeamShareService> getAllTeamShareServices() {
-				return null;
-			}
-
-			@Override
-			public Collection<TeamShareConfigurationService> getAllTeamShareConfigurationServices() {
-				return null;
-			}
-
-			@Override
-			public Collection<LibraryConfigurationService> getAllLibraryConfigurationServices() {
-				return null;
-			}
-
-			@Override
-			public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
-				return null;
-			}
-
-			@Override
-			public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {
-				return null;
-			}
-		};
 	}
 
 	/**
@@ -312,11 +226,6 @@ public class FitNesseWikiParserTest {
 
 			@Override
 			public boolean isSuiteForScenarios(TestStructure element) {
-				return false;
-			}
-
-			@Override
-			public boolean isReservedNameForRootSceanrioSuite(String pageName) {
 				return false;
 			}
 
@@ -347,10 +256,6 @@ public class FitNesseWikiParserTest {
 				return new TestScenario();
 			}
 
-			@Override
-			public String getId() {
-				return null;
-			}
 		};
 	}
 

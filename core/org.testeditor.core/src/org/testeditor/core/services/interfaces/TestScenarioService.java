@@ -82,14 +82,6 @@ public interface TestScenarioService {
 	boolean isSuiteForScenarios(TestStructure element);
 
 	/**
-	 * 
-	 * @param pageName
-	 *            name of the page
-	 * @return true, if the name is reserved for the ScenarioSuite
-	 */
-	boolean isReservedNameForRootSceanrioSuite(String pageName);
-
-	/**
 	 * reads the parameters of a scenario.
 	 * 
 	 * @param testScenario
@@ -102,11 +94,4 @@ public interface TestScenarioService {
 	 */
 	void readTestScenario(TestScenario testScenario, String testStructureText) throws SystemException;
 
-	/**
-	 * This id is used to identify the TeestStructureServer plug-in. It must the
-	 * same ID in the <code>TestProjectConfig</code>.
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
 }

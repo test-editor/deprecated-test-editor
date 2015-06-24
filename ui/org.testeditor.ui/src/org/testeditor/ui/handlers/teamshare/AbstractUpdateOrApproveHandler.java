@@ -36,7 +36,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
@@ -50,7 +49,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 	@Inject
 	private MApplication application;
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TeamShareService teamShareService;
 	@Inject
 	protected TestEditorTranslationService translationService;
 
@@ -101,7 +100,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 
 						while (iter.hasNext()) {
 							TestStructure testStructure = iter.next();
-							getTeamService(testStructure).addProgressListener(new ProgressListener() {
+							teamShareService.addProgressListener(testStructure, new ProgressListener() {
 								@Override
 								public void log(String progressInfo) {
 									monitor.subTask(progressInfo);
@@ -165,18 +164,6 @@ public abstract class AbstractUpdateOrApproveHandler {
 	abstract void showCompletedMessage();
 
 	/**
-	 * @param testStructure
-	 *            TestStructure
-	 * @return the teamShareService
-	 */
-	protected TeamShareService getTeamService(TestStructure testStructure) {
-		String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
-
-		TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-		return teamService;
-	}
-
-	/**
 	 * adds an element to the list of testProjects. this TestProjects will be
 	 * later restarted.
 	 * 
@@ -209,4 +196,13 @@ public abstract class AbstractUpdateOrApproveHandler {
 	protected IEclipseContext getContext() {
 		return application.getContext();
 	}
+
+	/**
+	 * 
+	 * @return the injected TeamShareService.
+	 */
+	protected TeamShareService getTeamService() {
+		return teamShareService;
+	}
+
 }

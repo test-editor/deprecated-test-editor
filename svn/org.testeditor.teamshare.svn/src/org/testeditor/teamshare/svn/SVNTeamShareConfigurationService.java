@@ -20,14 +20,14 @@ import java.util.Properties;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 
 /**
  * Implementation of the Configuration Service for Team Sharing using
  * Subversion.
  * 
  */
-public class SVNTeamShareConfigurationService implements TeamShareConfigurationService {
+public class SVNTeamShareConfigurationService implements TeamShareConfigurationServicePlugIn {
 
 	public static final String URL_PROPERTY = "teamshare.svn.url";
 	public static final String USERNAME_PROPERTY = "teamshare.svn.username";
