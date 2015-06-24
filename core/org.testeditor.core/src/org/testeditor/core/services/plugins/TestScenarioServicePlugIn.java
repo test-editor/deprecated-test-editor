@@ -13,6 +13,12 @@ package org.testeditor.core.services.plugins;
 
 import org.testeditor.core.services.interfaces.TestScenarioService;
 
+/**
+ * 
+ * Plug-In extension of the TestScenarioService. Plug-In Provider must implement
+ * this interface and not the TestScenarioService.
+ *
+ */
 public interface TestScenarioServicePlugIn extends TestScenarioService {
 
 	/**

@@ -13,6 +13,11 @@ package org.testeditor.core.services.plugins;
 
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 
+/**
+ * Plug-In extension of the LibraryReaderService. Plug-In Provider must
+ * implement this interface and not the LibraryReaderService.
+ *
+ */
 public interface LibraryReaderServicePlugIn extends LibraryReaderService {
 
 	/**

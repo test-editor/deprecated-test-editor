@@ -41,7 +41,6 @@ import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
@@ -522,7 +521,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {
 		String plugInID = properties.getProperty(TestEditorPlugInService.LIBRARY_ID);
-		LibraryConfigurationService libraryConfigurationService = plugInservice
+		LibraryConfigurationServicePlugIn libraryConfigurationService = plugInservice
 				.getLibraryConfigurationServiceFor(plugInID);
 		if (libraryConfigurationService != null) {
 			return libraryConfigurationService.createProjectLibraryConfigFrom(properties);
