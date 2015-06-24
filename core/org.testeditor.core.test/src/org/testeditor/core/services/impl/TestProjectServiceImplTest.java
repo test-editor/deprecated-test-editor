@@ -40,6 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -48,7 +49,6 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
@@ -81,7 +81,7 @@ public class TestProjectServiceImplTest {
 	@Test
 	public void testGetPropertiesFromConfigWithTeamShareLocalAndRemote() {
 		FrameworkUtil.getBundle(getClass()).getBundleContext()
-				.registerService(TeamShareConfigurationService.class, getTeamServiceConfigurationMock(), null);
+				.registerService(TeamShareConfigurationServicePlugIn.class, getTeamServiceConfigurationMock(), null);
 		TestProjectConfig projectConfig = new TestProjectConfig();
 		TestProjectServiceImpl service = (TestProjectServiceImpl) ServiceLookUpForTest
 				.getService(TestProjectService.class);
@@ -501,6 +501,22 @@ public class TestProjectServiceImplTest {
 		TestProjectServiceImpl testProjectService = getTestProjectImplMockWithProjects(tpList);
 		assertTrue(testProjectService.existsProjectWithName("MyTp"));
 		assertFalse(testProjectService.existsProjectWithName("AnotherTp"));
+	}
+
+	/**
+	 * Test the correct lookup for a service to create a projectlibconfig.
+	 * 
+	 * @throws Exception
+	 *             for test.
+	 */
+	@Test
+	public void testCreateProjectLibraryConfigFrom() throws Exception {
+		TestProjectServiceImpl service = (TestProjectServiceImpl) ServiceLookUpForTest
+				.getService(TestProjectService.class);
+		Properties properties = new Properties();
+		properties.put(TestEditorPlugInService.LIBRARY_ID, "testMock");
+		ProjectLibraryConfig config = service.createProjectLibraryConfigFrom(properties);
+		assertEquals("testMock", config.getId());
 	}
 
 	/**

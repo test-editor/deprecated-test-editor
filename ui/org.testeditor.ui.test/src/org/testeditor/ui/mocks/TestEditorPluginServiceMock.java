@@ -32,10 +32,6 @@ import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
  * 
  */
 public class TestEditorPluginServiceMock implements TestEditorPlugInService {
-	@Override
-	public Map<String, String> getAsProperties(ProjectLibraryConfig projectLibraryConfig) {
-		return null;
-	}
 
 	@Override
 	public Collection<LibraryConfigurationServicePlugIn> getAllLibraryConfigurationServices() {
@@ -95,11 +91,6 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 	}
 
 	@Override
-	public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {
-		return null;
-	}
-
-	@Override
 	public LibraryConfigurationServicePlugIn getLibraryConfigurationServiceFor(String id) {
 		for (LibraryConfigurationServicePlugIn service : getAllLibraryConfigurationServices()) {
 			if (service.getId().equals(id)) {
@@ -154,16 +145,6 @@ public class TestEditorPluginServiceMock implements TestEditorPlugInService {
 
 	@Override
 	public TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id) {
-		return null;
-	}
-
-	@Override
-	public Map<String, String> getAsProperties(TeamShareConfig teamShareConfig) {
-		return null;
-	}
-
-	@Override
-	public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
 		return null;
 	}
 
