@@ -97,11 +97,6 @@ public class FitnesseFileSystemTestStructureContentService implements TestStruct
 	}
 
 	@Override
-	public String getId() {
-		return FitnesseFileSystemConstants.PLUGIN_ID;
-	}
-
-	@Override
 	public String getTestStructureAsSourceText(TestStructure testStructure) throws SystemException {
 		Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
 		return FitnesseFileSystemUtility.getContentOfFitnesseFileForTestStructure(testStructure,

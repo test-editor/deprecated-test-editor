@@ -36,10 +36,8 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -74,11 +72,16 @@ public class TestHistoryPartTest {
 		tp.addChild(testCase);
 		historyPart.showTestHistory(testCase);
 		assertFalse(historyPart.containsTestHistory());
-		List<TestResult> mockdata = new ArrayList<TestResult>();
+		final List<TestResult> mockdata = new ArrayList<TestResult>();
 		TestResult testResult = new TestResult();
 		testResult.setResultDate(new Date());
 		mockdata.add(testResult);
-		context.set(TestEditorPlugInService.class, getTestStructureServiceMock(mockdata));
+		context.set(TestStructureService.class, new TestStructureServiceAdapter() {
+			@Override
+			public List<TestResult> getTestHistory(TestStructure testStructure) throws SystemException {
+				return mockdata;
+			}
+		});
 		ContextInjectionFactory.inject(historyPart, context);
 		historyPart.showTestHistory(testCase);
 		assertTrue(historyPart.containsTestHistory());
@@ -110,7 +113,12 @@ public class TestHistoryPartTest {
 	public void setUp() {
 		shell = new Shell();
 		context = EclipseContextFactory.create();
-		context.set(TestEditorPlugInService.class, getTestStructureServiceMock(new ArrayList<TestResult>()));
+		context.set(TestStructureService.class, new TestStructureServiceAdapter() {
+			@Override
+			public List<TestResult> getTestHistory(TestStructure testStructure) throws SystemException {
+				return new ArrayList<TestResult>();
+			}
+		});
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
 			@Override
 			public String translate(String key, Object... params) {
@@ -119,26 +127,6 @@ public class TestHistoryPartTest {
 		});
 		context.set(Composite.class, shell);
 		historyPart = ContextInjectionFactory.make(TestHistoryPart.class, context);
-	}
-
-	/**
-	 * 
-	 * @param mockData
-	 *            used in the mock.
-	 * @return service that returns the mockData on getTestHistory
-	 */
-	private TestEditorPlugInService getTestStructureServiceMock(final List<TestResult> mockData) {
-		return new TestEditorPluginServiceMock() {
-			@Override
-			public TestStructureService getTestStructureServiceFor(String testServerID) {
-				return new TestStructureServiceAdapter() {
-					@Override
-					public List<TestResult> getTestHistory(TestStructure testStructure) throws SystemException {
-						return mockData;
-					}
-				};
-			}
-		};
 	}
 
 	/**

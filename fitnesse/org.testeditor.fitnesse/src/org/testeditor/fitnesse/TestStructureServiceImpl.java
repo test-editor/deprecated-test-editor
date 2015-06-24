@@ -32,7 +32,8 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemUtility;
 import org.testeditor.fitnesse.util.FitNesseRestClient;
@@ -41,7 +42,7 @@ import org.testeditor.fitnesse.util.FitNesseRestClient;
  * FitNesse implementation of CRUD operation referring to the internal test
  * structure.
  */
-public class TestStructureServiceImpl implements TestStructureService, IContextFunction {
+public class TestStructureServiceImpl implements TestStructureServicePlugIn, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(TestStructureServiceImpl.class);
 	private Map<String, String> renamedTestStructures = new HashMap<String, String>();
@@ -54,7 +55,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	 * @param teamShareService
 	 *            to be bind to this service.
 	 */
-	public void bind(TeamShareService teamShareService) {
+	public void bind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.put(teamShareService.getId(), teamShareService);
 		LOGGER.info("Binding TeamShareService Plug-In " + teamShareService.getClass().getName());
 	}
@@ -64,7 +65,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	 * @param teamShareService
 	 *            to be removed.
 	 */
-	public void unBind(TeamShareService teamShareService) {
+	public void unBind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.remove(teamShareService.getId());
 		LOGGER.info("Removing TeamShareService Plug-In " + teamShareService.getClass().getName());
 	}
@@ -179,7 +180,7 @@ public class TestStructureServiceImpl implements TestStructureService, IContextF
 	}
 
 	@Override
-	public boolean isReservedName(String name) {
+	public boolean isReservedName(TestProject testProject, String name) {
 		return getSpecialPages().contains(name);
 	}
 

@@ -26,7 +26,6 @@ import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.css.core.utils.StringUtils;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -45,7 +44,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.ApplicationLifeCycleHandler;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -62,7 +60,7 @@ public class ImportProjectHandler {
 	private TestProjectService testProjectService;
 
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TeamShareService teamShareService;
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -125,10 +123,9 @@ public class ImportProjectHandler {
 			if (tsConfig != null) {
 				importProjectPage.setTeamShareConfig(tsConfig);
 			}
-			if (!StringUtils.isEmpty(testProject.getName())) {
+			if (!testProject.getName().isEmpty()) {
 				importProjectPage.setProjectName(testProject.getName());
 			}
-
 			if (wizardDialog.open() == Window.OK) {
 				try {
 					final StringBuilder prPathStringBuilder = new StringBuilder(workDirPath);
@@ -152,8 +149,7 @@ public class ImportProjectHandler {
 									IProgressMonitor.UNKNOWN);
 
 							try {
-
-								getTeamService().addProgressListener(new ProgressListener() {
+								teamShareService.addProgressListener(testProject, new ProgressListener() {
 
 									@Override
 									public void log(String progressInfo) {
@@ -168,17 +164,14 @@ public class ImportProjectHandler {
 									}
 								});
 
-								getTeamService().checkout(testProject, translate);
+								teamShareService.checkout(testProject, translate);
 								if (!monitor.isCanceled()) {
 									TeamShareConfig oldTeamShareconfig = testProject.getTestProjectConfig()
 											.getTeamShareConfig();
-
 									testProjectService.reloadTestProjectFromFileSystem(testProject);
 									testProject.getTestProjectConfig().setTeamShareConfig(oldTeamShareconfig);
-
 									ApplicationLifeCycleHandler lifeCycleHandler = ContextInjectionFactory.make(
 											ApplicationLifeCycleHandler.class, context);
-
 									lifeCycleHandler.startBackendServer(testProject);
 								}
 								ok.flag = true;
@@ -267,15 +260,6 @@ public class ImportProjectHandler {
 		importProjectPage = ContextInjectionFactory.make(TeamShareImportProjectWizardPage.class, context);
 		nwiz.addPage(importProjectPage);
 		return nwiz;
-	}
-
-	/**
-	 * @return the teamShareService for the selected team config.
-	 */
-	private TeamShareService getTeamService() {
-		String id = importProjectPage.getTeamShareConfig().getId();
-		TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-		return teamService;
 	}
 
 	/**

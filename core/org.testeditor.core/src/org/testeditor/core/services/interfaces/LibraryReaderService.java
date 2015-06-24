@@ -40,12 +40,4 @@ public interface LibraryReaderService {
 	ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
 			LibraryConstructionException;
 
-	/**
-	 * This id is used to identify the library plug-in. It must the same ID in
-	 * the <code>ProjectLibraryConfig</code> and in the
-	 * <code>LibraryConfigurationService</code>
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
 }

@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -44,14 +42,11 @@ import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
 import org.testeditor.core.model.team.TeamChangeType;
-import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -1053,7 +1048,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		assertTrue(testProject.getTestProjectConfig().isTeamSharedProject());
 
-		teamService.disconnect(testProject, translationService, getTeamShareConfigurationServiceMock());
+		teamService.disconnect(testProject, translationService);
 
 		assertFalse(testProject.getTestProjectConfig().isTeamSharedProject());
 	}
@@ -1179,53 +1174,9 @@ public class SVNTeamShareServiceLocalTest {
 		TestCase testCase = new TestCase();
 		testSuite.setTeamChangeType(TeamChangeType.MOVED);
 		testSuite.addChild(testCase);
-		teamService.disconnect(testProject, translationService, getTeamShareConfigurationServiceMock());
+		teamService.disconnect(testProject, translationService);
 		assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
 		assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
-	}
-
-	/**
-	 * 
-	 * @return mock for TeamShareConfigurationService.
-	 */
-	private TeamShareConfigurationService getTeamShareConfigurationServiceMock() {
-		return new TeamShareConfigurationService() {
-
-			@Override
-			public String getTranslatedHumanReadablePlugInName(TranslationService translationService) {
-				return null;
-			}
-
-			@Override
-			public String getTemplateForConfiguration() {
-				return null;
-			}
-
-			@Override
-			public String getId() {
-				return null;
-			}
-
-			@Override
-			public List<FieldMappingExtension> getFieldMappingExtensions() {
-				return null;
-			}
-
-			@Override
-			public Map<String, String> getAsProperties(TeamShareConfig teamShareConfig) {
-				return null;
-			}
-
-			@Override
-			public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
-				return null;
-			}
-
-			@Override
-			public TeamShareConfig createAnEmptyTeamShareConfig() {
-				return null;
-			}
-		};
 	}
 
 }
