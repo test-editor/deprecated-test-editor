@@ -150,8 +150,13 @@ public class TestScenarioServiceImpl implements TestScenarioServicePlugIn {
 		return isReservedNameForRootSceanrioSuite(element.getName());
 	}
 
-	@Override
-	public boolean isReservedNameForRootSceanrioSuite(String pageName) {
+	/**
+	 * 
+	 * @param pageName
+	 *            to be checked for reserved words.
+	 * @return true id it is not a reserved word for the scenariosuite.
+	 */
+	private boolean isReservedNameForRootSceanrioSuite(String pageName) {
 		return pageName.equalsIgnoreCase(TestEditorGlobalConstans.TEST_SCENARIO_SUITE)
 				|| pageName.equalsIgnoreCase(TestEditorGlobalConstans.TEST_KOMPONENTS);
 	}

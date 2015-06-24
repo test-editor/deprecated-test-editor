@@ -40,7 +40,6 @@ import org.testeditor.core.model.teststructure.TestScenarioParameters;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ActionGroupService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 
 /**
@@ -57,7 +56,7 @@ public class FitNesseWikiParser {
 	private static final String SCENARIO_FINAL = "'''End Scenario Include: ";
 
 	@Inject
-	private TestEditorPlugInService testEditorPluginService;
+	private TestScenarioService testScenarioService;
 
 	@Inject
 	private ActionGroupService actionGroupService;
@@ -206,8 +205,6 @@ public class FitNesseWikiParser {
 			StringBuilder scenarioNameWithSpaces = buildScenarioNameWithSpaces(scenarioNameSplittedByCapitals);
 
 			try {
-				TestScenarioService testScenarioService = testEditorPluginService.getTestScenarioService(testFlow
-						.getRootElement().getTestProjectConfig().getTestServerID());
 
 				TestScenario scenarioByFullName = testScenarioService.getScenarioByFullName(testFlow.getRootElement(),
 						includeOfScenario.substring(10));
@@ -374,9 +371,6 @@ public class FitNesseWikiParser {
 	 */
 	private void checkIsParamtableCorrect(TestFlow testFlow, TestScenarioParameterTable parameterTable, String include)
 			throws SystemException {
-		TestScenarioService testScenarioService = testEditorPluginService.getTestScenarioService(testFlow
-				.getRootElement().getTestProjectConfig().getTestServerID());
-
 		TestScenario scenarioFromProject = testScenarioService.getScenarioByFullName(testFlow.getRootElement(),
 				include.substring(10));
 		TestDataRow parametersOfScenario = new TestDataRow();
@@ -439,8 +433,6 @@ public class FitNesseWikiParser {
 	 *             by reading the scenario
 	 */
 	private boolean isAScenarioInclude(TestFlow testFlow, String linkString) throws SystemException {
-		TestScenarioService testScenarioService = testEditorPluginService.getTestScenarioService(testFlow
-				.getRootElement().getTestProjectConfig().getTestServerID());
 		return testScenarioService.isLinkToScenario(testFlow.getRootElement(), linkString);
 	}
 

@@ -82,14 +82,6 @@ public interface TestScenarioService {
 	boolean isSuiteForScenarios(TestStructure element);
 
 	/**
-	 * 
-	 * @param pageName
-	 *            name of the page
-	 * @return true, if the name is reserved for the ScenarioSuite
-	 */
-	boolean isReservedNameForRootSceanrioSuite(String pageName);
-
-	/**
 	 * reads the parameters of a scenario.
 	 * 
 	 * @param testScenario

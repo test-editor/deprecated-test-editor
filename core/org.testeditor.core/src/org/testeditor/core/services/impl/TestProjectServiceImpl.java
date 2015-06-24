@@ -68,6 +68,28 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 	private List<TestProject> oldTestProjects = new ArrayList<TestProject>();
 	private TestServerService testServerService;
+	private TestStructureService testStructureService;
+
+	/**
+	 * 
+	 * @param testStructureService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(TestStructureService testStructureService) {
+		this.testStructureService = testStructureService;
+		LOGGER.info("Bind testStructureService");
+	}
+
+	/**
+	 * 
+	 * @param testStructureService
+	 *            removed from system
+	 */
+	public void unBind(TestStructureService testStructureService) {
+		this.testStructureService = null;
+		LOGGER.info("Unbind testStructureService");
+	}
 
 	/**
 	 * 
@@ -191,14 +213,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 		setPortFromOldProjectObjectTo(testProject);
 
-		if (plugInservice != null) {
-			testProject.setChildCountInBackend(-1);
-			TestStructureService testStructureService = plugInservice.getTestStructureServiceFor(testProject
-					.getTestProjectConfig().getTestServerID());
-			if (testStructureService != null) {
-				testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
-			}
-		}
+		testProject.setChildCountInBackend(-1);
+		testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
 		LOGGER.trace("Building Project " + testProject.getName());
 	}
 

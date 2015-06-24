@@ -180,7 +180,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	}
 
 	@Override
-	public boolean isReservedName(String name) {
+	public boolean isReservedName(TestProject testProject, String name) {
 		return getSpecialPages().contains(name);
 	}
 

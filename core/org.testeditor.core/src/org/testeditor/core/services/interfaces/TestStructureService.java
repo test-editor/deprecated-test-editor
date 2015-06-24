@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 
 /**
@@ -134,11 +135,13 @@ public interface TestStructureService {
 	 * Checks if the parameter is a reserved name in the context of the
 	 * TestServer.
 	 * 
+	 * @param testProtect
+	 *            used to determine the correct teststructure plugin.
 	 * @param name
 	 *            to be checked.
 	 * @return true if the name is reserved.
 	 */
-	boolean isReservedName(String name);
+	boolean isReservedName(TestProject testProtect, String name);
 
 	/**
 	 * Creates a Runnable which can used for lazy loading the children in the

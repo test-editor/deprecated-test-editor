@@ -133,10 +133,12 @@ public interface TeamShareService {
 
 	/**
 	 * 
+	 * @param testStructure
+	 *            used to work on with the team share service.
 	 * @param listener
 	 *            ProgressListener
 	 */
-	void addProgressListener(ProgressListener listener);
+	void addProgressListener(TestStructure testStructure, ProgressListener listener);
 
 	/**
 	 * adds a child to the parent in the local structure.
