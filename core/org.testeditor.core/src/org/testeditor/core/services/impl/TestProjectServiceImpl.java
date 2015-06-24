@@ -212,9 +212,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		testProject.setTestProjectConfig(getProjectConfigFor(testProject));
 
 		setPortFromOldProjectObjectTo(testProject);
-
-		testProject.setChildCountInBackend(-1);
-		testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
+		if (plugInservice != null) {
+			testProject.setChildCountInBackend(-1);
+			testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
+		}
 		LOGGER.trace("Building Project " + testProject.getName());
 	}
 
