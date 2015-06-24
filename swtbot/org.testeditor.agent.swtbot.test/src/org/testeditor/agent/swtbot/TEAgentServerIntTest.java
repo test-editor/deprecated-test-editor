@@ -15,7 +15,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.ui.testing.TestableObject;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -34,7 +33,6 @@ public class TEAgentServerIntTest {
 	 *             for Test
 	 */
 	@Test
-	@Ignore
 	public void testLaunchedWorkFlow() throws Exception {
 		TEAgentServer teAgentServer = new TEAgentServer(getTestObject());
 		assertFalse("Agent Server is not launched.", teAgentServer.isLaunched());
@@ -49,7 +47,6 @@ public class TEAgentServerIntTest {
 	 *             for Test
 	 */
 	@Test
-	@Ignore
 	public void testTestAbleFrameworkCall() throws Exception {
 		TEAgentServer teAgentServer = new TEAgentServer(getTestObject());
 		finished = false;

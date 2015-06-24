@@ -24,6 +24,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
@@ -286,7 +287,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	 */
 	@Before
 	public void setup() {
-		shell = new Shell();
+		shell = new Shell(Display.getDefault());
 	}
 
 	/**

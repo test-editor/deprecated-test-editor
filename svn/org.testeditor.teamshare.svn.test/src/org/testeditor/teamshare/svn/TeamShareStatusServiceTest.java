@@ -303,7 +303,6 @@ public class TeamShareStatusServiceTest {
 	 * @throws InterruptedException
 	 *             InterruptedException
 	 */
-	@Ignore
 	@Test
 	public void testStatusOnProjectChangesNotShared() throws IOException, SVNException, SystemException,
 			InterruptedException {
