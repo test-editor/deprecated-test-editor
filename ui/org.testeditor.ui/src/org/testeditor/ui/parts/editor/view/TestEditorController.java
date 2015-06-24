@@ -333,6 +333,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		parent.setLayout(new GridLayout(1, false));
 		GridLayout gridLayout = new GridLayout(1, false);
+
 		compositeForView = new CTabFolder(parent, SWT.BORDER);
 		CTabItem item = new CTabItem((CTabFolder) compositeForView, SWT.NONE);
 		item.setText("Editor");
@@ -342,6 +343,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		gridDataInner.grabExcessVerticalSpace = true;
 		gridDataInner.grabExcessHorizontalSpace = true;
 		compositeForView.setLayoutData(gridDataInner);
+
 		messsageArea = new Composite(compositeForView, SWT.BORDER);
 		messsageArea.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		messsageArea.setLayout(new FillLayout());

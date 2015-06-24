@@ -111,7 +111,7 @@ public class TestEditorTestScenarioController extends TestEditorController imple
 	}
 
 	/**
-	 * saves the changes TestScenario. if a scenario, is persist, than refresh
+	 * Saves the changes TestScenario. if a scenario, is persist, than refresh
 	 * also the scenarioSelectionCache.
 	 */
 	@Override
@@ -119,7 +119,6 @@ public class TestEditorTestScenarioController extends TestEditorController imple
 	public void save() {
 		super.save();
 		eventBroker.post(TestEditorEventConstants.REFRESH_TESTFLOW_VIEWS_TO_PROJECT, getTestFlow().getRootElement());
-
 	}
 
 	/**

@@ -28,7 +28,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.teststructure.ScenarioSuite;
@@ -48,9 +47,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * 
  * Integrationtests for the first Page of a new TestScenario Wizard.
  * 
- * @author lothar
  */
-@Ignore
 public class NewScenarioPageTest {
 
 	private Shell shell;
