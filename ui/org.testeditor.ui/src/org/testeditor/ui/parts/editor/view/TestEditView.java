@@ -405,7 +405,13 @@ public class TestEditView extends TestEditorViewBasis {
 	private void disposePopupDialogAction() {
 		if (popupDialogAction != null && popupDialogAction.getShell() != null
 				&& !popupDialogAction.getShell().isDisposed()) {
-			popupDialogAction.getShell().dispose();
+			Display.getCurrent().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					popupDialogAction.getShell().dispose();
+				}
+			});
 		}
 	}
 

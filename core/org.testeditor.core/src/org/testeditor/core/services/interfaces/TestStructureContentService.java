@@ -93,12 +93,4 @@ public interface TestStructureContentService {
 	 */
 	String getTestStructureAsSourceText(TestStructure testStructure) throws SystemException;
 
-	/**
-	 * This id is used to identify the TeestStructureServer plug-in. It must the
-	 * same ID in the <code>TestProjectConfig</code>.
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
-
 }

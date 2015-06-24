@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.testeditor.core.services.TestScenarioServiceDispatcher">
+   <implementation class="org.testeditor.core.services.dispatcher.TestScenarioServiceDispatcher"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.TestScenarioService"/>
+   </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestScenarioServicePlugIn" name="TestScenarioServicePlugIn" policy="dynamic" unbind="unBind"/>
+</scr:component>

@@ -39,9 +39,9 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 
 /**
  * 
@@ -58,7 +58,7 @@ public class TestStructureServiceImplTest {
 	 */
 	@Test
 	public void testServiceRegistration() throws Exception {
-		TestStructureService service = ServiceLookUpForTest.getService(TestStructureService.class);
+		TestStructureService service = ServiceLookUpForTest.getService(TestStructureServicePlugIn.class);
 		assertNotNull("Expecting an implementation of the TestStructureService", service);
 		assertTrue("Service implementation is not an instance of TestStructureServiceImpl",
 				service instanceof TestStructureServiceImpl);
@@ -73,9 +73,9 @@ public class TestStructureServiceImplTest {
 	@Test
 	public void testIsReservedName() throws Exception {
 		TestStructureService service = new TestStructureServiceImpl();
-		assertTrue(service.isReservedName("SetUp"));
-		assertTrue(service.isReservedName("PageHeader"));
-		assertFalse(service.isReservedName("MyTest"));
+		assertTrue(service.isReservedName(null, "SetUp"));
+		assertTrue(service.isReservedName(null, "PageHeader"));
+		assertFalse(service.isReservedName(null, "MyTest"));
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class TestStructureServiceImplTest {
 		IEclipseContext context = EclipseContextFactory.create();
 		service.compute(context, null);
 		HashSet<String> set = new HashSet<String>();
-		TeamShareService serviceMock = getTEamShareServiceMock(set);
+		TeamShareServicePlugIn serviceMock = getTeamShareServiceMock(set);
 		service.bind(serviceMock);
 		TestProject tp = new TestProject();
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
@@ -213,12 +213,12 @@ public class TestStructureServiceImplTest {
 	 *            used to inform the test about operations calls.
 	 * @return team share service mock.
 	 */
-	private TeamShareService getTEamShareServiceMock(final HashSet<String> set) {
-		return new TeamShareService() {
+	private TeamShareServicePlugIn getTeamShareServiceMock(final HashSet<String> set) {
+		return new TeamShareServicePlugIn() {
 
 			@Override
-			public void disconnect(TestProject testProject, TranslationService translationService,
-					TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
+			public void disconnect(TestProject testProject, TranslationService translationService)
+					throws SystemException {
 			}
 
 			@Override
@@ -262,7 +262,7 @@ public class TestStructureServiceImplTest {
 			}
 
 			@Override
-			public void addProgressListener(ProgressListener listener) {
+			public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
 			}
 
 			@Override

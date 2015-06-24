@@ -9,15 +9,19 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.fitnesse.filesystem;
+package org.testeditor.core.services.plugins;
 
-/**
- * 
- * Constants for the Fit Slim based TestServer implementation.
- *
- */
-public abstract class FitnesseFileSystemConstants {
+import org.testeditor.core.services.interfaces.LibraryReaderService;
 
-	public static final String PLUGIN_ID = "fitslim_based_1.0";
+public interface LibraryReaderServicePlugIn extends LibraryReaderService {
+
+	/**
+	 * This id is used to identify the library plug-in. It must the same ID in
+	 * the <code>ProjectLibraryConfig</code> and in the
+	 * <code>LibraryConfigurationService</code>
+	 * 
+	 * @return ID to Identify the Plug-In.
+	 */
+	String getId();
 
 }

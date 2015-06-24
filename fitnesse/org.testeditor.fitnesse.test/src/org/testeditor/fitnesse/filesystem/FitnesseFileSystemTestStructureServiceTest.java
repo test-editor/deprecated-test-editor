@@ -424,9 +424,9 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	@Test
 	public void testIsReservedName() {
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
-		assertTrue(service.isReservedName("SetUp"));
-		assertTrue(service.isReservedName("TearDown"));
-		assertFalse(service.isReservedName("MyTestCase"));
+		assertTrue(service.isReservedName(null, "SetUp"));
+		assertTrue(service.isReservedName(null, "TearDown"));
+		assertFalse(service.isReservedName(null, "MyTestCase"));
 	}
 
 	/**
