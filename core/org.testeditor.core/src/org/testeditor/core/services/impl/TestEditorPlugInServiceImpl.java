@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 

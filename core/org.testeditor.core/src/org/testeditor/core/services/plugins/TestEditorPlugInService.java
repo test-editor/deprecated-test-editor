@@ -9,12 +9,9 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.core.services.interfaces;
+package org.testeditor.core.services.plugins;
 
 import java.util.Collection;
-
-import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
-import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 
 /**
  * 

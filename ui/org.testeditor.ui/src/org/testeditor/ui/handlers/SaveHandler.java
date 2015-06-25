@@ -21,6 +21,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
@@ -28,10 +29,10 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.util.TestProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 
 /**
  * 
@@ -107,7 +108,7 @@ public class SaveHandler {
 				}
 
 			});
-			refreshNodeIcon(partService);
+			refreshNodeIcon(context);
 
 		}
 
@@ -118,19 +119,19 @@ public class SaveHandler {
 	/**
 	 * After change test, reset test state for rendering icon for default.
 	 * 
-	 * @param partService
+	 * @param context
 	 *            used to refresh the ui.
 	 * 
 	 */
-	private void refreshNodeIcon(EPartService partService) {
-		TestExplorer testExplorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW)
-				.getObject();
-		TestStructure selected = (TestStructure) testExplorer.getSelection().getFirstElement();
+	private void refreshNodeIcon(IEclipseContext context) {
+		TestStructure selected = (TestStructure) context.get(TestEditorConstants.SELECTED_TEST_COMPONENT);
 		// only, if we have a selection
 		if (selected != null) {
 			// refresh the icon depends on test result
 			testProtocolService.remove(selected);
-			testExplorer.refreshTreeViewerOnTestStrucutre(selected);
+			context.get(IEventBroker.class)
+					.send(TestEditorCoreEventConstants.TEAM_STATE_LOADED, selected.getFullName());
+			// testExplorer.refreshTreeViewerOnTestStrucutre(selected);
 		}
 	}
 
