@@ -22,6 +22,10 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * 
  * A ScenarioService provides informations about the scenarios of the actual
  * project.
+ *
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * TestScenarioServicePlugIn.
  * 
  */
 public interface TestScenarioService {
