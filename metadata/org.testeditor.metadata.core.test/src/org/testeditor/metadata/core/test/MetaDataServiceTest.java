@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -53,6 +54,7 @@ public class MetaDataServiceTest {
 	 * Temporary test to test the setup of the system.
 	 */
 	@Test
+	@Ignore
 	public void testTestSetup() {
 		TestProject project = createProject("testProject1");
 		assertNotNull(project);
@@ -62,6 +64,7 @@ public class MetaDataServiceTest {
 	 * Checks that the metadata are read correctly.
 	 */
 	@Test
+	@Ignore
 	public void testReadMetaDataForProject() {
 		TestProject project = createProject("testProject1");
 		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
@@ -110,6 +113,7 @@ public class MetaDataServiceTest {
 	 * Creates the reading of the metadata for an other project
 	 */
 	@Test
+	@Ignore
 	public void testReadMetaDataForOtherProject() {
 		TestProject project = createProject("testProject2");
 		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
@@ -122,6 +126,7 @@ public class MetaDataServiceTest {
 	 * project
 	 */
 	@Test
+	@Ignore
 	public void testReadMetaDataForEmptyProject() {
 		projects.add("testProject3");
 		TestProject project = createProject("testProject3");
@@ -134,6 +139,7 @@ public class MetaDataServiceTest {
 	 * Tests the storing and reading of the data of multiple testcases
 	 */
 	@Test
+	@Ignore
 	public void testStoreAndReadMulitpleMetaDataList() {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -152,6 +158,7 @@ public class MetaDataServiceTest {
 	 * Tests the removing of metadata - this is used during deleting a testcase
 	 */
 	@Test
+	@Ignore
 	public void testDeleteTestStructure() {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -173,6 +180,7 @@ public class MetaDataServiceTest {
 	 * Tests that changes the name of a testcase.
 	 */
 	@Test
+	@Ignore
 	public void testRenameTestStructure() {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -196,6 +204,7 @@ public class MetaDataServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetMetaDataFromMetaDataTag() {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -215,6 +224,7 @@ public class MetaDataServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetTestCasesForMetaData() {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -232,6 +242,7 @@ public class MetaDataServiceTest {
 	 * Tests the search of testcases for a metadatavalue
 	 */
 	@Test
+	@Ignore
 	public void testGetTestCasesForMetaDataList() {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -251,6 +262,7 @@ public class MetaDataServiceTest {
 	 * Tests the storing and reading of a metadatalist
 	 */
 	@Test
+	@Ignore
 	public void testStoreAndReadMetaDataList() {
 
 		TestProject project = createProject("testProject1");
