@@ -284,6 +284,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		if (event.getSource().equals(metaDataCB)) {
 			IStructuredSelection selection = (IStructuredSelection) metaDataCB.getSelection();
 			MetaData metaData = (MetaData) selection.getFirstElement();
+			metaDataValuesCB.getCombo().removeAll();
 			for (MetaDataValue metaDataValue : metaData.getValues()) {
 				metaDataValuesCB.add(metaDataValue);
 			}
