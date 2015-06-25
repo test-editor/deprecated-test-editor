@@ -24,6 +24,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -189,10 +190,10 @@ public abstract class NewTestStructureHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		return handlerRules.canExecuteOnTestSuiteRule(testExplorer)
-				|| handlerRules.canExecuteOnTestProjectRule(testExplorer);
+		return handlerRules.canExecuteOnTestSuiteRule(selection) || handlerRules.canExecuteOnTestProjectRule(selection);
 	}
 
 	/**

@@ -26,6 +26,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.services.EMenuService;
@@ -136,7 +137,8 @@ public class TestExplorer {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				context.set(TestEditorConstants.SELECTED_TEST_COMPONENT, getSelection().getFirstElement());
+				context.get(MApplication.class).getContext()
+						.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, getSelection());
 				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 			}
 		});
@@ -300,8 +302,7 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TEAM_STATE_LOADED) String testStructureName) {
-		System.err.println(">>>>>>>>>>>>>> Hey event");
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED) String testStructureName) {
 		try {
 			refreshTreeViewerOnTestStrucutre(testProjectService.findTestStructureByFullName(testStructureName));
 		} catch (SystemException e) {

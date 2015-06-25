@@ -242,7 +242,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	@Inject
 	@Optional
 	public void refreshSceanriosInTreeBySvnLoaded(
-			@UIEventTopic(TestEditorCoreEventConstants.TEAM_STATE_LOADED) TestStructure testStructure) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED) TestStructure testStructure) {
 		refreshSceanriosInTree("");
 	}
 

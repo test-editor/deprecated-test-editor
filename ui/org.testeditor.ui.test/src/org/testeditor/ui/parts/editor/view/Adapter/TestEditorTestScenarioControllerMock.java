@@ -33,7 +33,6 @@ import org.testeditor.ui.parts.inputparts.scenarioselection.TestEditorScenarioSe
 /**
  * a mockup for the TestEditorTestScenarioController.
  * 
- * @author llipinski
  * 
  */
 public class TestEditorTestScenarioControllerMock extends TestEditorTestScenarioController {
