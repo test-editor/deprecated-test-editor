@@ -206,6 +206,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 			metaDataTagsTable.setVisible(false);
 
 		} else {
+			metaDataCB.getCombo().removeAll();
 			for (MetaData metaData : metaDataList) {
 				metaDataCB.add(metaData);
 			}
