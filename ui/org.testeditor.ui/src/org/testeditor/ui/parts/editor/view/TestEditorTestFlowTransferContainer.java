@@ -20,9 +20,8 @@ import org.testeditor.core.services.interfaces.TestStructureContentService;
 
 /**
  * 
- * special transfercontainer for the TestFlow.
+ * Special transfercontainer for the TestFlow.
  * 
- * @author llipinski
  */
 public class TestEditorTestFlowTransferContainer extends TestEditorTestDataTransferContainer {
 

@@ -45,7 +45,6 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestType;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
@@ -69,7 +68,7 @@ public class TestHistoryPart {
 	private IEclipseContext context;
 
 	@Inject
-	private TestEditorPlugInService testEditorPlugInService;
+	private TestStructureService testStructureService;
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -147,9 +146,6 @@ public class TestHistoryPart {
 
 			testHistory = null;
 			try {
-				TestStructureService testStructureService = testEditorPlugInService
-						.getTestStructureServiceFor(testStructure.getRootElement().getTestProjectConfig()
-								.getTestServerID());
 				testHistory = testStructureService.getTestHistory(testStructure);
 			} catch (SystemException e) {
 				LOGGER.error(e);
@@ -240,8 +236,8 @@ public class TestHistoryPart {
 		String ignored = translationService.translate("%test.history.ignored") + ":" + testResult.getIgnored();
 		String exception = translationService.translate("%test.history.exception") + ":" + testResult.getException();
 
-		String[] row = new String[] { "", formatedDateString,
-				right + "; " + wrong + "; " + ignored + "; " + exception, "" };
+		String[] row = new String[] { "", formatedDateString, right + "; " + wrong + "; " + ignored + "; " + exception,
+				"" };
 		return row;
 	}
 
@@ -310,7 +306,6 @@ public class TestHistoryPart {
 	 */
 	public void clearHistory() {
 		try {
-			TestStructureService testStructureService = getTestStructureService(testStructure);
 			testStructureService.clearTestHistory(testStructure);
 		} catch (SystemException e) {
 			LOGGER.error(e.getMessage());
@@ -322,18 +317,6 @@ public class TestHistoryPart {
 				}
 			});
 		}
-	}
-
-	/**
-	 * 
-	 * @param aTestStructure
-	 *            used to identify the correct service.
-	 * 
-	 * @return the TestStructureService used for teststructure.
-	 */
-	private TestStructureService getTestStructureService(TestStructure aTestStructure) {
-		return testEditorPlugInService.getTestStructureServiceFor(aTestStructure.getRootElement()
-				.getTestProjectConfig().getTestServerID());
 	}
 
 	/**

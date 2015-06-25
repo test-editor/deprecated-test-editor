@@ -2,7 +2,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="testCaseServiceComponent">
    <implementation class="org.testeditor.fitnesse.TestStructureContentServiceImpl"/>
    <service>
-      <provide interface="org.testeditor.core.services.interfaces.TestStructureContentService"/>
+      <provide interface="org.testeditor.core.services.plugins.TestStructureContentServicePlugIn"/>
       <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
 </scr:component>

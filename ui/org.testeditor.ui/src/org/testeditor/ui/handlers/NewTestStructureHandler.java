@@ -32,13 +32,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
-import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -59,7 +55,10 @@ public abstract class NewTestStructureHandler {
 	private TestProjectService testProjectService;
 
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TestStructureService testStructureService;
+
+	@Inject
+	private TeamShareService teamService;
 
 	@Inject
 	private TranslationService translationService;
@@ -148,9 +147,6 @@ public abstract class NewTestStructureHandler {
 	 */
 	protected void createAndOpenTestStructure(TestStructure testStructure, IEclipseContext context)
 			throws SystemException {
-		TestProject testProject = testStructure.getRootElement();
-		TestStructureService testStructureService = plugInService.getTestStructureServiceFor(testProject
-				.getTestProjectConfig().getTestServerID());
 		testStructureService.create(testStructure);
 	}
 
@@ -175,10 +171,7 @@ public abstract class NewTestStructureHandler {
 	 */
 	private void addTestStructureLocalToRepository(TestStructure testStructure, Shell shell) {
 		try {
-			TeamShareService teamService = getTeamService(testStructure);
-			if (teamService != null) {
-				teamService.addChild(testStructure, translationService);
-			}
+			teamService.addChild(testStructure, translationService);
 		} catch (SystemException e) {
 			LOGGER.error(e);
 			MessageDialog.openError(shell, "System-Exception", e.getMessage());
@@ -309,26 +302,6 @@ public abstract class NewTestStructureHandler {
 	 */
 	protected TestProjectService getTestProjectService() {
 		return testProjectService;
-	}
-
-	/**
-	 * @param testStructure
-	 *            TestStructure
-	 * @return the teamShareService
-	 */
-	private TeamShareService getTeamService(TestStructure testStructure) {
-		TestProjectConfig testProjectConfig = testStructure.getRootElement().getTestProjectConfig();
-		if (testProjectConfig != null) {
-			TeamShareConfig teamShareConfig = testProjectConfig.getTeamShareConfig();
-			if (teamShareConfig != null) {
-				String id = teamShareConfig.getId();
-				if (id != null) {
-					TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-					return teamService;
-				}
-			}
-		}
-		return null;
 	}
 
 }

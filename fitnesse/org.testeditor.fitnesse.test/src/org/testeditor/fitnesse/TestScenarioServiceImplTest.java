@@ -18,6 +18,7 @@ import org.testeditor.core.model.teststructure.ScenarioSuite;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestScenarioService;
+import org.testeditor.core.services.plugins.TestScenarioServicePlugIn;
 
 /**
  * 
@@ -35,7 +36,7 @@ public class TestScenarioServiceImplTest {
 	 */
 	@Test
 	public void testReadTestScenario() throws Exception {
-		TestScenarioService testScenarioService = ServiceLookUpForTest.getService(TestScenarioService.class);
+		TestScenarioService testScenarioService = ServiceLookUpForTest.getService(TestScenarioServicePlugIn.class);
 		TestScenario testScenario = new TestScenario();
 		ScenarioSuite scenarioSuite = new ScenarioSuite();
 		scenarioSuite.setName("TestSzenarien");

@@ -31,7 +31,6 @@ import org.testeditor.core.model.teststructure.TestDataRow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.ui.constants.TestEditorEventConstants;
@@ -54,7 +53,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	@Inject
 	private IEclipseContext context;
 	@Inject
-	private TestEditorPlugInService pluginService;
+	private TestScenarioService scenarioService;
 	@Inject
 	private TestProjectService testProjectService;
 
@@ -137,8 +136,6 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	 */
 	public void putTextToInputArea(String includeOfScenario, int selectedLine) throws SystemException {
 		if (includeOfScenario.length() > 10) {
-			TestScenarioService scenarioService = pluginService.getTestScenarioService(testEditorController
-					.getTestFlow().getRootElement().getTestProjectConfig().getTestServerID());
 			TestScenario scenarioByFullName = scenarioService.getScenarioByFullName(testEditorController.getTestFlow()
 					.getRootElement(), includeOfScenario.substring(10));
 			editArea.setScenarioSelectionToChangeable(scenarioByFullName, selectedLine);
@@ -329,9 +326,6 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 			// entfernen.
 			testScenarioParameterTable.setInclude(scenario.getFullName());
 			try {
-				TestScenarioService scenarioService = pluginService.getTestScenarioService(testEditorController
-						.getTestFlow().getRootElement().getTestProjectConfig().getTestServerID());
-
 				testScenarioParameterTable.setScenarioOfProject(scenarioService.isLinkToScenario(testEditorController
 						.getTestFlow().getRootElement(), scenario.getFullName()));
 				if (scenario.getTestComponents().isEmpty()) {

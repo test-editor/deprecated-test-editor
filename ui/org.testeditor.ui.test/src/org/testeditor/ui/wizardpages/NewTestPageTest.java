@@ -159,7 +159,9 @@ public class NewTestPageTest {
 	 */
 	@Test
 	public void testIsNameValid() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite ts = new TestSuite();
+		tp.addChild(ts);
 		ts.setName("TestSuite");
 		AbstractTestStructureWizardPage page = ContextInjectionFactory.make(NewTestCaseWizardPage.class,
 				getContextMock());
@@ -178,14 +180,18 @@ public class NewTestPageTest {
 	 */
 	@Test
 	public void testIsNameValidDuplicateNameInTreeSimple() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("FooBar");
 		AbstractTestStructureWizardPage page = ContextInjectionFactory.make(NewTestCaseWizardPage.class,
 				getContextMock());
 		page.setSelectedTestStructure(testSuite);
 		assertTrue(page.isNameValid("FooBar"));
 		assertTrue(page.isNameValid("FooBarSo"));
+		tp = new TestProject();
 		TestSuite parentSuite = new TestSuite();
+		tp.addChild(parentSuite);
 		parentSuite.setName("TheParent");
 		parentSuite.addChild(testSuite);
 		page.setSelectedTestStructure(parentSuite);
@@ -201,7 +207,9 @@ public class NewTestPageTest {
 	 */
 	@Test
 	public void testIsNameValidDuplicateNameInTreeLongerPath() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("TS");
 		TestSuite testSuite2 = new TestSuite();
 		testSuite2.setName("FooBar");
@@ -222,7 +230,9 @@ public class NewTestPageTest {
 	 */
 	@Test
 	public void testIsNameValidWithReservedName() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("FooBar");
 		IEclipseContext context = getContextMock();
 		AbstractTestStructureWizardPage page = ContextInjectionFactory.make(NewTestCaseWizardPage.class, context);
@@ -239,7 +249,9 @@ public class NewTestPageTest {
 	 */
 	@Test
 	public void testIsNameValidRenameWithNotSameNameInTree() throws Exception {
+		TestProject tp = new TestProject();
 		TestSuite testSuite = new TestSuite();
+		tp.addChild(testSuite);
 		testSuite.setName("FooBar");
 		TestCase testCase = new TestCase();
 		testCase.setName("HelloWorld");

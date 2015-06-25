@@ -87,8 +87,7 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			teamChangeState = getTeamService(testStructure).approve(testStructure, translate,
-					approveProjectPage.getSvnComment());
+			teamChangeState = getTeamService().approve(testStructure, translate, approveProjectPage.getSvnComment());
 		} catch (final SystemException e) {
 			Display.getDefault().syncExec(new Runnable() {
 

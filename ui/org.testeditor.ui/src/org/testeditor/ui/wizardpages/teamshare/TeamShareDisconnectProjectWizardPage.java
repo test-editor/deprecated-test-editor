@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -64,7 +64,7 @@ public class TeamShareDisconnectProjectWizardPage extends TeamShareWizardPage {
 	 *            Team-Sharing-Configuration.
 	 */
 	@Override
-	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
+	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationServicePlugIn configurationService) {
 	}
 
 	/**

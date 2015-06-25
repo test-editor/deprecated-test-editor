@@ -2,8 +2,8 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="testStructureServiceComponent">
    <implementation class="org.testeditor.fitnesse.TestStructureServiceImpl"/>
    <service>
-      <provide interface="org.testeditor.core.services.interfaces.TestStructureService"/>
+      <provide interface="org.testeditor.core.services.plugins.TestStructureServicePlugIn"/>
       <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
-   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.interfaces.TeamShareService" name="TeamShareService" policy="dynamic" unbind="unBind"/>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TeamShareServicePlugIn" name="TeamShareService" policy="dynamic" unbind="unBind"/>
 </scr:component>
