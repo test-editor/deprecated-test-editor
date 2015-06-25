@@ -73,7 +73,7 @@ public class RunTestHandler {
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
 		return canExecuteTestExplorerHandlerRules.canExecuteOnlyOneElementRule(selection)
 				&& !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarioRule(selection)
-				&& (((TestStructure) selection.getFirstElement()).isExecutableTestStructure());
+				&& ((TestStructure) selection.getFirstElement()).isExecutableTestStructure();
 	}
 
 	/**
@@ -127,8 +127,9 @@ public class RunTestHandler {
 	 * 
 	 * @param testStructure
 	 *            the TestStructure of the Item in the TreeViewer to refresh
-	 * @param testExplorer
-	 *            the TestExplorer with the tree
+	 * @param eventBroker
+	 *            used to inform the clients about changed state of
+	 *            teststructures.
 	 */
 	private void refreshTestStructureInTree(TestStructure testStructure, IEventBroker eventBroker) {
 		if (testStructure instanceof TestSuite) {
