@@ -133,7 +133,7 @@ public class NewTestStructureHandlerTest {
 		TestProject project = new TestProject();
 		project.setTestProjectConfig(new TestProjectConfig());
 		list.add(project);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 	}
 
@@ -151,7 +151,7 @@ public class NewTestStructureHandlerTest {
 		TestSuite suite = new TestSuite();
 		suite.addChild(suite);
 		list.add(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 	}
 
@@ -169,7 +169,7 @@ public class NewTestStructureHandlerTest {
 		TestCase tc = new TestCase();
 		new TestSuite().addChild(tc);
 		list.add(tc);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertFalse(handler.canExecute(context));
 	}
 

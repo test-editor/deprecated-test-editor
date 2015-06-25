@@ -239,8 +239,10 @@ public abstract class AbstractRenameHandler {
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
 				CanExecuteTestExplorerHandlerRules.class, context);
-		return rules.canExecuteOnlyOneElementRule(explorer) && !rules.canExecuteOnProjectMainScenarioSuite(explorer)
-				&& rules.canExecuteOnUnusedScenario(explorer) && rules.canExecuteOnNonScenarioSuiteParents(explorer);
+		return rules.canExecuteOnlyOneElementRule(explorer.getSelection())
+				&& !rules.canExecuteOnProjectMainScenarioSuite(explorer.getSelection())
+				&& rules.canExecuteOnUnusedScenario(explorer.getSelection())
+				&& rules.canExecuteOnNonScenarioSuiteParents(explorer.getSelection());
 	}
 
 	/**

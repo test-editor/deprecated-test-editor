@@ -17,9 +17,9 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Shell;
@@ -29,7 +29,6 @@ import org.testeditor.core.model.teststructure.TestType;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.dialogs.InfoDialog;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -43,22 +42,21 @@ public class OpenSourceCodeHandler {
 	 * 
 	 * @param shell
 	 *            The active shell
-	 * @param partService
+	 * @param context
 	 *            of the active window.
-	 * @param testStructureService
+	 * @param testStructureContentService
 	 *            used to read the Sourcecode of a teststructure.
 	 * @param translation
 	 *            to translate error messages
 	 * 
 	 */
 	@Execute
-	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell, EPartService partService,
+	public void execute(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell, IEclipseContext context,
 			TestStructureContentService testStructureContentService, TestEditorTranslationService translation) {
-		TestExplorer testExplorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW)
-				.getObject();
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 
-		// Receive selected tree path via TreeViewer object
-		TreePath[] treePaths = ((TreeSelection) testExplorer.getTreeViewer().getSelection()).getPaths();
+		TreePath[] treePaths = ((TreeSelection) selection).getPaths();
 		if (treePaths.length == 0) {
 			return; // Handler depends on a selected path
 		}
@@ -100,9 +98,10 @@ public class OpenSourceCodeHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		return rules.canExecuteOnlyOneElementRule(testExplorer) && rules.canExecuteOnNoneRootRule(testExplorer);
+		return rules.canExecuteOnlyOneElementRule(selection) && rules.canExecuteOnNoneRootRule(selection);
 	}
 
 }

@@ -60,7 +60,7 @@ public class CloneTestStructureHandlerTest {
 		IEclipseContext context = EclipseContextFactory.create();
 		List<TestStructure> list = new ArrayList<TestStructure>();
 		list.add(new TestCase());
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 		list.clear();
 		list.add(new TestProject());
@@ -90,7 +90,7 @@ public class CloneTestStructureHandlerTest {
 		TestCase testCase = new TestCase();
 		tp.addChild(testCase);
 		list.add(testCase);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		context.set(TestStructureContentService.class, new TestStructureContentServiceAdapter());
 		context.set(TestProjectService.class, new TestProjectServiceAdapter());
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService());

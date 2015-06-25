@@ -28,6 +28,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -124,14 +125,14 @@ public class SaveHandler {
 	 * 
 	 */
 	private void refreshNodeIcon(IEclipseContext context) {
-		TestStructure selected = (TestStructure) context.get(TestEditorConstants.SELECTED_TEST_COMPONENT);
-		// only, if we have a selection
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
+		TestStructure selected = (TestStructure) selection.getFirstElement();
 		if (selected != null) {
 			// refresh the icon depends on test result
 			testProtocolService.remove(selected);
-			context.get(IEventBroker.class)
-					.send(TestEditorCoreEventConstants.TEAM_STATE_LOADED, selected.getFullName());
-			// testExplorer.refreshTreeViewerOnTestStrucutre(selected);
+			context.get(IEventBroker.class).send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED,
+					selected.getFullName());
 		}
 	}
 

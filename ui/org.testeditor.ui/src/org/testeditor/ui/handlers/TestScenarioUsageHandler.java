@@ -27,18 +27,17 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * 
  * this class shows the usage of the selected scenario.
  * 
- * @author llipinski
  */
 public class TestScenarioUsageHandler {
 
@@ -64,11 +63,10 @@ public class TestScenarioUsageHandler {
 		if (ignoreCanExecute != null && Boolean.parseBoolean(ignoreCanExecute)) {
 			return true;
 		}
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		return handlerRules.canExecuteOnTestScenarioRule(testExplorer);
-
-		// return false;
+		return handlerRules.canExecuteOnTestScenarioRule(selection);
 	}
 
 	/**
@@ -87,9 +85,10 @@ public class TestScenarioUsageHandler {
 
 		this.translationService = translationService;
 		// get at first the selected scenarios
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		// gets the usage.
-		final Iterator<?> iterator = testExplorer.getSelection().iterator();
+		final Iterator<?> iterator = selection.iterator();
 		scenariosUsedList = new ArrayList<TestScenarioUseage>();
 		ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 
@@ -198,7 +197,6 @@ public class TestScenarioUsageHandler {
 	 * 
 	 * local class a a container for the usage-results.
 	 * 
-	 * @author llipinski
 	 */
 	private static class TestScenarioUseage {
 		private String scenarioName;

@@ -117,14 +117,14 @@ public class DeleteTestHandlerTest {
 		testSuite.addChild(testCase);
 		list.add(testCase);
 		new TestProject().addChild(testSuite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(testHandler.canExecute(context));
 		list = new ArrayList<TestStructure>();
 		TestSuite suite = new TestSuite();
 		suite.addChild(testSuite);
 		list.add(suite);
 		new TestProject().addChild(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(testHandler.canExecute(context));
 	}
 
@@ -146,7 +146,7 @@ public class DeleteTestHandlerTest {
 		TestProject testProject = new TestProject();
 		testProject.addChild(suite);
 		list.add(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(testHandler.canExecute(context));
 	}
 

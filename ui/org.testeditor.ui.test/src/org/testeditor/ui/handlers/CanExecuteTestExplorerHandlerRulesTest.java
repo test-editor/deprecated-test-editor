@@ -22,6 +22,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
@@ -59,9 +60,12 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnlyOneElementRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnlyOneElementRule(getTestExplorerMock(getTreeViewerMockEmptyMock())));
-		assertTrue(rules.canExecuteOnlyOneElementRule(getTestExplorerMock(getTreeViewerMockOneSelectionMock())));
-		assertFalse(rules.canExecuteOnlyOneElementRule(getTestExplorerMock(getTreeViewerMockManySelectionMock())));
+		assertFalse(rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockEmptyMock()
+				.getSelection()));
+		assertTrue(rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockOneSelectionMock()
+				.getSelection()));
+		assertFalse(rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockManySelectionMock()
+				.getSelection()));
 	}
 
 	/**
@@ -73,9 +77,12 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnOneOrManyElementRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnOneOrManyElementRule(getTestExplorerMock(getTreeViewerMockEmptyMock())));
-		assertTrue(rules.canExecuteOnOneOrManyElementRule(getTestExplorerMock(getTreeViewerMockOneSelectionMock())));
-		assertTrue(rules.canExecuteOnOneOrManyElementRule(getTestExplorerMock(getTreeViewerMockManySelectionMock())));
+		assertFalse(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockEmptyMock()
+				.getSelection()));
+		assertTrue(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockOneSelectionMock()
+				.getSelection()));
+		assertTrue(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockManySelectionMock()
+				.getSelection()));
 	}
 
 	/**
@@ -87,8 +94,9 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnNoneRootRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnNoneRootRule(getTestExplorerMock(getTreeViewerMockRoot())));
-		assertTrue(rules.canExecuteOnTestSuiteRule(getTestExplorerMock(getTreeViewerMockWithTestSuite())));
+		assertFalse(rules.canExecuteOnNoneRootRule((IStructuredSelection) getTreeViewerMockRoot().getSelection()));
+		assertTrue(rules.canExecuteOnTestSuiteRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
+				.getSelection()));
 	}
 
 	/**
@@ -100,7 +108,8 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnTestSuiteRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertTrue(rules.canExecuteOnTestSuiteRule(getTestExplorerMock(getTreeViewerMockWithTestSuite())));
+		assertTrue(rules.canExecuteOnTestSuiteRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
+				.getSelection()));
 	}
 
 	/**
@@ -112,8 +121,9 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnTestProjectRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnTestProjectRule(getTestExplorerMock(getTreeViewerMockWithTestSuite())));
-		assertTrue(rules.canExecuteOnTestProjectRule(getTestExplorerMock(getTreeViewerMockRoot())));
+		assertFalse(rules.canExecuteOnTestProjectRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
+				.getSelection()));
+		assertTrue(rules.canExecuteOnTestProjectRule((IStructuredSelection) getTreeViewerMockRoot().getSelection()));
 	}
 
 	/**
@@ -132,25 +142,28 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 		context.set(TestScenarioService.class, getTestScenarioServiceMock());
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
 				CanExecuteTestExplorerHandlerRules.class, context);
-		assertTrue("Expecting True for Non TestScenario Objects.",
-				rules.canExecuteOnUnusedScenario(getTestExplorerMock(getTreeViewerMockWithTestSuite())));
+		assertTrue(
+				"Expecting True for Non TestScenario Objects.",
+				rules.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
 		assertTrue(
 				"Expecting true for unused TestScenario Objects.",
-				rules.canExecuteOnUnusedScenario(getTestExplorerMock(getTreeViewerMockWithTestScenrarioMock(new TestScenario() {
-					@Override
-					public String getName() {
+				rules.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestScenrarioMock(
+						new TestScenario() {
+							@Override
+							public String getName() {
 
-						return "notInUses";
-					}
-				}))));
+								return "notInUses";
+							}
+						}).getSelection()));
 		assertFalse(
 				"Expecting False for used TestScenario Objects.",
-				rules.canExecuteOnUnusedScenario(getTestExplorerMock(getTreeViewerMockWithTestScenrarioMock(new TestScenario() {
-					@Override
-					public String getName() {
-						return "used";
-					}
-				}))));
+				rules.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestScenrarioMock(
+						new TestScenario() {
+							@Override
+							public String getName() {
+								return "used";
+							}
+						}).getSelection()));
 	}
 
 	/**
@@ -160,12 +173,14 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteTeamShareApproveOrUpdate() {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		TestExplorer explorerMock = getTestExplorerMock(getTreeViewerMockWithTestSuite());
-		assertFalse(rules.canExecuteOnOneOrManyElementRule(explorerMock)
-				&& rules.canExecuteTeamShareApproveOrUpdate(explorerMock));
-		TestExplorer explorerMockSelected = getTestExplorerMock(getTreeViewerMockWithFilledIterator());
-		assertTrue(rules.canExecuteOnOneOrManyElementRule(explorerMockSelected)
-				&& rules.canExecuteTeamShareApproveOrUpdate(explorerMockSelected));
+		assertFalse(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
+				.getSelection())
+				&& rules.canExecuteTeamShareApproveOrUpdate((IStructuredSelection) getTreeViewerMockWithTestSuite()
+						.getSelection()));
+		assertTrue(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockWithFilledIterator()
+				.getSelection())
+				&& rules.canExecuteTeamShareApproveOrUpdate((IStructuredSelection) getTreeViewerMockWithFilledIterator()
+						.getSelection()));
 
 	}
 
@@ -176,10 +191,11 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteTeamShareApproveOrUpdateSelectionNotUnderSVN() {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		TestExplorer explorerMock = getTestExplorerMock(getTreeViewerMockWithFilledIteratorTestProjectNotUnderSVN());
-		assertTrue(rules.canExecuteOnOneOrManyElementRule(explorerMock));
-		assertFalse(rules.canExecuteOnOneOrManyElementRule(explorerMock)
-				&& rules.canExecuteTeamShareApproveOrUpdate(explorerMock));
+		IStructuredSelection selectionMock = (IStructuredSelection) getTreeViewerMockWithFilledIteratorTestProjectNotUnderSVN()
+				.getSelection();
+		assertTrue(rules.canExecuteOnOneOrManyElementRule(selectionMock));
+		assertFalse(rules.canExecuteOnOneOrManyElementRule(selectionMock)
+				&& rules.canExecuteTeamShareApproveOrUpdate(selectionMock));
 	}
 
 	/**
@@ -189,10 +205,11 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteTeamShareApproveOrUpdateSelectionUnderAndNotUnderSVN() {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		TestExplorer explorerMock = getTestExplorerMock(getTreeViewerMockWithFilledIteratorTestProjectUnderAndNotUnderSVN());
-		assertTrue(rules.canExecuteOnOneOrManyElementRule(explorerMock));
-		assertFalse(rules.canExecuteOnOneOrManyElementRule(explorerMock)
-				&& rules.canExecuteTeamShareApproveOrUpdate(explorerMock));
+		IStructuredSelection selectionMock = (IStructuredSelection) getTreeViewerMockWithFilledIteratorTestProjectUnderAndNotUnderSVN()
+				.getSelection();
+		assertTrue(rules.canExecuteOnOneOrManyElementRule(selectionMock));
+		assertFalse(rules.canExecuteOnOneOrManyElementRule(selectionMock)
+				&& rules.canExecuteTeamShareApproveOrUpdate(selectionMock));
 	}
 
 	/**
@@ -201,10 +218,11 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnTestFlowRule() {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertTrue(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockEmptyMock())));
-		assertFalse(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockRoot())));
-		assertFalse(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockWithTestSuite())));
-		assertTrue(rules.canExecuteOnTestFlowRule(getTestExplorerMock(getTreeViewerMockScenario())));
+		assertTrue(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockEmptyMock().getSelection()));
+		assertFalse(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockRoot().getSelection()));
+		assertFalse(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
+				.getSelection()));
+		assertTrue(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockScenario().getSelection()));
 	}
 
 	/**
@@ -215,9 +233,9 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	public void testCanExecuteOnTestScenarioRule() {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
 		TestExplorer explorerMockSC = getTestExplorerMock(getTreeViewerMockScenario());
-		assertTrue(rules.canExecuteOnTestScenarioRule(explorerMockSC));
+		assertTrue(rules.canExecuteOnTestScenarioRule(explorerMockSC.getSelection()));
 		TestExplorer explorerMockNoSC = getTestExplorerMock(getTreeViewerMockWithFilledIteratorTestProjectUnderAndNotUnderSVN());
-		assertFalse(rules.canExecuteOnTestScenarioRule(explorerMockNoSC));
+		assertFalse(rules.canExecuteOnTestScenarioRule(explorerMockNoSC.getSelection()));
 
 	}
 

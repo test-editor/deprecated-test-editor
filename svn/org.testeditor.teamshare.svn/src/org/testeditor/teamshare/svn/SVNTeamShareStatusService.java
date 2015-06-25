@@ -94,7 +94,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 					updateTeamStatusInChilds(testProject, statusFromProjectFiles);
 					LOGGER.info("Loaded SVN State for files in: " + testProject.getName());
 					if (eventBroker != null) {
-						eventBroker.post(TestEditorCoreEventConstants.TEAM_STATE_LOADED, testProject);
+						eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED, testProject);
 					}
 				}
 
