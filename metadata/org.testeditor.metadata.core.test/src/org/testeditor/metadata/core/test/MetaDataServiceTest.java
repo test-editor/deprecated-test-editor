@@ -15,10 +15,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -46,14 +48,14 @@ public class MetaDataServiceTest {
 	public void setup() throws Exception {
 		projects.add("testProject1");
 		projects.add("testProject2");
-		// projects.add("testProject3");
 	}
 
 	/**
 	 * Temporary test to test the setup of the system.
 	 */
 	@Test
-	public void testTestSetip() {
+	@Ignore
+	public void testTestSetup() {
 		TestProject project = createProject("testProject1");
 		assertNotNull(project);
 	}
@@ -126,6 +128,7 @@ public class MetaDataServiceTest {
 	@Test
 	@Ignore
 	public void testReadMetaDataForEmptyProject() {
+		projects.add("testProject3");
 		TestProject project = createProject("testProject3");
 		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
 
@@ -188,6 +191,7 @@ public class MetaDataServiceTest {
 		assertTrue("Testcase not setup. Entries " + getNewServiceObject().getMetaDataTags(testCase).size()
 				+ " instead of 3", getNewServiceObject().getMetaDataTags(testCase).size() == 3);
 
+		createFolderForTestCase(project.getName(), "testCase4");
 		getNewServiceObject().rename(testCase, "testCase4");
 
 		assertTrue("Testcase not renamed. Old Entry has still "
@@ -262,8 +266,8 @@ public class MetaDataServiceTest {
 	public void testStoreAndReadMetaDataList() {
 
 		TestProject project = createProject("testProject1");
-		TestCase testCase = new TestCase();
-		testCase.setName("testCase1");
+		TestCase testCase = createTestCase("testProject1", "testCase1");
+
 		List<MetaDataTag> metaDataTagList = getMetTagList(testCase, project, 2);
 
 		getNewServiceObject().storeMetaDataTags(metaDataTagList, testCase);
@@ -285,10 +289,26 @@ public class MetaDataServiceTest {
 	 * @param project
 	 */
 	private void setupMetaDatatestCaseStore(TestProject project) {
+
 		for (int index = 1; index <= 3; index++) {
-			TestCase testCase = new TestCase();
-			testCase.setName("testCase" + index);
+			TestCase testCase = createTestCase(project.getName(), "testCase" + index);
 			getNewServiceObject().storeMetaDataTags(getMetTagList(testCase, project, index), testCase);
+		}
+	}
+
+	private TestCase createTestCase(String projectName, String name) {
+		TestCase testCase = new TestCase();
+		testCase.setName(name);
+		createFolderForTestCase(projectName, name);
+		return testCase;
+	}
+
+	private void createFolderForTestCase(String projectName, String testCaseName) {
+		String rootPath = getProjectPath(projectName) + File.separator + "FitNesseRoot";
+		rootPath += File.separator + projectName;
+		String testCaseRoot = rootPath + File.separator + testCaseName;
+		if (!(new File(testCaseRoot)).mkdir()) {
+			throw new RuntimeException("could not create dir " + testCaseRoot);
 		}
 	}
 
@@ -324,7 +344,7 @@ public class MetaDataServiceTest {
 		URL url = this.getClass().getClassLoader().getResource(projectName);
 		assertTrue("Project " + projectName + " not found in classpath of test", url != null);
 
-		return url.toString();
+		return url.getFile();
 
 	}
 
@@ -336,8 +356,16 @@ public class MetaDataServiceTest {
 	 */
 	private TestProject createProject(String projectName) {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
-
 		testProjectConfig.setProjectPath(getProjectPath(projectName));
+
+		String rootPath = getProjectPath(projectName) + File.separator + "FitNesseRoot";
+		if (!(new File(rootPath)).mkdir()) {
+			throw new RuntimeException("could not create dir " + rootPath);
+		}
+		rootPath += File.separator + projectName;
+		if (!(new File(rootPath)).mkdir()) {
+			throw new RuntimeException("could not create dir " + rootPath);
+		}
 
 		TestProject project = new TestProject();
 		project.setName(projectName);
@@ -358,14 +386,14 @@ public class MetaDataServiceTest {
 
 	/**
 	 * removes all Files containing testprojectdata after the test.
+	 * 
+	 * @throws IOException
 	 */
 	@After
-	public void removeCreatedMetaDataFiles() {
+	public void removeCreatedMetaDataFiles() throws IOException {
 		for (String project : projects) {
-			File file = new File(getProjectPath(project) + File.separator + "MetaData.xml");
-			if (file.exists()) {
-				file.delete();
-			}
+			File dir = new File(getProjectPath(project) + File.separator + "FitNesseRoot");
+			FileUtils.deleteDirectory(dir);
 		}
 	}
 
