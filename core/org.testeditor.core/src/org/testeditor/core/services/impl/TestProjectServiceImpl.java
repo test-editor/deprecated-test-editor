@@ -500,7 +500,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 				TeamShareConfigurationServicePlugIn teamCfgService = plugInservice
 						.getTeamShareConfigurationServiceFor(properties
 								.getProperty(TestEditorPlugInService.TEAMSHARE_ID));
-				testProjectConfig.setTeamShareConfig(teamCfgService.createTeamShareConfigFrom(properties));
+				if (teamCfgService != null) {
+					testProjectConfig.setTeamShareConfig(teamCfgService.createTeamShareConfigFrom(properties));
+				}
 			}
 		}
 
