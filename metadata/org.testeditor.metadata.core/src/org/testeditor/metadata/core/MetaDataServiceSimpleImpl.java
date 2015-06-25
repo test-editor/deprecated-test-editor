@@ -47,6 +47,36 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 	}
 
 	@Override
+	public void store(TestProject project, String testStructureName) {
+
+		String fileName = "";
+		String projectPath = project.getTestProjectConfig().getProjectPath();
+		try {
+
+			String testCaseName = testStructureName;
+			String testCasePath = "FitNesseRoot" + File.separator + testCaseName.replace(".", File.separator);
+			fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
+			File xmlFile = new File(fileName);
+			List<MetaDataTag> metaDataTags = getMetaDataStore(project.getName()).get(testCaseName);
+			if (metaDataTags != null && metaDataTags.size() > 0) {
+				Writer writer = new FileWriter(xmlFile);
+				List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
+				metaDataStoreObjects.add(new MetaDataStoreObject(testCaseName, metaDataTags));
+				xStream.toXML(metaDataStoreObjects, writer);
+				writer.close();
+			} else {
+				if (xmlFile.exists()) {
+					if (!xmlFile.delete()) {
+						throw new RuntimeException("could not delete MetaDataFile " + fileName);
+					}
+				}
+			}
+
+		} catch (IOException e) {
+			throw new RuntimeException("the metadata.xml " + fileName + " could not be written. Reason: " + e, e);
+		}
+	}
+
 	public void store(TestProject testProject) {
 
 		String rootPath = testProject.getTestProjectConfig().getProjectPath();
@@ -55,24 +85,24 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 
 	protected void store(String projectName, String projectPath) {
 
-		Writer writer;
-
-		String fileName = projectPath + File.separator + META_DATA_XML;
+		String fileName = "";
 		try {
-			writer = new FileWriter(projectPath + File.separator + META_DATA_XML);
 			List<String> testCases = new ArrayList<String>();
 			testCases.addAll(getMetaDataStore(projectName).keySet());
 			Collections.sort(testCases);
 
-			List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
-
 			for (String testCase : testCases) {
+				String testCasePath = "FitNesseRoot" + File.separator + testCase.replace(".", File.separator);
+				fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
+				File xmlFile = new File(fileName);
+				Writer writer = new FileWriter(xmlFile);
 				List<MetaDataTag> metaDataTags = getMetaDataStore(projectName).get(testCase);
+				List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
 				metaDataStoreObjects.add(new MetaDataStoreObject(testCase, metaDataTags));
+				xStream.toXML(metaDataStoreObjects, writer);
+				writer.close();
 			}
 
-			xStream.toXML(metaDataStoreObjects, writer);
-			writer.close();
 		} catch (IOException e) {
 			throw new RuntimeException("the metadata.xml " + fileName + " could not be written. Reason: " + e, e);
 		}
@@ -112,30 +142,45 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 			if (key.indexOf('.') != -1) {
 				String key1 = key.substring(0, key.indexOf('.'));
 				String key2 = key.substring(key.indexOf('.') + 1);
-				MetaDataValue metaDataValue = new MetaDataValue(getMetaDataMap(projectName).get(key1), key2,
-						(String) prop.get(key));
-				getAllMetaDataValues(projectName).put(metaDataValue.getGlobalKey(), metaDataValue);
+				if (getMetaDataMap(projectName).containsKey(key1)) {
+					MetaDataValue metaDataValue = new MetaDataValue(getMetaDataMap(projectName).get(key1), key2,
+							(String) prop.get(key));
+					getAllMetaDataValues(projectName).put(metaDataValue.getGlobalKey(), metaDataValue);
+				}
 			}
 
 		}
-		String xmlFileName = projectPath + File.separator + META_DATA_XML;
-		File xmlTagFile = new File(xmlFileName);
 
 		getMetaDataStore(projectName).clear();
-		if (xmlTagFile.exists()) {
-			Object fromXML = xStream.fromXML(xmlTagFile);
-			if (fromXML instanceof List<?>) {
-				List<MetaDataStoreObject> metaDataStoreObjects = (List<MetaDataStoreObject>) fromXML;
-				for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
-					getMetaDataStore(projectName).put(metaDataStoreObject.getTestCase(),
-							metaDataStoreObject.getMetaDataTags());
+
+		String projectRootPath = projectPath + File.separator + "FitNesseRoot" + File.separator + projectName;
+		File projectRoot = new File(projectRootPath);
+		readMetaDataForProject(projectName, projectRoot);
+
+	}
+
+	private void readMetaDataForProject(String projectName, File directory) {
+
+		File[] listOfFiles = directory.listFiles();
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile() && listOfFiles[i].getName().equals(META_DATA_XML)) {
+				String xmlTagFile = listOfFiles[i].getAbsolutePath();
+				Object fromXML = xStream.fromXML(new File(xmlTagFile));
+				if (fromXML instanceof List<?>) {
+					List<MetaDataStoreObject> metaDataStoreObjects = (List<MetaDataStoreObject>) fromXML;
+					for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
+						getMetaDataStore(projectName).put(metaDataStoreObject.getTestCase(),
+								metaDataStoreObject.getMetaDataTags());
+					}
+				} else {
+					throw new RuntimeException("illegal class of type " + fromXML.getClass().getName() + " found in "
+							+ listOfFiles[i].getAbsolutePath());
 				}
-			} else {
-				throw new RuntimeException("illegal class of type " + fromXML.getClass().getName() + " found in "
-						+ xmlFileName);
+
+			} else if (listOfFiles[i].isDirectory()) {
+				readMetaDataForProject(projectName, listOfFiles[i]);
 			}
 		}
-
 	}
 
 	static private class MetaDataStoreObject {
@@ -156,4 +201,5 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		}
 
 	}
+
 }
