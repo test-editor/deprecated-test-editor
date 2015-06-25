@@ -16,7 +16,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
-import org.testeditor.ui.handlers.OpenTestStructureHandler;
 
 /**
  * 
@@ -26,6 +25,7 @@ import org.testeditor.ui.handlers.OpenTestStructureHandler;
 
 public final class TestEditorFontConstants {
 
+	private static Logger logger = Logger.getLogger(TestEditorFontConstants.class);
 	public static final Font FONT_NORMAL = getFont(SWT.NORMAL);
 	public static final Font FONT_UNDERLINE = getFont(SWT.NORMAL | SWT.UNDERLINE_SINGLE);
 	public static final Font FONT_ITALIC = getFont(SWT.ITALIC);
@@ -66,7 +66,6 @@ public final class TestEditorFontConstants {
 				return new Font(getDisplay(), systemFontName, systemFontHeight, style);
 			}
 		} catch (SWTException e) {
-			Logger logger = Logger.getLogger(OpenTestStructureHandler.class);
 			logger.error("Can't create shared font", e);
 		}
 		return null;
