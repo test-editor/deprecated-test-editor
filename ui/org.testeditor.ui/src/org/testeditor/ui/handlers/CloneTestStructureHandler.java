@@ -26,7 +26,6 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
@@ -42,7 +41,7 @@ public class CloneTestStructureHandler {
 	private static final Logger LOGGER = Logger.getLogger(CloneTestStructureHandler.class);
 
 	@Inject
-	private TestEditorPlugInService pluginService;
+	private TestStructureContentService testStructureContentService;
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -64,9 +63,6 @@ public class CloneTestStructureHandler {
 		if (result != null) {
 			try {
 				TestFlow testFlow = (TestFlow) result;
-				TestStructureContentService testStructureContentService = pluginService
-						.getTestStructureContentServiceFor(lastSelection.getRootElement().getTestProjectConfig()
-								.getTestServerID());
 				testStructureContentService.refreshTestCaseComponents(lastSelection);
 				testFlow.setTestComponents(lastSelection.getTestComponents());
 				testStructureContentService.saveTestStructureData(testFlow);

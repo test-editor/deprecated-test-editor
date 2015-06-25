@@ -66,7 +66,6 @@ import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
@@ -109,11 +108,10 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Inject
 	private static TestEditorTranslationService translationService;
 	@Inject
-	private TestEditorPlugInService testEditorPluginService;
-	@Inject
 	private ActionGroupService actionGroupService;
 	@Inject
 	private TestScenarioService testScenarioService;
+
 	@Inject
 	private TestStructureContentService testStructureContentService;
 	@Inject
@@ -174,8 +172,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Override
 	@Persist
 	public void save() {
-		TestStructureContentService testStructureContentService = testEditorPluginService
-				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
 			testStructureContentService.saveTestStructureData(testFlow);
 			if (getTestEditorTab() != null) {
@@ -1120,9 +1116,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			return;
 		}
 		try {
-			TestStructureContentService testStructureContentService = testEditorPluginService
-					.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig()
-							.getTestServerID());
 			List<TestComponent> testComponents = ((TestEditorTestFlowTransferContainer) transferObject)
 					.getStoredTestComponents(getTestFlow(), testStructureContentService);
 			if (testComponents.isEmpty()) {
@@ -1190,8 +1183,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				control.dispose();
 			}
 		}
-		TestStructureContentService testStructureContentService = testEditorPluginService
-				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
 			testStructureContentService.refreshTestCaseComponents(testFlow);
 		} catch (SystemException e) {

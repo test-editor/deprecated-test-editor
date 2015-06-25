@@ -38,14 +38,11 @@ public interface TeamShareService {
 	 *            to be disconnect.
 	 * @param translationService
 	 *            {@link TranslationService}
-	 * @param teamShareConfigurationService
-	 *            TeamShareConfigurationService
 	 * 
 	 * @throws SystemException
 	 *             if the sharing of the project fails
 	 */
-	void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException;
+	void disconnect(TestProject testProject, TranslationService translationService) throws SystemException;
 
 	/**
 	 * Shares a TestProject with a Team Share Backendsystem.
@@ -110,15 +107,6 @@ public interface TeamShareService {
 			TeamAuthentificationException;
 
 	/**
-	 * This id is used to identify the Team Share plug-in. It must the same ID
-	 * in the <code>TeamShareConfig</code> and in the
-	 * <code>TeamShareConfigurationService</code>
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
-
-	/**
 	 * deletes the {@link TestStructure} given by the parameter.
 	 * 
 	 * @param testStructure
@@ -145,10 +133,12 @@ public interface TeamShareService {
 
 	/**
 	 * 
+	 * @param testStructure
+	 *            used to work on with the team share service.
 	 * @param listener
 	 *            ProgressListener
 	 */
-	void addProgressListener(ProgressListener listener);
+	void addProgressListener(TestStructure testStructure, ProgressListener listener);
 
 	/**
 	 * adds a child to the parent in the local structure.

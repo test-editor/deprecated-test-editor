@@ -19,8 +19,8 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureService;
 
 /**
- * 
- * @author llipinski
+ * Filter used in treeView to hide elements with reserved names. Backend Servers
+ * can use this to hide technical elements.
  * 
  */
 public class ReservedNameFilter extends ViewerFilter {
@@ -30,7 +30,8 @@ public class ReservedNameFilter extends ViewerFilter {
 
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		return !(testStructureService.isReservedName(((TestStructure) element).getName()));
+		return !(testStructureService.isReservedName(((TestStructure) element).getRootElement(),
+				((TestStructure) element).getName()));
 	}
 
 }

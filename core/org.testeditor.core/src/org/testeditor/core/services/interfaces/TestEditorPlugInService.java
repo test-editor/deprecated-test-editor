@@ -12,11 +12,9 @@
 package org.testeditor.core.services.interfaces;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Properties;
 
-import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.model.team.TeamShareConfig;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 
 /**
  * 
@@ -29,26 +27,6 @@ public interface TestEditorPlugInService {
 	String TEAMSHARE_ID = "teamshare_plugin_id";
 
 	/**
-	 * Creates a <code>ProjectLibraryConfig</code> with the values of the
-	 * properties.
-	 * 
-	 * @param properties
-	 *            to be passed to the ProjectLibraryConfig
-	 * @return ProjectLibraryConfig
-	 */
-	ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties);
-
-	/**
-	 * Looks up the matching ConfigurationService and delegates the work to the
-	 * service. Stores the ID of the ProjectLibraryConfig in the properties.
-	 * 
-	 * @param projectLibraryConfig
-	 *            to be transformed in a map
-	 * @return ProjectLibraryConfig as Map to be stored as properties.
-	 */
-	Map<String, String> getAsProperties(ProjectLibraryConfig projectLibraryConfig);
-
-	/**
 	 * Library Plug-Ins has to implement the interface
 	 * <code>LibraryConfigurationService</code>. This method is used to get
 	 * access of all available plug-ins for libraries.
@@ -56,7 +34,7 @@ public interface TestEditorPlugInService {
 	 * @return a Collection of all registered
 	 *         <code>LibraryConfigurationService</code> Service objects.
 	 */
-	Collection<LibraryConfigurationService> getAllLibraryConfigurationServices();
+	Collection<LibraryConfigurationServicePlugIn> getAllLibraryConfigurationServices();
 
 	/**
 	 * Lookup the LibraryConfigurationService with for the id.
@@ -66,7 +44,7 @@ public interface TestEditorPlugInService {
 	 * 
 	 * @return LibraryConfigurationService that has the same id.
 	 */
-	LibraryConfigurationService getLibraryConfigurationServiceFor(String id);
+	LibraryConfigurationServicePlugIn getLibraryConfigurationServiceFor(String id);
 
 	/**
 	 * TeamShare Plug-Ins have to implement the interface
@@ -76,18 +54,7 @@ public interface TestEditorPlugInService {
 	 * @return a Collection of all registered
 	 *         <code>TeamShareConfigurationService</code> Service objects.
 	 */
-	Collection<TeamShareConfigurationService> getAllTeamShareConfigurationServices();
-
-	/**
-	 * This Method returns all registered implementations of the
-	 * <code>TeamShareService</code>. TeamShare Plug-Ins have to implement the
-	 * interface <code>TeamShareService</code> for synchronize a
-	 * <code>TestProject</code>.
-	 * 
-	 * @return a Collection of all registered <code>TeamShareService</code>
-	 *         Service objects.
-	 */
-	Collection<TeamShareService> getAllTeamShareServices();
+	Collection<TeamShareConfigurationServicePlugIn> getAllTeamShareConfigurationServices();
 
 	/**
 	 * Lookup the TeamShareConfigurationService with for the id.
@@ -97,65 +64,6 @@ public interface TestEditorPlugInService {
 	 * 
 	 * @return TeamShareConfigurationService that has the same id.
 	 */
-	TeamShareConfigurationService getTeamShareConfigurationServiceFor(String id);
-
-	/**
-	 * Lookup the TeamShareService with for the id.
-	 * 
-	 * @param id
-	 *            used to identify the teamshare plug-in.
-	 * 
-	 * @return TeamShareService that has the same id.
-	 */
-	TeamShareService getTeamShareServiceFor(String id);
-
-	/**
-	 * Looks the correct ConfigurationService up and delegates the work to the
-	 * service. Stores the ID of the Plug-In Config in the properties.
-	 * 
-	 * @param teamShareConfig
-	 *            to be transformed in a map
-	 * @return ProjectLibraryConfig as Map to be stored as properties.
-	 */
-	Map<String, String> getAsProperties(TeamShareConfig teamShareConfig);
-
-	/**
-	 * Creates a <code>teamShareConfig</code> with the values of the properties.
-	 * 
-	 * @param properties
-	 *            to be passed to the TeamShareConfig
-	 * @return TeamShareConfig
-	 */
-	TeamShareConfig createTeamShareConfigFrom(Properties properties);
-
-	/**
-	 * Lookup the TestStructureService with for the id.
-	 * 
-	 * @param testServerID
-	 *            used to identify the TestServer plug-in.
-	 * 
-	 * @return TestStructureService that has the same id.
-	 */
-	TestStructureService getTestStructureServiceFor(String testServerID);
-
-	/**
-	 * Lookup the TestStructureContentService with for the id.
-	 * 
-	 * @param testServerID
-	 *            used to identify the TestServer plug-in.
-	 * 
-	 * @return TestStructureContentService that has the same id.
-	 */
-	TestStructureContentService getTestStructureContentServiceFor(String testServerID);
-
-	/**
-	 * Lookup the TestScenarioService with for the id.
-	 * 
-	 * @param testServerID
-	 *            used to identify the TestServer plug-in.
-	 * 
-	 * @return TestScenarioService that has the same id.
-	 */
-	TestScenarioService getTestScenarioService(String testServerID);
+	TeamShareConfigurationServicePlugIn getTeamShareConfigurationServiceFor(String id);
 
 }

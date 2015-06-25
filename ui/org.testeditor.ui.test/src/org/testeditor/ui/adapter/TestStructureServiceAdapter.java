@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -80,7 +81,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public boolean isReservedName(String name) {
+	public boolean isReservedName(TestProject testProject, String name) {
 		return false;
 	}
 
@@ -90,11 +91,6 @@ public class TestStructureServiceAdapter implements TestStructureService {
 
 	@Override
 	public Runnable getTestProjectLazyLoader(TestCompositeStructure toBeLoadedLazy) {
-		return null;
-	}
-
-	@Override
-	public String getId() {
 		return null;
 	}
 

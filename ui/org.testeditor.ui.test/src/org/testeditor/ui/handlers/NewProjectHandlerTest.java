@@ -24,13 +24,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestEditorReservedNamesService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -69,7 +68,7 @@ public class NewProjectHandlerTest {
 		context = EclipseContextFactory.create();
 		context.set(TestStructureService.class, new TestStructureServiceAdapter());
 		context.set(TestProjectService.class, new TestProjectServiceAdapter());
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock());
+		context.set(TeamShareService.class, null);
 		context.set("activeShell", shell);
 		context.set(EPartService.class, null);
 		context.set(TestEditorTranslationService.class, null);

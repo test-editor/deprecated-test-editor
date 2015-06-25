@@ -108,6 +108,9 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 	 * @return Image
 	 */
 	private Image getTestCaseImage(TestCase testCase) {
+		if (testProtocolService == null) {
+			return null;
+		}
 		TestResult testResult = testProtocolService.get(testCase);
 		if (testCase.getTeamChangeType() == TeamChangeType.NONE) {
 			if (testResult != null) {
