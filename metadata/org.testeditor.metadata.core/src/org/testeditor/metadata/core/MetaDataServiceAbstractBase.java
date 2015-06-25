@@ -110,11 +110,11 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		}
 		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
 		getMetaDataStore(projectName).get(testStructure.getFullName()).addAll(metaDataTags);
-		store(testStructure.getRootElement());
+		store(testStructure.getRootElement(), testStructure.getFullName());
 
 	}
 
-	abstract public void store(TestProject testProject);
+	abstract protected void store(TestProject project, String testStructure);
 
 	@Override
 	public void rename(TestStructure testStructure, String newName) {
@@ -123,15 +123,16 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		String newFullName = testStructure.getParent().getFullName() + "." + newName;
 		getMetaDataStore(projectName).put(newFullName, getMetaDataTags(testStructure));
 		getMetaDataStore(projectName).remove(testStructure.getFullName());
-		store(testStructure.getRootElement());
+		store(testStructure.getRootElement(), newFullName);
+		store(testStructure.getRootElement(), testStructure.getFullName());
 	}
 
 	@Override
 	public void delete(TestStructure testStructure) {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
-		getMetaDataStore(projectName).remove(testStructure.getFullName());
-		store(testStructure.getRootElement());
+		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
+		store(testStructure.getRootElement(), testStructure.getFullName());
 	}
 
 	@Override
