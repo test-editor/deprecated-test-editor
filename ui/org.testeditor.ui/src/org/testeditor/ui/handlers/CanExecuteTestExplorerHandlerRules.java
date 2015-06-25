@@ -61,10 +61,8 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * @return true if one or more elements are selected.
 	 */
 	public boolean canExecuteOnOneOrManyElementRule(IStructuredSelection selection) {
-		if (selection != null) {
-			if (selection.size() > 0) {
-				return true;
-			}
+		if (selection != null && selection.size() > 0) {
+			return true;
 		}
 		return false;
 	}
