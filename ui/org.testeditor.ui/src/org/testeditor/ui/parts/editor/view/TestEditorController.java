@@ -119,6 +119,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Inject
 	@Optional
 	private ITestEditorTab iTestEditorTab;
+	private CTabItem metaDataTab;
 
 	private TestEditorActionInputController actionInputController;
 
@@ -353,7 +354,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		LOGGER.trace("Check if this editor should restore an older state.");
 		String testStructureFullName = mpart.getPersistedState().get(EDITOR_OBJECT_ID_FOR_RESTORE);
 
-		CTabItem metaDataTab = null;
+		metaDataTab = null;
 		if (getTestEditorTab() != null) {
 			metaDataTab = new CTabItem((CTabFolder) compositeForView, SWT.NONE);
 			metaDataTab.setText("Metadata");
@@ -405,8 +406,12 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		this.testFlow = testFlow;
 
-		if (getTestEditorTab() != null) {
-			getTestEditorTab().setTestFlow(testFlow);
+		if (getTestEditorTab() != null && metaDataTab != null) {
+			if (testFlow.isExecutableTestStructure()) {
+				getTestEditorTab().setTestFlow(testFlow);
+			} else {
+				metaDataTab.dispose();
+			}
 		}
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();

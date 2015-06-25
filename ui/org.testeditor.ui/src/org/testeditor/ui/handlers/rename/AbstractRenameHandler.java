@@ -27,7 +27,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window; 
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -149,8 +149,8 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
-		getMetaDataService().rename(selectedTestStructure, sbname);
 		testStructureService.rename(selectedTestStructure, sbname);
+		getMetaDataService().rename(selectedTestStructure, sbname);
 	}
 
 	/**
