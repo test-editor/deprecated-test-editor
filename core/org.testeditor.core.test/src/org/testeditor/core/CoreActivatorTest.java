@@ -17,8 +17,8 @@ import org.apache.log4j.LogManager;
 import org.junit.Test;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 import org.testeditor.core.util.TestProtocolService;
 
 /**

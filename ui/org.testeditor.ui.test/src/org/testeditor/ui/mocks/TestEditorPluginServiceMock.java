@@ -21,9 +21,9 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 

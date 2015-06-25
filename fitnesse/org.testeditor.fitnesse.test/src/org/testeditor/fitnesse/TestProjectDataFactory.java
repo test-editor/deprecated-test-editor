@@ -19,9 +19,9 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 

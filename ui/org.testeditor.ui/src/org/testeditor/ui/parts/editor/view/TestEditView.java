@@ -677,8 +677,8 @@ public class TestEditView extends TestEditorViewBasis {
 	private int createParameterTable(TestScenarioParameterTable testComp, int offsetLines, int line) {
 		if (!testComp.isSimpleScriptStatement()) {
 			TestEditorViewTableViewerClipboard tableViewer = new TestEditorViewTableViewerClipboard(getStyledText(),
-					testComp, getTranslationService(), getTestCaseController().getTestFlow(), getContext(),
-					getTestCaseController().getPart(), getEventBroker());
+					testComp, getTranslationService(), getTestCaseController().getTestFlow(), getTestCaseController()
+							.getPart(), getEventBroker());
 
 			addTableToTableStore(tableViewer, testComp);
 			int tableOffset = internalText.length();

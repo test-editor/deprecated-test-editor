@@ -27,8 +27,8 @@ import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 
