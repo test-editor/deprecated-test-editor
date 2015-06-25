@@ -41,8 +41,8 @@ import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -203,7 +203,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 *            used to get the Fields to display in the detail Composite for
 	 *            Team-Sharing-Configuration.
 	 */
-	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
+	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationServicePlugIn configurationService) {
 		List<FieldMappingExtension> fields = configurationService.getFieldMappingExtensions();
 		for (FieldMappingExtension field : fields) {
 			createTeamShareField(field, field.getIdConstant());
@@ -262,10 +262,10 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	 * sorted by name.
 	 */
 	protected void fillTeamShareTypeCombo() {
-		Collection<TeamShareConfigurationService> allTeamShareConfigurationServices = plugInService
+		Collection<TeamShareConfigurationServicePlugIn> allTeamShareConfigurationServices = plugInService
 				.getAllTeamShareConfigurationServices();
 		teamShareConfigPlugInNameIdMap = new HashMap<String, String>();
-		for (TeamShareConfigurationService teamShareConfigService : allTeamShareConfigurationServices) {
+		for (TeamShareConfigurationServicePlugIn teamShareConfigService : allTeamShareConfigurationServices) {
 			teamShareConfigPlugInNameIdMap.put(
 					teamShareConfigService.getTranslatedHumanReadablePlugInName(translationService),
 					teamShareConfigService.getId());
@@ -389,7 +389,8 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	private void actionAfterTeamShareComboModified() {
 		resetTeamShareDetailCompositeToBlank();
 		String scmId = teamShareConfigPlugInNameIdMap.get(teamShareTypeCombo.getText());
-		TeamShareConfigurationService configurationService = plugInService.getTeamShareConfigurationServiceFor(scmId);
+		TeamShareConfigurationServicePlugIn configurationService = plugInService
+				.getTeamShareConfigurationServiceFor(scmId);
 		if (getTestProjectConfig() != null) {
 			// create new TeamShareConfig only, if we actually switch from one
 			// to another scm type

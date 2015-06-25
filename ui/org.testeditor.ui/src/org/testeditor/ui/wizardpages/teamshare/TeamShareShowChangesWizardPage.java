@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -89,7 +89,7 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	 *            Team-Sharing-Configuration.
 	 */
 	@Override
-	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationService configurationService) {
+	protected void createTeamShareSpeceficDetailComposite(TeamShareConfigurationServicePlugIn configurationService) {
 	}
 
 	/**

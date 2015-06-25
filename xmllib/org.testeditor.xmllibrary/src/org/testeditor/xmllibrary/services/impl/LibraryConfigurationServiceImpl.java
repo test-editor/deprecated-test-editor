@@ -20,8 +20,8 @@ import java.util.Properties;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
 
 /**
@@ -30,7 +30,7 @@ import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
  * implementation of the <code>LibraryReaderService</code>.
  * 
  */
-public class LibraryConfigurationServiceImpl implements LibraryConfigurationService {
+public class LibraryConfigurationServiceImpl implements LibraryConfigurationServicePlugIn {
 
 	private static final String PATH_XML_ACTIONGROUP = "library.xmllibrary.actiongroup";
 	private static final String PATH_XML_TECHNICALBINDINGS = "library.xmllibrary.technicalbindings";

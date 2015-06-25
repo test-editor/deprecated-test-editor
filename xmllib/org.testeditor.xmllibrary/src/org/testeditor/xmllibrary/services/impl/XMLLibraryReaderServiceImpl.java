@@ -26,7 +26,7 @@ import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
-import org.testeditor.core.services.interfaces.LibraryReaderService;
+import org.testeditor.core.services.plugins.LibraryReaderServicePlugIn;
 import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.xmllibrary.domain.binding.TechnicalBindingTypes;
 import org.testeditor.xmllibrary.model.XMLProjectLibraryConfig;
@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
  * XML-Library.
  * 
  */
-public class XMLLibraryReaderServiceImpl implements LibraryReaderService {
+public class XMLLibraryReaderServiceImpl implements LibraryReaderServicePlugIn {
 
 	private static final Logger LOGGER = Logger.getLogger(XMLLibraryReaderServiceImpl.class);
 

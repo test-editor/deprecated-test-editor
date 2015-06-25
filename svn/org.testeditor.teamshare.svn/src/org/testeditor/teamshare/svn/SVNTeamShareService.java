@@ -35,9 +35,8 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -71,7 +70,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * Subversion implementation of the <code>TeamShareService</code>.
  * 
  */
-public class SVNTeamShareService implements TeamShareService, IContextFunction {
+public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunction {
 
 	// SVNException: svn: E175002: connection refused by the server
 	private static final int CONNECTION_REFUSED = 175002;
@@ -593,7 +592,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	 * (org.testeditor.core.services.interfaces.ProgressListener)
 	 */
 	@Override
-	public void addProgressListener(ProgressListener listener) {
+	public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
 		this.listener = listener;
 	}
 
@@ -661,8 +660,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	}
 
 	@Override
-	public void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
+	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
 		testProject.getTestProjectConfig().setTeamShareConfig(null);
 		deleteSvnMetaData(testProject);
 		List<TestStructure> childrenWithScenarios = testProject.getAllTestChildrenWithScenarios();

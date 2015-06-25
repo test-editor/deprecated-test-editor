@@ -44,10 +44,9 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
-import org.testeditor.core.services.interfaces.LibraryReaderService;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.plugins.LibraryReaderServicePlugIn;
 
 /**
  * Test the service implementation at {@link ActionGroupServiceImpl}.
@@ -84,7 +83,7 @@ public class ActionGroupServiceImplTest {
 	@BeforeClass
 	public static void initiliazeTest() throws Exception {
 		actionGroupService = new ActionGroupServiceImpl();
-		actionGroupService.bindLibraryReader(new LibraryReaderService() {
+		actionGroupService.bindLibraryReader(new LibraryReaderServicePlugIn() {
 
 			@Override
 			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
@@ -114,7 +113,6 @@ public class ActionGroupServiceImplTest {
 		testFlow = new TestCase();
 
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		TestEditorPlugInService service = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
 		Properties properties = new Properties();
 		properties.put(TestEditorPlugInService.LIBRARY_ID, "org.testeditor.xmllibrary");
 		properties.put(
@@ -126,7 +124,7 @@ public class ActionGroupServiceImplTest {
 				new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
 						.append(PATH_TECHNICAL_BINDINGS_XML).toString());
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);
-		ProjectLibraryConfig libraryConfig = service.createProjectLibraryConfigFrom(properties);
+		ProjectLibraryConfig libraryConfig = new TestProjectServiceImpl().createProjectLibraryConfigFrom(properties);
 		testProjectConfig.setProjectLibraryConfig(libraryConfig);
 		testProjectConfig.getLibraryLoadingStatus().setErrorLessLoaded(true);
 

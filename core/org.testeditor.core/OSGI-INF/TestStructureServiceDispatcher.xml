@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.testeditor.core.services.TestStructureServiceDispatcher">
+   <implementation class="org.testeditor.core.services.dispatcher.TestStructureServiceDispatcher"/>
+   <service>
+      <provide interface="org.testeditor.core.services.interfaces.TestStructureService"/>
+      <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
+   </service>
+   <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TestStructureServicePlugIn" name="TestStructureServicePlugIn" policy="dynamic" unbind="unBind"/>
+</scr:component>
