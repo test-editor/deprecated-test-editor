@@ -19,6 +19,10 @@ import org.testeditor.core.model.teststructure.TestStructure;
 /**
  * Service to retrieve the state of a team shared test structures.
  *
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * TeamShareStatusServicePlugIn.
+ *
  */
 public interface TeamShareStatusService {
 
@@ -41,10 +45,4 @@ public interface TeamShareStatusService {
 	 */
 	List<String> getModifiedFilesFromTestStructure(TestStructure testStructure);
 
-	/**
-	 * checks if the thread is not anymore alive.
-	 * 
-	 * @return true when the thread is not Alive.
-	 */
-	boolean isFinished();
 }
