@@ -26,7 +26,7 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestServerService;
+import org.testeditor.core.services.plugins.TestServerServicePlugIn;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class FitnesseServerControllerTest {
 	@Test
 	public void testGetPathToFitnessejar() throws Exception {
 		FitnesseServerController serverControler = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerService.class);
+				.getService(TestServerServicePlugIn.class);
 		String path = serverControler.getPathToFitnesseJar();
 		assertNotNull(path);
 		assertTrue("File must exist.", new File(path).exists());
@@ -122,7 +122,7 @@ public class FitnesseServerControllerTest {
 	@Test
 	public void testCreateProjectAndRunWithProejctPath() throws Exception {
 		FitnesseServerController serverControler = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerService.class);
+				.getService(TestServerServicePlugIn.class);
 
 		// FitNesse Projekt 4
 		TestProject tp4 = createTestProjectAndStartFitNesseServerWithProjectPath(serverControler, Platform
@@ -144,7 +144,7 @@ public class FitnesseServerControllerTest {
 	public void testStartStopMultipleFitNesseServer() throws Exception {
 
 		FitnesseServerController serverControler = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerService.class);
+				.getService(TestServerServicePlugIn.class);
 
 		// FitNesse Projekt 1
 		TestProject tp1 = createTestProjectAndStartFitNesseServer(serverControler, "");
@@ -184,7 +184,7 @@ public class FitnesseServerControllerTest {
 	public void restartServer() throws Exception {
 
 		FitnesseServerController serverControler = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerService.class);
+				.getService(TestServerServicePlugIn.class);
 
 		// create new Project
 		TestProject tp = new TestProject();
@@ -229,7 +229,7 @@ public class FitnesseServerControllerTest {
 	@Test
 	public void testGetFreePort() {
 		FitnesseServerController serverController = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerService.class);
+				.getService(TestServerServicePlugIn.class);
 		int freePort = serverController.getFreePort();
 		assertTrue(freePort > 0);
 	}
@@ -247,7 +247,7 @@ public class FitnesseServerControllerTest {
 	@Test
 	public void testStartStopFitnesseOnFreePort() throws IOException, URISyntaxException, SystemException {
 		FitnesseServerController serverController = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerService.class);
+				.getService(TestServerServicePlugIn.class);
 		int freePort = serverController.getFreePort();
 		assertTrue(freePort > 0);
 
