@@ -71,7 +71,6 @@ import org.testeditor.ui.parts.inputparts.descriptioninput.TestEditorDescription
 /**
  * Description Area is the UI of a TestCase Description used in the Testeditor.
  * 
- * @author Lothar Lipinski
  * 
  * 
  */
@@ -1163,6 +1162,11 @@ public class TestEditView extends TestEditorViewBasis {
 	 */
 	PopupDialog getActionGroupPopupDialog() {
 		return popupDialogAction;
+	}
+
+	@Override
+	protected String getId() {
+		return TestEditorTestCaseController.ID;
 	}
 
 }
