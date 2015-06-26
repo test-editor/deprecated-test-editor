@@ -46,4 +46,9 @@ public class TestEditorScenarioView extends TestEditView {
 		super.preRefreshStyledText();
 		scanForScenarioParameters();
 	}
+
+	@Override
+	protected String getId() {
+		return TestEditorTestScenarioController.ID;
+	}
 }
