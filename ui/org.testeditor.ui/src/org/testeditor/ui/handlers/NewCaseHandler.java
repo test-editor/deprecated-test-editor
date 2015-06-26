@@ -18,14 +18,12 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.NewTestCaseWizardPage;
-import org.testeditor.ui.wizards.NewTestStructureWizard;
 
 /**
  * NewSuiteHandler Handler is called for creating a new testcase.
@@ -79,11 +77,6 @@ public class NewCaseHandler extends NewTestStructureHandler {
 				CanExecuteTestExplorerHandlerRules.class, context);
 		return super.canExecute(context) && !handlerRules.canExecuteOnTestScenarienSuiteRule(selection)
 				&& !handlerRules.canExecuteOnDescendantFromTestScenarioSuite(selection);
-	}
-
-	@Override
-	protected Wizard getWizard(IEclipseContext context) {
-		return new NewTestStructureWizard(this);
 	}
 
 	@Override

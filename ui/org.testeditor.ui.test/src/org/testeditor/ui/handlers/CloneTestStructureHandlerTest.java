@@ -108,8 +108,7 @@ public class CloneTestStructureHandlerTest {
 					@Execute
 					@Override
 					public TestStructure execute(TestEditorTranslationService teTranslationService,
-							IWorkbench workbench, IEventBroker eventBroker, Shell shell, EPartService partService,
-							IEclipseContext context) {
+							IWorkbench workbench, IEventBroker eventBroker, Shell shell, IEclipseContext context) {
 						return newOne;
 					}
 				};
