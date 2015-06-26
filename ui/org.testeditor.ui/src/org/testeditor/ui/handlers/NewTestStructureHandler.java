@@ -37,6 +37,7 @@ import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.TestEditorConstants;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.AbstractTestStructureWizardPage;
@@ -120,8 +121,9 @@ public abstract class NewTestStructureHandler {
 				try {
 					createAndOpenTestStructure(testStructure, context);
 					addTestStructureLocalToRepository(testStructure, shell);
-					eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED,
+					eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD,
 							testStructure.getFullName());
+					eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testStructure);
 				} catch (SystemException e) {
 					LOGGER.error(e.getMessage(), e);
 					MessageDialog.openError(shell, "System-Exception", e.getMessage());
