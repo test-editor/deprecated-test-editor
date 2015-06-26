@@ -29,6 +29,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -84,7 +85,8 @@ public class NewTestStructureHandlerTest {
 	@Test
 	public void testFindSelectedParentWithOutSelectionInTheTestExplorer() throws Exception {
 		NewTestStructureHandler handler = getOUT(false);
-		TestStructure testStructure = handler.findSelectedParent(new TreeViewer(shell));
+		TestStructure testStructure = handler.findSelectedParent((IStructuredSelection) new TreeViewer(shell)
+				.getSelection());
 		assertNotNull("No Null Value for the Parent of a Teststructure.", testStructure);
 		assertEquals("Expecting Root Element", "root", testStructure.getName());
 	}
@@ -99,7 +101,8 @@ public class NewTestStructureHandlerTest {
 	@Test
 	public void testFindSelectedParentBasedOnTheSelectionInTheTestExplorer() throws Exception {
 		NewTestStructureHandler handler = getOUT(false);
-		TestStructure testStructure = handler.findSelectedParent(getMyTreeViewerMock());
+		TestStructure testStructure = handler.findSelectedParent((IStructuredSelection) getMyTreeViewerMock()
+				.getSelection());
 		assertNotNull("No Null Value for the Parent of a Teststructure.", testStructure);
 		assertEquals("Expecting Root Element", "TestCaseInTree", testStructure.getName());
 	}
