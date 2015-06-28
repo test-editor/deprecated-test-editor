@@ -89,6 +89,10 @@ public final class IconConstants {
 	public static final Image ICON_REVERT_TESTSTRUCTURE = getImage("/icons/revert.gif");
 	public static final Image ICON_SHARE_SHAREING = getImage("/icons/team_shareing.gif");
 	public static final Image ICON_SHOW_CHANGES = getImage("/icons/show_changes.png");
+	
+	public static final Image ICON_TEST_PAUSE = getImage("/icons/pause.png");
+	public static final Image ICON_TEST_RESUME = getImage("/icons/resume.png");
+
 	public static final Cursor CURSOR_ARROW = getCursorArrow();
 
 	/**
