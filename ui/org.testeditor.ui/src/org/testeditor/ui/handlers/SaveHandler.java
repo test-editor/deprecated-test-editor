@@ -21,19 +21,14 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
-import org.testeditor.core.constants.TestEditorCoreEventConstants;
-import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.util.TestProtocolService;
-import org.testeditor.ui.constants.TestEditorConstants;
 
 /**
  * 
@@ -109,31 +104,10 @@ public class SaveHandler {
 				}
 
 			});
-			refreshNodeIcon(context);
-
 		}
 
 		pmContext.dispose();
 
-	}
-
-	/**
-	 * After change test, reset test state for rendering icon for default.
-	 * 
-	 * @param context
-	 *            used to refresh the ui.
-	 * 
-	 */
-	private void refreshNodeIcon(IEclipseContext context) {
-		IStructuredSelection selection = (IStructuredSelection) context
-				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		TestStructure selected = (TestStructure) selection.getFirstElement();
-		if (selected != null) {
-			// refresh the icon depends on test result
-			testProtocolService.remove(selected);
-			context.get(IEventBroker.class).send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED,
-					selected.getFullName());
-		}
 	}
 
 }
