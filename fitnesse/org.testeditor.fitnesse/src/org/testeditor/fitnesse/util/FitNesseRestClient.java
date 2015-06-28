@@ -440,6 +440,38 @@ public final class FitNesseRestClient {
 		LOGGER.trace(strOfWikiPages + " " + (System.currentTimeMillis() - start));
 
 	}
+	
+	public static void stepwiseTest(TestStructure testStructure) throws SystemException {
+
+		long start = System.currentTimeMillis();
+
+		final String fullName = testStructure.getFullName();
+
+		HttpGet httpGet = new HttpGet(getFitnesseUrl(testStructure) + fullName + "?stepwiseTest");
+		httpGet.setHeader("Content-Type", "application/json");
+
+		String strOfWikiPages;
+
+		try {
+
+			HttpClient httpclient = HttpClientBuilder.create().setMaxConnPerRoute(5).setMaxConnTotal(5).build();
+			HttpResponse httpResponse = httpclient.execute(httpGet);
+
+			strOfWikiPages = new BasicResponseHandler().handleResponse(httpResponse);
+		} catch (Exception e) {
+			SystemException systemException = new SystemException("No Testcases found in: "
+					+ getFitnesseUrl(testStructure) + fullName + "\n", e);
+			LOGGER.error("names :: FAILED", systemException);
+			throw systemException;
+		}
+
+		LOGGER.trace(strOfWikiPages + " " + (System.currentTimeMillis() - start));
+
+	}
+	
+	
+	
+	
 
 
 }

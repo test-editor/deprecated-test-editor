@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.testeditor.fixture.lib
 Bundle-Version: 1.7.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
- lib/fitnesse-standalone.jar
+ lib/fitnesse.jar
 Eclipse-BundleShape: dir
 Export-Package: fitnesse,
  fitnesseMain
