@@ -92,6 +92,7 @@ public final class IconConstants {
 	
 	public static final Image ICON_TEST_PAUSE = getImage("/icons/pause.png");
 	public static final Image ICON_TEST_RESUME = getImage("/icons/resume.png");
+	public static final Image ICON_TEST_STEP_FORWARD = getImage("/icons/step_forward.png");
 
 	public static final Cursor CURSOR_ARROW = getCursorArrow();
 
