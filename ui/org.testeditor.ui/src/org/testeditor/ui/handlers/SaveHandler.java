@@ -13,7 +13,6 @@ package org.testeditor.ui.handlers;
 
 import java.lang.reflect.InvocationTargetException;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,7 +27,6 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
-import org.testeditor.core.util.TestProtocolService;
 
 /**
  * 
@@ -36,9 +34,6 @@ import org.testeditor.core.util.TestProtocolService;
  * 
  */
 public class SaveHandler {
-
-	@Inject
-	private TestProtocolService testProtocolService;
 
 	/**
 	 * Checks that the dirty Editor is on Top.
