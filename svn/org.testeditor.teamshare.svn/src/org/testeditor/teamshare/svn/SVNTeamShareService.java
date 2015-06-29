@@ -153,20 +153,29 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 */
 	public File getFile(TestStructure testStructure) {
 
-		TestProject testProject = testStructure.getRootElement();
+		return new File(getFolderName(testStructure));
+	}
 
-		File file = null;
+	/**
+	 * Returns the absolute path of the fitnesse folder of the given
+	 * teststructure. If the teststructure is a project
+	 * 
+	 * @param testStructure
+	 *            TestStructure
+	 * @return File
+	 */
+	private String getFolderName(TestStructure testStructure) {
+		TestProject testProject = testStructure.getRootElement();
 
 		if (testStructure instanceof TestProject) {
 			// in case of project the root of project above FitNesseRoot will be
 			// checked in.
-			file = new File(testProject.getTestProjectConfig().getProjectPath());
+			return testProject.getTestProjectConfig().getProjectPath();
 		} else {
-			file = new File(testProject.getTestProjectConfig().getProjectPath() + "/FitNesseRoot/"
-					+ testStructure.getFullName().replaceAll("\\.", "/"));
+			return testProject.getTestProjectConfig().getProjectPath() + "/FitNesseRoot/"
+					+ testStructure.getFullName().replaceAll("\\.", "/");
 		}
 
-		return file;
 	}
 
 	/**
@@ -821,4 +830,30 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		return this;
 	}
 
+	@Override
+	public void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("call to addAdditonalFile: testStructure: " + testStructure.getFullName());
+		}
+
+		TestProject testProject = testStructure.getRootElement();
+
+		SVNWCClient wcClient = getSVNClientManager(testProject).getWCClient();
+
+		File file = new File(getFolderName(testStructure) + File.separator + fileName);
+
+		try {
+			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(file, false);
+			if (!info.isVersioned()) {
+				wcClient.doAdd(file, false, false, false, SVNDepth.INFINITY, true, true);
+			}
+		} catch (Exception e) {
+			// TODO should be analyzed
+			// org.tmatesoft.svn.core.SVNException: svn: E150002: 'file' is
+			// already under version control
+			LOGGER.warn(e.getMessage(), e);
+		}
+
+	}
 }

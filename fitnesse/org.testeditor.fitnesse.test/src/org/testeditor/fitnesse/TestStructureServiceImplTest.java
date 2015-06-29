@@ -287,6 +287,10 @@ public class TestStructureServiceImplTest {
 					throws SystemException {
 				set.add("renamed");
 			}
+
+			@Override
+			public void addAdditonalFile(TestStructure testStructur, String fileName) throws SystemException {
+			}
 		};
 	}
 }

@@ -192,4 +192,12 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 		return this;
 	}
 
+	@Override
+	public void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
+		if (teamShareService != null) {
+			teamShareService.addAdditonalFile(testStructure, fileName);
+		}
+	}
+
 }

@@ -19,6 +19,7 @@ import java.util.TreeMap;
 
 import javax.inject.Inject;
 
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -102,7 +103,7 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	}
 
 	@Override
-	public void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure) {
+	public void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure) throws SystemException {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		if (!getMetaDataStore(projectName).containsKey(testStructure.getFullName())) {
@@ -110,29 +111,29 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		}
 		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
 		getMetaDataStore(projectName).get(testStructure.getFullName()).addAll(metaDataTags);
-		store(testStructure.getRootElement(), testStructure.getFullName());
+		store(testStructure);
 
 	}
 
-	abstract protected void store(TestProject project, String testStructure);
+	abstract protected void store(TestStructure testStructure) throws SystemException;
 
 	@Override
-	public void rename(TestStructure testStructure, String newName) {
+	public void rename(TestStructure testStructure, String newName) throws SystemException {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		String newFullName = testStructure.getParent().getFullName() + "." + newName;
 		getMetaDataStore(projectName).put(newFullName, getMetaDataTags(testStructure));
 		getMetaDataStore(projectName).remove(testStructure.getFullName());
-		store(testStructure.getRootElement(), newFullName);
-		store(testStructure.getRootElement(), testStructure.getFullName());
+		store(testStructure);
+		store(testStructure);
 	}
 
 	@Override
-	public void delete(TestStructure testStructure) {
+	public void delete(TestStructure testStructure) throws SystemException {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
-		store(testStructure.getRootElement(), testStructure.getFullName());
+		store(testStructure);
 	}
 
 	@Override
@@ -186,6 +187,15 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	@Override
 	public List<TestProject> getAllProjects() {
 		return testProjectService.getProjects();
+	}
+
+	@Override
+	public void refresh() {
+
+		metaDataMap.clear();
+		allMetaDataValues.clear();
+		metaDataStore.clear();
+
 	}
 
 	public void unbindTestProjectService(TestProjectService testProjectService) {

@@ -19,6 +19,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.metadata.core.MetaDataService;
 
 /**
  * 
@@ -32,12 +33,16 @@ public class RefreshTestExplorer {
 	@Inject
 	private TestProjectService testProjectService;
 
+	@Inject
+	private MetaDataService metaDataService;
+
 	/**
 	 * Looks up for the TestExporerView and refresh's it.
 	 */
 	@Execute
 	public void refreshTestExplorer() {
 		try {
+			metaDataService.refresh();
 			testProjectService.reloadProjectList();
 		} catch (SystemException e) {
 			LOGGER.error("Error reloading Testprojects", e);
