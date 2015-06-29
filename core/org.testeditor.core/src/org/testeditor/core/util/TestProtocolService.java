@@ -124,6 +124,8 @@ public class TestProtocolService implements IContextFunction {
 			eventBroker = context.get(IEventBroker.class);
 			eventBroker.subscribe(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
 					getDeletedTestStructureEventHandler());
+			eventBroker.subscribe(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+					getDeletedTestStructureEventHandler());
 		}
 		return this;
 	}

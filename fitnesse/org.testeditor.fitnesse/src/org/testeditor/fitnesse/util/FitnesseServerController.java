@@ -23,7 +23,7 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.services.interfaces.TestServerService;
+import org.testeditor.core.services.plugins.TestServerServicePlugIn;
 import org.testeditor.core.util.FileLocatorService;
 
 import fitnesse.Arguments;
@@ -35,7 +35,7 @@ import fitnesseMain.FitNesseMain;
  * State are available too.
  * 
  */
-public class FitnesseServerController implements TestServerService {
+public class FitnesseServerController implements TestServerServicePlugIn {
 
 	private static final Logger LOGGER = Logger.getLogger(FitnesseServerController.class);
 	private FileLocatorService fileLocatorService;
@@ -233,6 +233,11 @@ public class FitnesseServerController implements TestServerService {
 			LOGGER.error(e.getMessage());
 		}
 		return freePort;
+	}
+
+	@Override
+	public String getId() {
+		return "fitnesse_based_1.2";
 	}
 
 }

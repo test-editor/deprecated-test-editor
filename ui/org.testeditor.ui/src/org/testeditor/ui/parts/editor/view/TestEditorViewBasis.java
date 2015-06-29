@@ -52,7 +52,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  */
 public abstract class TestEditorViewBasis {
 
-	private static final Logger LOGGER = Logger.getLogger(TestEditView.class);
+	private static final Logger LOGGER = Logger.getLogger(TestEditorViewBasis.class);
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -350,13 +350,18 @@ public abstract class TestEditorViewBasis {
 	 */
 	protected MPart getActivePart() {
 		MPart part = partService.getActivePart();
-		if (part != null
-				&& (part.getElementId().equals(TestEditorTestCaseController.ID) || part.getElementId().equals(
-						TestEditorTestScenarioController.ID)) && part.getObject() != null) {
+		if (part != null && part.getElementId().equals(getId()) && part.getObject() != null) {
 			return part;
 		}
 		return null;
 	}
+
+	/**
+	 * Subclasses may override this.
+	 * 
+	 * @return the id of the part.
+	 */
+	protected abstract String getId();
 
 	/**
 	 * 

@@ -24,7 +24,6 @@ import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -38,7 +37,6 @@ import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -64,11 +62,11 @@ public abstract class AbstractUpdateOrApproveHandler {
 	 */
 	@CanExecute
 	public boolean canExecute() {
-		EPartService partService = application.getSelectedElement().getContext().get(EPartService.class);
-		TestExplorer explorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW).getObject();
+		IStructuredSelection selection = (IStructuredSelection) application.getSelectedElement().getContext()
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
-		return canExecuteTestExplorerHandlerRules.canExecuteOnOneOrManyElementRule(explorer)
-				&& canExecuteTestExplorerHandlerRules.canExecuteTeamShareApproveOrUpdate(explorer);
+		return canExecuteTestExplorerHandlerRules.canExecuteOnOneOrManyElementRule(selection)
+				&& canExecuteTestExplorerHandlerRules.canExecuteTeamShareApproveOrUpdate(selection);
 	}
 
 	/**
@@ -80,10 +78,8 @@ public abstract class AbstractUpdateOrApproveHandler {
 	@Execute
 	public void execute(IEventBroker eventBroker) {
 		testProjectSet = new HashSet<TestProject>();
-		EPartService partService = application.getSelectedElement().getContext().get(EPartService.class);
-		final TestExplorer explorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW)
-				.getObject();
-		final IStructuredSelection selection = explorer.getSelection();
+		final IStructuredSelection selection = (IStructuredSelection) application.getSelectedElement().getContext()
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		final Iterator<TestStructure> iter = selection.iterator();
 		final Shell activeShell = Display.getCurrent().getActiveShell();
 		final ProgressMonitorDialog dialog = new ProgressMonitorDialog(activeShell);

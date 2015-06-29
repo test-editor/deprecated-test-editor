@@ -41,8 +41,8 @@ import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 

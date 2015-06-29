@@ -90,8 +90,8 @@ public class ShareProjectHandler {
 	public boolean canExecute(IEclipseContext context) {
 		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		if (handlerRules.canExecuteOnTestProjectRule(testExplorer)
-				&& handlerRules.canExecuteOnlyOneElementRule(testExplorer)) {
+		if (handlerRules.canExecuteOnTestProjectRule(testExplorer.getSelection())
+				&& handlerRules.canExecuteOnlyOneElementRule(testExplorer.getSelection())) {
 			TestProject selection = (TestProject) testExplorer.getSelection().getFirstElement();
 			return !selection.getTestProjectConfig().isTeamSharedProject();
 		}

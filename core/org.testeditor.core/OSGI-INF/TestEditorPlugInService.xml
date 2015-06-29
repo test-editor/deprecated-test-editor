@@ -2,7 +2,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.testeditor.core.services.pluginsystem.TestEditorPlugInServiceImpl">
    <implementation class="org.testeditor.core.services.impl.TestEditorPlugInServiceImpl"/>
    <service>
-      <provide interface="org.testeditor.core.services.interfaces.TestEditorPlugInService"/>
+      <provide interface="org.testeditor.core.services.plugins.TestEditorPlugInService"/>
    </service>
    <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn" name="LibraryConfigurationService" policy="dynamic" unbind="unBind"/>
    <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn" name="TeamShareConfigurationService" policy="dynamic" unbind="unBind"/>

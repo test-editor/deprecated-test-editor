@@ -28,6 +28,11 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * 
  * This Service allows to approve Tests to the team and update Tests from the
  * Team.
+ * 
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * TeamShareServicePlugIn.
+ *
  */
 public interface TeamShareService {
 

@@ -282,6 +282,7 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 			IStructuredSelection selection = (IStructuredSelection) metaDataCB.getSelection();
 			metaDataValuesCB.getCombo().removeAll();
 			MetaData metaData = (MetaData) selection.getFirstElement();
+			metaDataValuesCB.getCombo().removeAll();
 			for (MetaDataValue metaDataValue : metaData.getValues()) {
 				metaDataValuesCB.add(metaDataValue);
 			}
