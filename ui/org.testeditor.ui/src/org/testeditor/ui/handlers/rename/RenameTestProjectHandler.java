@@ -120,7 +120,7 @@ public class RenameTestProjectHandler extends AbstractRenameHandler {
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
 				CanExecuteTestExplorerHandlerRules.class, context);
 		return super.canExecute(context)
-				&& (rules.canExecuteOnTestProjectRule(explorer) && ((TestStructure) explorer.getSelection()
-						.getFirstElement()).getRootElement().getTestProjectConfig().getTeamShareConfig() == null);
+				&& (rules.canExecuteOnTestProjectRule(explorer.getSelection()) && ((TestStructure) explorer
+						.getSelection().getFirstElement()).getRootElement().getTestProjectConfig().getTeamShareConfig() == null);
 	}
 }

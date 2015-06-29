@@ -19,6 +19,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
@@ -28,7 +29,6 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -56,8 +56,9 @@ public class CloneTestStructureHandler {
 	@Execute
 	public TestStructure execute(IEclipseContext context) {
 		TestStructure clonedTs = null;
-		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		TestFlow lastSelection = (TestFlow) explorer.getSelection().getFirstElement();
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
+		TestFlow lastSelection = (TestFlow) selection.getFirstElement();
 		NewTestStructureHandler newHandler = createNewTestStructureHandler(lastSelection, context);
 		Object result = ContextInjectionFactory.invoke(newHandler, Execute.class, context);
 		if (result != null) {
@@ -109,10 +110,11 @@ public class CloneTestStructureHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
-		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
-		return canExecuteTestExplorerHandlerRules.canExecuteOnlyOneElementRule(explorer)
-				&& canExecuteTestExplorerHandlerRules.canExecuteOnTestFlowRule(explorer);
+		return canExecuteTestExplorerHandlerRules.canExecuteOnlyOneElementRule(selection)
+				&& canExecuteTestExplorerHandlerRules.canExecuteOnTestFlowRule(selection);
 	}
 
 }

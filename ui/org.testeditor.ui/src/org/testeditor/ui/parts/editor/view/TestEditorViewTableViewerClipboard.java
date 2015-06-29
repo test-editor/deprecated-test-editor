@@ -14,7 +14,6 @@ package org.testeditor.ui.parts.editor.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.custom.StyleRange;
@@ -25,19 +24,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
-import org.testeditor.ui.parts.editor.view.listener.TestEditorScenarioParameterTableMouseAdapter;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * 
  * special TestEditorViewTableViewer with clipboard-functioniality.
  * 
- * @author llipinski
  */
 public class TestEditorViewTableViewerClipboard extends TestEditorViewTableViewer {
 
 	private Clipboard clipboard;
-	private IEclipseContext context;
 	private TestEditorScenarioParameterTableMouseAdapter tableMouseAdapter;
 	private StyleRange style;
 
@@ -52,19 +48,15 @@ public class TestEditorViewTableViewerClipboard extends TestEditorViewTableViewe
 	 *            the TranslationService
 	 * @param testFlow
 	 *            TestFlow
-	 * @param context
-	 *            IEclipseContext
 	 * @param mPart
 	 *            MPart
 	 * @param eventBroker
 	 *            IEventBroker
 	 */
 	public TestEditorViewTableViewerClipboard(Composite parent, TestScenarioParameterTable paramTable,
-			TestEditorTranslationService translationService, TestFlow testFlow, IEclipseContext context, MPart mPart,
-			IEventBroker eventBroker) {
+			TestEditorTranslationService translationService, TestFlow testFlow, MPart mPart, IEventBroker eventBroker) {
 		super(parent, paramTable, translationService, testFlow, mPart, eventBroker);
 		clipboard = new Clipboard(parent.getDisplay());
-		this.context = context;
 	}
 
 	/**
