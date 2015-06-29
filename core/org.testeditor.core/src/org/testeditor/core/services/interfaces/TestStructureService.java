@@ -25,6 +25,11 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * any test structure. A test structure could be a simple test, a scenario, a
  * test suite or a project (this data is used in the left view - the Test
  * explorer - of the Test-Editor).
+ * 
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * TestStructureServicePlugIn.
+ * 
  */
 public interface TestStructureService {
 

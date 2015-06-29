@@ -33,7 +33,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
@@ -173,7 +172,7 @@ public class TeamShareStatusServiceTest {
 		File updateFile = new File(projectpath + "/AllActionGroups.xml");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
@@ -220,7 +219,7 @@ public class TeamShareStatusServiceTest {
 		File updateFile = new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testSuite + "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
@@ -275,7 +274,7 @@ public class TeamShareStatusServiceTest {
 				+ "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
@@ -315,7 +314,7 @@ public class TeamShareStatusServiceTest {
 		File updateFile = new File(projectpath + "/AllActionGroups.xml");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
@@ -351,7 +350,7 @@ public class TeamShareStatusServiceTest {
 				+ "/TestKomponenten/SucheGoogleSzenario/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
@@ -406,7 +405,7 @@ public class TeamShareStatusServiceTest {
 				+ "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");
@@ -471,7 +470,7 @@ public class TeamShareStatusServiceTest {
 		teamService.delete(testCase, translationService);
 		testSuite.removeChild(testCase);
 
-		TeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
+		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
 		teamShareStatusService.setTeamStatusForProject(testProject);
 		while (!teamShareStatusService.isFinished()) {
 			LOGGER.debug("Wait for thread ends");

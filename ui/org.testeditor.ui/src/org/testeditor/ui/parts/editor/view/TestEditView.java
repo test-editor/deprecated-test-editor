@@ -71,7 +71,6 @@ import org.testeditor.ui.parts.inputparts.descriptioninput.TestEditorDescription
 /**
  * Description Area is the UI of a TestCase Description used in the Testeditor.
  * 
- * @author Lothar Lipinski
  * 
  * 
  */
@@ -677,8 +676,8 @@ public class TestEditView extends TestEditorViewBasis {
 	private int createParameterTable(TestScenarioParameterTable testComp, int offsetLines, int line) {
 		if (!testComp.isSimpleScriptStatement()) {
 			TestEditorViewTableViewerClipboard tableViewer = new TestEditorViewTableViewerClipboard(getStyledText(),
-					testComp, getTranslationService(), getTestCaseController().getTestFlow(), getContext(),
-					getTestCaseController().getPart(), getEventBroker());
+					testComp, getTranslationService(), getTestCaseController().getTestFlow(), getTestCaseController()
+							.getPart(), getEventBroker());
 
 			addTableToTableStore(tableViewer, testComp);
 			int tableOffset = internalText.length();
@@ -1163,6 +1162,11 @@ public class TestEditView extends TestEditorViewBasis {
 	 */
 	PopupDialog getActionGroupPopupDialog() {
 		return popupDialogAction;
+	}
+
+	@Override
+	protected String getId() {
+		return TestEditorTestCaseController.ID;
 	}
 
 }

@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.parts.editor.view.listener;
+package org.testeditor.ui.parts.editor.view;
 
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.swt.SWT;
@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
-import org.testeditor.ui.parts.editor.view.TestEditorViewTableViewerClipboard;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**

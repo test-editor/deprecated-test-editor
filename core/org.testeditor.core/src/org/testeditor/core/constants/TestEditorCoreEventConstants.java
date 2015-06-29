@@ -53,9 +53,8 @@ public final class TestEditorCoreEventConstants {
 	 * This event will be send when a team shared project loaded from all files
 	 * the SVN state and set them in the child`s. It is Asynchrony because it
 	 * will be throw from a Thread and the User should not be Interrupted.
-	 * ("TEAM/STATE/LOADED")
 	 */
-	public static final String TEAM_STATE_LOADED = "TEAM/STATE/LOADED";
+	public static final String TESTSTRUCTURE_STATE_CNAGED = "TESTSTRUCTURE/STATE/CHNAGED";
 
 	public static final String TESTSTRUCTURE_HISTORY_DELETED = "TESTHISTORY/DELETED";
 

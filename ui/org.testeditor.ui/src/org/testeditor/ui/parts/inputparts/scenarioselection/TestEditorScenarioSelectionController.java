@@ -37,7 +37,6 @@ import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
 import org.testeditor.ui.parts.commons.tree.filter.TestScenarioRecursiveFilter;
 import org.testeditor.ui.parts.editor.ITestEditorController;
-import org.testeditor.ui.parts.editor.view.TestEditorController;
 import org.testeditor.ui.parts.inputparts.AbstractTestEditorInputPartController;
 
 /**
@@ -228,7 +227,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	 * @param testEditorController
 	 *            ITestEditorController
 	 */
-	public void removeTestCaseController(TestEditorController testEditorController) {
+	public void removeTestCaseController(ITestEditorController testEditorController) {
 		editArea.removeTestEditorController(testEditorController);
 	}
 
@@ -242,7 +241,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	@Inject
 	@Optional
 	public void refreshSceanriosInTreeBySvnLoaded(
-			@UIEventTopic(TestEditorCoreEventConstants.TEAM_STATE_LOADED) TestStructure testStructure) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED) TestStructure testStructure) {
 		refreshSceanriosInTree("");
 	}
 

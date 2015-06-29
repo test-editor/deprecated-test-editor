@@ -21,6 +21,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.ui.constants.TestEditorEventConstants;
+import org.testeditor.ui.parts.editor.ITestEditorController;
 import org.testeditor.ui.parts.editor.view.ActionLineToTestCaseLineMapper;
 import org.testeditor.ui.parts.editor.view.TestEditView;
 import org.testeditor.ui.parts.editor.view.TestEditorController;
@@ -113,7 +114,7 @@ public class TestEditorControllerMock extends TestEditorTestCaseController {
 			}
 
 			@Override
-			public void removeTestCaseController(TestEditorController testEditorController) {
+			public void removeTestCaseController(ITestEditorController testEditorController) {
 			}
 		};
 	}

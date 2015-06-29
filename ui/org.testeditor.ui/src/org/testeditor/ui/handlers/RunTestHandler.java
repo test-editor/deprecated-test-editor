@@ -24,8 +24,10 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
@@ -33,7 +35,6 @@ import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.TestProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.reporting.TestExecutionProgressDialog;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -60,18 +61,19 @@ public class RunTestHandler {
 	 * One Element. Enable is possible with an open Editor View or a selection
 	 * in the TestExplorer.
 	 * 
-	 * @param partService
+	 * @param context
 	 *            of the active window.
 	 * 
 	 * @return true if only one <code>TestStructure</code> is selected.
 	 */
 	@CanExecute
-	public boolean canExecute(EPartService partService) {
-		TestExplorer explorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW).getObject();
+	public boolean canExecute(IEclipseContext context) {
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
-		return canExecuteTestExplorerHandlerRules.canExecuteOnlyOneElementRule(explorer)
-				&& !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarioRule(explorer)
-				&& (((TestStructure) explorer.getSelection().getFirstElement()).isExecutableTestStructure());
+		return canExecuteTestExplorerHandlerRules.canExecuteOnlyOneElementRule(selection)
+				&& !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarioRule(selection)
+				&& ((TestStructure) selection.getFirstElement()).isExecutableTestStructure();
 	}
 
 	/**
@@ -85,15 +87,14 @@ public class RunTestHandler {
 	 * @param eventBroker
 	 *            the eventBroker
 	 * @param partService
-	 *            of the active window.
+	 *            of to handle the dirty editor parts.
 	 */
 	@Execute
 	public void execute(@Active Shell shell, TestProtocolService protocolService, IEclipseContext context,
 			IEventBroker eventBroker, EPartService partService) {
-
-		TestExplorer testExplorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW)
-				.getObject();
-		final TestStructure selectedTestStructure = (TestStructure) testExplorer.getSelection().getFirstElement();
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
+		final TestStructure selectedTestStructure = (TestStructure) selection.getFirstElement();
 		try {
 			if (partService.saveAll(true)) {
 				LOGGER.info("Running Test: " + selectedTestStructure);
@@ -105,7 +106,7 @@ public class RunTestHandler {
 				testResult = dlg.executeTest(selectedTestStructure);
 				// refresh the icon depends on test result
 				protocolService.set(selectedTestStructure, testResult);
-				refreshTestStructureInTree(selectedTestStructure, testExplorer);
+				refreshTestStructureInTree(selectedTestStructure, eventBroker);
 
 				// refresh refferredTestCaseViewer
 				eventBroker.send(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED, selectedTestStructure);
@@ -126,17 +127,17 @@ public class RunTestHandler {
 	 * 
 	 * @param testStructure
 	 *            the TestStructure of the Item in the TreeViewer to refresh
-	 * @param testExplorer
-	 *            the TestExplorer with the tree
+	 * @param eventBroker
+	 *            used to inform the clients about changed state of
+	 *            teststructures.
 	 */
-	private void refreshTestStructureInTree(TestStructure testStructure, TestExplorer testExplorer) {
+	private void refreshTestStructureInTree(TestStructure testStructure, IEventBroker eventBroker) {
 		if (testStructure instanceof TestSuite) {
 			for (TestStructure ts : ((TestSuite) testStructure).getAllTestChildrensAndReferedTestcases()) {
-				refreshTestStructureInTree(ts, testExplorer);
+				refreshTestStructureInTree(ts, eventBroker);
 			}
 		}
-		testExplorer.refreshTreeViewerOnTestStrucutre(testStructure);
-
+		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED, testStructure.getFullName());
 	}
 
 }

@@ -21,7 +21,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
  * 
  * this class handles the cleanup-request for the sceanrio-input.
  * 
- * @author llipinski
  */
 @SuppressWarnings("restriction")
 public class CleanScenarioSelectionInput {

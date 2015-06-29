@@ -23,7 +23,6 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestScenarioService;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 
 /**
  * 
@@ -40,14 +39,13 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * Check if this Handler is enabled on the selection. Only one Teststructure
 	 * is valid as a selection.
 	 * 
-	 * @param testExplorer
+	 * @param selection
 	 *            to check selection
 	 * @return true if only one element is selected.
 	 */
-	public boolean canExecuteOnlyOneElementRule(TestExplorer testExplorer) {
-		IStructuredSelection sel = testExplorer.getSelection();
-		if (sel.size() == 1
-				&& !(sel.getFirstElement() instanceof TestProject && ((TestProject) sel.getFirstElement())
+	public boolean canExecuteOnlyOneElementRule(IStructuredSelection selection) {
+		if (selection.size() == 1
+				&& !(selection.getFirstElement() instanceof TestProject && ((TestProject) selection.getFirstElement())
 						.getTestProjectConfig() == null)) {
 			return true;
 		}
@@ -58,16 +56,13 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * Check if this Handler is enabled on the selection. One or more
 	 * Teststructure is valid as a selection.
 	 * 
-	 * @param testExplorer
+	 * @param selection
 	 *            to check selection
 	 * @return true if one or more elements are selected.
 	 */
-	public boolean canExecuteOnOneOrManyElementRule(TestExplorer testExplorer) {
-		if (testExplorer != null) {
-			IStructuredSelection sel = testExplorer.getSelection();
-			if (sel.size() > 0) {
-				return true;
-			}
+	public boolean canExecuteOnOneOrManyElementRule(IStructuredSelection selection) {
+		if (selection != null && selection.size() > 0) {
+			return true;
 		}
 		return false;
 	}
@@ -75,14 +70,14 @@ public class CanExecuteTestExplorerHandlerRules {
 	/**
 	 * Rule to check that the first element of the selection is'nt the root.
 	 * 
-	 * @param explorer
-	 *            TestExplorer
+	 * @param selection
+	 *            selection in testexplorer
 	 * @return true the root is not in the selection
 	 */
-	public boolean canExecuteOnNoneRootRule(TestExplorer explorer) {
+	public boolean canExecuteOnNoneRootRule(IStructuredSelection selection) {
 		boolean isNoProjectTestStructure = true;
 
-		Iterator<?> iterator = explorer.getSelection().iterator();
+		Iterator<?> iterator = selection.iterator();
 		while (iterator.hasNext()) {
 			TestStructure ts = (TestStructure) iterator.next();
 			if (ts.getParent() == null) {
@@ -95,24 +90,23 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param explorer
-	 *            TestExplorer
+	 * @param selection
+	 *            of the TestExplorer
 	 * @return true if the selection in the TextExplorer is a TestSuite
 	 */
-	public boolean canExecuteOnTestSuiteRule(TestExplorer explorer) {
-		TestStructure ts = (TestStructure) explorer.getSelection().getFirstElement();
+	public boolean canExecuteOnTestSuiteRule(IStructuredSelection selection) {
+		TestStructure ts = (TestStructure) selection.getFirstElement();
 		return ts instanceof TestSuite;
 	}
 
 	/**
 	 * 
-	 * @param testExplorer
-	 *            TestExplorer
+	 * @param selection
+	 *            selection of the TestExplorer
 	 * @return true if the selection in the TextExplorer is a TestProject or the
 	 *         TestExplorer is null.
 	 */
-	public boolean canExecuteOnTestProjectRule(TestExplorer testExplorer) {
-		IStructuredSelection selection = testExplorer.getSelection();
+	public boolean canExecuteOnTestProjectRule(IStructuredSelection selection) {
 		boolean onlyTestProjects = true;
 		if (selection.isEmpty()) {
 			return false;
@@ -133,13 +127,12 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param testExplorer
+	 * @param selection
 	 *            TestExplorer
 	 * @return true, if the selection in the TextExplorer is the suite named
 	 *         TestEditorGlobalConstans.TEST_SCENARIO_SUITE
 	 */
-	public boolean canExecuteOnTestScenarienSuiteRule(TestExplorer testExplorer) {
-		IStructuredSelection selection = testExplorer.getSelection();
+	public boolean canExecuteOnTestScenarienSuiteRule(IStructuredSelection selection) {
 		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
@@ -152,14 +145,13 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param testExplorer
+	 * @param selection
 	 *            TestExplorer
 	 * 
 	 * @return true, if the selected element is a descendant of the
 	 *         test-scenario-suite.
 	 */
-	public boolean canExecuteOnDescendantFromTestScenarioSuite(TestExplorer testExplorer) {
-		IStructuredSelection selection = testExplorer.getSelection();
+	public boolean canExecuteOnDescendantFromTestScenarioSuite(IStructuredSelection selection) {
 		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
@@ -172,13 +164,12 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param testExplorer
+	 * @param selection
 	 *            TestExplorer
 	 * @return true, if a selected element is the main-ScenarioSuite of the
 	 *         project, else false
 	 */
-	public boolean canExecuteOnProjectMainScenarioSuite(TestExplorer testExplorer) {
-		IStructuredSelection selection = testExplorer.getSelection();
+	public boolean canExecuteOnProjectMainScenarioSuite(IStructuredSelection selection) {
 		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
@@ -191,13 +182,13 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param explorer
+	 * @param selection
 	 *            testExplorer with selection to be checked.
 	 * @return checks if the selection is a testscenario. if not it returns
 	 *         true. In the other case it checks the usage of the scenario. If
 	 *         the usage is 0 it returns true. false in the other case.
 	 */
-	public boolean canExecuteOnUnusedScenario(TestExplorer explorer) {
+	public boolean canExecuteOnUnusedScenario(IStructuredSelection selection) {
 		// boolean useageOFAllScenarios = false;
 		// Iterator iterator = explorer.getSelection().iterator();
 		// while (iterator.hasNext()) {
@@ -218,13 +209,12 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param testExplorer
+	 * @param selection
 	 *            TestExplorer
 	 * @return true if the selection in the TextExplorer is the suite named
 	 *         TestKomponenten
 	 */
-	public boolean canExecuteOnTestScenarioRule(TestExplorer testExplorer) {
-		IStructuredSelection selection = testExplorer.getSelection();
+	public boolean canExecuteOnTestScenarioRule(IStructuredSelection selection) {
 		boolean onlyTestKomponents = true;
 		Iterator iter = selection.iterator();
 		while (iter.hasNext()) {
@@ -238,13 +228,12 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param testExplorer
-	 *            TestExplorer
+	 * @param selection
+	 *            of the TestExplorer
 	 * @return true, if every TestProject of the selected TestStructures are
 	 *         under version-control.
 	 */
-	public boolean canExecuteTeamShareApproveOrUpdate(TestExplorer testExplorer) {
-		IStructuredSelection selection = testExplorer.getSelection();
+	public boolean canExecuteTeamShareApproveOrUpdate(IStructuredSelection selection) {
 		Iterator iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
@@ -257,13 +246,12 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param explorer
-	 *            TestExplorer
+	 * @param selection
+	 *            of the TestExplorer
 	 * @return if, no element of the selection is a ScenarioSuite with children,
 	 *         else false.
 	 */
-	public boolean canExecuteOnNonScenarioSuiteParents(TestExplorer explorer) {
-		IStructuredSelection selection = explorer.getSelection();
+	public boolean canExecuteOnNonScenarioSuiteParents(IStructuredSelection selection) {
 		Iterator iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
@@ -276,12 +264,11 @@ public class CanExecuteTestExplorerHandlerRules {
 
 	/**
 	 * 
-	 * @param explorer
+	 * @param selection
 	 *            TestExplorer with selected elements
 	 * @return true on instance of TestFlow otherwise false.
 	 */
-	public boolean canExecuteOnTestFlowRule(TestExplorer explorer) {
-		IStructuredSelection selection = explorer.getSelection();
+	public boolean canExecuteOnTestFlowRule(IStructuredSelection selection) {
 		Iterator iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
@@ -291,4 +278,5 @@ public class CanExecuteTestExplorerHandlerRules {
 		}
 		return true;
 	}
+
 }

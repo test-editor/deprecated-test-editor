@@ -18,9 +18,9 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * Integration Tests to check the Registration of the Services of the SVN Team
