@@ -11,9 +11,11 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.editor;
 
+import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -24,7 +26,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * @author Georg Portwich
  *
  */
-public interface ITestEditorTab {
+@Creatable
+public interface ITestEditorTabController {
 
 	/**
 	 * Method to create the composite that will be rendered in the tab.
@@ -49,8 +52,10 @@ public interface ITestEditorTab {
 	/**
 	 * Saves the data in the tab (if needed). This is done after the testFlow
 	 * was stored and is not handled in a transaction.
+	 * 
+	 * @throws SystemException
 	 */
-	void save();
+	void save() throws SystemException;
 
 	/**
 	 * the label of the tab. It is in the responsibility of the implementation
@@ -59,4 +64,11 @@ public interface ITestEditorTab {
 	 * @return the label
 	 */
 	String getLabel(TestEditorTranslationService translationService);
+
+	/**
+	 * Defines whether a tab will be visible.
+	 * 
+	 * @return true if the editor will be rendered
+	 */
+	boolean isVisible();
 }

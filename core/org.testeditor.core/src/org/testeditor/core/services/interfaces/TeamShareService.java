@@ -198,4 +198,18 @@ public interface TeamShareService {
 	void rename(TestStructure testStructure, String newName, TranslationService translationService)
 			throws SystemException;
 
+	/**
+	 * Some services store additional information to the standard information.
+	 * This method is used to add a file to a testcase. The file must exist in
+	 * the testStructure folder.
+	 * 
+	 * @param testStructure
+	 *            where the data belongs to
+	 * @param fileName
+	 *            the name of the file without any path information.
+	 * @throws SystemException
+	 *             on error renaming teststructure.
+	 */
+	void addAdditonalFile(TestStructure testStructur, String fileName) throws SystemException;
+
 }

@@ -23,7 +23,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.metadata.core.model.MetaDataValue;
@@ -36,6 +40,9 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 	private static final String META_DATA_PROPERTIES = "metadata.properties";
 	private XStream xStream;
 
+	private TeamShareService teamShareService;
+	private static final Logger LOGGER = Logger.getLogger(MetaDataServiceSimpleImpl.class);
+
 	public MetaDataServiceSimpleImpl() {
 		xStream = new XStream(new DomDriver("UTF-8"));
 		xStream.alias("metaDataTagList", MetaData.class);
@@ -47,23 +54,25 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 	}
 
 	@Override
-	public void store(TestProject project, String testStructureName) {
+	public void store(TestStructure testStructure) throws SystemException {
 
 		String fileName = "";
-		String projectPath = project.getTestProjectConfig().getProjectPath();
+		TestProject testProject = testStructure.getRootElement();
+		String projectPath = testProject.getTestProjectConfig().getProjectPath();
 		try {
 
-			String testCaseName = testStructureName;
+			String testCaseName = testStructure.getFullName();
 			String testCasePath = "FitNesseRoot" + File.separator + testCaseName.replace(".", File.separator);
 			fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
 			File xmlFile = new File(fileName);
-			List<MetaDataTag> metaDataTags = getMetaDataStore(project.getName()).get(testCaseName);
+			List<MetaDataTag> metaDataTags = getMetaDataStore(testProject.getName()).get(testCaseName);
 			if (metaDataTags != null && metaDataTags.size() > 0) {
 				Writer writer = new FileWriter(xmlFile);
 				List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
 				metaDataStoreObjects.add(new MetaDataStoreObject(testCaseName, metaDataTags));
 				xStream.toXML(metaDataStoreObjects, writer);
 				writer.close();
+				teamShareService.addAdditonalFile(testStructure, META_DATA_XML);
 			} else {
 				if (xmlFile.exists()) {
 					if (!xmlFile.delete()) {
@@ -117,18 +126,28 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		Properties prop = new Properties();
 
 		String propertiesFileName = projectPath + File.separator + META_DATA_PROPERTIES;
+		File propertiesFile = null;
+		InputStream inputStream = null;
 		try {
-			File propertiesFile = new File(propertiesFileName);
+			propertiesFile = new File(propertiesFileName);
 			if (!propertiesFile.exists()) {
 				return;
 			}
-			InputStream inputStream = new FileInputStream(propertiesFile);
+			inputStream = new FileInputStream(propertiesFile);
 			prop.load(inputStream);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("the propertiesfile " + propertiesFileName + " was not found");
 		} catch (IOException e) {
 			throw new RuntimeException("the propertiesfile " + propertiesFileName + " could not be read. Reason: " + e,
 					e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (Throwable e) {
+				LOGGER.error("could not close inputStream. Message " + e.getMessage(), e);
+			}
 		}
 		for (Object object : prop.keySet()) {
 			String key = (String) object;
@@ -155,11 +174,11 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 
 		String projectRootPath = projectPath + File.separator + "FitNesseRoot" + File.separator + projectName;
 		File projectRoot = new File(projectRootPath);
-		readMetaDataForProject(projectName, projectRoot);
+		readMetaDataForFolder(projectName, projectRoot);
 
 	}
 
-	private void readMetaDataForProject(String projectName, File directory) {
+	private void readMetaDataForFolder(String projectName, File directory) {
 
 		File[] listOfFiles = directory.listFiles();
 		for (int i = 0; i < listOfFiles.length; i++) {
@@ -178,9 +197,17 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 				}
 
 			} else if (listOfFiles[i].isDirectory()) {
-				readMetaDataForProject(projectName, listOfFiles[i]);
+				readMetaDataForFolder(projectName, listOfFiles[i]);
 			}
 		}
+	}
+
+	public void unbindTeamShareService() {
+		this.teamShareService = null;
+	}
+
+	public void bindTeamShareService(TeamShareService teamShareService) {
+		this.teamShareService = teamShareService;
 	}
 
 	static private class MetaDataStoreObject {

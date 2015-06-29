@@ -24,7 +24,7 @@ Import-Package: javax.annotation,
  org.testeditor.metadata.core.model,
  org.testeditor.ui.constants,
  org.testeditor.ui.utilities
-Service-Component: OSGI-INF/ITestEditorTab.xml
+Service-Component: OSGI-INF/ITestEditorTabController.xml,OSGI-INF/ITestEditorTabControllerProvider.xml
 Bundle-ClassPath: .
 Export-Package: org.testeditor.metadata.ui.explorer,
  org.testeditor.metadata.ui.handler

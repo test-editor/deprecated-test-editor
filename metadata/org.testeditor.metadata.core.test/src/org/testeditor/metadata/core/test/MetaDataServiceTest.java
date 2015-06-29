@@ -25,6 +25,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
@@ -137,10 +138,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the storing and reading of the data of multiple testcases
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testStoreAndReadMulitpleMetaDataList() {
+	public void testStoreAndReadMulitpleMetaDataList() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 		for (int index = 1; index <= 3; index++) {
@@ -159,7 +162,7 @@ public class MetaDataServiceTest {
 	 */
 	@Test
 	@Ignore
-	public void testDeleteTestStructure() {
+	public void testDeleteTestStructure() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 
@@ -178,10 +181,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests that changes the name of a testcase.
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testRenameTestStructure() {
+	public void testRenameTestStructure() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 
@@ -205,7 +210,7 @@ public class MetaDataServiceTest {
 
 	@Test
 	@Ignore
-	public void testGetMetaDataFromMetaDataTag() {
+	public void testGetMetaDataFromMetaDataTag() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 
@@ -225,7 +230,7 @@ public class MetaDataServiceTest {
 
 	@Test
 	@Ignore
-	public void testGetTestCasesForMetaData() {
+	public void testGetTestCasesForMetaData() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 		MetaDataService metaDataService = getNewServiceObject();
@@ -240,10 +245,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the search of testcases for a metadatavalue
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testGetTestCasesForMetaDataList() {
+	public void testGetTestCasesForMetaDataList() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 		MetaDataService metaDataService = getNewServiceObject();
@@ -260,10 +267,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the storing and reading of a metadatalist
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testStoreAndReadMetaDataList() {
+	public void testStoreAndReadMetaDataList() throws SystemException {
 
 		TestProject project = createProject("testProject1");
 		TestCase testCase = createTestCase("testProject1", "testCase1");
@@ -287,8 +296,9 @@ public class MetaDataServiceTest {
 	 * project
 	 * 
 	 * @param project
+	 * @throws SystemException
 	 */
-	private void setupMetaDatatestCaseStore(TestProject project) {
+	private void setupMetaDatatestCaseStore(TestProject project) throws SystemException {
 
 		for (int index = 1; index <= 3; index++) {
 			TestCase testCase = createTestCase(project.getName(), "testCase" + index);

@@ -69,12 +69,14 @@ import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.editor.ITestEditorController;
-import org.testeditor.ui.parts.editor.ITestEditorTab;
+import org.testeditor.ui.parts.editor.ITestEditorTabContollerProvider;
+import org.testeditor.ui.parts.editor.ITestEditorTabController;
 import org.testeditor.ui.parts.editor.view.handler.TestEditorInputObject;
 import org.testeditor.ui.parts.inputparts.actioninput.TestEditorActionInputController;
 import org.testeditor.ui.parts.inputparts.descriptioninput.TestEditorDescriptionInputController;
@@ -111,12 +113,18 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private ActionGroupService actionGroupService;
 	@Inject
 	private TestScenarioService testScenarioService;
+	@Inject
+	private MetaDataService metaDataService;
 
 	@Inject
 	private TestStructureContentService testStructureContentService;
-	@Inject
+
 	@Optional
-	private ITestEditorTab iTestEditorTab;
+	@Inject
+	private ITestEditorTabContollerProvider iTestEditorTabControllerProvider;
+
+	private ITestEditorTabController iTestEditorTabController;
+
 	private CTabItem metaDataTab;
 
 	private TestEditorActionInputController actionInputController;
@@ -174,13 +182,19 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public void save() {
 		try {
 			testStructureContentService.saveTestStructureData(testFlow);
-			if (getTestEditorTab() != null) {
-				getTestEditorTab().save();
+			if (getTestEditorTabController() != null) {
+				getTestEditorTabController().save();
 			}
 			mpart.setDirty(false);
-		} catch (SystemException e) {
-			String message = translationService.translate("%editController.ErrorStoringTestFlow");
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), message, e.getLocalizedMessage());
+		} catch (final SystemException e) {
+			final String message = translationService.translate("%editController.ErrorStoringTestFlow");
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(Display.getDefault().getActiveShell(), message, e.getLocalizedMessage());
+				}
+			});
 			LOGGER.error("Error storing Testcase :: FAILED", e);
 		}
 		updateTeamStateInformation();
@@ -246,6 +260,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	protected void loadAndRerender() {
 		if (getTestStructure() != null) {
+			metaDataService.refresh();
 			TestFlow foundTestStructure = findTestStructureByFullName(getTestStructure().getFullName());
 			if (foundTestStructure == null) {
 				partService.hidePart(mpart, true);
@@ -351,11 +366,12 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		String testStructureFullName = mpart.getPersistedState().get(EDITOR_OBJECT_ID_FOR_RESTORE);
 
 		metaDataTab = null;
-		if (getTestEditorTab() != null) {
+		if (iTestEditorTabControllerProvider != null) {
+			iTestEditorTabController = iTestEditorTabControllerProvider.get();
 			metaDataTab = new CTabItem((CTabFolder) compositeForView, SWT.NONE);
-			metaDataTab.setText("Metadata");
-			Composite composite = getTestEditorTab()
-					.createTab((CTabFolder) compositeForView, mpart, translationService);
+			metaDataTab.setText(translationService.translate("%testeditor.tab.metadata.label"));
+			Composite composite = getTestEditorTabController().createTab((CTabFolder) compositeForView, mpart,
+					translationService);
 			metaDataTab.setControl(composite);
 		}
 		((CTabFolder) compositeForView).setSelection(0);
@@ -402,10 +418,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		this.testFlow = testFlow;
 
-		if (getTestEditorTab() != null && metaDataTab != null) {
-			if (testFlow.isExecutableTestStructure()) {
-				getTestEditorTab().setTestFlow(testFlow);
-			} else {
+		if (getTestEditorTabController() != null && metaDataTab != null) {
+			getTestEditorTabController().setTestFlow(testFlow);
+			if (!getTestEditorTabController().isVisible()) {
 				metaDataTab.dispose();
 			}
 		}
@@ -1488,11 +1503,11 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 * 
 	 * @return the service
 	 */
-	private ITestEditorTab getTestEditorTab() {
-		if (iTestEditorTab == null) {
+	private ITestEditorTabController getTestEditorTabController() {
+		if (iTestEditorTabController == null) {
 			LOGGER.info("MetaDataTab is not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
 		}
-		return iTestEditorTab;
+		return iTestEditorTabController;
 	}
 
 }

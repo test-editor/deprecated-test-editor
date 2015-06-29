@@ -37,13 +37,14 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.metadata.core.model.MetaDataValue;
 import org.testeditor.ui.constants.IconConstants;
-import org.testeditor.ui.parts.editor.ITestEditorTab;
+import org.testeditor.ui.parts.editor.ITestEditorTabController;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -77,7 +78,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * @author Georg Portwich
  *
  */
-public class MetaDataController implements Listener, ITestEditorTab, ISelectionChangedListener {
+public class TestEditorMetaDataTabController implements Listener, ITestEditorTabController, ISelectionChangedListener {
 
 	@Inject
 	private MetaDataService metaDataService;
@@ -95,8 +96,9 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	private Label lblMetaDataCB;
 	private ComboViewer metaDataValuesCB;
 	private Label lblMetaDataValuesCB;
+	private boolean visible = false;
 
-	private static final Logger LOGGER = Logger.getLogger(MetaDataController.class);
+	private static final Logger LOGGER = Logger.getLogger(TestEditorMetaDataTabController.class);
 
 	/**
 	 * Created the composite and the containing controls. To use the control the
@@ -104,7 +106,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	 * 
 	 * @param parent
 	 */
-	public MetaDataController() {
+	public TestEditorMetaDataTabController() {
 	}
 
 	/**
@@ -193,19 +195,12 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
 		List<MetaData> metaDataList = getMetaDataService().getAllMetaData(testFlow.getRootElement());
 		if (metaDataList.size() == 0) {
-			Label lblMessage = new Label(composite, SWT.NONE);
-			String message = "Für das Projekt sind noch keine Metadaten angelegt.\n"
-					+ "Bitte legen Sie im Projektverzeichnis eine metadata.properties Datei an.\n"
-					+ "In dieser Pflegen Sie bitten Ihre Metadaten.\n\nBeispiel metadata.properties.\n\n"
-					+ "metadata = Name der Metadaten-Kategorie\n"
-					+ "metadata.schluessel1 = Name des Wertes des Wertes wie in der Oberfläche angezeigt wird\n"
-					+ "metadata.schluessel2 = Nächster Wert und so weiter\n";
-			lblMessage.setText(message);
 			metaDataCB.getCombo().setVisible(false);
 			lblMetaDataCB.setVisible(false);
 			metaDataTagsTable.setVisible(false);
 
 		} else {
+			visible = testFlow.isExecutableTestStructure();
 			metaDataCB.getCombo().removeAll();
 			for (MetaData metaData : metaDataList) {
 				metaDataCB.add(metaData);
@@ -260,9 +255,11 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 
 	/**
 	 * Stores the metadata of the current testFlow.
+	 * 
+	 * @throws SystemException
 	 */
 	@Override
-	public void save() {
+	public void save() throws SystemException {
 		getMetaDataService().storeMetaDataTags(metaDataTagList, testFlow);
 	}
 
@@ -283,6 +280,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	public void selectionChanged(SelectionChangedEvent event) {
 		if (event.getSource().equals(metaDataCB)) {
 			IStructuredSelection selection = (IStructuredSelection) metaDataCB.getSelection();
+			metaDataValuesCB.getCombo().removeAll();
 			MetaData metaData = (MetaData) selection.getFirstElement();
 			for (MetaDataValue metaDataValue : metaData.getValues()) {
 				metaDataValuesCB.add(metaDataValue);
@@ -334,6 +332,11 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		}
 		return metaDataService;
 
+	}
+
+	@Override
+	public boolean isVisible() {
+		return visible;
 	}
 
 }
