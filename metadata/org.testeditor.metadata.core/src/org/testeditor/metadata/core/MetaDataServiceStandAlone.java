@@ -18,7 +18,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.metadata.core.model.MetaDataTag;
 
-public class MetaDataServiceStandAlone extends MetaDataServiceSimpleImpl {
+public class MetaDataServiceStandAlone extends MetaDataServiceFileImpl {
 
 	public MetaDataServiceStandAlone() {
 	}

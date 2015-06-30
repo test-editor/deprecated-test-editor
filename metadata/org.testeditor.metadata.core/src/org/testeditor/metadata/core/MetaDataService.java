@@ -99,12 +99,10 @@ public interface MetaDataService {
 	 */
 	void delete(TestStructure testStructure) throws SystemException;
 
-	void refresh();
+	void refresh(TestProject testProject);
 
 	List<String> getTestCases(TestProject project, MetaDataValue metaDataValue);
 
 	List<String> getTestCases(TestProject project, List<MetaDataValue> metaDataValueList);
-
-	List<TestProject> getAllProjects();
 
 }

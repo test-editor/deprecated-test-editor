@@ -12,6 +12,7 @@
 package org.testeditor.metadata.ui.handler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,6 +43,7 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
+import org.testeditor.metadata.core.model.MetaDataTag.MetaDataTagComparator;
 import org.testeditor.metadata.core.model.MetaDataValue;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.parts.editor.ITestEditorTabController;
@@ -193,6 +195,9 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 
 		metaDataTagList.clear();
 		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
+
+		Collections.sort(metaDataTagList, new MetaDataTagComparator(metaDataService, testFlow.getRootElement()));
+
 		List<MetaData> metaDataList = getMetaDataService().getAllMetaData(testFlow.getRootElement());
 		if (metaDataList.size() == 0) {
 			metaDataCB.getCombo().setVisible(false);
@@ -283,7 +288,9 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 			metaDataValuesCB.getCombo().removeAll();
 			MetaData metaData = (MetaData) selection.getFirstElement();
 			metaDataValuesCB.getCombo().removeAll();
-			for (MetaDataValue metaDataValue : metaData.getValues()) {
+			List<MetaDataValue> metaDataValues = metaData.getValues();
+			Collections.sort(metaDataValues);
+			for (MetaDataValue metaDataValue : metaDataValues) {
 				metaDataValuesCB.add(metaDataValue);
 			}
 			lblMetaDataValuesCB.setVisible(true);
@@ -309,6 +316,8 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 				mpart.setDirty(true);
 			}
 			metaDataTagList.add(new MetaDataTag(metaDataValue));
+			Collections.sort(metaDataTagList, new MetaDataTagComparator(metaDataService, testFlow.getRootElement()));
+
 			metaDataTagsTable.getParent().pack();
 			lblMetaDataValuesCB.setVisible(false);
 			metaDataValuesCB.getCombo().setVisible(false);
@@ -318,14 +327,32 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 		}
 	}
 
+	/**
+	 * bind the metadata service
+	 * 
+	 * @param metaDataService
+	 *            - metadataservice
+	 */
 	public void bindMetaDataService(MetaDataService metaDataService) {
 		this.metaDataService = metaDataService;
 	}
 
+	/**
+	 * Unbind the the metadata verviche
+	 * 
+	 * @param metaDataService
+	 *            - metadataservice
+	 */
 	public void unbindMetaDataService(MetaDataService metaDataService) {
 		this.metaDataService = null;
 	}
 
+	/**
+	 * Access the metadata-service. If the service is not set, an
+	 * runtimeexception is thrown.
+	 * 
+	 * @return
+	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
 			throw new RuntimeException(
