@@ -75,7 +75,7 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getFullName());
-			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED, testStructure.getFullName());
+			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testStructure.getFullName());
 		}
 	}
 
