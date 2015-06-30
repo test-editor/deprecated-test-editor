@@ -181,10 +181,10 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Persist
 	public void save() {
 		try {
-			testStructureContentService.saveTestStructureData(testFlow);
 			if (getTestEditorTabController() != null) {
 				getTestEditorTabController().save();
 			}
+			testStructureContentService.saveTestStructureData(testFlow);
 			mpart.setDirty(false);
 		} catch (final SystemException e) {
 			final String message = translationService.translate("%editController.ErrorStoringTestFlow");
@@ -260,8 +260,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	protected void loadAndRerender() {
 		if (getTestStructure() != null) {
-			metaDataService.refresh();
 			TestFlow foundTestStructure = findTestStructureByFullName(getTestStructure().getFullName());
+			metaDataService.refresh(foundTestStructure.getRootElement());
 			if (foundTestStructure == null) {
 				partService.hidePart(mpart, true);
 			}

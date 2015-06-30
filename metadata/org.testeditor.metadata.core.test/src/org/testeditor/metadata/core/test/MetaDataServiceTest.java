@@ -30,7 +30,7 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.metadata.core.MetaDataService;
-import org.testeditor.metadata.core.MetaDataServiceSimpleImpl;
+import org.testeditor.metadata.core.MetaDataServiceFileImpl;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.metadata.core.model.MetaDataValue;
@@ -46,6 +46,7 @@ public class MetaDataServiceTest {
 	private List<String> projects = new ArrayList<String>();
 
 	@Before
+	@Ignore
 	public void setup() throws Exception {
 		projects.add("testProject1");
 		projects.add("testProject2");
@@ -391,7 +392,7 @@ public class MetaDataServiceTest {
 	 * @return
 	 */
 	private MetaDataService getNewServiceObject() {
-		return new MetaDataServiceSimpleImpl();
+		return new MetaDataServiceFileImpl();
 	}
 
 	/**

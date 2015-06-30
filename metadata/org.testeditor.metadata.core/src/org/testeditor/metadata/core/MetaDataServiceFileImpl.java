@@ -35,15 +35,28 @@ import org.testeditor.metadata.core.model.MetaDataValue;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
+/**
+ * The MetaDataServiceFileImpl realizes the persistence of the metadata
+ * information on file basis. For every testcase is a metadata.xml stored in the
+ * fitnesse directory of the testcase. The metadata.properties contains the list
+ * of all existing metadata.<br/>
+ * The metadata.properties could be edited by the user, the metadata.xml files
+ * are written automatically by the program.
+ *
+ */
+public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 	private static final String META_DATA_XML = "metadata.xml";
 	private static final String META_DATA_PROPERTIES = "metadata.properties";
 	private XStream xStream;
 
 	private TeamShareService teamShareService;
-	private static final Logger LOGGER = Logger.getLogger(MetaDataServiceSimpleImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(MetaDataServiceFileImpl.class);
 
-	public MetaDataServiceSimpleImpl() {
+	/**
+	 * The contstructor will prepare the XSTREAM for the metadata.xml - files
+	 */
+	public MetaDataServiceFileImpl() {
+		super();
 		xStream = new XStream(new DomDriver("UTF-8"));
 		xStream.alias("metaDataTagList", MetaData.class);
 		xStream.alias("metaDataValueList", MetaData.class);
@@ -66,15 +79,24 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 			fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
 			File xmlFile = new File(fileName);
 			List<MetaDataTag> metaDataTags = getMetaDataStore(testProject.getName()).get(testCaseName);
-			if (metaDataTags != null && metaDataTags.size() > 0) {
+			if (metaDataTags != null) {
 				Writer writer = new FileWriter(xmlFile);
 				List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
 				metaDataStoreObjects.add(new MetaDataStoreObject(testCaseName, metaDataTags));
 				xStream.toXML(metaDataStoreObjects, writer);
 				writer.close();
-				teamShareService.addAdditonalFile(testStructure, META_DATA_XML);
+				if (teamShareService != null) {
+					teamShareService.addAdditonalFile(testStructure, META_DATA_XML);
+				} else {
+					LOGGER.warn("Teamshare serive not configured for MetaDataService");
+				}
 			} else {
 				if (xmlFile.exists()) {
+					if (teamShareService != null) {
+						teamShareService.removeAdditonalFile(testStructure, META_DATA_XML);
+					} else {
+						LOGGER.warn("Teamshare serive not configured for MetaDataService");
+					}
 					if (!xmlFile.delete()) {
 						throw new RuntimeException("could not delete MetaDataFile " + fileName);
 					}
@@ -84,12 +106,6 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		} catch (IOException e) {
 			throw new RuntimeException("the metadata.xml " + fileName + " could not be written. Reason: " + e, e);
 		}
-	}
-
-	public void store(TestProject testProject) {
-
-		String rootPath = testProject.getTestProjectConfig().getProjectPath();
-		store(testProject.getFullName(), rootPath);
 	}
 
 	protected void store(String projectName, String projectPath) {
@@ -210,6 +226,11 @@ public class MetaDataServiceSimpleImpl extends MetaDataServiceAbstractBase {
 		this.teamShareService = teamShareService;
 	}
 
+	/**
+	 * The MetaDataStoreObject is used during the reading and writing of the
+	 * metadata.xml of a testcase. Its task is to order the entries in the
+	 * metadata.xml file to ensure the same order of the entries.
+	 */
 	static private class MetaDataStoreObject {
 		public String getTestCase() {
 			return testCase;

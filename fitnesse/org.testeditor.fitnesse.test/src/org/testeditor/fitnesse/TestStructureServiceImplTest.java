@@ -291,6 +291,12 @@ public class TestStructureServiceImplTest {
 			@Override
 			public void addAdditonalFile(TestStructure testStructur, String fileName) throws SystemException {
 			}
+
+			@Override
+			public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+				// TODO Auto-generated method stub
+
+			}
 		};
 	}
 }

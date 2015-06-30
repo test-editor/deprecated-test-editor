@@ -18,6 +18,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.metadata.core.MetaDataService;
 
@@ -42,7 +43,9 @@ public class RefreshTestExplorer {
 	@Execute
 	public void refreshTestExplorer() {
 		try {
-			metaDataService.refresh();
+			for (TestProject project : testProjectService.getProjects()) {
+				metaDataService.refresh(project);
+			}
 			testProjectService.reloadProjectList();
 		} catch (SystemException e) {
 			LOGGER.error("Error reloading Testprojects", e);

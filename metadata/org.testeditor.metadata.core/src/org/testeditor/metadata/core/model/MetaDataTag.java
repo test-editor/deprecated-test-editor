@@ -11,6 +11,11 @@
  *******************************************************************************/
 package org.testeditor.metadata.core.model;
 
+import java.util.Comparator;
+
+import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.metadata.core.MetaDataService;
+
 public class MetaDataTag {
 
 	public String getKey() {
@@ -80,6 +85,27 @@ public class MetaDataTag {
 
 	public String getGlobalKey() {
 		return getParentKey() + "-" + getKey();
+	}
+
+	static public class MetaDataTagComparator implements Comparator<MetaDataTag> {
+
+		private MetaDataService metaDataService;
+		private TestProject testProject;
+
+		public MetaDataTagComparator(MetaDataService metaDataService, TestProject testProject) {
+			this.metaDataService = metaDataService;
+			this.testProject = testProject;
+		}
+
+		@Override
+		public int compare(MetaDataTag metaDataTag1, MetaDataTag metaDataTag2) {
+			MetaDataValue metaDataValue1 = metaDataService.getMetaDataValue(metaDataTag1, testProject);
+			MetaDataValue metaDataValue2 = metaDataService.getMetaDataValue(metaDataTag2, testProject);
+			if (!metaDataValue1.getMetaData().getLabel().equals(metaDataValue2.getMetaData().getLabel())) {
+				return metaDataValue1.getMetaData().getLabel().compareTo(metaDataValue2.getMetaData().getLabel());
+			}
+			return metaDataValue1.getLabel().compareTo(metaDataValue2.getLabel());
+		}
 	}
 
 }
