@@ -11,12 +11,15 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.commons;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
+import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
@@ -27,7 +30,8 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.commons.tree.TestStructureTreeLabelProvider;
@@ -89,7 +93,7 @@ public class TestStructureTreeLabelProviderTest {
 		assertSame(labelProvider.getImage(new TestCase()), IconConstants.ICON_TESTCASE);
 		TestCase testCase = new TestCase();
 		TestResult testResult = new TestResult();
-		ServiceLookUpForTest.getService(TestProtocolService.class).set(testCase, testResult);
+		ServiceLookUpForTest.getService(TestStateProtocolService.class).set(testCase, testResult);
 		testResult.setWrong(0);
 		testResult.setException(0);
 		testResult.setIgnored(0);
@@ -100,11 +104,50 @@ public class TestStructureTreeLabelProviderTest {
 	}
 
 	/**
-	 * Tests the labeling of the teststructure depending on the context.
+	 * Tests the labeling of the teststructure depending on the fullname switch.
 	 */
-	// @Test
+	@Test
 	public void testToStringByContext() {
+		TestProject tp = new TestProject();
+		TestSuite ts = new TestSuite();
+		tp.setName("TestProject");
+		tp.addChild(ts);
+		TestCase tc = new TestCase();
+		ts.setName("MySuite");
+		tc.setName("TheTestCase");
+		ts.addChild(tc);
+		assertEquals("TheTestCase", labelProvider.getText(tc));
+		labelProvider.setShowFullName(true);
+		assertEquals("TestProject.MySuite.TheTestCase", labelProvider.getText(tc));
+		labelProvider.setShowFullName(false);
+		assertEquals("TheTestCase", labelProvider.getText(tc));
+	}
 
+	/**
+	 * Tests the label of a testcase with and without incoming changes.
+	 */
+	@Test
+	public void testStrinInformationAboutIncommingTeamChanges() {
+		IEclipseContext context = EclipseContextFactory.create();
+		context.set(TestProjectService.class, null);
+		final TestProject tpWithChanges = new TestProject();
+		tpWithChanges.setName("ChangedTp");
+		context.set(TestStateProtocolService.class, new TestStateProtocolService() {
+			@Override
+			public int getAvailableUpdatesFor(TestProject testProject) {
+				if (testProject == tpWithChanges) {
+					return 3;
+				}
+				return 0;
+			}
+		});
+		context.set(IEventBroker.class, new EventBroker());
+		TestStructureTreeLabelProvider provider = ContextInjectionFactory.make(TestStructureTreeLabelProvider.class,
+				context);
+		TestProject testProject = new TestProject();
+		testProject.setName("MyPrj");
+		assertEquals("MyPrj", provider.getText(testProject));
+		assertEquals("ChangedTp ↓ 3", provider.getText(tpWithChanges));
 	}
 
 }

@@ -41,6 +41,7 @@ import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.SVNProperties;
 import org.tmatesoft.svn.core.SVNURL;
@@ -64,6 +65,10 @@ import org.tmatesoft.svn.core.wc.SVNStatusClient;
 import org.tmatesoft.svn.core.wc.SVNUpdateClient;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
+import org.tmatesoft.svn.core.wc2.SvnGetInfo;
+import org.tmatesoft.svn.core.wc2.SvnLog;
+import org.tmatesoft.svn.core.wc2.SvnRevisionRange;
+import org.tmatesoft.svn.core.wc2.SvnTarget;
 
 /**
  * 
@@ -354,13 +359,29 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			if (!conflicts.isEmpty()) {
 				throw new SystemException(createConflictErrorMessage(conflicts, translationService));
 			}
-
+			fireEvents(testStructure);
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			String message = substitudeSVNException(e, translationService);
 			throw new SystemException(message, e);
 		}
 		return resultState;
+	}
+
+	/**
+	 * Fires the events about updating a teststructure.
+	 * 
+	 * if the event broker is null, nothing is done.
+	 * 
+	 * @param testStructure
+	 *            used in the vents to notify the clients.
+	 */
+	private void fireEvents(TestStructure testStructure) {
+		if (eventBroker != null) {
+			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
+			eventBroker.post(eventTopic, testStructure.getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET, testStructure.getFullName());
+		}
 	}
 
 	/**
@@ -819,6 +840,27 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			teamShareStatusService = context.get(TeamShareStatusService.class);
 		}
 		return this;
+	}
+
+	@Override
+	public int availableUpdatesCount(TestProject testProject) throws SystemException {
+		SVNClientManager clientManager = getSVNClientManager(testProject);
+		try {
+			SvnGetInfo info = clientManager.getWCClient().getOperationsFactory().createGetInfo();
+			info.setSingleTarget(SvnTarget.fromFile(getFile(testProject)));
+
+			SVNRevision localRevision = SVNRevision.create(info.run().getLastChangedRevision());
+			SvnLog log = clientManager.getWCClient().getOperationsFactory().createLog();
+
+			log.addRange(SvnRevisionRange.create(SVNRevision.HEAD, SVNRevision.HEAD));
+			SVNTeamShareConfig cfg = (SVNTeamShareConfig) testProject.getTestProjectConfig().getTeamShareConfig();
+			log.setSingleTarget(SvnTarget.fromURL(SVNURL.parseURIEncoded(cfg.getUrl() + "/" + testProject.getName())));
+			SVNLogEntry run = log.run();
+			return (int) (run.getRevision() - localRevision.getNumber());
+		} catch (SVNException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new SystemException(e.getLocalizedMessage(), e);
+		}
 	}
 
 }

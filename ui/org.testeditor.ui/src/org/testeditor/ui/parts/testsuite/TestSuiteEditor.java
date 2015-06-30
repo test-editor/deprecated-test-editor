@@ -101,6 +101,7 @@ public class TestSuiteEditor implements ITestStructureEditor {
 
 	@Inject
 	private IEclipseContext context;
+
 	@Inject
 	private EPartService partService;
 
@@ -184,10 +185,10 @@ public class TestSuiteEditor implements ITestStructureEditor {
 			}
 		});
 		referredTestCasesViewer.addOpenListener(getOpenListener(referredTestCasesViewer));
-		IEclipseContext subcontext = context.createChild();
-		subcontext.set("FullName", true);
-		referredTestCasesViewer.setLabelProvider(ContextInjectionFactory.make(TestStructureTreeLabelProvider.class,
-				subcontext));
+		TestStructureTreeLabelProvider labelProvider = ContextInjectionFactory.make(
+				TestStructureTreeLabelProvider.class, context);
+		labelProvider.setShowFullName(true);
+		referredTestCasesViewer.setLabelProvider(labelProvider);
 		referredTestCasesViewer.getTable().addSelectionListener(getTabeleSelectionListener());
 		referredTestCasesViewer.getTable()
 				.addMouseListener(new TestEditorInputPartMouseAdapter(eventBroker, testSuite));

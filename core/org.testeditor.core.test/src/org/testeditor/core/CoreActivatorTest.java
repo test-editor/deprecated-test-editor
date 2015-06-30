@@ -19,7 +19,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.plugins.TestEditorPlugInService;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 
 /**
  * Tests the activator.
@@ -39,7 +39,7 @@ public class CoreActivatorTest {
 	 */
 	@Test
 	public void testServiceRegistration() {
-		assertNotNull(ServiceLookUpForTest.getService(TestProtocolService.class));
+		assertNotNull(ServiceLookUpForTest.getService(TestStateProtocolService.class));
 		assertNotNull(ServiceLookUpForTest.getService(TestProjectService.class));
 		assertNotNull(ServiceLookUpForTest.getService(TestEditorPlugInService.class));
 		assertNotNull(ServiceLookUpForTest.getService(TestEditorConfigurationService.class));

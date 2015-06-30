@@ -302,7 +302,7 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED) String testStructureName) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) String testStructureName) {
 		try {
 			refreshTreeViewerOnTestStrucutre(testProjectService.findTestStructureByFullName(testStructureName));
 		} catch (SystemException e) {
