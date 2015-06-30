@@ -878,6 +878,37 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 	}
 
+	@Override
+	public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("call to addAdditonalFile: testStructure: " + testStructure.getFullName() + " for file  "
+					+ fileName);
+		}
+
+		TestProject testProject = testStructure.getRootElement();
+
+		SVNWCClient wcClient = getSVNClientManager(testProject).getWCClient();
+
+		File file = new File(getFolderName(testStructure) + File.separator + fileName);
+
+		if (!file.exists()) {
+			LOGGER.info("file " + fileName + " does not exists");
+			return;
+		}
+
+		try {
+			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(file, false);
+			if (info.isVersioned()) {
+				wcClient.doDelete(file, true, false, false);
+			}
+		} catch (Exception e) {
+			// TODO should be analyzed
+			// org.tmatesoft.svn.core.SVNException: svn: E150002: 'file' is
+			// already under version control
+			LOGGER.warn(e.getMessage(), e);
+		}
+
+	}
 	public int availableUpdatesCount(TestProject testProject) throws SystemException {
 		SVNClientManager clientManager = getSVNClientManager(testProject);
 		try {

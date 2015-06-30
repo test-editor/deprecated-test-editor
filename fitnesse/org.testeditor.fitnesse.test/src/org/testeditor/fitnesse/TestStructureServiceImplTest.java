@@ -296,6 +296,12 @@ public class TestStructureServiceImplTest {
 			public int availableUpdatesCount(TestProject testProject) {
 				return 0;
 			}
+
+			@Override
+			public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+				// TODO Auto-generated method stub
+
+			}
 		};
 	}
 }

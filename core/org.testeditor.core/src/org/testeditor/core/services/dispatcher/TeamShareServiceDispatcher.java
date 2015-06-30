@@ -209,4 +209,12 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 		return 0;
 	}
 
+	@Override
+	public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
+		if (teamShareService != null) {
+			teamShareService.removeAdditonalFile(testStructure, fileName);
+		}
+	}
+
 }

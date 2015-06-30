@@ -218,7 +218,18 @@ public interface TeamShareService {
 	void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
 
 	/**
-	 * This operation checks the team server for available updates of the
+	 * This method is used to remove a file from a testcase. @SeeaddAdditonalFile
+	 * 
+	 * @param testStructure
+	 *            where the data belongs to
+	 * @param fileName
+	 *            the name of the file without any path information.
+	 * @throws SystemException
+	 *             on error removing file from teamshare
+	 */
+	void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
+	/**
+	* This operation checks the team server for available updates of the
 	 * working copy of the project. It will return the number of commits that
 	 * can be loaded to the working copy.
 	 * 
