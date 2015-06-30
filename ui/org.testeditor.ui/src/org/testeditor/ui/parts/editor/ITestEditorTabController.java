@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.editor;
 
-import org.eclipse.e4.core.di.annotations.Creatable;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
@@ -23,10 +22,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * Interface that has to be implemented to add an additional tag to the
  * testEditorEditor.
  * 
- * @author Georg Portwich
  *
  */
-@Creatable
 public interface ITestEditorTabController {
 
 	/**
@@ -37,6 +34,8 @@ public interface ITestEditorTabController {
 	 * @param mpart
 	 *            - the mpart-Object of the TestEditorController about changes
 	 *            in the tab.
+	 * @param translationService
+	 *            used to translate the ui.
 	 * @return the composite
 	 */
 	Composite createTab(CTabFolder parent, MPart mpart, TestEditorTranslationService translationService);
@@ -54,12 +53,16 @@ public interface ITestEditorTabController {
 	 * was stored and is not handled in a transaction.
 	 * 
 	 * @throws SystemException
+	 *             on save failure in the backend.
 	 */
 	void save() throws SystemException;
 
 	/**
 	 * the label of the tab. It is in the responsibility of the implementation
 	 * to use the translation service.
+	 * 
+	 * @param translationService
+	 *            used to translate the ui.
 	 * 
 	 * @return the label
 	 */
