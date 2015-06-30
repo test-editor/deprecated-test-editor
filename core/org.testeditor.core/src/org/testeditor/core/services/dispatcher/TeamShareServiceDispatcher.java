@@ -201,9 +201,12 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
-		// TODO Auto-generated method stub
-
+	public int availableUpdatesCount(TestProject testProject) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
+		if (teamShareService != null) {
+			return teamShareService.availableUpdatesCount(testProject);
+		}
+		return 0;
 	}
 
 }
