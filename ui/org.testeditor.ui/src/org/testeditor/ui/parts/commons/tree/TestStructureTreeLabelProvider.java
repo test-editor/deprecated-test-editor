@@ -13,10 +13,11 @@ package org.testeditor.ui.parts.commons.tree;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.testeditor.core.jobs.TeamModificationCheckJob;
 import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
@@ -28,7 +29,7 @@ import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestProjectService;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.IconConstants;
 
 /**
@@ -39,10 +40,33 @@ import org.testeditor.ui.constants.IconConstants;
 public class TestStructureTreeLabelProvider extends LabelProvider implements ILabelProvider {
 
 	@Inject
-	private TestProtocolService testProtocolService;
+	private TestStateProtocolService testProtocolService;
 
 	@Inject
-	private IEclipseContext context;
+	@Optional
+	private TeamModificationCheckJob teamModification;
+
+	private boolean showFullName = false;
+
+	/**
+	 * Sets the state of the label provider, to show the name or the full name
+	 * of a teststructure. setting this property to true, will show the full
+	 * name, otherwise the name only is shown.
+	 * 
+	 * Examples:
+	 * <ul>
+	 * <li>name: TestCase</li>
+	 * <li>full name: TestProject.TestSuite.TestCase</li>
+	 * </ul>
+	 * 
+	 * Default is the name.
+	 * 
+	 * @param showFullName
+	 *            Property
+	 */
+	public void setShowFullName(boolean showFullName) {
+		this.showFullName = showFullName;
+	}
 
 	@Override
 	public Image getImage(Object element) {
@@ -160,8 +184,15 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 
 	@Override
 	public String getText(Object element) {
-		if (context.containsKey("FullName")) {
+		if (showFullName) {
 			return ((TestStructure) element).getFullName();
+		}
+		if (element instanceof TestProject) {
+			TestProject tp = (TestProject) element;
+			int updates = testProtocolService.getAvailableUpdatesFor(tp);
+			if (updates > 0) {
+				return tp.toString() + " ↓ " + updates;
+			}
 		}
 		return super.getText(element);
 	}

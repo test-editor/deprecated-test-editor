@@ -287,6 +287,11 @@ public class TestStructureServiceImplTest {
 					throws SystemException {
 				set.add("renamed");
 			}
+
+			@Override
+			public int availableUpdatesCount(TestProject testProject) {
+				return 0;
+			}
 		};
 	}
 }

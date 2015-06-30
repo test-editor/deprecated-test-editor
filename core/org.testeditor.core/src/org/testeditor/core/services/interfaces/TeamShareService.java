@@ -203,4 +203,18 @@ public interface TeamShareService {
 	void rename(TestStructure testStructure, String newName, TranslationService translationService)
 			throws SystemException;
 
+	/**
+	 * This operation checks the team server for available updates of the
+	 * working copy of the project. It will return the number of commits that
+	 * can be loaded to the working copy.
+	 * 
+	 * @param testProject
+	 *            to get the team server from.
+	 * @return number af commits, that can be applied to this project in the
+	 *         working copy.
+	 * @throws SystemException
+	 *             on error accessing the team server.
+	 */
+	int availableUpdatesCount(TestProject testProject) throws SystemException;
+
 }
