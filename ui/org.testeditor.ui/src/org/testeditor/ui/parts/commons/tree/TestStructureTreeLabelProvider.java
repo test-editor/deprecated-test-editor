@@ -13,11 +13,9 @@ package org.testeditor.ui.parts.commons.tree;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.testeditor.core.jobs.TeamModificationCheckJob;
 import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
@@ -41,10 +39,6 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 
 	@Inject
 	private TestStateProtocolService testProtocolService;
-
-	@Inject
-	@Optional
-	private TeamModificationCheckJob teamModification;
 
 	private boolean showFullName = false;
 
