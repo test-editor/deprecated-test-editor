@@ -218,14 +218,6 @@ public class TestScenarioUsageHandler {
 
 		/**
 		 * 
-		 * @return the name of the scenario.
-		 */
-		public String getScenarioName() {
-			return scenarioName;
-		}
-
-		/**
-		 * 
 		 * @return List of the names of the testflows, how are using the
 		 *         scenario.
 		 */

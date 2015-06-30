@@ -216,7 +216,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	 */
 	public boolean canExecuteOnTestScenarioRule(IStructuredSelection selection) {
 		boolean onlyTestKomponents = true;
-		Iterator iter = selection.iterator();
+		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
 			if (!(ts instanceof TestScenario)) {
@@ -234,7 +234,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	 *         under version-control.
 	 */
 	public boolean canExecuteTeamShareApproveOrUpdate(IStructuredSelection selection) {
-		Iterator iter = selection.iterator();
+		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
 			if (ts.getRootElement().getTestProjectConfig().getTeamShareConfig() == null) {
@@ -252,7 +252,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	 *         else false.
 	 */
 	public boolean canExecuteOnNonScenarioSuiteParents(IStructuredSelection selection) {
-		Iterator iter = selection.iterator();
+		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
 			if (ts instanceof ScenarioSuite && !((ScenarioSuite) ts).getTestChildren().isEmpty()) {
@@ -269,7 +269,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * @return true on instance of TestFlow otherwise false.
 	 */
 	public boolean canExecuteOnTestFlowRule(IStructuredSelection selection) {
-		Iterator iter = selection.iterator();
+		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();
 			if (!(ts instanceof TestFlow)) {
