@@ -31,7 +31,6 @@ import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
@@ -49,9 +48,6 @@ public class RunTestHandler {
 
 	@Inject
 	private static TestEditorTranslationService translationService;
-
-	@Inject
-	private TestStructureService testStructureService;
 
 	private TestResult testResult;
 
@@ -99,7 +95,6 @@ public class RunTestHandler {
 			if (partService.saveAll(true)) {
 				LOGGER.info("Running Test: " + selectedTestStructure);
 
-				context.set("ActualTCService", testStructureService);
 				TestExecutionProgressDialog dlg = ContextInjectionFactory.make(TestExecutionProgressDialog.class,
 						context);
 
