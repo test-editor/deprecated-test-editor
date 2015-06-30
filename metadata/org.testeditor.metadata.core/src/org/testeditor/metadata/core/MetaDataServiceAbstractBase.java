@@ -17,26 +17,49 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.inject.Inject;
-
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaData.MetaDataTagListComparator;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.metadata.core.model.MetaDataValue;
 
+/**
+ * The MetaDataServiceAbstractBase implements the MetaDataService without
+ * implementing the persistence.<br/>
+ * The MetaDataServiceAbstractBase contains three different maps where the data
+ * is stored:
+ * <ul>
+ * <li>metaDataMap - the repository of all MetaData information of the project.
+ * (A Meta data constains of a name and a list of MetDataValues). It does not
+ * contains the mapping of testCases to the MetaData.
+ * <li>metaDataStore - a map of the testcases and the associated metaDataValues.
+ * the metaDataValues are stored as a list MetaDataTags. A metaDataTag refers to
+ * a MetaDataValue by a key.
+ * <li>allMetaDataValues - a map of all metaDataValues identified by there
+ * key.This is the connection between the metaDataTag and the metaDataValue.
+ * </ul>
+ * Every project has its own metaData. So all three datastructures exist for
+ * every project. They are stored in maps and are identified by the projectname.
+ *
+ */
 public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
-	@Inject
-	private TestProjectService testProjectService;
-
 	private Map<String, Map<String, MetaData>> metaDataMap = new TreeMap<String, Map<String, MetaData>>();
-	private Map<String, Map<String, MetaDataValue>> allMetaDataValues = new TreeMap<String, Map<String, MetaDataValue>>();
 	private Map<String, Map<String, List<MetaDataTag>>> metaDataStore = new TreeMap<String, Map<String, List<MetaDataTag>>>();
+	private Map<String, Map<String, MetaDataValue>> allMetaDataValues = new TreeMap<String, Map<String, MetaDataValue>>();
 
+	/**
+	 * Get the repository of all MetaData information of a project. (A Meta data
+	 * contains of a name and a list of MetDataValues). It does not contains the
+	 * mapping of testCases to the MetaData.
+	 * 
+	 * @see MetaDataServiceAbstractBase.getMetaDataStore
+	 * @param key
+	 *            - the name of the project
+	 * @return the MetaDataMap for the project.
+	 */
 	protected Map<String, MetaData> getMetaDataMap(String key) {
 		if (!metaDataMap.containsKey(key)) {
 			throw new RuntimeException("no data for  " + key + " in metaDataMap");
@@ -44,6 +67,15 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		return metaDataMap.get(key);
 	}
 
+	/**
+	 * A Map used for the lookup of the MetaDataValue and the MetaDataTag from a
+	 * testCase.
+	 * 
+	 * @see MetaDataServiceAbstractBase.getMetaDataStore
+	 * @param key
+	 *            - the name of the project
+	 * @return the AllMetaDataValues for the project.
+	 */
 	protected Map<String, MetaDataValue> getAllMetaDataValues(String key) {
 		if (!allMetaDataValues.containsKey(key)) {
 			throw new RuntimeException("no data for  " + key + " in allMetaDataValues");
@@ -51,6 +83,15 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		return allMetaDataValues.get(key);
 	}
 
+	/**
+	 * The repository of the testcases and the associated metaDataValues. The
+	 * metaDataValues of a testcase are stored as a list of MetaDataTags. A
+	 * metaDataTag refers to a MetaDataValue by a key.
+	 * 
+	 * @param key
+	 *            - the name of the project
+	 * @return the MetaDataStore for the project.
+	 */
 	protected Map<String, List<MetaDataTag>> getMetaDataStore(String key) {
 		if (!metaDataStore.containsKey(key)) {
 			metaDataStore.put(key, new TreeMap<String, List<MetaDataTag>>());
@@ -58,9 +99,23 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		return metaDataStore.get(key);
 	}
 
+	/**
+	 * Constructor for the MetaDataServiceAbstractBase. Setup all internal
+	 * datastructures but without data.
+	 */
 	public MetaDataServiceAbstractBase() {
 	}
 
+	/**
+	 * Initializes the data for a project. Data are only read if no data for the
+	 * project is stored in the interal structures. To force the reload of the
+	 * data, the method refresh has to be called. <br>
+	 * The method will only prepare the datastructures for the project. The
+	 * access to the persistence is done in the abstact method doInit.
+	 * 
+	 * @param testProject
+	 *            the project
+	 */
 	protected void init(TestProject testProject) {
 		String projectName = testProject.getFullName();
 		if (!metaDataMap.containsKey(projectName)) {
@@ -71,6 +126,12 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		}
 	}
 
+	/**
+	 * abstract method ot read metadata from the persistence.
+	 * 
+	 * @param testProject
+	 *            - the testproject
+	 */
 	abstract protected void doInit(TestProject testProject);
 
 	@Override
@@ -115,6 +176,15 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
 	}
 
+	/**
+	 * abstract method to store metadata for a teststructure. The implementation
+	 * is done in the persistence.
+	 * 
+	 * @param testStructure
+	 *            - the teststructure
+	 * @throws SystemException
+	 *             - a systemexception
+	 */
 	abstract protected void store(TestStructure testStructure) throws SystemException;
 
 	@Override
@@ -123,9 +193,12 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		String projectName = testStructure.getRootElement().getFullName();
 		String newFullName = testStructure.getParent().getFullName() + "." + newName;
 		getMetaDataStore(projectName).put(newFullName, getMetaDataTags(testStructure));
-		getMetaDataStore(projectName).remove(testStructure.getFullName());
+		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
 		store(testStructure);
+		String oldName = testStructure.getName();
+		testStructure.setName(newName);
 		store(testStructure);
+		testStructure.setName(oldName);
 	}
 
 	@Override
@@ -185,25 +258,13 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	}
 
 	@Override
-	public List<TestProject> getAllProjects() {
-		return testProjectService.getProjects();
-	}
+	public void refresh(TestProject testProject) {
+		if (metaDataMap.containsKey(testProject.getFullName())) {
+			metaDataMap.remove(testProject.getFullName());
+			allMetaDataValues.remove(testProject.getFullName());
+			metaDataStore.remove(testProject.getFullName());
+		}
 
-	@Override
-	public void refresh() {
-
-		metaDataMap.clear();
-		allMetaDataValues.clear();
-		metaDataStore.clear();
-
-	}
-
-	public void unbindTestProjectService(TestProjectService testProjectService) {
-		this.testProjectService = null;
-	}
-
-	public void bindTestProjectService(TestProjectService testProjectService) {
-		this.testProjectService = testProjectService;
 	}
 
 }

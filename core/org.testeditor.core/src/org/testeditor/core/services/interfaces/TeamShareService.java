@@ -213,8 +213,20 @@ public interface TeamShareService {
 	 * @param fileName
 	 *            the name of the file without any path information.
 	 * @throws SystemException
-	 *             on error renaming teststructure.
+	 *             on error adding file to teamshare
 	 */
-	void addAdditonalFile(TestStructure testStructur, String fileName) throws SystemException;
+	void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
+
+	/**
+	 * This method is used to remove a file from a testcase. @SeeaddAdditonalFile
+	 * 
+	 * @param testStructure
+	 *            where the data belongs to
+	 * @param fileName
+	 *            the name of the file without any path information.
+	 * @throws SystemException
+	 *             on error removing file from teamshare
+	 */
+	void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
 
 }
