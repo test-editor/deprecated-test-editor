@@ -32,7 +32,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.handlers.DeleteTestHandler;
@@ -48,7 +48,7 @@ public class PurgeTestHistoryHandler {
 	@Inject
 	private TestStructureService testStructureService;
 	@Inject
-	private TestProtocolService testProtocolService;
+	private TestStateProtocolService testProtocolService;
 
 	private static final Logger LOGGER = Logger.getLogger(DeleteTestHandler.class);
 

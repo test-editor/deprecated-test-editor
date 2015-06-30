@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.util;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -36,7 +37,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
  * Integration Test for TestProtocolService.
  * 
  */
-public class TestProtocolServiceTest {
+public class TestStateProtocolServiceTest {
 
 	/**
 	 * Tests that the Service is registered in the Osgi context.
@@ -47,7 +48,7 @@ public class TestProtocolServiceTest {
 	@Test
 	public void testServiceIsRegistered() throws Exception {
 		assertNotNull("Service retriving from osgi is not null.",
-				ServiceLookUpForTest.getService(TestProtocolService.class));
+				ServiceLookUpForTest.getService(TestStateProtocolService.class));
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testRunsSuccessfully() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestCase testCase = new TestCase();
 		testCase.setName("TestCase1");
 		protocolService.set(testCase, new TestResult());
@@ -72,7 +73,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testRunsNotSuccessfully() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestResult testResult = new TestResult();
 		testResult.setException(0);
 		testResult.setIgnored(0);
@@ -102,7 +103,7 @@ public class TestProtocolServiceTest {
 		TestCase testCase = new TestCase();
 		testCase.setName("TestCase3");
 
-		testResult = new TestProtocolService().get(testCase);
+		testResult = new TestStateProtocolService().get(testCase);
 
 		assertNull(testResult);
 
@@ -115,7 +116,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testRemoveChangedTestCaseFromProtocol() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestCase testCase = new TestCase();
 		testCase.setName("TestCase1");
 		protocolService.set(testCase, new TestResult());
@@ -129,7 +130,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testRunSuiteWithChildren() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestCase testCase = new TestCase();
 		testCase.setName("MyName");
 		TestSuite testSuite = new TestSuite();
@@ -149,7 +150,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testRunSuiteWithReferedTestCases() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestResult testResult = new TestResult();
 		TestResult tcTestResult = new TestResult();
 		tcTestResult.setFullName("MyName");
@@ -168,7 +169,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testRemoveChangedReferedTestCaseFromProtocol() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestResult testResult = new TestResult();
 		TestResult tcTestResult = new TestResult();
 		tcTestResult.setFullName("MyName");
@@ -189,7 +190,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testEventBrokerEventHanlderRegistration() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		IEclipseContext context = EclipseContextFactory.create();
 		final Map<String, EventHandler> topics = new HashMap<String, EventHandler>();
 		context.set(IEventBroker.class, new IEventBroker() {
@@ -240,7 +241,7 @@ public class TestProtocolServiceTest {
 	 */
 	@Test
 	public void testDeleteEventHandlerOnFullNameAndParentName() {
-		TestProtocolService protocolService = new TestProtocolService();
+		TestStateProtocolService protocolService = new TestStateProtocolService();
 		TestProject tp = new TestProject();
 		tp.setName("TP");
 		TestCase tc = new TestCase();
@@ -258,6 +259,16 @@ public class TestProtocolServiceTest {
 		event = new Event(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED, properties);
 		protocolService.getDeletedTestStructureEventHandler().handleEvent(event);
 		assertNull("Deleting project also deletes child testcase.", protocolService.get(tc));
+	}
+
+	/**
+	 * Tests that the Service still works on unknown projects with an zero
+	 * information.
+	 */
+	@Test
+	public void testGetZeroUpdatesOnunknownProject() {
+		TestStateProtocolService protocolService = new TestStateProtocolService();
+		assertEquals(0, protocolService.getAvailableUpdatesFor(new TestProject()));
 	}
 
 }
