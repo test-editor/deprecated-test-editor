@@ -91,6 +91,7 @@ public class TestExecutionProgressDialogTest {
 		context.set(Shell.class, shell);
 		context.set("ActualTCService", getTestStructureServiceMock());
 		context.set(IEventBroker.class, null);
+		context.set(TestStructureService.class, null);
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
 			@Override
 			public String translate(String key, Object... params) {
