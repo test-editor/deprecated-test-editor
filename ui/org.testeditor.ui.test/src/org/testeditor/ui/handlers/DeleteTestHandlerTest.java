@@ -39,6 +39,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.adapter.TestScenarioServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -432,6 +433,7 @@ public class DeleteTestHandlerTest {
 		context.set(TestStructureService.class, getTestStructureServiceMock(this));
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(TestScenarioService.class, getTestScenrioServiceMock());
+		context.set(MetaDataService.class, null);
 		return ContextInjectionFactory.make(DeleteTestHandler.class, context);
 	}
 
