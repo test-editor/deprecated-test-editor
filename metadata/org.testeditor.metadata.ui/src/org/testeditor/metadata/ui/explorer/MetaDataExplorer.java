@@ -205,7 +205,7 @@ public class MetaDataExplorer {
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED) TestStructure testStructure) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) TestStructure testStructure) {
 		refreshTreeViewerOnTestStrucutre(testStructure);
 	}
 

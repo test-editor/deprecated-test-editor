@@ -32,7 +32,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.reporting.TestExecutionProgressDialog;
@@ -90,7 +90,7 @@ public class RunTestHandler {
 	 *            of to handle the dirty editor parts.
 	 */
 	@Execute
-	public void execute(@Active Shell shell, TestProtocolService protocolService, IEclipseContext context,
+	public void execute(@Active Shell shell, TestStateProtocolService protocolService, IEclipseContext context,
 			IEventBroker eventBroker, EPartService partService) {
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
@@ -137,7 +137,7 @@ public class RunTestHandler {
 				refreshTestStructureInTree(ts, eventBroker);
 			}
 		}
-		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_CNAGED, testStructure.getFullName());
+		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testStructure.getFullName());
 	}
 
 }
