@@ -226,13 +226,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		}
 	}
 
-	@Inject
-	//@Optional
-	public void reloadLibrary(
-			@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
-		LOGGER.info("library for project " + testProject.getName() + " must be reloaded");
-	}
-
 	/**
 	 * Ask user about replacing the unsaved content of the editor.
 	 * 

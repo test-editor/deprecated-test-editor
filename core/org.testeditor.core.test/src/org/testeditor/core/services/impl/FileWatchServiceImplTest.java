@@ -16,6 +16,10 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.FileWatchService;
 
+/**
+ * 
+ *
+ */
 public class FileWatchServiceImplTest {
 
 	@Ignore("test is in work")

@@ -11,9 +11,12 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.model.teststructure.TestProject;
 
 public interface FileWatchService {
 
 	void watch(TestProject testProject);
+
+	void setContext(IEclipseContext context);
 }
