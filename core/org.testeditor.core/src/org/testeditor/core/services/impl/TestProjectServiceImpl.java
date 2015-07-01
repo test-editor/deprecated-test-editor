@@ -27,11 +27,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -72,7 +69,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 	private List<TestProject> oldTestProjects = new ArrayList<TestProject>();
 	private TestServerService testServerService;
-	
+
 	private FileWatchService fileWatchService;
 
 	/**
@@ -106,10 +103,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		this.fileLocatorService = fileLocatorService;
 		LOGGER.info("Bind FileLocatorService");
 	}
-	
+
 	/**
 	 * 
-	 * @param fileLocatorService
+	 * @param fileWatchService
 	 *            used in this service
 	 * 
 	 */
@@ -117,10 +114,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		this.fileWatchService = fileWatchService;
 		LOGGER.info("Bind FileWatchService");
 	}
-	
+
 	/**
 	 * 
-	 * @param fileLocatorService
+	 * @param fileWatchService
 	 *            used in this service
 	 * 
 	 */
@@ -128,7 +125,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		this.fileWatchService = null;
 		LOGGER.info("Unbind FileWatchService");
 	}
-
 
 	/**
 	 * 
@@ -243,17 +239,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
-		
-		System.out.println("------------------ CREATEPROJECT  --------------------");
-		
-		// Testcode for filewatcher !!!!!
-		fileWatchService.watch(testProject);
-		
+
 		return testProject;
 	}
-	
 
-	
 	/**
 	 * Set the port from archived {@link TestProject} Object to new generated
 	 * {@link TestProject} object.
@@ -1082,6 +1071,11 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	@Override
 	public Object compute(IEclipseContext context, String contextKey) {
 		eventBroker = context.getActive(IEventBroker.class);
+		fileWatchService.setContext(context);
+		for (TestProject testProject : testProjects) {
+			fileWatchService.watch(testProject);
+
+		}
 		return this;
 	}
 

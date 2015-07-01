@@ -11,21 +11,14 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.action.ProjectActionGroups;
@@ -35,7 +28,6 @@ import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
-import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -50,68 +42,39 @@ public class ReloadLibraryHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ReloadLibraryHandler.class);
 
+	@Inject
+	private IEclipseContext context;
+
+	@Inject
+	private EPartService partService;
+
+	@Inject
+	private LibraryReaderService libraryReaderService;
+
+	@Inject
+	private ActionGroupService actionGroupService;
+
 	/**
 	 * Executes the reload of the library.
 	 * 
-	 * @param context
-	 *            EclipseContext used to create the save action.
-	 * @param partService
-	 *            {@link EPartService}
-	 * @param libraryReaderService
-	 *            LibraryReaderService
-	 * @param actionGroupService
-	 *            ActionGroupService
+	 * @param testProject
+	 *            TestProject
+	 * 
 	 */
 	@Execute
-	public void execute(final IEclipseContext context, EPartService partService,
-			final LibraryReaderService libraryReaderService, final ActionGroupService actionGroupService) {
+	public void execute(TestProject testProject) {
 
 		if (!partService.saveAll(true)) {
 			return;
 		}
-		Collection<MPart> parts = partService.getParts();
-		MPart mpart = null;
-		for (MPart mPart2 : parts) {
-			if (mPart2.getElementId().equals(TestProjectEditor.ID) && (mPart2.getObject()) != null && mPart2.isOnTop()) {
-				mpart = mPart2;
-				break;
-			}
+
+		try {
+			relaodLibrary(testProject, context.get(IEventBroker.class), actionGroupService, libraryReaderService);
+		} catch (SystemException e) {
+			LOGGER.error("Error geting children of project", e);
+			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e.getLocalizedMessage());
 		}
-		if (mpart != null) {
 
-			final TestProject testProject = ((TestProjectEditor) mpart.getObject()).getTestProject();
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-
-			try {
-				dialog.run(true, false, new IRunnableWithProgress() {
-
-					@Override
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-						monitor.beginTask(translationService.translate("%testprojecteditor.reloadLibrary"),
-								IProgressMonitor.UNKNOWN);
-						Display.getDefault().asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								try {
-									relaodLibrary(testProject, context.get(IEventBroker.class), actionGroupService,
-											libraryReaderService);
-								} catch (SystemException e) {
-									LOGGER.error("Error geting children of project", e);
-									MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error",
-											e.getLocalizedMessage());
-								}
-							}
-						});
-					}
-				});
-			} catch (InvocationTargetException e1) {
-				LOGGER.trace("Error starting Test Server", e1);
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e1.getLocalizedMessage());
-			} catch (InterruptedException e1) {
-				LOGGER.trace("Error starting Test Server", e1);
-				MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e1.getLocalizedMessage());
-			}
-		}
 	}
 
 	/**
