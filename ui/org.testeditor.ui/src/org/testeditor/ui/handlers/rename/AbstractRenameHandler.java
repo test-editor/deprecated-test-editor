@@ -150,12 +150,15 @@ public abstract class AbstractRenameHandler {
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
 		testStructureService.rename(selectedTestStructure, sbname);
-		getMetaDataService().rename(selectedTestStructure, sbname);
+		if (getMetaDataService() != null) {
+			getMetaDataService().rename(selectedTestStructure, sbname);
+		}
 	}
 
 	/**
-	 * after the renaming of the test-structure there mid needed some special
-	 * operations for the specific class.
+	 * Empty hook method. Subclasses can override this method to add special
+	 * behavior. After the renaming of the test-structure there mid needed some
+	 * special operations for the specific class.
 	 * 
 	 * @param selected
 	 *            {@link TestStructure}
@@ -164,7 +167,8 @@ public abstract class AbstractRenameHandler {
 	 * @throws SystemException
 	 *             if the special operation failed.
 	 */
-	protected abstract void executeSpecials(TestStructure selected, String sbname) throws SystemException;
+	protected void executeSpecials(TestStructure selected, String sbname) throws SystemException {
+	}
 
 	/**
 	 * if the teststructure is changed, the user will be ask to save before run
