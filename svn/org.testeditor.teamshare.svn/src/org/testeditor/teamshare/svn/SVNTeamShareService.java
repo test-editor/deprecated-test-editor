@@ -789,11 +789,16 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			for (String split : splits) {
 				if (split.contains(searchString)) {
-					File fileToDeleteLc = new File(split.substring(0, split.lastIndexOf(searchString) - 1));
+					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
+					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
 						// TODO send an event asynchron to delete the
 						// testStructure via the TestStructureService and delete
 						// the history
+					} else {
+						if (!fileToDeleteLc.delete()) {
+							throw new SystemException("could not delete file " + fileName);
+						}
 					}
 				}
 			}
