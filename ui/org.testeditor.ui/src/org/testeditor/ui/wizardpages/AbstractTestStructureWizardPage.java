@@ -233,10 +233,10 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		}
 
 		// Ensure the naming-rule via regular expression matching
-		if (!NAME_PATTERN.matcher(name).matches()) {
-			this.setErrorMessage(translationService.translate("%wizard.error.msg.nameDoesntMatchThePattern"));
-			return false;
-		}
+//		if (!NAME_PATTERN.matcher(name).matches()) {
+//			this.setErrorMessage(translationService.translate("%wizard.error.msg.nameDoesntMatchThePattern"));
+//			return false;
+//		}
 		// On renaming check if name already exist on the current tree-path,
 		// only if it differs from the old name...
 		if (getSelectedTestStrucutureElement() != null) {
