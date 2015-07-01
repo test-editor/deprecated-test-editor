@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
@@ -35,6 +36,7 @@ public class RefreshTestExplorer {
 	private TestProjectService testProjectService;
 
 	@Inject
+	@Optional
 	private MetaDataService metaDataService;
 
 	/**
@@ -43,14 +45,31 @@ public class RefreshTestExplorer {
 	@Execute
 	public void refreshTestExplorer() {
 		try {
-			for (TestProject project : testProjectService.getProjects()) {
-				metaDataService.refresh(project);
+			if (getMetaDataService() != null) {
+				for (TestProject project : testProjectService.getProjects()) {
+					getMetaDataService().refresh(project);
+				}
 			}
 			testProjectService.reloadProjectList();
 		} catch (SystemException e) {
 			LOGGER.error("Error reloading Testprojects", e);
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "System-Exception", e.getLocalizedMessage());
 		}
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an info-message is displayed and null will be
+	 * returned
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() throws SystemException {
+		if (metaDataService == null) {
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
+
 	}
 
 }

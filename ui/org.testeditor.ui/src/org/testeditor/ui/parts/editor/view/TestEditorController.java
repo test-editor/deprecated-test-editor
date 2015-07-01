@@ -114,6 +114,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Inject
 	private TestScenarioService testScenarioService;
 	@Inject
+	@Optional
 	private MetaDataService metaDataService;
 
 	@Inject
@@ -261,7 +262,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	protected void loadAndRerender() {
 		if (getTestStructure() != null) {
 			TestFlow foundTestStructure = findTestStructureByFullName(getTestStructure().getFullName());
-			metaDataService.refresh(foundTestStructure.getRootElement());
+			if (getMetaDataService() != null) {
+				getMetaDataService().refresh(foundTestStructure.getRootElement());
+			}
 			if (foundTestStructure == null) {
 				partService.hidePart(mpart, true);
 			}
@@ -1508,6 +1511,19 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			LOGGER.info("MetaDataTab is not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
 		}
 		return iTestEditorTabController;
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an infomessage will be displayed.
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
 	}
 
 }
