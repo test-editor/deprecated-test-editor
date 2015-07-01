@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Signal Iduna Corporation - initial API and implementation
+ * akquinet AG
+ *******************************************************************************/
 package org.testeditor.core.services.impl;
 
 import java.io.File;
@@ -11,26 +22,46 @@ import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestProject;
 
+/**
+ * Class for watching on filesystem if given list of files in given folder were
+ * changed.
+ *
+ */
 public class FileWatcher {
 
-	public static final List<String> WATCH_FILE_LIST = Arrays.asList("AllActionGroups.xml",
-			"TechnicalBindingTypeCollection.xml");
+	private static final Logger LOGGER = Logger.getLogger(FileWatcher.class);
+
+	private List<String> watchFileList = Arrays.asList("AllActionGroups.xml", "TechnicalBindingTypeCollection.xml");
 
 	private TestProject testProjekt;
-	
+
 	@Inject
 	private IEventBroker eventBroker;
 
+	/**
+	 * Default Constructor.
+	 * 
+	 * @param testProjekt
+	 *            {@link TestProject} for watching
+	 */
 	@Inject
 	public FileWatcher(TestProject testProjekt) {
 		this.testProjekt = testProjekt;
 
 	}
 
+	/**
+	 * Watches changes on given list of files and sends a notification to
+	 * observer.
+	 * 
+	 * @throws Exception
+	 *             will be thrown if starting of monitor fails.
+	 */
 	public void watch() throws Exception {
 		// The monitor will perform polling on the folder every 5 seconds
 		final long pollingInterval = 5 * 1000;
@@ -51,22 +82,16 @@ public class FileWatcher {
 			@Override
 			public void onFileChange(File file) {
 
-				if (WATCH_FILE_LIST.contains(file.getName())) {
+				if (watchFileList.contains(file.getName())) {
 					try {
 
-						System.out.println("Projekt: " + testProjekt.getName());
-						System.out.println("-------------------------------------------------------------");
-						System.out.println("File changed: " + file.getCanonicalPath());
-						System.out.println("File still exists in location: " + file.exists());
-						
-						if (eventBroker != null) {
-							eventBroker.post(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED,
-									testProjekt);
-						}
-						
-						
+						LOGGER.info("Projekt: " + testProjekt.getName());
+						LOGGER.info("File changed: " + file.getCanonicalPath());
+
+						notifyObserver();
+
 					} catch (IOException e) {
-						e.printStackTrace(System.err);
+						LOGGER.error(e.getMessage(), e);
 					}
 				}
 			}
@@ -75,5 +100,14 @@ public class FileWatcher {
 		observer.addListener(listener);
 		monitor.addObserver(observer);
 		monitor.start();
+	}
+
+	/**
+	 * Send notification by eventbroker for inform observer.
+	 */
+	private void notifyObserver() {
+		if (eventBroker != null) {
+			eventBroker.post(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED, testProjekt);
+		}
 	}
 }
