@@ -100,7 +100,9 @@ public class DeleteTestHandler {
 									testProjectService.deleteProject((TestProject) testStructure);
 								} else {
 									testStructureService.delete(testStructure);
-									getMetaDataService().delete(testStructure);
+									if (getMetaDataService() != null) {
+										getMetaDataService().delete(testStructure);
+									}
 								}
 							} catch (SystemException | IOException e) {
 								LOGGER.error("Error deleting", e);
@@ -252,17 +254,15 @@ public class DeleteTestHandler {
 	}
 
 	/**
-	 * Getter for the metaData Service. Checks if the service is set and throws
-	 * an Exception with a message if the service was not configured.
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an info-message is displayed and null will be
+	 * returned
 	 * 
 	 * @return the service
-	 * @throws SystemException
-	 *             - exception if the service is not configured
 	 */
 	private MetaDataService getMetaDataService() throws SystemException {
 		if (metaDataService == null) {
-			throw new SystemException(
-					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 
