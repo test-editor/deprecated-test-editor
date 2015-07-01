@@ -18,6 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
@@ -59,6 +60,8 @@ import org.testeditor.ui.wizardpages.AbstractTestStructureWizardPage;
  * 
  */
 public abstract class AbstractRenameHandler {
+
+	private static final Logger LOGGER = Logger.getLogger(AbstractRenameHandler.class);
 
 	@Inject
 	private TestStructureService testStructureService;
@@ -316,15 +319,14 @@ public abstract class AbstractRenameHandler {
 	protected abstract AbstractRenameTestStructureWizardPage getRenameTestStructureWizardPage(TestStructure selectedTS);
 
 	/**
-	 * Getter for the metaData Service. Checks if the service is set and throws
-	 * an Exception with a message if the service was not configured.
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an infomessage will be displayed.
 	 * 
 	 * @return the service
 	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
-			throw new RuntimeException(
-					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 
