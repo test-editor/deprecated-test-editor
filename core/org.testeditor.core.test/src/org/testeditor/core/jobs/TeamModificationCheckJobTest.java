@@ -28,6 +28,7 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.dispatcher.TeamShareServiceDispatcher;
+import org.testeditor.core.services.impl.FileWatchServiceImpl;
 import org.testeditor.core.services.impl.TestProjectServiceImpl;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -49,7 +50,7 @@ public class TeamModificationCheckJobTest {
 	public void testProjectSelectionWithTeamOnly() throws Exception {
 		IEclipseContext context = EclipseContextFactory.create();
 		final Set<TestProject> monitor = new HashSet<TestProject>();
-		context.set(TestProjectService.class, new TestProjectServiceImpl() {
+		TestProjectServiceImpl projectServiceImpl = new TestProjectServiceImpl() {
 			@Override
 			public List<TestProject> getProjects() {
 				List<TestProject> result = new ArrayList<TestProject>();
@@ -66,7 +67,9 @@ public class TeamModificationCheckJobTest {
 				result.add(tp);
 				return result;
 			}
-		});
+		};
+		projectServiceImpl.bind(new FileWatchServiceImpl());
+		context.set(TestProjectService.class, projectServiceImpl);
 		context.set(TeamShareService.class, new TeamShareServiceDispatcher() {
 			@Override
 			public int availableUpdatesCount(TestProject testProject) throws SystemException {
@@ -97,14 +100,16 @@ public class TeamModificationCheckJobTest {
 				return true;
 			}
 		});
-		context.set(TestProjectService.class, new TestProjectServiceImpl() {
+		TestProjectServiceImpl projectServiceImpl = new TestProjectServiceImpl() {
 			@Override
 			public List<TestProject> getProjects() {
 				List<TestProject> result = new ArrayList<TestProject>();
 				result.add(tp);
 				return result;
 			}
-		});
+		};
+		projectServiceImpl.bind(new FileWatchServiceImpl());
+		context.set(TestProjectService.class, projectServiceImpl);
 		context.set(TeamShareService.class, new TeamShareServiceDispatcher() {
 			@Override
 			public int availableUpdatesCount(TestProject testProject) throws SystemException {
