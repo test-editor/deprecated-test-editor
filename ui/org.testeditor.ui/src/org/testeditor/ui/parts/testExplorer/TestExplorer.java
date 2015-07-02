@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testExplorer;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -63,6 +64,7 @@ import org.testeditor.ui.parts.editor.view.TestEditorTestCaseController;
 import org.testeditor.ui.parts.editor.view.TestEditorTestScenarioController;
 import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
 import org.testeditor.ui.parts.testsuite.TestSuiteEditor;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * The Test-Explorer allows to browse the hierarchy of the test projects
@@ -84,6 +86,9 @@ public class TestExplorer {
 
 	@Inject
 	private TeamShareStatusService teamShareStatusService;
+
+	@Inject
+	private TestEditorTranslationService translationService;
 
 	private TestStructureTree testStructureTree;
 
@@ -242,10 +247,13 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	public void reloadLibrary(
-			@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
-		MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Änderung der Bibliotheksdateien",
-				"Bibliotheksdateien des Projektes " + testProject.getName()
-						+ " haben sich geändert, diese werden nun aktualisiert.");
+
+	@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
+		MessageDialog.openInformation(
+				Display.getCurrent().getActiveShell(),
+				translationService.translate("%reload.library.message.dialog.title"),
+				MessageFormat.format(translationService.translate("%reload.library.message.dialog.data"),
+						testProject.getName()));
 
 		ReloadLibraryHandler reloadLibraryHandler = ContextInjectionFactory.make(ReloadLibraryHandler.class, context);
 		reloadLibraryHandler.execute(testProject);
