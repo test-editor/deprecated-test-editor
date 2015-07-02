@@ -41,6 +41,7 @@ import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.FileWatchService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -92,6 +93,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		LOGGER.info("Unbind testStructureService");
 	}
 
+	private FileWatchService fileWatchService;
+
 	/**
 	 * 
 	 * @param plugInservice
@@ -122,6 +125,28 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	public void bind(FileLocatorService fileLocatorService) {
 		this.fileLocatorService = fileLocatorService;
 		LOGGER.info("Bind FileLocatorService");
+	}
+
+	/**
+	 * 
+	 * @param fileWatchService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(FileWatchService fileWatchService) {
+		this.fileWatchService = fileWatchService;
+		LOGGER.info("Bind FileWatchService");
+	}
+
+	/**
+	 * 
+	 * @param fileWatchService
+	 *            used in this service
+	 * 
+	 */
+	public void unBind(FileWatchService fileWatchService) {
+		this.fileWatchService = null;
+		LOGGER.info("Unbind FileWatchService");
 	}
 
 	/**
@@ -232,6 +257,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
+
 		return testProject;
 	}
 
@@ -1093,6 +1119,11 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	@Override
 	public Object compute(IEclipseContext context, String contextKey) {
 		eventBroker = context.getActive(IEventBroker.class);
+		fileWatchService.setContext(context);
+		for (TestProject testProject : testProjects) {
+			fileWatchService.watch(testProject);
+
+		}
 		return this;
 	}
 

@@ -33,6 +33,7 @@ import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -40,6 +41,7 @@ import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
@@ -55,6 +57,7 @@ import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
+import org.testeditor.ui.handlers.ReloadLibraryHandler;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.editor.view.TestEditorTestCaseController;
 import org.testeditor.ui.parts.editor.view.TestEditorTestScenarioController;
@@ -228,6 +231,25 @@ public class TestExplorer {
 		if (testStructureTree != null) {
 			testStructureTree.selectTestStructure(testStructure);
 		}
+	}
+
+	/**
+	 * In case of modifications of library files this will be reloaded.
+	 * 
+	 * @param testProject
+	 *            TestProject
+	 */
+	@Inject
+	@Optional
+	public void reloadLibrary(
+			@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
+		MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Änderung der Bibliotheksdateien",
+				"Bibliotheksdateien des Projektes " + testProject.getName()
+						+ " haben sich geändert, diese werden nun aktualisiert.");
+
+		ReloadLibraryHandler reloadLibraryHandler = ContextInjectionFactory.make(ReloadLibraryHandler.class, context);
+		reloadLibraryHandler.execute(testProject);
+
 	}
 
 	/**
