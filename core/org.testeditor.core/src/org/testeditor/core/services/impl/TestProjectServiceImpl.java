@@ -72,6 +72,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestServerService testServerService;
 	private TestStructureService testStructureService;
 
+	private FileWatchService fileWatchService;
+
 	/**
 	 * 
 	 * @param testStructureService
@@ -92,8 +94,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		this.testStructureService = null;
 		LOGGER.info("Unbind testStructureService");
 	}
-
-	private FileWatchService fileWatchService;
 
 	/**
 	 * 
@@ -1120,9 +1120,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	public Object compute(IEclipseContext context, String contextKey) {
 		eventBroker = context.getActive(IEventBroker.class);
 		fileWatchService.setContext(context);
-		for (TestProject testProject : testProjects) {
-			fileWatchService.watch(testProject);
-
+		if (testProjects != null) {
+			for (TestProject testProject : testProjects) {
+				fileWatchService.watch(testProject);
+			}
 		}
 		return this;
 	}
