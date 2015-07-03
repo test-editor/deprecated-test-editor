@@ -9,15 +9,12 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.fitnesse.filesystem;
+package org.testeditor.ui.parts.editor;
+
+import javax.inject.Provider;
 
 /**
- * 
- * Constants for the Fit Slim based TestServer implementation.
- *
+ * Provider to create an additional Tab for the TestEditor.
  */
-public abstract class FitnesseFileSystemConstants {
-
-	public static final String PLUGIN_ID = "fitslim_based_1.0";
-
+public interface ITestEditorTabContollerProvider extends Provider<ITestEditorTabController> {
 }

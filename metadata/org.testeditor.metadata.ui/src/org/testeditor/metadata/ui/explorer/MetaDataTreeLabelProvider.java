@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataValue;
 import org.testeditor.ui.constants.IconConstants;
@@ -31,7 +31,7 @@ import org.testeditor.ui.constants.IconConstants;
 public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelProvider {
 
 	@Inject
-	private TestProtocolService testProtocolService;
+	private TestStateProtocolService testProtocolService;
 
 	@Inject
 	private IEclipseContext context;

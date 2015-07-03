@@ -3,7 +3,6 @@
 
 <product name="Test-Editor" uid="TestEditor" id="org.testeditor.ui.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.7.2.qualifier" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -27,7 +26,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</linux>
@@ -137,6 +135,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>
       <plugin id="org.apache.commons.codec"/>
+      <plugin id="org.apache.commons.io"/>
       <plugin id="org.apache.commons.logging"/>
       <plugin id="org.apache.felix.gogo.command"/>
       <plugin id="org.apache.felix.gogo.runtime"/>
@@ -215,6 +214,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.testeditor.demo"/>
       <plugin id="org.testeditor.fitnesse"/>
       <plugin id="org.testeditor.fixture.lib"/>
+      <plugin id="org.testeditor.metadata.core"/>
       <plugin id="org.testeditor.metadata.ui"/>
       <plugin id="org.testeditor.teamshare.svn"/>
       <plugin id="org.testeditor.ui"/>
@@ -276,6 +276,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.osgi.services" autoStart="true" startLevel="0" />
       <plugin id="org.testeditor.core" autoStart="true" startLevel="0" />
       <plugin id="org.testeditor.fitnesse" autoStart="true" startLevel="3" />
+      <plugin id="org.testeditor.metadata.core" autoStart="true" startLevel="0" />
       <plugin id="org.testeditor.metadata.ui" autoStart="true" startLevel="4" />
       <plugin id="org.testeditor.ui" autoStart="true" startLevel="4" />
       <plugin id="org.testeditor.ui.analyzer" autoStart="true" startLevel="4" />

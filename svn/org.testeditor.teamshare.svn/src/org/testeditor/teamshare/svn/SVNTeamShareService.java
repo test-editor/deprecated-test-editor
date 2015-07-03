@@ -35,13 +35,13 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.SVNProperties;
 import org.tmatesoft.svn.core.SVNURL;
@@ -65,13 +65,17 @@ import org.tmatesoft.svn.core.wc.SVNStatusClient;
 import org.tmatesoft.svn.core.wc.SVNUpdateClient;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
+import org.tmatesoft.svn.core.wc2.SvnGetInfo;
+import org.tmatesoft.svn.core.wc2.SvnLog;
+import org.tmatesoft.svn.core.wc2.SvnRevisionRange;
+import org.tmatesoft.svn.core.wc2.SvnTarget;
 
 /**
  * 
  * Subversion implementation of the <code>TeamShareService</code>.
  * 
  */
-public class SVNTeamShareService implements TeamShareService, IContextFunction {
+public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunction {
 
 	// SVNException: svn: E175002: connection refused by the server
 	private static final int CONNECTION_REFUSED = 175002;
@@ -154,20 +158,29 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	 */
 	public File getFile(TestStructure testStructure) {
 
-		TestProject testProject = testStructure.getRootElement();
+		return new File(getFolderName(testStructure));
+	}
 
-		File file = null;
+	/**
+	 * Returns the absolute path of the fitnesse folder of the given
+	 * teststructure. If the teststructure is a project
+	 * 
+	 * @param testStructure
+	 *            TestStructure
+	 * @return File
+	 */
+	private String getFolderName(TestStructure testStructure) {
+		TestProject testProject = testStructure.getRootElement();
 
 		if (testStructure instanceof TestProject) {
 			// in case of project the root of project above FitNesseRoot will be
 			// checked in.
-			file = new File(testProject.getTestProjectConfig().getProjectPath());
+			return testProject.getTestProjectConfig().getProjectPath();
 		} else {
-			file = new File(testProject.getTestProjectConfig().getProjectPath() + "/FitNesseRoot/"
-					+ testStructure.getFullName().replaceAll("\\.", "/"));
+			return testProject.getTestProjectConfig().getProjectPath() + "/FitNesseRoot/"
+					+ testStructure.getFullName().replaceAll("\\.", "/");
 		}
 
-		return file;
 	}
 
 	/**
@@ -355,13 +368,29 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			if (!conflicts.isEmpty()) {
 				throw new SystemException(createConflictErrorMessage(conflicts, translationService));
 			}
-
+			fireEvents(testStructure);
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			String message = substitudeSVNException(e, translationService);
 			throw new SystemException(message, e);
 		}
 		return resultState;
+	}
+
+	/**
+	 * Fires the events about updating a teststructure.
+	 * 
+	 * if the event broker is null, nothing is done.
+	 * 
+	 * @param testStructure
+	 *            used in the vents to notify the clients.
+	 */
+	private void fireEvents(TestStructure testStructure) {
+		if (eventBroker != null) {
+			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
+			eventBroker.post(eventTopic, testStructure.getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET, testStructure.getFullName());
+		}
 	}
 
 	/**
@@ -593,7 +622,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	 * (org.testeditor.core.services.interfaces.ProgressListener)
 	 */
 	@Override
-	public void addProgressListener(ProgressListener listener) {
+	public void addProgressListener(TestStructure testStructure, ProgressListener listener) {
 		this.listener = listener;
 	}
 
@@ -661,8 +690,7 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 	}
 
 	@Override
-	public void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException {
+	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
 		testProject.getTestProjectConfig().setTeamShareConfig(null);
 		deleteSvnMetaData(testProject);
 		List<TestStructure> childrenWithScenarios = testProject.getAllTestChildrenWithScenarios();
@@ -761,11 +789,16 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 
 			for (String split : splits) {
 				if (split.contains(searchString)) {
-					File fileToDeleteLc = new File(split.substring(0, split.lastIndexOf(searchString) - 1));
+					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
+					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
 						// TODO send an event asynchron to delete the
 						// testStructure via the TestStructureService and delete
 						// the history
+					} else {
+						if (!fileToDeleteLc.delete()) {
+							throw new SystemException("could not delete file " + fileName);
+						}
 					}
 				}
 			}
@@ -821,6 +854,84 @@ public class SVNTeamShareService implements TeamShareService, IContextFunction {
 			teamShareStatusService = context.get(TeamShareStatusService.class);
 		}
 		return this;
+	}
+
+	@Override
+	public void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("call to addAdditonalFile: testStructure: " + testStructure.getFullName());
+		}
+
+		TestProject testProject = testStructure.getRootElement();
+
+		SVNWCClient wcClient = getSVNClientManager(testProject).getWCClient();
+
+		File file = new File(getFolderName(testStructure) + File.separator + fileName);
+
+		try {
+			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(file, false);
+			if (!info.isVersioned()) {
+				wcClient.doAdd(file, false, false, false, SVNDepth.INFINITY, true, true);
+			}
+		} catch (Exception e) {
+			// TODO should be analyzed
+			// org.tmatesoft.svn.core.SVNException: svn: E150002: 'file' is
+			// already under version control
+			LOGGER.warn(e.getMessage(), e);
+		}
+
+	}
+
+	@Override
+	public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("call to addAdditonalFile: testStructure: " + testStructure.getFullName() + " for file  "
+					+ fileName);
+		}
+
+		TestProject testProject = testStructure.getRootElement();
+
+		SVNWCClient wcClient = getSVNClientManager(testProject).getWCClient();
+
+		File file = new File(getFolderName(testStructure) + File.separator + fileName);
+
+		if (!file.exists()) {
+			LOGGER.info("file " + fileName + " does not exists");
+			return;
+		}
+
+		try {
+			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(file, false);
+			if (info.isVersioned()) {
+				wcClient.doDelete(file, true, false, false);
+			}
+		} catch (Exception e) {
+			// TODO should be analyzed
+			// org.tmatesoft.svn.core.SVNException: svn: E150002: 'file' is
+			// already under version control
+			LOGGER.warn(e.getMessage(), e);
+		}
+
+	}
+	public int availableUpdatesCount(TestProject testProject) throws SystemException {
+		SVNClientManager clientManager = getSVNClientManager(testProject);
+		try {
+			SvnGetInfo info = clientManager.getWCClient().getOperationsFactory().createGetInfo();
+			info.setSingleTarget(SvnTarget.fromFile(getFile(testProject)));
+
+			SVNRevision localRevision = SVNRevision.create(info.run().getLastChangedRevision());
+			SvnLog log = clientManager.getWCClient().getOperationsFactory().createLog();
+
+			log.addRange(SvnRevisionRange.create(SVNRevision.HEAD, SVNRevision.HEAD));
+			SVNTeamShareConfig cfg = (SVNTeamShareConfig) testProject.getTestProjectConfig().getTeamShareConfig();
+			log.setSingleTarget(SvnTarget.fromURL(SVNURL.parseURIEncoded(cfg.getUrl() + "/" + testProject.getName())));
+			SVNLogEntry run = log.run();
+			return (int) (run.getRevision() - localRevision.getNumber());
+		} catch (SVNException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new SystemException(e.getLocalizedMessage(), e);
+		}
 	}
 
 }

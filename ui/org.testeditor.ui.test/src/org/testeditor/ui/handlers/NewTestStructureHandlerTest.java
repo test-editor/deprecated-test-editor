@@ -29,6 +29,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -42,14 +43,13 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
 import org.testeditor.ui.adapter.TranslationServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 
 /**
  * 
@@ -85,7 +85,8 @@ public class NewTestStructureHandlerTest {
 	@Test
 	public void testFindSelectedParentWithOutSelectionInTheTestExplorer() throws Exception {
 		NewTestStructureHandler handler = getOUT(false);
-		TestStructure testStructure = handler.findSelectedParent(new TreeViewer(shell));
+		TestStructure testStructure = handler.findSelectedParent((IStructuredSelection) new TreeViewer(shell)
+				.getSelection());
 		assertNotNull("No Null Value for the Parent of a Teststructure.", testStructure);
 		assertEquals("Expecting Root Element", "root", testStructure.getName());
 	}
@@ -100,7 +101,8 @@ public class NewTestStructureHandlerTest {
 	@Test
 	public void testFindSelectedParentBasedOnTheSelectionInTheTestExplorer() throws Exception {
 		NewTestStructureHandler handler = getOUT(false);
-		TestStructure testStructure = handler.findSelectedParent(getMyTreeViewerMock());
+		TestStructure testStructure = handler.findSelectedParent((IStructuredSelection) getMyTreeViewerMock()
+				.getSelection());
 		assertNotNull("No Null Value for the Parent of a Teststructure.", testStructure);
 		assertEquals("Expecting Root Element", "TestCaseInTree", testStructure.getName());
 	}
@@ -134,7 +136,7 @@ public class NewTestStructureHandlerTest {
 		TestProject project = new TestProject();
 		project.setTestProjectConfig(new TestProjectConfig());
 		list.add(project);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 	}
 
@@ -152,7 +154,7 @@ public class NewTestStructureHandlerTest {
 		TestSuite suite = new TestSuite();
 		suite.addChild(suite);
 		list.add(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 	}
 
@@ -170,7 +172,7 @@ public class NewTestStructureHandlerTest {
 		TestCase tc = new TestCase();
 		new TestSuite().addChild(tc);
 		list.add(tc);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertFalse(handler.canExecute(context));
 	}
 
@@ -215,7 +217,7 @@ public class NewTestStructureHandlerTest {
 		context.set(EPartService.class, null);
 		context.set(TestProjectService.class, getTestProjectServiceMock(empty));
 		context.set(IServiceConstants.ACTIVE_SHELL, shell);
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock());
+		context.set(TeamShareService.class, null);
 		context.set(IEventBroker.class, new EventBroker());
 		return ContextInjectionFactory.make(NewScenarioHandler.class, context);
 	}

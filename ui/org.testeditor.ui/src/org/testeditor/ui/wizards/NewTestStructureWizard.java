@@ -13,59 +13,40 @@ package org.testeditor.ui.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.ui.handlers.NewTestStructureHandler;
 import org.testeditor.ui.wizardpages.AbstractTestStructureWizardPage;
 
 /**
- * specialized wizard for the NewTestStructureHandlers except of the
+ * Specialized wizard for the NewTestStructureHandlers except of the
  * NewTestProjectHandler.
- * 
- * @author llipinski
  * 
  */
 public class NewTestStructureWizard extends Wizard {
 
-	private NewTestStructureHandler newHandler;
-
-	/**
-	 * 
-	 * @param newHandler
-	 *            NewTestStructureHandler
-	 */
-	public NewTestStructureWizard(NewTestStructureHandler newHandler) {
-		super();
-		this.newHandler = newHandler;
-	}
+	private String newTestStructureName;
+	private TestStructure parentTestStructure;
 
 	@Override
 	public boolean performFinish() {// Called before wizard is closed
 		AbstractTestStructureWizardPage ntp = (AbstractTestStructureWizardPage) this.getPages()[0];
-		setNewTestStructureName(ntp.getTextInNameText());
-		setParentTestStructure(ntp.getSelectedTestStrucutureElement());
+		newTestStructureName = ntp.getTextInNameText();
+		parentTestStructure = ntp.getSelectedTestStrucutureElement();
 		return true;
 
 	}
 
 	/**
-	 * set the parent of the TestStrucure.
 	 * 
-	 * @param selectedTestStrucutureElement
-	 *            parent of the TestStrucure
+	 * @return name of the new teststructure.
 	 */
-	private void setParentTestStructure(TestStructure selectedTestStrucutureElement) {
-		newHandler.setParentTestStructure(selectedTestStrucutureElement);
-
+	public String getNewTestStructureName() {
+		return newTestStructureName;
 	}
 
 	/**
-	 * set the name of the TestStructure.
 	 * 
-	 * @param textInNameText
-	 *            new name of the TestStructure
+	 * @return parent of the new teststructure.
 	 */
-	private void setNewTestStructureName(String textInNameText) {
-		newHandler.setNewTestStructureName(textInNameText);
-
+	public TestStructure getNewTestStructureParent() {
+		return parentTestStructure;
 	}
-
 }

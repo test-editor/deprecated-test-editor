@@ -15,7 +15,6 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.ui.wizardpages.AbstractRenameTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.RenameScenarioSuiteWizardPage;
@@ -23,10 +22,10 @@ import org.testeditor.ui.wizardpages.RenameScenarioSuiteWizardPage;
 /**
  * Rename-Handler for the ScenarioSuite.
  * 
- * @author llipinski
  * 
  */
 public class RenameScenarioSuiteHandler extends AbstractRenameHandler {
+
 	@Inject
 	private IEclipseContext context;
 
@@ -36,10 +35,6 @@ public class RenameScenarioSuiteHandler extends AbstractRenameHandler {
 				RenameScenarioSuiteWizardPage.class, context);
 		sceanrioSuiteWizardPage.setSelectedTestStructure(selectedTS);
 		return sceanrioSuiteWizardPage;
-	}
-
-	@Override
-	protected void executeSpecials(TestStructure selected, String sbname) throws SystemException {
 	}
 
 }

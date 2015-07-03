@@ -21,6 +21,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.parts.testExplorer.handler.RefreshTestExplorer;
 
@@ -45,6 +46,7 @@ public class RefreshTestExplorerTest {
 				super.reloadProjectList();
 			}
 		});
+		context.set(MetaDataService.class, null);
 		RefreshTestExplorer refreshTestExplorer = ContextInjectionFactory.make(RefreshTestExplorer.class, context);
 		refreshTestExplorer.refreshTestExplorer();
 		assertTrue("Refresh Event was send to the event bus.", monitor.contains("reloaded"));

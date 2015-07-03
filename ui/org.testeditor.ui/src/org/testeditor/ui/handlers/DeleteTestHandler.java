@@ -27,6 +27,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -42,7 +43,7 @@ import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -75,8 +76,8 @@ public class DeleteTestHandler {
 	public void execute(final IEclipseContext context, final TestEditorTranslationService translationService,
 			final TestProjectService testProjectService, TestScenarioService testScenarioService,
 			final TestStructureService testStructureService) {
-		final TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		final IStructuredSelection selection = explorer.getSelection();
+		final IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		boolean userConfirms = checkUserConfirmation(translationService, selection, testScenarioService);
 		final TestStructure newSelection = ((TestStructure) selection.getFirstElement()).getParent();
 		if (userConfirms) {
@@ -99,7 +100,9 @@ public class DeleteTestHandler {
 									testProjectService.deleteProject((TestProject) testStructure);
 								} else {
 									testStructureService.delete(testStructure);
-									getMetaDataService().delete(testStructure);
+									if (getMetaDataService() != null) {
+										getMetaDataService().delete(testStructure);
+									}
 								}
 							} catch (SystemException | IOException e) {
 								LOGGER.error("Error deleting", e);
@@ -124,7 +127,8 @@ public class DeleteTestHandler {
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), translationService.translate("%error"),
 						e1.getLocalizedMessage());
 			}
-			explorer.setSelectionOn(newSelection);
+			context.get(IEventBroker.class).send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED,
+					newSelection);
 		}
 	}
 
@@ -134,7 +138,7 @@ public class DeleteTestHandler {
 	 * 
 	 * @param selectedTestStructures
 	 *            selected elements in the tree.
-	 * @return minumum set of selected test structures in the tree.
+	 * @return minimum set of selected test structures in the tree.
 	 */
 	protected Set<TestStructure> extractParentElementsFromSelection(Set<TestStructure> selectedTestStructures) {
 		Set<TestStructure> result = new HashSet<TestStructure>();
@@ -240,26 +244,25 @@ public class DeleteTestHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
-		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
 				CanExecuteTestExplorerHandlerRules.class, context);
-		return rules.canExecuteOnOneOrManyElementRule(explorer)
-				&& !rules.canExecuteOnProjectMainScenarioSuite(explorer) && rules.canExecuteOnUnusedScenario(explorer)
-				&& rules.canExecuteOnNonScenarioSuiteParents(explorer);
+		return rules.canExecuteOnOneOrManyElementRule(selection)
+				&& !rules.canExecuteOnProjectMainScenarioSuite(selection)
+				&& rules.canExecuteOnUnusedScenario(selection) && rules.canExecuteOnNonScenarioSuiteParents(selection);
 	}
 
 	/**
-	 * Getter for the metaData Service. Checks if the service is set and throws
-	 * an Exception with a message if the service was not configured.
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an info-message is displayed and null will be
+	 * returned
 	 * 
 	 * @return the service
-	 * @throws SystemException
-	 *             - exception if the service is not configured
 	 */
 	private MetaDataService getMetaDataService() throws SystemException {
 		if (metaDataService == null) {
-			throw new SystemException(
-					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 

@@ -17,14 +17,12 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.NewTestSuiteWizardPage;
-import org.testeditor.ui.wizards.NewTestStructureWizard;
 
 /**
  * NewSuiteHandler Handler is called for creating a new TestSuite.
@@ -72,13 +70,10 @@ public class NewTestSuiteHandler extends NewTestStructureHandler {
 		if (ignoreCanExecute != null && Boolean.parseBoolean(ignoreCanExecute)) {
 			return !getTestProjectService().getProjects().isEmpty();
 		}
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		return super.canExecute(context) && !handlerRules.canExecuteOnTestScenarienSuiteRule(testExplorer);
+		return super.canExecute(context) && !handlerRules.canExecuteOnTestScenarienSuiteRule(selection);
 	}
 
-	@Override
-	protected Wizard getWizard(IEclipseContext context) {
-		return new NewTestStructureWizard(this);
-	}
 }

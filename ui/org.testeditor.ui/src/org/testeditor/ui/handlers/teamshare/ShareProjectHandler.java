@@ -37,7 +37,6 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
@@ -58,7 +57,7 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareShareProjectWizardPage;
 public class ShareProjectHandler {
 
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TeamShareService teamShareService;
 	@Inject
 	private TestEditorTranslationService translationService;
 	@Inject
@@ -91,8 +90,8 @@ public class ShareProjectHandler {
 	public boolean canExecute(IEclipseContext context) {
 		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		if (handlerRules.canExecuteOnTestProjectRule(testExplorer)
-				&& handlerRules.canExecuteOnlyOneElementRule(testExplorer)) {
+		if (handlerRules.canExecuteOnTestProjectRule(testExplorer.getSelection())
+				&& handlerRules.canExecuteOnlyOneElementRule(testExplorer.getSelection())) {
 			TestProject selection = (TestProject) testExplorer.getSelection().getFirstElement();
 			return !selection.getTestProjectConfig().isTeamSharedProject();
 		}
@@ -124,6 +123,7 @@ public class ShareProjectHandler {
 
 		shareProjectPage.setTestProject(testProject);
 		nwiz.addPage(shareProjectPage);
+		nwiz.setWindowTitle(shareProjectPage.getTitleValue());
 
 		// Show the wizard...
 		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
@@ -141,7 +141,7 @@ public class ShareProjectHandler {
 
 						try {
 
-							getTeamService().addProgressListener(new ProgressListener() {
+							teamShareService.addProgressListener(testProject, new ProgressListener() {
 
 								@Override
 								public void log(String progressInfo) {
@@ -205,7 +205,7 @@ public class ShareProjectHandler {
 
 		try {
 
-			getTeamService().share(testProject, translate, svnComment);
+			teamShareService.share(testProject, translate, svnComment);
 			eventBroker.send(TestEditorUIEventConstants.PROJECT_TEAM_SHARED, testProject.getFullName());
 
 		} catch (Exception e) {
@@ -217,16 +217,6 @@ public class ShareProjectHandler {
 			throw e;
 		}
 
-	}
-
-	/**
-	 * @return the teamShareService
-	 */
-	private TeamShareService getTeamService() {
-
-		String id = shareProjectPage.getTestProject().getTestProjectConfig().getTeamShareConfig().getId();
-		TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-		return teamService;
 	}
 
 	/**

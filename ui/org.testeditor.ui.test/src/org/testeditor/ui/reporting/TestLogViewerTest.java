@@ -35,7 +35,6 @@ import org.testeditor.ui.mocks.EventBrokerMock;
  * 
  * Integration Tests for TestLogViewer.
  * 
- * @author karsten
  */
 public class TestLogViewerTest {
 

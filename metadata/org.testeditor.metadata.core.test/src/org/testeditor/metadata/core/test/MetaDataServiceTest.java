@@ -15,19 +15,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.metadata.core.MetaDataService;
-import org.testeditor.metadata.core.MetaDataServiceSimpleImpl;
+import org.testeditor.metadata.core.MetaDataServiceFileImpl;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.metadata.core.model.MetaDataValue;
@@ -43,17 +46,18 @@ public class MetaDataServiceTest {
 	private List<String> projects = new ArrayList<String>();
 
 	@Before
+	@Ignore
 	public void setup() throws Exception {
 		projects.add("testProject1");
 		projects.add("testProject2");
-		// projects.add("testProject3");
 	}
 
 	/**
 	 * Temporary test to test the setup of the system.
 	 */
 	@Test
-	public void testTestSetip() {
+	@Ignore
+	public void testTestSetup() {
 		TestProject project = createProject("testProject1");
 		assertNotNull(project);
 	}
@@ -126,6 +130,7 @@ public class MetaDataServiceTest {
 	@Test
 	@Ignore
 	public void testReadMetaDataForEmptyProject() {
+		projects.add("testProject3");
 		TestProject project = createProject("testProject3");
 		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
 
@@ -134,10 +139,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the storing and reading of the data of multiple testcases
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testStoreAndReadMulitpleMetaDataList() {
+	public void testStoreAndReadMulitpleMetaDataList() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 		for (int index = 1; index <= 3; index++) {
@@ -156,7 +163,7 @@ public class MetaDataServiceTest {
 	 */
 	@Test
 	@Ignore
-	public void testDeleteTestStructure() {
+	public void testDeleteTestStructure() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 
@@ -175,10 +182,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests that changes the name of a testcase.
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testRenameTestStructure() {
+	public void testRenameTestStructure() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 
@@ -188,6 +197,7 @@ public class MetaDataServiceTest {
 		assertTrue("Testcase not setup. Entries " + getNewServiceObject().getMetaDataTags(testCase).size()
 				+ " instead of 3", getNewServiceObject().getMetaDataTags(testCase).size() == 3);
 
+		createFolderForTestCase(project.getName(), "testCase4");
 		getNewServiceObject().rename(testCase, "testCase4");
 
 		assertTrue("Testcase not renamed. Old Entry has still "
@@ -201,7 +211,7 @@ public class MetaDataServiceTest {
 
 	@Test
 	@Ignore
-	public void testGetMetaDataFromMetaDataTag() {
+	public void testGetMetaDataFromMetaDataTag() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 
@@ -221,7 +231,7 @@ public class MetaDataServiceTest {
 
 	@Test
 	@Ignore
-	public void testGetTestCasesForMetaData() {
+	public void testGetTestCasesForMetaData() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 		MetaDataService metaDataService = getNewServiceObject();
@@ -236,10 +246,12 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the search of testcases for a metadatavalue
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testGetTestCasesForMetaDataList() {
+	public void testGetTestCasesForMetaDataList() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
 		MetaDataService metaDataService = getNewServiceObject();
@@ -256,14 +268,16 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the storing and reading of a metadatalist
+	 * 
+	 * @throws SystemException
 	 */
 	@Test
 	@Ignore
-	public void testStoreAndReadMetaDataList() {
+	public void testStoreAndReadMetaDataList() throws SystemException {
 
 		TestProject project = createProject("testProject1");
-		TestCase testCase = new TestCase();
-		testCase.setName("testCase1");
+		TestCase testCase = createTestCase("testProject1", "testCase1");
+
 		List<MetaDataTag> metaDataTagList = getMetTagList(testCase, project, 2);
 
 		getNewServiceObject().storeMetaDataTags(metaDataTagList, testCase);
@@ -283,12 +297,29 @@ public class MetaDataServiceTest {
 	 * project
 	 * 
 	 * @param project
+	 * @throws SystemException
 	 */
-	private void setupMetaDatatestCaseStore(TestProject project) {
+	private void setupMetaDatatestCaseStore(TestProject project) throws SystemException {
+
 		for (int index = 1; index <= 3; index++) {
-			TestCase testCase = new TestCase();
-			testCase.setName("testCase" + index);
+			TestCase testCase = createTestCase(project.getName(), "testCase" + index);
 			getNewServiceObject().storeMetaDataTags(getMetTagList(testCase, project, index), testCase);
+		}
+	}
+
+	private TestCase createTestCase(String projectName, String name) {
+		TestCase testCase = new TestCase();
+		testCase.setName(name);
+		createFolderForTestCase(projectName, name);
+		return testCase;
+	}
+
+	private void createFolderForTestCase(String projectName, String testCaseName) {
+		String rootPath = getProjectPath(projectName) + File.separator + "FitNesseRoot";
+		rootPath += File.separator + projectName;
+		String testCaseRoot = rootPath + File.separator + testCaseName;
+		if (!(new File(testCaseRoot)).mkdir()) {
+			throw new RuntimeException("could not create dir " + testCaseRoot);
 		}
 	}
 
@@ -324,7 +355,7 @@ public class MetaDataServiceTest {
 		URL url = this.getClass().getClassLoader().getResource(projectName);
 		assertTrue("Project " + projectName + " not found in classpath of test", url != null);
 
-		return url.toString();
+		return url.getFile();
 
 	}
 
@@ -336,8 +367,16 @@ public class MetaDataServiceTest {
 	 */
 	private TestProject createProject(String projectName) {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
-
 		testProjectConfig.setProjectPath(getProjectPath(projectName));
+
+		String rootPath = getProjectPath(projectName) + File.separator + "FitNesseRoot";
+		if (!(new File(rootPath)).mkdir()) {
+			throw new RuntimeException("could not create dir " + rootPath);
+		}
+		rootPath += File.separator + projectName;
+		if (!(new File(rootPath)).mkdir()) {
+			throw new RuntimeException("could not create dir " + rootPath);
+		}
 
 		TestProject project = new TestProject();
 		project.setName(projectName);
@@ -353,19 +392,19 @@ public class MetaDataServiceTest {
 	 * @return
 	 */
 	private MetaDataService getNewServiceObject() {
-		return new MetaDataServiceSimpleImpl();
+		return new MetaDataServiceFileImpl();
 	}
 
 	/**
 	 * removes all Files containing testprojectdata after the test.
+	 * 
+	 * @throws IOException
 	 */
 	@After
-	public void removeCreatedMetaDataFiles() {
+	public void removeCreatedMetaDataFiles() throws IOException {
 		for (String project : projects) {
-			File file = new File(getProjectPath(project) + File.separator + "MetaData.xml");
-			if (file.exists()) {
-				file.delete();
-			}
+			File dir = new File(getProjectPath(project) + File.separator + "FitNesseRoot");
+			FileUtils.deleteDirectory(dir);
 		}
 	}
 

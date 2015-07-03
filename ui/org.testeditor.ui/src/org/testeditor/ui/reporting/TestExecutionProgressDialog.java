@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
@@ -87,7 +86,6 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 	private Composite resultTestArea;
 
 	@Inject
-	@Named("ActualTCService")
 	private TestStructureService testStructureService;
 
 	private Point defaultDialogSize = new Point(500, 400);

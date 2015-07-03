@@ -29,7 +29,7 @@ import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureContentService;
 import org.testeditor.fitnesse.util.FitNesseWikiParser;
 
@@ -38,7 +38,7 @@ import org.testeditor.fitnesse.util.FitNesseWikiParser;
  * A test flow could be a simple test case or a test scenario (this data is used
  * in the middle view of the Test-Editor).
  */
-public class TestStructureContentServiceImpl implements TestStructureContentService, IContextFunction {
+public class TestStructureContentServiceImpl implements TestStructureContentServicePlugIn, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(TestStructureContentServiceImpl.class);
 
@@ -75,6 +75,7 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getFullName());
+			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testStructure.getFullName());
 		}
 	}
 

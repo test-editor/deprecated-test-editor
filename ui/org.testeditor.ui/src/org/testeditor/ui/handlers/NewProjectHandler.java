@@ -23,7 +23,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -34,6 +33,7 @@ import org.testeditor.ui.TestServerStarter;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.NewTestProjectWizardPage;
 import org.testeditor.ui.wizards.NewTestProjectWizard;
+import org.testeditor.ui.wizards.NewTestStructureWizard;
 
 /**
  * NewProjectHandler creates new Project.
@@ -110,7 +110,7 @@ public class NewProjectHandler extends NewTestStructureHandler {
 	}
 
 	@Override
-	protected Wizard getWizard(IEclipseContext context) {
+	protected NewTestStructureWizard getWizard(IEclipseContext context) {
 		wizard = ContextInjectionFactory.make(NewTestProjectWizard.class, context);
 		return wizard;
 	}
