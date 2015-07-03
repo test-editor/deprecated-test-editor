@@ -35,14 +35,12 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
 import org.testeditor.ui.adapter.TranslationServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -62,7 +60,7 @@ public class CloneTestStructureHandlerTest {
 		IEclipseContext context = EclipseContextFactory.create();
 		List<TestStructure> list = new ArrayList<TestStructure>();
 		list.add(new TestCase());
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 		list.clear();
 		list.add(new TestProject());
@@ -92,13 +90,8 @@ public class CloneTestStructureHandlerTest {
 		TestCase testCase = new TestCase();
 		tp.addChild(testCase);
 		list.add(testCase);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock() {
-			@Override
-			public TestStructureContentService getTestStructureContentServiceFor(String testServerID) {
-				return new TestStructureContentServiceAdapter();
-			}
-		});
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
+		context.set(TestStructureContentService.class, new TestStructureContentServiceAdapter());
 		context.set(TestProjectService.class, new TestProjectServiceAdapter());
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService());
 		context.set(TranslationService.class, new TranslationServiceAdapter().getTranslationService());
@@ -115,8 +108,7 @@ public class CloneTestStructureHandlerTest {
 					@Execute
 					@Override
 					public TestStructure execute(TestEditorTranslationService teTranslationService,
-							IWorkbench workbench, IEventBroker eventBroker, Shell shell, EPartService partService,
-							IEclipseContext context) {
+							IWorkbench workbench, IEventBroker eventBroker, Shell shell, IEclipseContext context) {
 						return newOne;
 					}
 				};

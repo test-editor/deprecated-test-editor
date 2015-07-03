@@ -31,14 +31,12 @@ import org.testeditor.core.model.teststructure.TestDataRow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
 import org.testeditor.ui.parts.commons.tree.filter.TestScenarioRecursiveFilter;
 import org.testeditor.ui.parts.editor.ITestEditorController;
-import org.testeditor.ui.parts.editor.view.TestEditorController;
 import org.testeditor.ui.parts.inputparts.AbstractTestEditorInputPartController;
 
 /**
@@ -54,7 +52,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	@Inject
 	private IEclipseContext context;
 	@Inject
-	private TestEditorPlugInService pluginService;
+	private TestScenarioService scenarioService;
 	@Inject
 	private TestProjectService testProjectService;
 
@@ -137,8 +135,6 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	 */
 	public void putTextToInputArea(String includeOfScenario, int selectedLine) throws SystemException {
 		if (includeOfScenario.length() > 10) {
-			TestScenarioService scenarioService = pluginService.getTestScenarioService(testEditorController
-					.getTestFlow().getRootElement().getTestProjectConfig().getTestServerID());
 			TestScenario scenarioByFullName = scenarioService.getScenarioByFullName(testEditorController.getTestFlow()
 					.getRootElement(), includeOfScenario.substring(10));
 			editArea.setScenarioSelectionToChangeable(scenarioByFullName, selectedLine);
@@ -231,7 +227,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	 * @param testEditorController
 	 *            ITestEditorController
 	 */
-	public void removeTestCaseController(TestEditorController testEditorController) {
+	public void removeTestCaseController(ITestEditorController testEditorController) {
 		editArea.removeTestEditorController(testEditorController);
 	}
 
@@ -245,7 +241,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	@Inject
 	@Optional
 	public void refreshSceanriosInTreeBySvnLoaded(
-			@UIEventTopic(TestEditorCoreEventConstants.TEAM_STATE_LOADED) TestStructure testStructure) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) TestStructure testStructure) {
 		refreshSceanriosInTree("");
 	}
 
@@ -329,9 +325,6 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 			// entfernen.
 			testScenarioParameterTable.setInclude(scenario.getFullName());
 			try {
-				TestScenarioService scenarioService = pluginService.getTestScenarioService(testEditorController
-						.getTestFlow().getRootElement().getTestProjectConfig().getTestServerID());
-
 				testScenarioParameterTable.setScenarioOfProject(scenarioService.isLinkToScenario(testEditorController
 						.getTestFlow().getRootElement(), scenario.getFullName()));
 				if (scenario.getTestComponents().isEmpty()) {

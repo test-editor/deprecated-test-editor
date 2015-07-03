@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testExplorer;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,18 +20,21 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -38,9 +42,11 @@ import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -52,11 +58,13 @@ import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.handlers.OpenTestStructureHandler;
+import org.testeditor.ui.handlers.ReloadLibraryHandler;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.editor.view.TestEditorTestCaseController;
 import org.testeditor.ui.parts.editor.view.TestEditorTestScenarioController;
 import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
 import org.testeditor.ui.parts.testsuite.TestSuiteEditor;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * The Test-Explorer allows to browse the hierarchy of the test projects
@@ -64,6 +72,8 @@ import org.testeditor.ui.parts.testsuite.TestSuiteEditor;
  * test structures are available in the UI.
  */
 public class TestExplorer {
+
+	private static final Logger LOGGER = Logger.getLogger(TestExplorer.class);
 
 	@Inject
 	private IEclipseContext context;
@@ -76,6 +86,9 @@ public class TestExplorer {
 
 	@Inject
 	private TeamShareStatusService teamShareStatusService;
+
+	@Inject
+	private TestEditorTranslationService translationService;
 
 	private TestStructureTree testStructureTree;
 
@@ -132,6 +145,8 @@ public class TestExplorer {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
+				context.get(MApplication.class).getContext()
+						.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, getSelection());
 				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 			}
 		});
@@ -224,6 +239,28 @@ public class TestExplorer {
 	}
 
 	/**
+	 * In case of modifications of library files this will be reloaded.
+	 * 
+	 * @param testProject
+	 *            TestProject
+	 */
+	@Inject
+	@Optional
+	public void reloadLibrary(
+
+	@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
+		MessageDialog.openInformation(
+				Display.getCurrent().getActiveShell(),
+				translationService.translate("%reload.library.message.dialog.title"),
+				MessageFormat.format(translationService.translate("%reload.library.message.dialog.data"),
+						testProject.getName()));
+
+		ReloadLibraryHandler reloadLibraryHandler = ContextInjectionFactory.make(ReloadLibraryHandler.class, context);
+		reloadLibraryHandler.execute(testProject);
+
+	}
+
+	/**
 	 * Set the Focus on the Tree with the Teststructures.
 	 * 
 	 * @param shell
@@ -289,14 +326,17 @@ public class TestExplorer {
 	 * be Called by the event:
 	 * {@link TestEditorCoreEventConstants#TEAM_STATE_LOADED}
 	 * 
-	 * @param testStructure
+	 * @param testStructureName
 	 *            TestStructure send from the sender.
 	 */
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TEAM_STATE_LOADED) TestStructure testStructure) {
-		refreshTreeViewerOnTestStrucutre(testStructure);
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) String testStructureName) {
+		try {
+			refreshTreeViewerOnTestStrucutre(testProjectService.findTestStructureByFullName(testStructureName));
+		} catch (SystemException e) {
+			LOGGER.error("Error reading teststructure by name", e);
+		}
 	}
-
 }

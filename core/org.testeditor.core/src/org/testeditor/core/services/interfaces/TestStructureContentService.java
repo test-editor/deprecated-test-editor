@@ -23,6 +23,11 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * Provides read and write services regarding the content of a test flow. A test
  * flow could be a simple test case or a test scenario (this data is used in the
  * middle view of the Test-Editor).
+ * 
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * TestStructureContentServicePlugIn.
+ * 
  */
 public interface TestStructureContentService {
 
@@ -92,13 +97,5 @@ public interface TestStructureContentService {
 	 *             is thrown if a system exception occurred
 	 */
 	String getTestStructureAsSourceText(TestStructure testStructure) throws SystemException;
-
-	/**
-	 * This id is used to identify the TeestStructureServer plug-in. It must the
-	 * same ID in the <code>TestProjectConfig</code>.
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
 
 }

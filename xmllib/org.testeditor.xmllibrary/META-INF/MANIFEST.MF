@@ -14,10 +14,11 @@ Import-Package: javax.inject;version="1.0.0",
  org.testeditor.core.model.action,
  org.testeditor.core.model.teststructure,
  org.testeditor.core.services.interfaces,
+ org.testeditor.core.services.plugins,
  org.testeditor.core.util
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
  org.eclipse.equinox.ds;bundle-version="1.4.100"
-Service-Component: OSGI-INF/LibraryReaderImpl.xml,OSGI-INF/XMLActionGroupConfigurationService.xml,
+Service-Component: OSGI-INF/LibraryReaderImpl.xml,
  OSGI-INF/LibraryConfigurationServiceImpl.xml
 Eclipse-BundleShape: dir
 Export-Package: org.testeditor.xmllibrary.services.impl;

@@ -12,8 +12,9 @@
 package org.testeditor.ui.parts.editor;
 
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabFolder;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -21,10 +22,9 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * Interface that has to be implemented to add an additional tag to the
  * testEditorEditor.
  * 
- * @author Georg Portwich
  *
  */
-public interface ITestEditorTab {
+public interface ITestEditorTabController {
 
 	/**
 	 * Method to create the composite that will be rendered in the tab.
@@ -34,9 +34,11 @@ public interface ITestEditorTab {
 	 * @param mpart
 	 *            - the mpart-Object of the TestEditorController about changes
 	 *            in the tab.
+	 * @param translationService
+	 *            used to translate the ui.
 	 * @return the composite
 	 */
-	Composite createTab(TabFolder parent, MPart mpart, TestEditorTranslationService translationService);
+	Composite createTab(CTabFolder parent, MPart mpart, TestEditorTranslationService translationService);
 
 	/**
 	 * Sets the testFlow for the tab.
@@ -49,14 +51,27 @@ public interface ITestEditorTab {
 	/**
 	 * Saves the data in the tab (if needed). This is done after the testFlow
 	 * was stored and is not handled in a transaction.
+	 * 
+	 * @throws SystemException
+	 *             on save failure in the backend.
 	 */
-	void save();
+	void save() throws SystemException;
 
 	/**
 	 * the label of the tab. It is in the responsibility of the implementation
 	 * to use the translation service.
 	 * 
+	 * @param translationService
+	 *            used to translate the ui.
+	 * 
 	 * @return the label
 	 */
 	String getLabel(TestEditorTranslationService translationService);
+
+	/**
+	 * Defines whether a tab will be visible.
+	 * 
+	 * @return true if the editor will be rendered
+	 */
+	boolean isVisible();
 }

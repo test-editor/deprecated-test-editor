@@ -20,9 +20,8 @@ import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
- * wizardPage to share a project.
+ * WizardPage to share a project.
  * 
- * @author llipinski
  * 
  */
 public class TeamShareShareProjectWizardPage extends TeamShareWizardPage {

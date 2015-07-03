@@ -29,7 +29,6 @@ import org.testeditor.ui.constants.TestEditorConstants;
  * 
  * Integration Test for the OpenFileHandler.
  * 
- * @author karsten
  */
 public class OpenFileHandlerTest {
 
@@ -46,7 +45,7 @@ public class OpenFileHandlerTest {
 		List<TestStructure> list = new ArrayList<TestStructure>();
 		TestSuite suite = new TestSuite();
 		list.add(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertFalse(handler.canExecute(context));
 	}
 
@@ -65,13 +64,13 @@ public class OpenFileHandlerTest {
 		TestSuite suite = new TestSuite();
 		suite.addChild(suite);
 		list.add(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 		list = new ArrayList<TestStructure>();
 		TestCase tc = new TestCase();
 		new TestSuite().addChild(tc);
 		list.add(tc);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(handler.canExecute(context));
 	}
 
@@ -92,7 +91,7 @@ public class OpenFileHandlerTest {
 		TestCase tc = new TestCase();
 		new TestSuite().addChild(tc);
 		list.add(tc);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertFalse(handler.canExecute(context));
 	}
 

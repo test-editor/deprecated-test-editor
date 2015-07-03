@@ -12,14 +12,13 @@
 package org.testeditor.ui.wizards;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.wizard.Wizard;
 import org.testeditor.ui.wizardpages.NewTestProjectWizardPage;
 
 /**
  * special wizard for the creation of a new TestProject with the ui-menu.
  * 
  */
-public class NewTestProjectWizard extends Wizard {
+public class NewTestProjectWizard extends NewTestStructureWizard {
 
 	private NewTestProjectWizardPage newTestProjectWizardPage;
 

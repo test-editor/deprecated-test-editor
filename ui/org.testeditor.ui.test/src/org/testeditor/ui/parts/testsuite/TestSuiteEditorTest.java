@@ -49,7 +49,7 @@ import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
@@ -261,7 +261,7 @@ public class TestSuiteEditorTest {
 		context.set(Shell.class, shell);
 		context.set(TestProjectService.class, new TestProjectServiceAdapter());
 		context.set(TestScenarioService.class, null);
-		context.set(TestProtocolService.class, null);
+		context.set(TestStateProtocolService.class, null);
 		context.set(TestStructureService.class, null);
 		eventBroker = new EventBrokerMock();
 		context.set(IEventBroker.class, eventBroker);

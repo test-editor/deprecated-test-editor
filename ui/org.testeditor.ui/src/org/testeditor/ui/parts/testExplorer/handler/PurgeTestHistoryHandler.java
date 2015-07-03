@@ -20,10 +20,11 @@ import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
@@ -31,11 +32,10 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.core.util.TestProtocolService;
+import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.handlers.DeleteTestHandler;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -44,13 +44,11 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * 
  */
 public class PurgeTestHistoryHandler {
-	@Inject
-	private EPartService partService;
 
 	@Inject
 	private TestStructureService testStructureService;
 	@Inject
-	private TestProtocolService testProtocolService;
+	private TestStateProtocolService testProtocolService;
 
 	private static final Logger LOGGER = Logger.getLogger(DeleteTestHandler.class);
 
@@ -60,21 +58,24 @@ public class PurgeTestHistoryHandler {
 	 * enabled on One Element. Enable is possible with an open Editor View or a
 	 * selection in the TestExplorer.
 	 * 
+	 * @param context
+	 *            of the eclipse to retrieve the current selection in the
+	 *            testexplorer.
+	 * 
 	 * @return true if only one <code>TestStructure</code> is selected.
 	 */
 	@CanExecute
-	public boolean canExecute() {
-		TestExplorer explorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW).getObject();
-		IStructuredSelection selection = explorer.getSelection();
+	public boolean canExecute(IEclipseContext context) {
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		if (selection.size() == 1 && selection.getFirstElement() instanceof TestProject
 				&& ((TestProject) selection.getFirstElement()).getTestProjectConfig() == null) {
 			return false;
 		}
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
-		return !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarienSuiteRule(explorer)
-				&& !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarioRule(explorer)
-				&& (explorer.getSelection().getFirstElement() instanceof TestCase
-						|| explorer.getSelection().getFirstElement() instanceof TestSuite || explorer.getSelection()
+		return !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarienSuiteRule(selection)
+				&& !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarioRule(selection)
+				&& (selection.getFirstElement() instanceof TestCase || selection.getFirstElement() instanceof TestSuite || selection
 						.getFirstElement() instanceof TestProject);
 	}
 
@@ -88,8 +89,8 @@ public class PurgeTestHistoryHandler {
 	 */
 	@Execute
 	public void execute(IEclipseContext context, TestEditorTranslationService translationService) {
-		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		IStructuredSelection selection = explorer.getSelection();
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		boolean userConfirms = checkUserConfirmation(translationService, selection);
 		if (userConfirms) {
 			try {
@@ -108,7 +109,9 @@ public class PurgeTestHistoryHandler {
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), "System-Exception",
 						e.getLocalizedMessage());
 			}
-			explorer.refreshTreeInput();
+			TestProject testProject = ((TestStructure) selection.getFirstElement()).getRootElement();
+			context.get(IEventBroker.class).send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED,
+					testProject.getFullName());
 		}
 	}
 

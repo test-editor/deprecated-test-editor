@@ -19,7 +19,7 @@ import org.testeditor.core.model.action.ActionGroup;
 import org.testeditor.core.model.action.Argument;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
-import org.testeditor.core.services.interfaces.LibraryReaderService;
+import org.testeditor.core.services.plugins.LibraryReaderServicePlugIn;
 
 /**
  * 
@@ -27,7 +27,7 @@ import org.testeditor.core.services.interfaces.LibraryReaderService;
  * is only a dummy, to show the usage of the framework.
  * 
  */
-public class DummyLibraryReaderService implements LibraryReaderService {
+public class DummyLibraryReaderService implements LibraryReaderServicePlugIn {
 
 	@Override
 	public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException {

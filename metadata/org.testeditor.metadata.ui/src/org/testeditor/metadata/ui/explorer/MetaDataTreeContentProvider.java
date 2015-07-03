@@ -17,11 +17,14 @@ package org.testeditor.metadata.ui.explorer;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataValue;
@@ -36,6 +39,8 @@ public class MetaDataTreeContentProvider implements ITreeContentProvider {
 
 	private static final Logger LOGGER = Logger.getLogger(MetaDataTreeContentProvider.class);
 	private MetaDataService metaDataService;
+	@Inject
+	private TestProjectService testProjectService;
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
@@ -45,7 +50,7 @@ public class MetaDataTreeContentProvider implements ITreeContentProvider {
 	public Object[] getElements(Object inputElement) {
 		metaDataService = (MetaDataService) inputElement;
 		List<TestProject> elements = new ArrayList<TestProject>();
-		for (TestProject project : metaDataService.getAllProjects()) {
+		for (TestProject project : testProjectService.getProjects()) {
 			elements.add(project);
 		}
 		return elements.toArray();

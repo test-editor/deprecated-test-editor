@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.core.services.interfaces;
+package org.testeditor.core.services.plugins;
 
 import java.util.List;
 import java.util.Map;
@@ -17,13 +17,29 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.team.TeamShareConfig;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * Configuration Service for the Team Share Option. This Service manages the
  * Configuration of a TeamShareService.
  * 
  */
-public interface TeamShareConfigurationService {
+public interface TeamShareConfigurationServicePlugIn {
+
+	/**
+	 * The Plug-In needs the same ID for their services to identity the Plug-In.
+	 * 
+	 * @return Plug-In ID
+	 */
+	String getId();
+
+	/**
+	 * Template for the config.tpr to allow this file to be well formed and
+	 * formatted.
+	 * 
+	 * @return the template for the configuration
+	 */
+	String getTemplateForConfiguration();
 
 	/**
 	 * 
@@ -32,13 +48,6 @@ public interface TeamShareConfigurationService {
 	 * @return the language specific Name of the Plug-In
 	 */
 	String getTranslatedHumanReadablePlugInName(TranslationService translationService);
-
-	/**
-	 * The Plug-In needs the same ID for their services to identity the Plug-In.
-	 * 
-	 * @return Plug-In ID
-	 */
-	String getId();
 
 	/**
 	 * 
@@ -76,13 +85,5 @@ public interface TeamShareConfigurationService {
 	 * @return TeamShareConfig
 	 */
 	TeamShareConfig createTeamShareConfigFrom(Properties properties);
-
-	/**
-	 * Template for the config.tpr to allow this file to be well formed and
-	 * formatted.
-	 * 
-	 * @return the template for the configuration
-	 */
-	String getTemplateForConfiguration();
 
 }

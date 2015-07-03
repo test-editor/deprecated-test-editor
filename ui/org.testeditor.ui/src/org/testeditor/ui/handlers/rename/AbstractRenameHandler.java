@@ -18,6 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
@@ -27,7 +28,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window; 
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -59,6 +60,8 @@ import org.testeditor.ui.wizardpages.AbstractTestStructureWizardPage;
  * 
  */
 public abstract class AbstractRenameHandler {
+
+	private static final Logger LOGGER = Logger.getLogger(AbstractRenameHandler.class);
 
 	@Inject
 	private TestStructureService testStructureService;
@@ -149,13 +152,16 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
-		getMetaDataService().rename(selectedTestStructure, sbname);
 		testStructureService.rename(selectedTestStructure, sbname);
+		if (getMetaDataService() != null) {
+			getMetaDataService().rename(selectedTestStructure, sbname);
+		}
 	}
 
 	/**
-	 * after the renaming of the test-structure there mid needed some special
-	 * operations for the specific class.
+	 * Empty hook method. Subclasses can override this method to add special
+	 * behavior. After the renaming of the test-structure there mid needed some
+	 * special operations for the specific class.
 	 * 
 	 * @param selected
 	 *            {@link TestStructure}
@@ -164,7 +170,8 @@ public abstract class AbstractRenameHandler {
 	 * @throws SystemException
 	 *             if the special operation failed.
 	 */
-	protected abstract void executeSpecials(TestStructure selected, String sbname) throws SystemException;
+	protected void executeSpecials(TestStructure selected, String sbname) throws SystemException {
+	}
 
 	/**
 	 * if the teststructure is changed, the user will be ask to save before run
@@ -239,8 +246,10 @@ public abstract class AbstractRenameHandler {
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
 				CanExecuteTestExplorerHandlerRules.class, context);
-		return rules.canExecuteOnlyOneElementRule(explorer) && !rules.canExecuteOnProjectMainScenarioSuite(explorer)
-				&& rules.canExecuteOnUnusedScenario(explorer) && rules.canExecuteOnNonScenarioSuiteParents(explorer);
+		return rules.canExecuteOnlyOneElementRule(explorer.getSelection())
+				&& !rules.canExecuteOnProjectMainScenarioSuite(explorer.getSelection())
+				&& rules.canExecuteOnUnusedScenario(explorer.getSelection())
+				&& rules.canExecuteOnNonScenarioSuiteParents(explorer.getSelection());
 	}
 
 	/**
@@ -310,15 +319,14 @@ public abstract class AbstractRenameHandler {
 	protected abstract AbstractRenameTestStructureWizardPage getRenameTestStructureWizardPage(TestStructure selectedTS);
 
 	/**
-	 * Getter for the metaData Service. Checks if the service is set and throws
-	 * an Exception with a message if the service was not configured.
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an infomessage will be displayed.
 	 * 
 	 * @return the service
 	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
-			throw new RuntimeException(
-					"MetaDataService is not set. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 

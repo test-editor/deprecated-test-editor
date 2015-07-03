@@ -4,12 +4,16 @@ Bundle-Name: Metadata Core
 Bundle-SymbolicName: org.testeditor.metadata.core
 Bundle-Version: 1.7.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.apache.log4j;version="1.2.15",
+ org.testeditor.core.services.interfaces,
+ org.testeditor.core.services.plugins
 Bundle-ClassPath: Lib/xstream-1.4.8.jar,
  .
 Require-Bundle: org.testeditor.core;bundle-version="1.7.0",
  org.eclipse.equinox.ds;bundle-version="1.4.101",
  javax.inject;bundle-version="1.0.0",
-  org.junit;bundle-version="4.11.0"
+ org.junit;bundle-version="4.11.0",
+ org.testeditor.teamshare.svn;bundle-version="1.7.2"
 Service-Component: OSGI-INF/MetaDataService.xml
 Export-Package: org.testeditor.metadata.core,
  org.testeditor.metadata.core.model

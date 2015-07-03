@@ -19,8 +19,9 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 
@@ -60,7 +61,10 @@ public final class TestProjectDataFactory {
 		properties.put("library.xmllibrary.actiongroup", testActionGroupXml);
 		properties.put("library.xmllibrary.technicalbindings", pathTechnicalBindings);
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);
-		firstTestprojectConfig.setProjectLibraryConfig(plugInService.createProjectLibraryConfigFrom(properties));
+		LibraryConfigurationServicePlugIn libraryConfigurationService = plugInService
+				.getLibraryConfigurationServiceFor("org.testeditor.xmllibrary");
+		firstTestprojectConfig.setProjectLibraryConfig(libraryConfigurationService
+				.createProjectLibraryConfigFrom(properties));
 		firstTestProject.setTestProjectConfig(firstTestprojectConfig);
 		firstTestProject.addChild(firstTestCase);
 		return firstTestProject;
