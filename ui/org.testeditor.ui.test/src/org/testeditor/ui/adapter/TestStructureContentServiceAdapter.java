@@ -22,13 +22,13 @@ import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestDescriptionTestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
 
 /**
- * Adpater of the TestFlowService to be used in Tests.
+ * Adapter of the TestFlowService to be used in Tests.
  * 
  */
-public class TestStructureContentServiceAdapter implements TestStructureContentService {
+public class TestStructureContentServiceAdapter implements TestStructureContentServicePlugIn {
 
 	private static String newDescription = "New Description after refresh of the refreshTestCaseComponents";
 

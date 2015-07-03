@@ -27,9 +27,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
@@ -47,14 +45,11 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareDisconnectProjectWizardP
 public class DisconnectProjectHandler {
 
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TeamShareService teamShareService;
 	@Inject
 	private TestProjectService testProjectService;
 	@Inject
 	private TranslationService translate;
-
-	@Inject
-	private TeamShareConfigurationService teamShareConfigurationService;
 
 	@Inject
 	@Named(IServiceConstants.ACTIVE_SHELL)
@@ -77,8 +72,8 @@ public class DisconnectProjectHandler {
 	public boolean canExecute(IEclipseContext context) {
 		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		if (handlerRules.canExecuteOnTestProjectRule(testExplorer)
-				&& handlerRules.canExecuteOnlyOneElementRule(testExplorer)) {
+		if (handlerRules.canExecuteOnTestProjectRule(testExplorer.getSelection())
+				&& handlerRules.canExecuteOnlyOneElementRule(testExplorer.getSelection())) {
 			TestProject selection = (TestProject) testExplorer.getSelection().getFirstElement();
 			return selection.getTestProjectConfig().isTeamSharedProject();
 		}
@@ -135,22 +130,11 @@ public class DisconnectProjectHandler {
 	 */
 	private void disconnectProject(TestProject testProject) throws SystemException {
 		try {
-			getTeamService(testProject).disconnect(testProject, translate, teamShareConfigurationService);
+			teamShareService.disconnect(testProject, translate);
 			testProjectService.storeProjectConfig(testProject, testProject.getTestProjectConfig());
 		} catch (Exception e) {
 			throw new SystemException(e.getLocalizedMessage(), e);
 		}
-	}
-
-	/**
-	 * @param testProject
-	 *            TestProject
-	 * @return the teamShareService
-	 */
-	private TeamShareService getTeamService(TestProject testProject) {
-		String id = testProject.getTestProjectConfig().getTeamShareConfig().getId();
-		TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-		return teamService;
 	}
 
 }

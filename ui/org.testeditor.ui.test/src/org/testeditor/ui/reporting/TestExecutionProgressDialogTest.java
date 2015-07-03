@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -31,12 +30,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.ui.adapter.TestStructureServiceAdapter;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -89,8 +86,8 @@ public class TestExecutionProgressDialogTest {
 		shell = new Shell(Display.getDefault());
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(Shell.class, shell);
-		context.set("ActualTCService", getTestStructureServiceMock());
 		context.set(IEventBroker.class, null);
+		context.set(TestStructureService.class, null);
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
 			@Override
 			public String translate(String key, Object... params) {
@@ -106,24 +103,6 @@ public class TestExecutionProgressDialogTest {
 	@After
 	public void tearDown() {
 		shell.dispose();
-	}
-
-	/**
-	 * Creates a TestStructureService Mock Object. CHECKSTYLE:OFF
-	 * 
-	 * @return Mock for the Test
-	 */
-	private TestStructureService getTestStructureServiceMock() {
-		TestStructureServiceAdapter testStructureServiceAdapter = new TestStructureServiceAdapter() {
-			@Override
-			public TestResult executeTestStructure(TestStructure testStructure, IProgressMonitor monitor)
-					throws SystemException {
-
-				return new TestResult();
-			}
-		};
-		testStructureServiceAdapter.setEmptyVariable(true);
-		return testStructureServiceAdapter;
 	}
 
 }

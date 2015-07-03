@@ -23,11 +23,10 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.junit.Test;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.TranslationServiceAdapter;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 
 /**
  * 
@@ -52,7 +51,7 @@ public class NewScenarioHandlerTest {
 		context.set(IServiceConstants.ACTIVE_SHELL, null);
 		context.set(EPartService.class, null);
 		context.set(IEventBroker.class, new EventBroker());
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock());
+		context.set(TeamShareService.class, null);
 		NewScenarioHandler newScenarioHandler = ContextInjectionFactory.make(NewScenarioHandler.class, context);
 		assertFalse("Expecting can not Exceute on non projects in the workspace.",
 				newScenarioHandler.canExecute(context, "true"));

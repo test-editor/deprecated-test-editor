@@ -57,10 +57,11 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureContentServiceAdapter;
@@ -894,7 +895,9 @@ public class TestEditorControllerTest {
 				new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("X").toString());
 		properties.put("library.xmllibrary.technicalbindings",
 				new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("Y").toString());
-		ProjectLibraryConfig libraryConfig = service.createProjectLibraryConfigFrom(properties);
+		LibraryConfigurationServicePlugIn libraryConfigurationService = service
+				.getLibraryConfigurationServiceFor("org.testeditor.xmllibrary");
+		ProjectLibraryConfig libraryConfig = libraryConfigurationService.createProjectLibraryConfigFrom(properties);
 
 		testProject.getTestProjectConfig().setProjectLibraryConfig(libraryConfig);
 		testProject.getTestProjectConfig().setLibraryLoadingStatus(libraryLoadingStatus);
@@ -1052,7 +1055,7 @@ public class TestEditorControllerTest {
 
 		};
 		ctrl.reloadAndRefresh("");
-		assertTrue(testCtrl.containsKey("loadRender"));
+		assertFalse(testCtrl.containsKey("loadRender"));
 		testCtrl.remove("loadRender");
 		testCtrl.put("userSays", true);
 		testCtrl.put("dirty", true);

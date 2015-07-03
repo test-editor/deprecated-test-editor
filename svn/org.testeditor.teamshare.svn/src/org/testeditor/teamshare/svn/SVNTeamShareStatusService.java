@@ -25,7 +25,7 @@ import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
@@ -39,7 +39,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * implementation of the service.
  *
  */
-public class SVNTeamShareStatusService implements TeamShareStatusService, IContextFunction {
+public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusService.class);
 	private Thread svnStateRunner;
@@ -94,7 +94,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 					updateTeamStatusInChilds(testProject, statusFromProjectFiles);
 					LOGGER.info("Loaded SVN State for files in: " + testProject.getName());
 					if (eventBroker != null) {
-						eventBroker.post(TestEditorCoreEventConstants.TEAM_STATE_LOADED, testProject);
+						eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
 					}
 				}
 
@@ -216,16 +216,6 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.testeditor.teamshare.svn.xxx#isFinish()
-	 */
-	@Override
-	public boolean isFinished() {
-		return !svnStateRunner.isAlive();
-	}
-
 	/**
 	 * create a new SVNClientManager without Credentials.
 	 * 
@@ -236,12 +226,26 @@ public class SVNTeamShareStatusService implements TeamShareStatusService, IConte
 		return SVNClientManager.newInstance(null, authManager);
 	}
 
+	/**
+	 * Checks if the modification information retrieve process is finished.
+	 * 
+	 * @return true if the operation is completed otherwise false.
+	 */
+	public boolean isFinished() {
+		return !svnStateRunner.isAlive();
+	}
+
 	@Override
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
 		}
 		return this;
+	}
+
+	@Override
+	public String getId() {
+		return SVNTeamShareConfig.SVN_TEAM_SHARE_PLUGIN_ID;
 	}
 
 }

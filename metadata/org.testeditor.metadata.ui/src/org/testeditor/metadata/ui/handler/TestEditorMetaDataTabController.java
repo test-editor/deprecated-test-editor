@@ -12,6 +12,7 @@
 package org.testeditor.metadata.ui.handler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -33,17 +35,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataTag;
+import org.testeditor.metadata.core.model.MetaDataTag.MetaDataTagComparator;
 import org.testeditor.metadata.core.model.MetaDataValue;
 import org.testeditor.ui.constants.IconConstants;
-import org.testeditor.ui.parts.editor.ITestEditorTab;
+import org.testeditor.ui.parts.editor.ITestEditorTabController;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -77,7 +80,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * @author Georg Portwich
  *
  */
-public class MetaDataController implements Listener, ITestEditorTab, ISelectionChangedListener {
+public class TestEditorMetaDataTabController implements Listener, ITestEditorTabController, ISelectionChangedListener {
 
 	@Inject
 	private MetaDataService metaDataService;
@@ -95,8 +98,9 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	private Label lblMetaDataCB;
 	private ComboViewer metaDataValuesCB;
 	private Label lblMetaDataValuesCB;
+	private boolean visible = false;
 
-	private static final Logger LOGGER = Logger.getLogger(MetaDataController.class);
+	private static final Logger LOGGER = Logger.getLogger(TestEditorMetaDataTabController.class);
 
 	/**
 	 * Created the composite and the containing controls. To use the control the
@@ -104,7 +108,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	 * 
 	 * @param parent
 	 */
-	public MetaDataController() {
+	public TestEditorMetaDataTabController() {
 	}
 
 	/**
@@ -118,19 +122,19 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	 *            state.
 	 * @return - the created tab
 	 */
-	public Composite createTab(TabFolder parent, MPart mpart, TestEditorTranslationService translationService) {
+	public Composite createTab(CTabFolder parent, MPart mpart, TestEditorTranslationService translationService) {
 
 		composite = new Composite(parent, SWT.NONE);
 		this.mpart = mpart;
 
-		GridLayout gridLayout = new GridLayout();
+		GridLayout gridLayout = new GridLayout(1, true);
 		gridLayout.marginTop = 10;
 		gridLayout.marginLeft = 10;
 		composite.setLayout(gridLayout);
 
 		// Setup the metatag table. The data is inserted in the method
 		// setTestflow
-		metaDataTagsTable = new Table(composite, SWT.MULTI | SWT.FULL_SELECTION | SWT.NO_SCROLL);
+		metaDataTagsTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.NO_SCROLL);
 		metaDataTagsTable.setLinesVisible(true);
 		metaDataTagsTable.setHeaderVisible(true);
 
@@ -142,7 +146,7 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 			column.setText(titles[i]);
 		}
 
-		GridData gridTable = new GridData(SWT.FILL, SWT.TOP, true, false);
+		GridData gridTable = new GridData(SWT.LEFT, SWT.CENTER, true, false);
 		metaDataTagsTable.setLayoutData(gridTable);
 		metaDataTagsTable.getColumn(0).setWidth(200);
 		metaDataTagsTable.getColumn(1).setWidth(200);
@@ -151,38 +155,28 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 
 		Composite inputRow = new Composite(composite, SWT.NONE);
 
-		GridLayout inputRowGridLayout = new GridLayout();
-		inputRowGridLayout.numColumns = 4;
-		inputRowGridLayout.marginLeft = 20;
+		GridLayout inputRowGridLayout = new GridLayout(4, false);
 		inputRowGridLayout.marginTop = 20;
-		inputRowGridLayout.verticalSpacing = 100;
 		inputRow.setLayout(inputRowGridLayout);
 
-		GridData gridDataLabel = new GridData(SWT.NONE, SWT.LEFT, true, true);
-		GridData gridDataControl = new GridData(SWT.FILL, SWT.BEGINNING, true, true);
-
 		// Create label and drop down for metadatavalues. Controls are hidden
-		lblMetaDataCB = new Label(inputRow, SWT.SHADOW_OUT | SWT.RIGHT);
+		lblMetaDataCB = new Label(inputRow, SWT.NONE);
 		lblMetaDataCB.setText(translationService.translate("%testeditor.tab.metadata.key"));
-		lblMetaDataCB.setLayoutData(gridDataLabel);
 
-		metaDataCB = new ComboViewer(inputRow);
+		metaDataCB = new ComboViewer(inputRow, SWT.NONE);
 		metaDataCB.setLabelProvider(new LabelProvider());
 		metaDataCB.setContentProvider(ArrayContentProvider.getInstance());
 		metaDataCB.addSelectionChangedListener(this);
-		metaDataCB.getCombo().setLayoutData(gridDataControl);
 
 		// Create label and drop down for metadata
 		lblMetaDataValuesCB = new Label(inputRow, SWT.NONE);
 		lblMetaDataValuesCB.setText(translationService.translate("%testeditor.tab.metadata.value"));
-		lblMetaDataValuesCB.setLayoutData(gridDataLabel);
 		lblMetaDataValuesCB.setVisible(false);
 
 		metaDataValuesCB = new ComboViewer(inputRow);
 		metaDataValuesCB.setLabelProvider(new LabelProvider());
 		metaDataValuesCB.setContentProvider(ArrayContentProvider.getInstance());
 		metaDataValuesCB.addSelectionChangedListener(this);
-		metaDataValuesCB.getCombo().setLayoutData(gridDataControl);
 		metaDataValuesCB.getCombo().setVisible(false);
 
 		return composite;
@@ -197,24 +191,22 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	 */
 	public void setTestFlow(TestFlow testFlow) {
 		this.testFlow = testFlow;
+		metaDataTagsTable.removeAll();
 
 		metaDataTagList.clear();
 		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
+
+		Collections.sort(metaDataTagList, new MetaDataTagComparator(metaDataService, testFlow.getRootElement()));
+
 		List<MetaData> metaDataList = getMetaDataService().getAllMetaData(testFlow.getRootElement());
 		if (metaDataList.size() == 0) {
-			Label lblMessage = new Label(composite, SWT.NONE);
-			String message = "Für das Projekt sind noch keine Metadaten angelegt.\n"
-					+ "Bitte legen Sie im Projektverzeichnis eine metadata.properties Datei an.\n"
-					+ "In dieser Pflegen Sie bitten Ihre Metadaten.\n\nBeispiel metadata.properties.\n\n"
-					+ "metadata = Name der Metadaten-Kategorie\n"
-					+ "metadata.schluessel1 = Name des Wertes des Wertes wie in der Oberfläche angezeigt wird\n"
-					+ "metadata.schluessel2 = Nächster Wert und so weiter\n";
-			lblMessage.setText(message);
 			metaDataCB.getCombo().setVisible(false);
 			lblMetaDataCB.setVisible(false);
 			metaDataTagsTable.setVisible(false);
 
 		} else {
+			visible = testFlow.isExecutableTestStructure();
+			metaDataCB.getCombo().removeAll();
 			for (MetaData metaData : metaDataList) {
 				metaDataCB.add(metaData);
 			}
@@ -224,10 +216,14 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 			for (MetaDataTag metaDataTag : metaDataTagList) {
 				MetaDataValue metaDataValue = getMetaDataService().getMetaDataValue(metaDataTag,
 						testFlow.getRootElement());
-				TableItem tableRow = new TableItem(metaDataTagsTable, SWT.NONE);
-				tableRow.setText(0, metaDataValue.getMetaData().getLabel());
-				tableRow.setText(1, metaDataValue.getLabel());
-				tableRow.setImage(2, IconConstants.ICON_DELETE);
+				if (metaDataValue != null) {
+					TableItem tableRow = new TableItem(metaDataTagsTable, SWT.NONE);
+					tableRow.setText(0, metaDataValue.getMetaData().getLabel());
+					tableRow.setText(1, metaDataValue.getLabel());
+					tableRow.setImage(2, IconConstants.ICON_DELETE);
+				} else {
+					LOGGER.error("could not find metaData for " + metaDataTag.getGlobalKey());
+				}
 			}
 		}
 	}
@@ -264,9 +260,11 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 
 	/**
 	 * Stores the metadata of the current testFlow.
+	 * 
+	 * @throws SystemException
 	 */
 	@Override
-	public void save() {
+	public void save() throws SystemException {
 		getMetaDataService().storeMetaDataTags(metaDataTagList, testFlow);
 	}
 
@@ -287,8 +285,12 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 	public void selectionChanged(SelectionChangedEvent event) {
 		if (event.getSource().equals(metaDataCB)) {
 			IStructuredSelection selection = (IStructuredSelection) metaDataCB.getSelection();
+			metaDataValuesCB.getCombo().removeAll();
 			MetaData metaData = (MetaData) selection.getFirstElement();
-			for (MetaDataValue metaDataValue : metaData.getValues()) {
+			metaDataValuesCB.getCombo().removeAll();
+			List<MetaDataValue> metaDataValues = metaData.getValues();
+			Collections.sort(metaDataValues);
+			for (MetaDataValue metaDataValue : metaDataValues) {
 				metaDataValuesCB.add(metaDataValue);
 			}
 			lblMetaDataValuesCB.setVisible(true);
@@ -301,6 +303,11 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 			IStructuredSelection selection = (IStructuredSelection) metaDataValuesCB.getSelection();
 			MetaDataValue metaDataValue = (MetaDataValue) selection.getFirstElement();
 
+			for (MetaDataTag metaDataTag : metaDataTagList) {
+				if (metaDataTag.getGlobalKey().equals(metaDataValue.getGlobalKey())) {
+					return;
+				}
+			}
 			TableItem item = new TableItem(metaDataTagsTable, SWT.NONE, metaDataTagsTable.getItemCount());
 			item.setText(0, metaDataValue.getMetaData().getLabel());
 			item.setText(1, metaDataValue.getLabel());
@@ -309,6 +316,8 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 				mpart.setDirty(true);
 			}
 			metaDataTagList.add(new MetaDataTag(metaDataValue));
+			Collections.sort(metaDataTagList, new MetaDataTagComparator(metaDataService, testFlow.getRootElement()));
+
 			metaDataTagsTable.getParent().pack();
 			lblMetaDataValuesCB.setVisible(false);
 			metaDataValuesCB.getCombo().setVisible(false);
@@ -318,14 +327,32 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		}
 	}
 
+	/**
+	 * bind the metadata service
+	 * 
+	 * @param metaDataService
+	 *            - metadataservice
+	 */
 	public void bindMetaDataService(MetaDataService metaDataService) {
 		this.metaDataService = metaDataService;
 	}
 
+	/**
+	 * Unbind the the metadata verviche
+	 * 
+	 * @param metaDataService
+	 *            - metadataservice
+	 */
 	public void unbindMetaDataService(MetaDataService metaDataService) {
 		this.metaDataService = null;
 	}
 
+	/**
+	 * Access the metadata-service. If the service is not set, an
+	 * runtimeexception is thrown.
+	 * 
+	 * @return
+	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
 			throw new RuntimeException(
@@ -333,6 +360,11 @@ public class MetaDataController implements Listener, ITestEditorTab, ISelectionC
 		}
 		return metaDataService;
 
+	}
+
+	@Override
+	public boolean isVisible() {
+		return visible;
 	}
 
 }

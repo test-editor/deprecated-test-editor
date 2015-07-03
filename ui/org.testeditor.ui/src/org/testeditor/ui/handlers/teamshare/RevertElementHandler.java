@@ -93,7 +93,7 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 	boolean executeSpecials(TestStructure testStructure) {
 
 		try {
-			List<TeamChange> revertedTestStructurs = getTeamService(testStructure).revert(testStructure, translate);
+			List<TeamChange> revertedTestStructurs = getTeamService().revert(testStructure, translate);
 			for (TeamChange teamChange : revertedTestStructurs) {
 				eventBroker.post(TestEditorUIEventConstants.TESTSTRUCTURE_REVERTED,
 						teamChange.getRelativeTestStructureFullName());

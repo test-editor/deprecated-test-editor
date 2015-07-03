@@ -39,6 +39,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.adapter.TestScenarioServiceAdapter;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -117,14 +118,14 @@ public class DeleteTestHandlerTest {
 		testSuite.addChild(testCase);
 		list.add(testCase);
 		new TestProject().addChild(testSuite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(testHandler.canExecute(context));
 		list = new ArrayList<TestStructure>();
 		TestSuite suite = new TestSuite();
 		suite.addChild(testSuite);
 		list.add(suite);
 		new TestProject().addChild(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(testHandler.canExecute(context));
 	}
 
@@ -146,7 +147,7 @@ public class DeleteTestHandlerTest {
 		TestProject testProject = new TestProject();
 		testProject.addChild(suite);
 		list.add(suite);
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
+		context.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, new TestExplorerMock(list).getSelection());
 		assertTrue(testHandler.canExecute(context));
 	}
 
@@ -432,6 +433,7 @@ public class DeleteTestHandlerTest {
 		context.set(TestStructureService.class, getTestStructureServiceMock(this));
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(TestScenarioService.class, getTestScenrioServiceMock());
+		context.set(MetaDataService.class, null);
 		return ContextInjectionFactory.make(DeleteTestHandler.class, context);
 	}
 

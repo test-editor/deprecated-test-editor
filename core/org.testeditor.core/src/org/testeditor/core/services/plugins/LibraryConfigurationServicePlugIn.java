@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.core.services.interfaces;
+package org.testeditor.core.services.plugins;
 
 import java.util.List;
 import java.util.Map;
@@ -17,13 +17,14 @@ import java.util.Properties;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
+import org.testeditor.core.services.interfaces.FieldMappingExtension;
 
 /**
  * Provide functionality to load and save configurations that are used by an
  * implementation of the <code>LibraryReaderService</code> interface.
  * 
  */
-public interface LibraryConfigurationService {
+public interface LibraryConfigurationServicePlugIn {
 
 	/**
 	 * 
@@ -35,15 +36,6 @@ public interface LibraryConfigurationService {
 	 * @return new ProjectLibraryConfig with the values of the properties.
 	 */
 	ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties);
-
-	/**
-	 * This id is used to identify the library plug-in. It must the same ID in
-	 * the <code>ProjectLibraryConfig</code> and in the
-	 * <code>LibraryReaderService</code>
-	 * 
-	 * @return the id of the implementation
-	 */
-	String getId();
 
 	/**
 	 * This method is called for to store the config of the library in the
@@ -74,6 +66,15 @@ public interface LibraryConfigurationService {
 	 *         configuration.
 	 */
 	List<FieldMappingExtension> getConfigUIExtensions();
+
+	/**
+	 * This id is used to identify the library plug-in. It must the same ID in
+	 * the <code>ProjectLibraryConfig</code> and in the
+	 * <code>LibraryReaderService</code>
+	 * 
+	 * @return the id of the implementation
+	 */
+	String getId();
 
 	/**
 	 * 

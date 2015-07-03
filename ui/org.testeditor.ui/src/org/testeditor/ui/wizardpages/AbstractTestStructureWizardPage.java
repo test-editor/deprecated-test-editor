@@ -226,8 +226,11 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		if (name == null || name.isEmpty()) {
 			return false;
 		}
-
-		if (testEditorReservedNamesService.isReservedName(name) || testStructureService.isReservedName(name)) {
+		if (getSelectedTestStrucutureElement() == null) {
+			return false;
+		}
+		if (testEditorReservedNamesService.isReservedName(name)
+				|| testStructureService.isReservedName(getSelectedTestStrucutureElement().getRootElement(), name)) {
 			this.setErrorMessage(name + " " + translationService.translate("%wizard.error.msg.nameIsReservedWord"));
 			return false;
 		}

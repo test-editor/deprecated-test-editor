@@ -22,6 +22,10 @@ import org.testeditor.core.model.action.ProjectLibraryConfig;
  * for a concrete ActionGroupService, which exposes the ActionGroups from the
  * library to its client.
  * 
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * LibraryReaderServicePlug-In.
+ * 
  */
 public interface LibraryReaderService {
 
@@ -40,12 +44,4 @@ public interface LibraryReaderService {
 	ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
 			LibraryConstructionException;
 
-	/**
-	 * This id is used to identify the library plug-in. It must the same ID in
-	 * the <code>ProjectLibraryConfig</code> and in the
-	 * <code>LibraryConfigurationService</code>
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
 }

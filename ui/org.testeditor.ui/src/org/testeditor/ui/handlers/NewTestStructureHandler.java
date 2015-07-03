@@ -22,30 +22,26 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.IWorkbench;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
-import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
+import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.AbstractTestStructureWizardPage;
+import org.testeditor.ui.wizards.NewTestStructureWizard;
 
 /**
  * 
@@ -59,7 +55,10 @@ public abstract class NewTestStructureHandler {
 	private TestProjectService testProjectService;
 
 	@Inject
-	private TestEditorPlugInService plugInService;
+	private TestStructureService testStructureService;
+
+	@Inject
+	private TeamShareService teamService;
 
 	@Inject
 	private TranslationService translationService;
@@ -84,24 +83,21 @@ public abstract class NewTestStructureHandler {
 	 *            active shell
 	 * @param context
 	 *            the actual Eclipse Context.
-	 * @param partService
-	 *            of the active window.
 	 * @return new created TestStructure.
 	 */
 	@Execute
 	public TestStructure execute(TestEditorTranslationService teTranslationService, IWorkbench workbench,
-			IEventBroker eventBroker, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell, EPartService partService,
-			IEclipseContext context) {
-		TestExplorer testExplorer = (TestExplorer) partService.findPart(TestEditorConstants.TEST_EXPLORER_VIEW)
-				.getObject();
+			IEventBroker eventBroker, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell, IEclipseContext context) {
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		try {
-			setParentTestStructure(findSelectedParent(testExplorer.getTreeViewer()));
+			selectedTestStrucutureElement = findSelectedParent(selection);
 		} catch (SystemException exp) {
 			MessageDialog.openError(shell, "System-Exception", exp.getLocalizedMessage());
 		}
 
 		// New Wizard
-		Wizard nwiz = getWizard(context);
+		NewTestStructureWizard nwiz = getWizard(context);
 
 		// Set the wizard title
 		nwiz.setWindowTitle(teTranslationService.translate(getWindowTitle()));
@@ -116,6 +112,8 @@ public abstract class NewTestStructureHandler {
 		TestStructure testStructure = null;
 		// ...and if it wasn't canceled
 		if (wizardDialog.open() == Window.OK) {
+			newTestStructureName = nwiz.getNewTestStructureName();
+			selectedTestStrucutureElement = nwiz.getNewTestStructureParent();
 			testStructure = createNewTestStructure(context);
 			if (testStructure != null) {
 				testStructure.setName(newTestStructureName);
@@ -123,8 +121,9 @@ public abstract class NewTestStructureHandler {
 				try {
 					createAndOpenTestStructure(testStructure, context);
 					addTestStructureLocalToRepository(testStructure, shell);
-					testExplorer.setSelectionOn(testStructure);
-					testExplorer.reloadTeamShareStatusForProjects();
+					eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD,
+							testStructure.getFullName());
+					eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testStructure);
 				} catch (SystemException e) {
 					LOGGER.error(e.getMessage(), e);
 					MessageDialog.openError(shell, "System-Exception", e.getMessage());
@@ -148,9 +147,6 @@ public abstract class NewTestStructureHandler {
 	 */
 	protected void createAndOpenTestStructure(TestStructure testStructure, IEclipseContext context)
 			throws SystemException {
-		TestProject testProject = testStructure.getRootElement();
-		TestStructureService testStructureService = plugInService.getTestStructureServiceFor(testProject
-				.getTestProjectConfig().getTestServerID());
 		testStructureService.create(testStructure);
 	}
 
@@ -175,15 +171,22 @@ public abstract class NewTestStructureHandler {
 	 */
 	private void addTestStructureLocalToRepository(TestStructure testStructure, Shell shell) {
 		try {
-			TeamShareService teamService = getTeamService(testStructure);
-			if (teamService != null) {
-				teamService.addChild(testStructure, translationService);
-			}
+			teamService.addChild(testStructure, translationService);
 		} catch (SystemException e) {
 			LOGGER.error(e);
 			MessageDialog.openError(shell, "System-Exception", e.getMessage());
 		}
 
+	}
+
+	/**
+	 * Sets the name of the new teststructure.
+	 * 
+	 * @param name
+	 *            to be set as new name.
+	 */
+	protected void setNewTestStructureName(String name) {
+		newTestStructureName = name;
 	}
 
 	/**
@@ -196,10 +199,10 @@ public abstract class NewTestStructureHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		IStructuredSelection selection = (IStructuredSelection) context
+				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		CanExecuteTestExplorerHandlerRules handlerRules = new CanExecuteTestExplorerHandlerRules();
-		return handlerRules.canExecuteOnTestSuiteRule(testExplorer)
-				|| handlerRules.canExecuteOnTestProjectRule(testExplorer);
+		return handlerRules.canExecuteOnTestSuiteRule(selection) || handlerRules.canExecuteOnTestProjectRule(selection);
 	}
 
 	/**
@@ -207,17 +210,17 @@ public abstract class NewTestStructureHandler {
 	 * Element is selected then return the root Element from the
 	 * TeststructureService.
 	 * 
-	 * @param treeViewer
+	 * @param selection
 	 *            TestExplorer View from the Workbench.
 	 * @return the possible Parent for the new teststructure.
 	 * @throws SystemException
 	 *             thrown by the TeststructureService.
 	 */
-	protected TestStructure findSelectedParent(TreeViewer treeViewer) throws SystemException {
-		if (treeViewer == null) {
+	protected TestStructure findSelectedParent(IStructuredSelection selection) throws SystemException {
+		if (selection == null) {
 			return getRootElementFromTestStructureService();
 		}
-		TreePath[] treePaths = ((ITreeSelection) treeViewer.getSelection()).getPaths();
+		TreePath[] treePaths = ((ITreeSelection) selection).getPaths();
 		if (treePaths.length == 0) {
 			return getRootElementFromTestStructureService();
 		}
@@ -234,15 +237,6 @@ public abstract class NewTestStructureHandler {
 			return null;
 		}
 		return testProjectService.getProjects().get(0);
-	}
-
-	/**
-	 * 
-	 * @param nameText
-	 *            the name of the new teststructure.
-	 */
-	public void setNewTestStructureName(String nameText) {
-		newTestStructureName = nameText;
 	}
 
 	/**
@@ -265,16 +259,6 @@ public abstract class NewTestStructureHandler {
 	 *         editor.
 	 */
 	protected abstract boolean canOpenObject();
-
-	/**
-	 * Sets the Parent Teststructure for the new one.
-	 * 
-	 * @param selectedTestStrucutureElment
-	 *            the Parent of the new Teststructure.
-	 */
-	public void setParentTestStructure(TestStructure selectedTestStrucutureElment) {
-		this.selectedTestStrucutureElement = selectedTestStrucutureElment;
-	}
 
 	/**
 	 * Subclasses must implements this Method.
@@ -301,7 +285,9 @@ public abstract class NewTestStructureHandler {
 	 * @return the Wizard for the special handler. Should be implemented in the
 	 *         subclass.
 	 */
-	protected abstract Wizard getWizard(IEclipseContext context);
+	protected NewTestStructureWizard getWizard(IEclipseContext context) {
+		return new NewTestStructureWizard();
+	}
 
 	/**
 	 * 
@@ -309,26 +295,6 @@ public abstract class NewTestStructureHandler {
 	 */
 	protected TestProjectService getTestProjectService() {
 		return testProjectService;
-	}
-
-	/**
-	 * @param testStructure
-	 *            TestStructure
-	 * @return the teamShareService
-	 */
-	private TeamShareService getTeamService(TestStructure testStructure) {
-		TestProjectConfig testProjectConfig = testStructure.getRootElement().getTestProjectConfig();
-		if (testProjectConfig != null) {
-			TeamShareConfig teamShareConfig = testProjectConfig.getTeamShareConfig();
-			if (teamShareConfig != null) {
-				String id = teamShareConfig.getId();
-				if (id != null) {
-					TeamShareService teamService = plugInService.getTeamShareServiceFor(id);
-					return teamService;
-				}
-			}
-		}
-		return null;
 	}
 
 }

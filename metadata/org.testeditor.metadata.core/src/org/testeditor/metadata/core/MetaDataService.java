@@ -13,6 +13,7 @@ package org.testeditor.metadata.core;
 
 import java.util.List;
 
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.metadata.core.model.MetaData;
@@ -61,8 +62,9 @@ public interface MetaDataService {
 	 *            - the list of metatags
 	 * @param testStructure
 	 *            - the teststructure of the metatags
+	 * @throws SystemException
 	 */
-	void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure);
+	void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure) throws SystemException;
 
 	/**
 	 * Gets the MetaDataValue for a metaDataTag. In the metaDataTag are only the
@@ -83,8 +85,9 @@ public interface MetaDataService {
 	 * @param newName
 	 *            - the new name without the path information (not the
 	 *            fullName).
+	 * @throws SystemException
 	 */
-	void rename(TestStructure selectedTestStructure, String newName);
+	void rename(TestStructure selectedTestStructure, String newName) throws SystemException;
 
 	/**
 	 * Deletes the metaData for a teststructure. If no metadata are available
@@ -92,12 +95,14 @@ public interface MetaDataService {
 	 * 
 	 * @param selectedTestStructure
 	 *            - the teststrcuture
+	 * @throws SystemException
 	 */
-	void delete(TestStructure testStructure);
+	void delete(TestStructure testStructure) throws SystemException;
+
+	void refresh(TestProject testProject);
 
 	List<String> getTestCases(TestProject project, MetaDataValue metaDataValue);
 
 	List<String> getTestCases(TestProject project, List<MetaDataValue> metaDataValueList);
 
-	List<TestProject> getAllProjects();
 }

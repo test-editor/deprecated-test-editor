@@ -1,13 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Signal Iduna Corporation - initial API and implementation
- * akquinet AG
+/******************************************************************************* 
+ * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others. 
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Signal Iduna Corporation - initial API and implementation 
+ * akquinet AG 
  *******************************************************************************/
 package org.testeditor.ui.parts.editor.view;
 
@@ -36,6 +36,8 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -64,16 +66,17 @@ import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.TestEditorEventConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.parts.editor.ITestEditorController;
-import org.testeditor.ui.parts.editor.ITestEditorTab;
+import org.testeditor.ui.parts.editor.ITestEditorTabContollerProvider;
+import org.testeditor.ui.parts.editor.ITestEditorTabController;
 import org.testeditor.ui.parts.editor.view.handler.TestEditorInputObject;
 import org.testeditor.ui.parts.inputparts.actioninput.TestEditorActionInputController;
 import org.testeditor.ui.parts.inputparts.descriptioninput.TestEditorDescriptionInputController;
@@ -107,15 +110,23 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Inject
 	private static TestEditorTranslationService translationService;
 	@Inject
-	private TestEditorPlugInService testEditorPluginService;
-	@Inject
 	private ActionGroupService actionGroupService;
 	@Inject
 	private TestScenarioService testScenarioService;
 	@Inject
+	@Optional
+	private MetaDataService metaDataService;
+
+	@Inject
 	private TestStructureContentService testStructureContentService;
 
-	private ITestEditorTab iTestEditorTab;
+	@Optional
+	@Inject
+	private ITestEditorTabContollerProvider iTestEditorTabControllerProvider;
+
+	private ITestEditorTabController iTestEditorTabController;
+
+	private CTabItem metaDataTab;
 
 	private TestEditorActionInputController actionInputController;
 
@@ -170,17 +181,21 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Override
 	@Persist
 	public void save() {
-		TestStructureContentService testStructureContentService = testEditorPluginService
-				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
-			testStructureContentService.saveTestStructureData(testFlow);
-			if (getTestEditorTab() != null) {
-				getTestEditorTab().save();
+			if (getTestEditorTabController() != null) {
+				getTestEditorTabController().save();
 			}
+			testStructureContentService.saveTestStructureData(testFlow);
 			mpart.setDirty(false);
-		} catch (SystemException e) {
-			String message = translationService.translate("%editController.ErrorStoringTestFlow");
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), message, e.getLocalizedMessage());
+		} catch (final SystemException e) {
+			final String message = translationService.translate("%editController.ErrorStoringTestFlow");
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(Display.getDefault().getActiveShell(), message, e.getLocalizedMessage());
+				}
+			});
 			LOGGER.error("Error storing Testcase :: FAILED", e);
 		}
 		updateTeamStateInformation();
@@ -225,8 +240,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			if (userWantsToReplaceContent()) {
 				loadAndRerender();
 			}
-		} else {
-			loadAndRerender();
 		}
 	}
 
@@ -247,6 +260,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	protected void loadAndRerender() {
 		if (getTestStructure() != null) {
 			TestFlow foundTestStructure = findTestStructureByFullName(getTestStructure().getFullName());
+			if (getMetaDataService() != null) {
+				getMetaDataService().refresh(foundTestStructure.getRootElement());
+			}
 			if (foundTestStructure == null) {
 				partService.hidePart(mpart, true);
 			}
@@ -330,28 +346,46 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		parent.setLayout(new GridLayout(1, false));
 		GridLayout gridLayout = new GridLayout(1, false);
-		compositeForView = new Composite(parent, SWT.BORDER);
+
+		compositeForView = new CTabFolder(parent, SWT.BORDER);
+		CTabItem item = new CTabItem((CTabFolder) compositeForView, SWT.NONE);
+		item.setText("Editor");
+
 		compositeForView.setLayout(gridLayout);
 		GridData gridDataInner = new GridData(GridData.FILL_BOTH);
 		gridDataInner.grabExcessVerticalSpace = true;
 		gridDataInner.grabExcessHorizontalSpace = true;
 		compositeForView.setLayoutData(gridDataInner);
-		messsageArea = new Composite(compositeForView, SWT.NONE);
+
+		messsageArea = new Composite(compositeForView, SWT.BORDER);
 		messsageArea.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 		messsageArea.setLayout(new FillLayout());
 		createTestCaseView();
+		item.setControl(testEditViewArea.getStyledText());
+
 		LOGGER.trace("Check if this editor should restore an older state.");
 		String testStructureFullName = mpart.getPersistedState().get(EDITOR_OBJECT_ID_FOR_RESTORE);
+
+		metaDataTab = null;
+		if (iTestEditorTabControllerProvider != null) {
+			iTestEditorTabController = iTestEditorTabControllerProvider.get();
+			metaDataTab = new CTabItem((CTabFolder) compositeForView, SWT.NONE);
+			metaDataTab.setText(translationService.translate("%testeditor.tab.metadata.label"));
+			Composite composite = getTestEditorTabController().createTab((CTabFolder) compositeForView, mpart,
+					translationService);
+			metaDataTab.setControl(composite);
+		}
+		((CTabFolder) compositeForView).setSelection(0);
 
 		if (testStructureFullName != null) {
 			LOGGER.trace("Restoring Editor state for: " + testStructureFullName);
 			TestFlow structure = findTestStructureByFullName(testStructureFullName);
-
 			if (structure != null) {
 				setTestFlow(structure);
 			}
 
 		}
+
 	}
 
 	/**
@@ -385,8 +419,11 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 
 		this.testFlow = testFlow;
 
-		if (getTestEditorTab() != null) {
-			getTestEditorTab().setTestFlow(testFlow);
+		if (getTestEditorTabController() != null && metaDataTab != null) {
+			getTestEditorTabController().setTestFlow(testFlow);
+			if (!getTestEditorTabController().isVisible()) {
+				metaDataTab.dispose();
+			}
 		}
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testFlow.getFullName());
 		afterSetTestFlow();
@@ -572,9 +609,9 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		return testFlow;
 	}
 
-	/**
-	 * 
-	 */
+	/** 
+         * 
+         */
 	@PreDestroy
 	protected void partDestroyed() {
 		compositeForView.dispose();
@@ -1095,9 +1132,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			return;
 		}
 		try {
-			TestStructureContentService testStructureContentService = testEditorPluginService
-					.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig()
-							.getTestServerID());
 			List<TestComponent> testComponents = ((TestEditorTestFlowTransferContainer) transferObject)
 					.getStoredTestComponents(getTestFlow(), testStructureContentService);
 			if (testComponents.isEmpty()) {
@@ -1165,8 +1199,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				control.dispose();
 			}
 		}
-		TestStructureContentService testStructureContentService = testEditorPluginService
-				.getTestStructureContentServiceFor(testFlow.getRootElement().getTestProjectConfig().getTestServerID());
 		try {
 			testStructureContentService.refreshTestCaseComponents(testFlow);
 		} catch (SystemException e) {
@@ -1472,11 +1504,24 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 * 
 	 * @return the service
 	 */
-	private ITestEditorTab getTestEditorTab() {
-		if (iTestEditorTab == null) {
+	private ITestEditorTabController getTestEditorTabController() {
+		if (iTestEditorTabController == null) {
 			LOGGER.info("MetaDataTab is not there. Probably the plugin 'org.testeditor.metadata.ui' is not activated");
 		}
-		return iTestEditorTab;
+		return iTestEditorTabController;
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an infomessage will be displayed.
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
 	}
 
 }

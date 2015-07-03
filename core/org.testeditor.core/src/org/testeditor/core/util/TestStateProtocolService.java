@@ -23,6 +23,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.testresult.TestResult;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.model.teststructure.TestType;
@@ -31,10 +32,11 @@ import org.testeditor.core.model.teststructure.TestType;
  * Service for save test result for running tests.
  * 
  */
-public class TestProtocolService implements IContextFunction {
+public class TestStateProtocolService implements IContextFunction {
 
 	private final Map<TestStructure, TestResult> protocolMap = new HashMap<TestStructure, TestResult>();
 	private final Map<String, TestResult> protocolUnLoadedTestStructures = new HashMap<String, TestResult>();
+	private final Map<TestProject, Integer> updateProjectMap = new HashMap<TestProject, Integer>();
 	private IEventBroker eventBroker;
 
 	/**
@@ -90,7 +92,7 @@ public class TestProtocolService implements IContextFunction {
 	 * Remove TestResult from Protocol for init tree node with default icon.
 	 * 
 	 * @param test
-	 *            run test
+	 *            test to be removed from state storage.
 	 */
 	public void remove(TestStructure test) {
 		if (protocolMap.containsKey(test)) {
@@ -98,6 +100,9 @@ public class TestProtocolService implements IContextFunction {
 		}
 		if (protocolUnLoadedTestStructures.containsKey(test.getFullName())) {
 			protocolUnLoadedTestStructures.remove(test.getFullName());
+		}
+		if (updateProjectMap.containsKey(test)) {
+			updateProjectMap.remove(test);
 		}
 	}
 
@@ -124,8 +129,37 @@ public class TestProtocolService implements IContextFunction {
 			eventBroker = context.get(IEventBroker.class);
 			eventBroker.subscribe(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
 					getDeletedTestStructureEventHandler());
+			eventBroker.subscribe(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+					getDeletedTestStructureEventHandler());
+			eventBroker.subscribe(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET,
+					getResetStateTestStructureEventHandler());
 		}
 		return this;
+	}
+
+	/**
+	 * 
+	 * @return eventHanlder to handle the reset state event of an element.
+	 */
+	private EventHandler getResetStateTestStructureEventHandler() {
+		return new EventHandler() {
+
+			@Override
+			public void handleEvent(Event event) {
+				String testStructureName = (String) event.getProperty("org.eclipse.e4.data");
+				TestProject toBeRemoved = null;
+				for (TestProject tp : updateProjectMap.keySet()) {
+					if (tp.getFullName().equals(testStructureName)) {
+						toBeRemoved = tp;
+					}
+				}
+				if (toBeRemoved != null) {
+					updateProjectMap.remove(toBeRemoved);
+					eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
+							toBeRemoved.getFullName());
+				}
+			}
+		};
 	}
 
 	/**
@@ -150,4 +184,34 @@ public class TestProtocolService implements IContextFunction {
 			}
 		};
 	}
+
+	/**
+	 * Gets the number of available updates for a testproject.
+	 * 
+	 * @param testProject
+	 *            check for updates
+	 * @return the number of updates.
+	 */
+	public int getAvailableUpdatesFor(TestProject testProject) {
+		if (updateProjectMap.containsKey(testProject)) {
+			return updateProjectMap.get(testProject);
+		}
+		return 0;
+	}
+
+	/**
+	 * Sets the possible updates for a project.
+	 * 
+	 * @param testProject
+	 *            used as key
+	 * @param updatesCount
+	 *            number of updates.
+	 */
+	public void set(TestProject testProject, int updatesCount) {
+		updateProjectMap.put(testProject, updatesCount);
+		if (eventBroker != null) {
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject.getFullName());
+		}
+	}
+
 }

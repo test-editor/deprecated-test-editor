@@ -32,20 +32,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
-import org.testeditor.ui.handlers.CreateDemoProjectsHandler;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * Wizard for creating demo projects.
  * 
- * @author kdiercks
  * 
  */
 public class DemoWizardPage extends WizardPage {
 
 	private TestProjectService testProjectService;
 
-	private static final Logger LOGGER = Logger.getLogger(CreateDemoProjectsHandler.class);
+	private static final Logger LOGGER = Logger.getLogger(DemoWizardPage.class);
 
 	private File[] demoProjectsDirs;
 	private List<Button> buttonList = new ArrayList<Button>();

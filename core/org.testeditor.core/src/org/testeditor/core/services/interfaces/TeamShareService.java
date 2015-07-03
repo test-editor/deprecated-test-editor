@@ -28,6 +28,11 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * 
  * This Service allows to approve Tests to the team and update Tests from the
  * Team.
+ * 
+ * This interface is intended to be used by clients and not to be implemented by
+ * plug-ins. Plug-In developer should implement the interface:
+ * TeamShareServicePlugIn.
+ *
  */
 public interface TeamShareService {
 
@@ -38,14 +43,11 @@ public interface TeamShareService {
 	 *            to be disconnect.
 	 * @param translationService
 	 *            {@link TranslationService}
-	 * @param teamShareConfigurationService
-	 *            TeamShareConfigurationService
 	 * 
 	 * @throws SystemException
 	 *             if the sharing of the project fails
 	 */
-	void disconnect(TestProject testProject, TranslationService translationService,
-			TeamShareConfigurationService teamShareConfigurationService) throws SystemException;
+	void disconnect(TestProject testProject, TranslationService translationService) throws SystemException;
 
 	/**
 	 * Shares a TestProject with a Team Share Backendsystem.
@@ -110,15 +112,6 @@ public interface TeamShareService {
 			TeamAuthentificationException;
 
 	/**
-	 * This id is used to identify the Team Share plug-in. It must the same ID
-	 * in the <code>TeamShareConfig</code> and in the
-	 * <code>TeamShareConfigurationService</code>
-	 * 
-	 * @return ID to Identify the Plug-In.
-	 */
-	String getId();
-
-	/**
 	 * deletes the {@link TestStructure} given by the parameter.
 	 * 
 	 * @param testStructure
@@ -145,10 +138,12 @@ public interface TeamShareService {
 
 	/**
 	 * 
+	 * @param testStructure
+	 *            used to work on with the team share service.
 	 * @param listener
 	 *            ProgressListener
 	 */
-	void addProgressListener(ProgressListener listener);
+	void addProgressListener(TestStructure testStructure, ProgressListener listener);
 
 	/**
 	 * adds a child to the parent in the local structure.
@@ -207,5 +202,44 @@ public interface TeamShareService {
 	 */
 	void rename(TestStructure testStructure, String newName, TranslationService translationService)
 			throws SystemException;
+
+	/**
+	 * Some services store additional information to the standard information.
+	 * This method is used to add a file to a testcase. The file must exist in
+	 * the testStructure folder.
+	 * 
+	 * @param testStructure
+	 *            where the data belongs to
+	 * @param fileName
+	 *            the name of the file without any path information.
+	 * @throws SystemException
+	 *             on error adding file to teamshare
+	 */
+	void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
+
+	/**
+	 * This method is used to remove a file from a testcase. @SeeaddAdditonalFile
+	 * 
+	 * @param testStructure
+	 *            where the data belongs to
+	 * @param fileName
+	 *            the name of the file without any path information.
+	 * @throws SystemException
+	 *             on error removing file from teamshare
+	 */
+	void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
+	/**
+	* This operation checks the team server for available updates of the
+	 * working copy of the project. It will return the number of commits that
+	 * can be loaded to the working copy.
+	 * 
+	 * @param testProject
+	 *            to get the team server from.
+	 * @return number af commits, that can be applied to this project in the
+	 *         working copy.
+	 * @throws SystemException
+	 *             on error accessing the team server.
+	 */
+	int availableUpdatesCount(TestProject testProject) throws SystemException;
 
 }

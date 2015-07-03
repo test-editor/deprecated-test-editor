@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -40,6 +41,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
+import org.testeditor.core.jobs.TeamModificationCheckJob;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
@@ -74,6 +76,8 @@ public class ApplicationLifeCycleHandler {
 	@Inject
 	private TranslationService translationService;
 
+	private Collection<Thread> jobs = new ArrayList<Thread>();
+
 	/**
 	 * Inititalization of the Application.
 	 * 
@@ -94,6 +98,7 @@ public class ApplicationLifeCycleHandler {
 		}
 		context.set(TestEditorTranslationService.class,
 				ContextInjectionFactory.make(TestEditorTranslationService.class, context));
+		initTestEditorCronJobs();
 		try {
 			testEditorConfigService.exportGlobalVariablesToSystemProperties();
 			testEditorConfigService.initializeSystemProperties();
@@ -103,8 +108,20 @@ public class ApplicationLifeCycleHandler {
 
 			LOGGER.error("Error setting SystemVariables", e);
 		}
-
 		startBackendServers();
+	}
+
+	/**
+	 * Initializes Cron Jobs of the Test-Editor. This jobs run in the background
+	 * and can send events to update the ui.
+	 * 
+	 */
+	protected void initTestEditorCronJobs() {
+		TeamModificationCheckJob job = ContextInjectionFactory.make(TeamModificationCheckJob.class, context);
+		Thread jobRunner = new Thread(job, "Team sever observer");
+		jobRunner.start();
+		jobs.add(jobRunner);
+		LOGGER.info("Team server observer started.");
 	}
 
 	/**
@@ -218,6 +235,10 @@ public class ApplicationLifeCycleHandler {
 	 */
 	@PreSave
 	public void shutDownApplication() {
+		for (Thread thread : jobs) {
+			LOGGER.info("Shutdown the job " + thread.getName());
+			thread.interrupt();
+		}
 		final ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
 		try {
 			dialog.run(true, false, new IRunnableWithProgress() {

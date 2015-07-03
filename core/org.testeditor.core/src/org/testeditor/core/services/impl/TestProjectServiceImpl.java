@@ -41,11 +41,13 @@ import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareConfigurationService;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.interfaces.FileWatchService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 import org.testeditor.core.util.ConfigurationTemplateWriter;
 import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.core.util.FileUtils;
@@ -68,6 +70,30 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 	private List<TestProject> oldTestProjects = new ArrayList<TestProject>();
 	private TestServerService testServerService;
+	private TestStructureService testStructureService;
+
+	private FileWatchService fileWatchService;
+
+	/**
+	 * 
+	 * @param testStructureService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(TestStructureService testStructureService) {
+		this.testStructureService = testStructureService;
+		LOGGER.info("Bind testStructureService");
+	}
+
+	/**
+	 * 
+	 * @param testStructureService
+	 *            removed from system
+	 */
+	public void unBind(TestStructureService testStructureService) {
+		this.testStructureService = null;
+		LOGGER.info("Unbind testStructureService");
+	}
 
 	/**
 	 * 
@@ -99,6 +125,28 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	public void bind(FileLocatorService fileLocatorService) {
 		this.fileLocatorService = fileLocatorService;
 		LOGGER.info("Bind FileLocatorService");
+	}
+
+	/**
+	 * 
+	 * @param fileWatchService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(FileWatchService fileWatchService) {
+		this.fileWatchService = fileWatchService;
+		LOGGER.info("Bind FileWatchService");
+	}
+
+	/**
+	 * 
+	 * @param fileWatchService
+	 *            used in this service
+	 * 
+	 */
+	public void unBind(FileWatchService fileWatchService) {
+		this.fileWatchService = null;
+		LOGGER.info("Unbind FileWatchService");
 	}
 
 	/**
@@ -190,14 +238,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		testProject.setTestProjectConfig(getProjectConfigFor(testProject));
 
 		setPortFromOldProjectObjectTo(testProject);
-
 		if (plugInservice != null) {
 			testProject.setChildCountInBackend(-1);
-			TestStructureService testStructureService = plugInservice.getTestStructureServiceFor(testProject
-					.getTestProjectConfig().getTestServerID());
-			if (testStructureService != null) {
-				testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
-			}
+			testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
 		}
 		LOGGER.trace("Building Project " + testProject.getName());
 	}
@@ -214,6 +257,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
+
 		return testProject;
 	}
 
@@ -476,10 +520,15 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 		}
 		if (plugInservice != null) {
-			testProjectConfig.setProjectLibraryConfig(plugInservice.createProjectLibraryConfigFrom(properties));
+			testProjectConfig.setProjectLibraryConfig(createProjectLibraryConfigFrom(properties));
 			if (properties.containsKey(TestEditorPlugInService.TEAMSHARE_ID)
 					&& !properties.getProperty(TestEditorPlugInService.TEAMSHARE_ID).isEmpty()) {
-				testProjectConfig.setTeamShareConfig(plugInservice.createTeamShareConfigFrom(properties));
+				TeamShareConfigurationServicePlugIn teamCfgService = plugInservice
+						.getTeamShareConfigurationServiceFor(properties
+								.getProperty(TestEditorPlugInService.TEAMSHARE_ID));
+				if (teamCfgService != null) {
+					testProjectConfig.setTeamShareConfig(teamCfgService.createTeamShareConfigFrom(properties));
+				}
 			}
 		}
 
@@ -488,6 +537,25 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		}
 
 		return testProjectConfig;
+	}
+
+	/**
+	 * Creates a <code>ProjectLibraryConfig</code> with the values of the
+	 * properties.
+	 * 
+	 * @param properties
+	 *            to be passed to the ProjectLibraryConfig
+	 * @return ProjectLibraryConfig
+	 */
+	public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {
+		String plugInID = properties.getProperty(TestEditorPlugInService.LIBRARY_ID);
+		LibraryConfigurationServicePlugIn libraryConfigurationService = plugInservice
+				.getLibraryConfigurationServiceFor(plugInID);
+		if (libraryConfigurationService != null) {
+			return libraryConfigurationService.createProjectLibraryConfigFrom(properties);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -602,10 +670,16 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
 		if (plugInservice != null) {
 			if (config.getProjectLibraryConfig() != null) {
-				properties.putAll(plugInservice.getAsProperties(config.getProjectLibraryConfig()));
+				LibraryConfigurationServicePlugIn configurationService = plugInservice
+						.getLibraryConfigurationServiceFor(config.getProjectLibraryConfig().getId());
+				properties.putAll(configurationService.getAsProperties(config.getProjectLibraryConfig()));
+				properties.put(TestEditorPlugInService.LIBRARY_ID, config.getProjectLibraryConfig().getId());
 			}
 			if (config.isTeamSharedProject()) {
-				properties.putAll(plugInservice.getAsProperties(config.getTeamShareConfig()));
+				TeamShareConfigurationServicePlugIn teamCfgService = plugInservice
+						.getTeamShareConfigurationServiceFor(config.getTeamShareConfig().getId());
+				properties.putAll(teamCfgService.getAsProperties(config.getTeamShareConfig()));
+				properties.put(TestEditorPlugInService.TEAMSHARE_ID, config.getTeamShareConfig().getId());
 			}
 		}
 		addPopertiesForGlobalVariables(config, properties);
@@ -666,7 +740,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			TeamShareConfig teamShareConfig = config.getTeamShareConfig();
 			String templateForTeamshareConfiguration = "";
 			if (teamShareConfig != null) {
-				TeamShareConfigurationService teamShareConfigurationServiceFor = plugInservice
+				TeamShareConfigurationServicePlugIn teamShareConfigurationServiceFor = plugInservice
 						.getTeamShareConfigurationServiceFor(config.getTeamShareConfig().getId());
 				if (teamShareConfigurationServiceFor != null) {
 					templateForTeamshareConfiguration = teamShareConfigurationServiceFor.getTemplateForConfiguration();
@@ -1045,6 +1119,12 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	@Override
 	public Object compute(IEclipseContext context, String contextKey) {
 		eventBroker = context.getActive(IEventBroker.class);
+		fileWatchService.setContext(context);
+		if (testProjects != null) {
+			for (TestProject testProject : testProjects) {
+				fileWatchService.watch(testProject);
+			}
+		}
 		return this;
 	}
 

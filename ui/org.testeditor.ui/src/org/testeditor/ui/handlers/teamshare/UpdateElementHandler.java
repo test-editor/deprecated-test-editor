@@ -14,10 +14,8 @@ package org.testeditor.ui.handlers.teamshare;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -29,9 +27,6 @@ import org.testeditor.core.model.teststructure.TestStructure;
  */
 public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 
-	@Inject
-	private IEventBroker eventBroker;
-
 	private static final Logger LOGGER = Logger.getLogger(UpdateElementHandler.class);
 
 	@Inject
@@ -42,9 +37,7 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	boolean executeSpecials(TestStructure testStructure) {
 		try {
-			teamChangeState = getTeamService(testStructure).update(testStructure, translate);
-			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
-			eventBroker.post(eventTopic, testStructure.getFullName());
+			teamChangeState = getTeamService().update(testStructure, translate);
 		} catch (final SystemException e) {
 			LOGGER.error(e.getMessage(), e);
 			getDisplay().syncExec(new Runnable() {

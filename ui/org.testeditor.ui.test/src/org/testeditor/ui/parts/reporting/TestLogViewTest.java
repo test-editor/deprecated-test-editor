@@ -18,12 +18,10 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
 import org.testeditor.ui.constants.ColorConstants;
-import org.testeditor.ui.mocks.TestEditorPluginServiceMock;
 
 /**
  * 
@@ -45,15 +43,10 @@ public class TestLogViewTest {
 		MPart part = new MPartAdapter();
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(MPart.class, part);
-		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock() {
+		context.set(TestStructureService.class, new TestStructureServiceAdapter() {
 			@Override
-			public TestStructureService getTestStructureServiceFor(String testServerID) {
-				return new TestStructureServiceAdapter() {
-					@Override
-					public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
-						return "exec success.";
-					}
-				};
+			public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
+				return "exec success.";
 			}
 		});
 		context.set(Composite.class, shell);

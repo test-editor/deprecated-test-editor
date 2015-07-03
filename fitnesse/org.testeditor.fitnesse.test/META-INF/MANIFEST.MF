@@ -11,5 +11,6 @@ Require-Bundle: org.junit,
 Import-Package: org.eclipse.e4.core.di,
  org.eclipse.e4.core.di.annotations,
  org.testeditor.core.model.action,
- org.testeditor.core.model.team
+ org.testeditor.core.model.team,
+ org.testeditor.core.services.plugins
 Eclipse-BundleShape: dir

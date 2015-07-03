@@ -26,9 +26,9 @@ import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.teststructure.LibraryLoadingStatus;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
-import org.testeditor.core.services.interfaces.LibraryConfigurationService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
-import org.testeditor.core.services.interfaces.TestEditorPlugInService;
+import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
+import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 
@@ -43,22 +43,7 @@ public class TestEditorPlugInServiceTest {
 	@BeforeClass
 	public static void prepareTestsystem() {
 		FrameworkUtil.getBundle(TestEditorPlugInServiceTest.class).getBundleContext()
-				.registerService(LibraryConfigurationService.class, getLibConfigMock(), null);
-	}
-
-	/**
-	 * Test the correct lookup for a service to create a projectlibconfig.
-	 * 
-	 * @throws Exception
-	 *             for test.
-	 */
-	@Test
-	public void testCreateProjectLibraryConfigFrom() throws Exception {
-		TestEditorPlugInService service = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
-		Properties properties = new Properties();
-		properties.put(TestEditorPlugInService.LIBRARY_ID, "testMock");
-		ProjectLibraryConfig config = service.createProjectLibraryConfigFrom(properties);
-		assertEquals("testMock", config.getId());
+				.registerService(LibraryConfigurationServicePlugIn.class, getLibConfigMock(), null);
 	}
 
 	/**
@@ -72,7 +57,8 @@ public class TestEditorPlugInServiceTest {
 	public void testGetAsProperties() throws Exception {
 		TestEditorPlugInService service = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
 		ProjectLibraryConfig config = getProjectLibraryConfigMock();
-		Map<String, String> properties = service.getAsProperties(config);
+		LibraryConfigurationServicePlugIn cfgService = service.getLibraryConfigurationServiceFor(config.getId());
+		Map<String, String> properties = cfgService.getAsProperties(config);
 		assertEquals(properties.get(TestEditorPlugInService.LIBRARY_ID), config.getId());
 	}
 
@@ -86,10 +72,11 @@ public class TestEditorPlugInServiceTest {
 	public void testGetLibraryConfigurationServiceFor() throws Exception {
 		TestEditorPlugInService service = ServiceLookUpForTest.getService(TestEditorPlugInService.class);
 		ProjectLibraryConfig config = getProjectLibraryConfigMock();
-		LibraryConfigurationService libraryConfigurationService = service.getLibraryConfigurationServiceFor(config
-				.getId());
+		LibraryConfigurationServicePlugIn libraryConfigurationService = service
+				.getLibraryConfigurationServiceFor(config.getId());
 		assertNotNull("Plug-In System has a LibraryConfiguration", libraryConfigurationService);
-		assertEquals("Has the same ID", config.getId(), libraryConfigurationService.getId());
+		assertEquals("Has the same ID", config.getId(),
+				((LibraryConfigurationServicePlugIn) libraryConfigurationService).getId());
 	}
 
 	/**
@@ -129,8 +116,8 @@ public class TestEditorPlugInServiceTest {
 	 * 
 	 * @return Mock for Test
 	 */
-	private static LibraryConfigurationService getLibConfigMock() {
-		return new LibraryConfigurationService() {
+	private static LibraryConfigurationServicePlugIn getLibConfigMock() {
+		return new LibraryConfigurationServicePlugIn() {
 
 			@Override
 			public String getId() {
@@ -139,7 +126,9 @@ public class TestEditorPlugInServiceTest {
 
 			@Override
 			public Map<String, String> getAsProperties(ProjectLibraryConfig projectLibraryConfig) {
-				return new HashMap<String, String>();
+				HashMap<String, String> result = new HashMap<String, String>();
+				result.put(TestEditorPlugInService.LIBRARY_ID, getId());
+				return result;
 			}
 
 			@Override
@@ -168,5 +157,4 @@ public class TestEditorPlugInServiceTest {
 			}
 		};
 	}
-
 }
