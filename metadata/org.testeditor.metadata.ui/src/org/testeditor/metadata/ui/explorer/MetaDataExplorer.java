@@ -60,7 +60,6 @@ public class MetaDataExplorer {
 	@Inject
 	private MetaDataService metaDataService;
 
-	@Inject
 	private EPartService partService;
 
 	@Inject
