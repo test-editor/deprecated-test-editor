@@ -207,8 +207,10 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	public void delete(TestStructure testStructure) throws SystemException {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
-		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
-		store(testStructure);
+		if (getMetaDataStore(projectName).containsKey(testStructure.getFullName())) {
+			getMetaDataStore(projectName).remove(testStructure.getFullName());
+			store(testStructure);
+		}
 	}
 
 	@Override
