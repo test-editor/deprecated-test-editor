@@ -796,8 +796,10 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 						// testStructure via the TestStructureService and delete
 						// the history
 					} else {
-						if (!fileToDeleteLc.delete()) {
-							throw new SystemException("could not delete file " + fileName);
+						if (fileToDeleteLc.exists()) {
+							if (!fileToDeleteLc.delete()) {
+								throw new SystemException("could not delete file " + fileName);
+							}
 						}
 					}
 				}
@@ -914,6 +916,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 
 	}
+
 	public int availableUpdatesCount(TestProject testProject) throws SystemException {
 		SVNClientManager clientManager = getSVNClientManager(testProject);
 		try {
