@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.services.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,18 +38,18 @@ public class FileWatchServiceImpl implements FileWatchService, IContextFunction 
 	public void watch(TestProject testProject) {
 
 		if (!pool.containsKey(testProject)) {
+			if (context != null) {
+				context.set(TestProject.class, testProject);
+				FileWatcher fileWatcher = ContextInjectionFactory.make(FileWatcher.class, context);
 
-			context.set(TestProject.class, testProject);
-			FileWatcher fileWatcher = ContextInjectionFactory.make(FileWatcher.class, context);
-
-			pool.put(testProject, fileWatcher);
-			try {
-				fileWatcher.watch();
-			} catch (Exception e) {
-				LOGGER.error(e.getMessage(), e);
+				pool.put(testProject, fileWatcher);
+				try {
+					fileWatcher.watch();
+				} catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -61,5 +62,23 @@ public class FileWatchServiceImpl implements FileWatchService, IContextFunction 
 	public void setContext(IEclipseContext context) {
 		this.context = context;
 
+	}
+
+	@Override
+	public void dropWatchers() {
+		Collection<FileWatcher> values = pool.values();
+		for (FileWatcher fileWatcher : values) {
+			fileWatcher.stop();
+		}
+		pool = new HashMap<TestProject, FileWatcher>();
+	}
+
+	@Override
+	public void remove(TestProject testProject) {
+		if (pool.containsKey(testProject)) {
+			FileWatcher fileWatcher = pool.get(testProject);
+			fileWatcher.stop();
+			pool.remove(testProject);
+		}
 	}
 }

@@ -211,6 +211,7 @@ public class TestProjectServiceImplTest {
 	@Test
 	public void testActivateService() throws Exception {
 		TestProjectServiceImpl service = getTestProjectServiceImplMock();
+		service.bind(new FileWatchServiceImpl());
 		service.activate(null);
 		assertEquals("One Project expected", 1, service.getProjects().size());
 		assertEquals("Project user acceptance test expected", "AkzeptanzTests", service.getProjects().get(0).getName());
@@ -502,6 +503,11 @@ public class TestProjectServiceImplTest {
 		assertFalse(testProjectService.existsProjectWithName("AnotherTp"));
 	}
 
+	@Test
+	public void testCompute() throws Exception {
+
+	}
+
 	/**
 	 * Cleans existing projects in the Workspace.
 	 * 
@@ -613,4 +619,5 @@ public class TestProjectServiceImplTest {
 			}
 		};
 	}
+
 }
