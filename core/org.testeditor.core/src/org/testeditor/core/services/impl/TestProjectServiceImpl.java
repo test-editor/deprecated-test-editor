@@ -257,7 +257,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
-
+		fileWatchService.watch(testProject);
 		return testProject;
 	}
 
@@ -1045,6 +1045,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		File ws = Platform.getLocation().toFile();
 		String projectPath = ws.getAbsolutePath() + File.separator + testProject.getName();
 		deleteDirectory(new File(projectPath));
+		fileWatchService.remove(testProject);
 		testProjects.remove(testProject);
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
@@ -1118,14 +1119,25 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 	@Override
 	public Object compute(IEclipseContext context, String contextKey) {
-		eventBroker = context.getActive(IEventBroker.class);
-		fileWatchService.setContext(context);
+		if (eventBroker == null) {
+			eventBroker = context.getActive(IEventBroker.class);
+			fileWatchService.setContext(context);
+			registerAllProjectInFileWatcher();
+		}
+		return this;
+	}
+
+	/**
+	 * Drops all existing FileWatchers and create new ones for the testproject
+	 * list.
+	 */
+	private void registerAllProjectInFileWatcher() {
 		if (testProjects != null) {
+			fileWatchService.dropWatchers();
 			for (TestProject testProject : testProjects) {
 				fileWatchService.watch(testProject);
 			}
 		}
-		return this;
 	}
 
 	/**
