@@ -43,6 +43,8 @@ public class FileWatcher {
 	@Inject
 	private IEventBroker eventBroker;
 
+	private FileAlterationMonitor monitor;
+
 	/**
 	 * Default Constructor.
 	 * 
@@ -52,7 +54,6 @@ public class FileWatcher {
 	@Inject
 	public FileWatcher(TestProject testProjekt) {
 		this.testProjekt = testProjekt;
-
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class FileWatcher {
 		}
 
 		FileAlterationObserver observer = new FileAlterationObserver(folder);
-		FileAlterationMonitor monitor = new FileAlterationMonitor(pollingInterval);
+		monitor = new FileAlterationMonitor(pollingInterval);
 
 		FileAlterationListener listener = new FileAlterationListenerAdaptor() {
 			@Override
@@ -110,4 +111,16 @@ public class FileWatcher {
 			eventBroker.post(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED, testProjekt);
 		}
 	}
+
+	/**
+	 * Stops the file watcher.
+	 */
+	public void stop() {
+		try {
+			monitor.stop();
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+	}
+
 }
