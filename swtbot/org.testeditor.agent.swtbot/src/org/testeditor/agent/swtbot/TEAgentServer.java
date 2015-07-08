@@ -63,6 +63,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.ui.testing.ITestHarness;
@@ -88,6 +89,8 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	private PrintWriter out;
 
 	private static final int SERVER_PORT = 9090;
+
+	private String testname;
 
 	/**
 	 * @param testableObject
@@ -287,7 +290,15 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 */
 	public String countProjectsEquals(String expectedCount) {
 		try {
-			SWTBotTreeItem[] allItems = bot.tree().getAllItems();
+			SWTBotTree tree = null;
+			try {
+				tree = bot.treeWithId("testexplorer.tree");
+			} catch (Exception e) {
+				// Try again.
+				Thread.sleep(100);
+				tree = bot.treeWithId("testexplorer.tree");
+			}
+			SWTBotTreeItem[] allItems = tree.getAllItems();
 			if (allItems.length != Integer.parseInt(expectedCount)) {
 				String message = "Inspected count of projects was: " + expectedCount + " but there are "
 						+ allItems.length + " projects";
@@ -296,6 +307,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 			return Boolean.toString(true);
 		} catch (Exception e) {
+			LOGGER.error("can't count widgets ", e);
 			analyzeWidgets();
 			return Boolean.toString(false);
 		}
@@ -815,6 +827,17 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * 
+	 * @param testname
+	 *            of current running test.
+	 * @return true
+	 */
+	public String setTestName(String testname) {
+		this.testname = testname;
+		return Boolean.toString(true);
+	}
+
+	/**
 	 * e.g. bot.button(0).click();
 	 * 
 	 * @param locator
@@ -1314,7 +1337,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		LOGGER.trace("---------------------------------------------");
 
 		Display.getDefault().syncExec(new Runnable() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 
@@ -1526,7 +1548,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 								stopApplication();
 							}
 
-							if (first && Display.getDefault() != null) {
+							if (first && Display.getDefault() != null && testname != null) {
 								UIThreadRunnable.syncExec(new VoidResult() {
 
 									@Override
@@ -1534,8 +1556,8 @@ public class TEAgentServer extends Thread implements ITestHarness {
 										Shell[] shells = Display.getDefault().getShells();
 										if (shells.length > 0) {
 											shells[shells.length - 1].forceActive();
-											shells[shells.length - 1].setText("***** AUT running with TE-Agent *****"
-													+ shells[shells.length - 1].getText());
+											shells[shells.length - 1].setText("***** AUT running with TE-Agent for: "
+													+ testname + "*****" + shells[shells.length - 1].getText());
 										}
 									}
 								});

@@ -120,6 +120,8 @@ public class TestExplorer {
 		testStructureTree.createUI(parent, testProjectService);
 
 		TreeViewer treeViewer = testStructureTree.getTreeViewer();
+		treeViewer.getTree().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEST_EXPLORER_TREE);
 		List<TestProject> projects;
 		projects = testProjectService.getProjects();
 		if (projects.size() > 0) {
