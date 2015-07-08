@@ -286,14 +286,19 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *         an ERROR
 	 */
 	public String countProjectsEquals(String expectedCount) {
-		SWTBotTreeItem[] allItems = bot.tree().getAllItems();
-		if (allItems.length != Integer.parseInt(expectedCount)) {
-			String message = "Inspected count of projects was: " + expectedCount + " but there are " + allItems.length
-					+ " projects";
-			LOGGER.error(message);
-			return message;
+		try {
+			SWTBotTreeItem[] allItems = bot.tree().getAllItems();
+			if (allItems.length != Integer.parseInt(expectedCount)) {
+				String message = "Inspected count of projects was: " + expectedCount + " but there are "
+						+ allItems.length + " projects";
+				LOGGER.error(message);
+				return message;
+			}
+			return Boolean.toString(true);
+		} catch (Exception e) {
+			analyzeWidgets();
+			return Boolean.toString(false);
 		}
-		return Boolean.toString(true);
 	}
 
 	/**
