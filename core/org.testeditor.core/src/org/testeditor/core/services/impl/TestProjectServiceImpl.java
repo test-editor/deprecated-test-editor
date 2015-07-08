@@ -1204,4 +1204,12 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		return getProjectWithName(projectName) != null;
 	}
 
+	/**
+	 * 
+	 * @return eventbroker of this service.
+	 */
+	protected IEventBroker getEventBroker() {
+		return eventBroker;
+	}
+
 }
