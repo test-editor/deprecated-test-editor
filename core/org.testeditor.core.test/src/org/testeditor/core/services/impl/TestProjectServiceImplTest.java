@@ -14,6 +14,7 @@ package org.testeditor.core.services.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +36,11 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.e4.core.contexts.EclipseContextFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
+import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
@@ -503,9 +508,23 @@ public class TestProjectServiceImplTest {
 		assertFalse(testProjectService.existsProjectWithName("AnotherTp"));
 	}
 
+	/**
+	 * the lookup of the event broker on compute context.
+	 */
 	@Test
-	public void testCompute() throws Exception {
-
+	public void testCompute() {
+		TestProjectServiceImpl testProjectServiceImpl = new TestProjectServiceImpl();
+		testProjectServiceImpl.bind(new FileWatchServiceImpl());
+		IEclipseContext context = EclipseContextFactory.create();
+		assertNull(testProjectServiceImpl.getEventBroker());
+		context.set(IEventBroker.class, new EventBroker());
+		testProjectServiceImpl.compute(context, "");
+		assertNotNull(testProjectServiceImpl.getEventBroker());
+		IEventBroker second = new EventBroker();
+		context.set(IEventBroker.class, second);
+		assertNotSame(testProjectServiceImpl.getEventBroker(), second);
+		testProjectServiceImpl.compute(context, "");
+		assertNotSame(testProjectServiceImpl.getEventBroker(), second);
 	}
 
 	/**
