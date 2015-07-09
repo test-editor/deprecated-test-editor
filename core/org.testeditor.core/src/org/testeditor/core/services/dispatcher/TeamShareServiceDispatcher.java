@@ -147,7 +147,12 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	 */
 	private TeamShareServicePlugIn getTeamShare(TestProject testProject) {
 		if (testProject.getTestProjectConfig().getTeamShareConfig() != null) {
-			return teamShareServices.get(testProject.getTestProjectConfig().getTeamShareConfig().getId());
+			TeamShareServicePlugIn servicePlugIn = teamShareServices.get(testProject.getTestProjectConfig()
+					.getTeamShareConfig().getId());
+			if (servicePlugIn == null) {
+				LOGGER.error("No Service found for: " + testProject);
+			}
+			return servicePlugIn;
 		}
 		return null;
 	}
