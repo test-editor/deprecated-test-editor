@@ -207,8 +207,25 @@ public class TestStateProtocolService implements IContextFunction {
 	 * @param updatesCount
 	 *            number of updates.
 	 */
-	public void set(TestProject testProject, int updatesCount) {
-		updateProjectMap.put(testProject, updatesCount);
+	public void setUpdateCountForProject(TestProject testProject, int updatesCount) {
+		if (updatesCount == 0) {
+			if (updateProjectMap.containsKey(testProject)) {
+				updateProjectMap.remove(testProject);
+				fireUpdateCountSateCHangeEvent(testProject);
+			}
+		} else {
+			updateProjectMap.put(testProject, updatesCount);
+			fireUpdateCountSateCHangeEvent(testProject);
+		}
+	}
+
+	/**
+	 * fires an event to update the ui with new update change informations.
+	 * 
+	 * @param testProject
+	 *            that has state changes.
+	 */
+	private void fireUpdateCountSateCHangeEvent(TestProject testProject) {
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject.getFullName());
 		}
