@@ -9,13 +9,13 @@
   <parent>
 	    <artifactId>parent</artifactId>
 	    <groupId>org.testeditor</groupId>
-	    <version>1.7.2-SNAPSHOT</version>
+	    <version>1.8.0</version>
 	    <relativePath>../../build/org.testeditor.build</relativePath>	    
   </parent>
   
   <groupId>org.testeditor</groupId>
   <artifactId>org.testeditor.dummylibrary</artifactId>
-  <version>1.7.2-SNAPSHOT</version>
+  <version>1.8.0</version>
   <packaging>eclipse-plugin</packaging>
   
 </project>
