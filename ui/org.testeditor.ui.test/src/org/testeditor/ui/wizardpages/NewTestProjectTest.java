@@ -20,6 +20,7 @@ import java.io.IOException;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -34,6 +35,7 @@ import org.testeditor.core.services.interfaces.TestEditorReservedNamesService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.adapter.TestStructureServiceAdapter;
+import org.testeditor.ui.mocks.EventBrokerMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -122,6 +124,7 @@ public class NewTestProjectTest {
 		context.set(Shell.class, null);
 		context.set(TestStructureService.class, getTestStructureServiceMock());
 		context.set(TestEditorTranslationService.class, getTranslationServiceMock());
+		context.set(IEventBroker.class, new EventBrokerMock());
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(TestEditorReservedNamesService.class,
 				ServiceLookUpForTest.getService(TestEditorReservedNamesService.class));
