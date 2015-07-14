@@ -71,9 +71,7 @@ public class TeamModificationCheckJob implements Runnable {
 				try {
 					if (!blackList.contains(tp)) {
 						int updatesCount = teamShareService.availableUpdatesCount(tp);
-						if (updatesCount > 0) {
-							testProtocolService.set(tp, updatesCount);
-						}
+						testProtocolService.setUpdateCountForProject(tp, updatesCount);
 					}
 				} catch (Exception e) {
 					LOGGER.error("Error check for available updated.", e);
