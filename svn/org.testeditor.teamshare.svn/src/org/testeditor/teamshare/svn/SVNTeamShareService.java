@@ -329,7 +329,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("CommitInfo: " + doCommit.toString());
 			}
-
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			String message = substitudeSVNException(e, translationService);
@@ -389,7 +388,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		if (eventBroker != null) {
 			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
 			eventBroker.post(eventTopic, testStructure.getFullName());
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET, testStructure.getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET, testStructure.getRootElement()
+					.getFullName());
 		}
 	}
 
@@ -617,8 +617,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.testeditor.core.services.interfaces.TeamShareService#addProgressListener
+	 * @see org.testeditor.core.services.interfaces.TeamShareService#
+	 * addProgressListener
 	 * (org.testeditor.core.services.interfaces.ProgressListener)
 	 */
 	@Override
@@ -720,7 +720,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 * @param file
 	 *            directory or file to be deleted
 	 * @return true if delete was successful else false
-	 * */
+	 */
 	private boolean deleteDirectory(File file) {
 		if (file.isDirectory()) {
 			String[] children = file.list();
