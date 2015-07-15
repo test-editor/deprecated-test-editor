@@ -73,6 +73,7 @@ public abstract class AbstractRenameTestStructureWizardPage extends AbstractTest
 	/**
 	 * no location-tree is in the rename-wizard-dialog necessary.
 	 */
+	@Override
 	protected void createLocationTree() {
 	}
 }

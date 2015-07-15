@@ -53,6 +53,7 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	 * 
 	 * @return the TeststructureTree of the Wizard
 	 */
+	@Override
 	protected TestStructureTree getTestStructureTree() {
 		return null;
 	}
@@ -94,6 +95,7 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	/**
 	 * create location tree.
 	 */
+	@Override
 	protected void createLocationTree() {
 	}
 
@@ -103,6 +105,7 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	 * @param parent
 	 *            the parent composite.
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		projects = testProjectService.getProjects();
 
@@ -115,6 +118,7 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	 * validates if the all page entries are set correctly set the PageComplete
 	 * switch.
 	 */
+	@Override
 	protected void validatePageAndSetComplete() {
 		String nameText = getNameText().getText();
 		if (!doesNameAlreadyExist(nameText) && super.isNameValid(nameText)) {

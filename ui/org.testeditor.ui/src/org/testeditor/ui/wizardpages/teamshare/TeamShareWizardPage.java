@@ -355,6 +355,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 	/**
 	 * dispose the swt.resources.
 	 */
+	@Override
 	public void dispose() {
 		if (hintFont != null) {
 			hintFont.dispose();

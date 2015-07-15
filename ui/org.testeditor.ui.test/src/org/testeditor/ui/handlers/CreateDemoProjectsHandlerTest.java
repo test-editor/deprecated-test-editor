@@ -61,6 +61,7 @@ public class CreateDemoProjectsHandlerTest {
 	private TestProjectService getTestProjectServiceMock() {
 		return new TestProjectServiceAdapter() {
 
+			@Override
 			public List<TestProject> getProjects() {
 				return new ArrayList<TestProject>();
 			}
@@ -70,15 +71,18 @@ public class CreateDemoProjectsHandlerTest {
 				return null;
 			}
 
+			@Override
 			public void storeProjectConfig(TestProject testProject, TestProjectConfig config) throws SystemException {
 				fail("test should not call this method");
 			}
 
+			@Override
 			public TestProject createNewProject(String projectName) throws IOException, SystemException {
 				fail("test should not call this method");
 				return null;
 			}
 
+			@Override
 			public TestProject renameTestproject(TestProject testProject, String newName) throws IOException,
 					SystemException {
 				fail("test should not call this method");

@@ -26,6 +26,7 @@ public class TestInvisibleContent implements TestComponent {
 	 * {@inheritDoc}
 	 */
 
+	@Override
 	public String getSourceCode() {
 		return sourceCode;
 	}

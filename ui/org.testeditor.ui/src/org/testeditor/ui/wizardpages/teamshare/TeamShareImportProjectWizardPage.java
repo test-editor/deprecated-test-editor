@@ -116,6 +116,7 @@ public class TeamShareImportProjectWizardPage extends TeamShareWizardPage {
 	 * validates the input-fields are not empty and sets than the pageComlete to
 	 * true.
 	 */
+	@Override
 	protected void validatePageAndSetComplete() {
 		super.validatePageAndSetComplete();
 		boolean existsProjectWithName = testProjectService.existsProjectWithName(projectName);
