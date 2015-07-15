@@ -76,29 +76,31 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 
 			String testCaseName = testStructure.getFullName();
 			String testCasePath = "FitNesseRoot" + File.separator + testCaseName.replace(".", File.separator);
-			fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
-			File xmlFile = new File(fileName);
-			List<MetaDataTag> metaDataTags = getMetaDataStore(testProject.getName()).get(testCaseName);
-			if (metaDataTags != null) {
-				Writer writer = new FileWriter(xmlFile);
-				List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
-				metaDataStoreObjects.add(new MetaDataStoreObject(testCaseName, metaDataTags));
-				xStream.toXML(metaDataStoreObjects, writer);
-				writer.close();
-				if (teamShareService != null) {
-					teamShareService.addAdditonalFile(testStructure, META_DATA_XML);
-				} else {
-					LOGGER.warn("Teamshare serive not configured for MetaDataService");
-				}
-			} else {
-				if (xmlFile.exists()) {
+			if (new File(fileName = projectPath + File.separator + testCasePath).exists()) {
+				fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
+				File xmlFile = new File(fileName);
+				List<MetaDataTag> metaDataTags = getMetaDataStore(testProject.getName()).get(testCaseName);
+				if (metaDataTags != null) {
+					Writer writer = new FileWriter(xmlFile);
+					List<MetaDataStoreObject> metaDataStoreObjects = new ArrayList<MetaDataStoreObject>();
+					metaDataStoreObjects.add(new MetaDataStoreObject(testCaseName, metaDataTags));
+					xStream.toXML(metaDataStoreObjects, writer);
+					writer.close();
 					if (teamShareService != null) {
-						teamShareService.removeAdditonalFile(testStructure, META_DATA_XML);
+						teamShareService.addAdditonalFile(testStructure, META_DATA_XML);
 					} else {
 						LOGGER.warn("Teamshare serive not configured for MetaDataService");
 					}
-					if (!xmlFile.delete()) {
-						throw new RuntimeException("could not delete MetaDataFile " + fileName);
+				} else {
+					if (xmlFile.exists()) {
+						if (teamShareService != null) {
+							teamShareService.removeAdditonalFile(testStructure, META_DATA_XML);
+						} else {
+							LOGGER.warn("Teamshare serive not configured for MetaDataService");
+						}
+						if (!xmlFile.delete()) {
+							throw new RuntimeException("could not delete MetaDataFile " + fileName);
+						}
 					}
 				}
 			}
