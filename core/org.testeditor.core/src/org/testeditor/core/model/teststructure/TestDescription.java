@@ -45,6 +45,7 @@ public abstract class TestDescription implements TestComponent {
 	 * 
 	 */
 
+	@Override
 	public abstract String getSourceCode();
 
 	/**

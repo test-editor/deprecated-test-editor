@@ -31,6 +31,7 @@ public final class ProgressMonitorMock {
 	public IProgressMonitor getProgressMonitor() {
 		return new IProgressMonitor() {
 
+			@Override
 			public void worked(int work) {
 			}
 

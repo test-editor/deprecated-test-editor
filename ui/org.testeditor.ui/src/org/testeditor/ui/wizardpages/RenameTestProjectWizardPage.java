@@ -73,6 +73,7 @@ public class RenameTestProjectWizardPage extends AbstractRenameTestStructureWiza
 	 * validates if the all page entries are set correctly set the PageComplete
 	 * switch.
 	 */
+	@Override
 	protected void validatePageAndSetComplete() {
 		String nameText = getNameText().getText();
 		if (!isNameAlreadyExist(nameText) && super.isNameValid(nameText)) {
