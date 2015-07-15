@@ -232,6 +232,7 @@ public class NewTestStructureHandlerTest {
 	private TestProjectService getTestProjectServiceMock(final boolean empty) {
 		return new TestProjectServiceAdapter() {
 
+			@Override
 			public List<TestProject> getProjects() {
 				ArrayList<TestProject> list = new ArrayList<TestProject>();
 				TestProject tp = new TestProject();

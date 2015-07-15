@@ -219,6 +219,7 @@ public class UiScannerWebElement {
 	 *         the WebElement Values.
 	 * 
 	 */
+	@Override
 	public String toString() {
 		// StringBuilder str = new StringBuilder(getTyp());
 		// str.append("," + getName());

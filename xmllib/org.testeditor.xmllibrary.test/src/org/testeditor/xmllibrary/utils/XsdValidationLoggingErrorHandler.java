@@ -36,6 +36,7 @@ class XsdValidationLoggingErrorHandler implements ErrorHandler {
 	 * @throws SAXException
 	 *             SAXException
 	 */
+	@Override
 	public void warning(SAXParseException ex) throws SAXException {
 
 		LOGGER.error("Warnung: " + ex.getMessage());
@@ -51,6 +52,7 @@ class XsdValidationLoggingErrorHandler implements ErrorHandler {
 	 *             SAXException
 	 * 
 	 */
+	@Override
 	public void error(SAXParseException ex) throws SAXException {
 
 		LOGGER.error("Fehler: " + ex.getMessage());
@@ -65,6 +67,7 @@ class XsdValidationLoggingErrorHandler implements ErrorHandler {
 	 * @throws SAXException
 	 *             SAXException
 	 */
+	@Override
 	public void fatalError(SAXParseException ex) throws SAXException {
 
 		LOGGER.error("Fataler Fehler: " + ex.getMessage());
