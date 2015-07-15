@@ -15,12 +15,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
@@ -41,10 +39,7 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	@Inject
 	private IEclipseContext context;
 	private INameInspector nameInspector;
-	private Text portText;
 
-	private static final String INTEGER_PATTERN_REGEX = "\\d*$";
-	private static final Logger LOGGER = Logger.getLogger(NewTestProjectWizardPage.class);
 	private List<TestProject> projects;
 	private Font hintFont;
 
@@ -117,11 +112,8 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	 */
 	protected void validatePageAndSetComplete() {
 		String nameText = getNameText().getText();
-		if (!doesNameAlreadyExist(nameText) && super.isNameValid(nameText)) {
-			setPageComplete(true);
-		} else {
-			setPageComplete(false);
-		}
+		boolean pageComplete = !doesNameAlreadyExist(nameText) && super.isNameValid(nameText);
+		setPageComplete(pageComplete);
 	}
 
 	/**
