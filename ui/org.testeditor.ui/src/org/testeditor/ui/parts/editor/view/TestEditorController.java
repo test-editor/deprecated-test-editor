@@ -548,6 +548,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE) String testStructureFullName) {
 		if (testFlow != null) {
 			if (testStructureFullName.equals(testFlow.getFullName())) {
+				getMetaDataService().refresh(testFlow.getRootElement());
 				setTestStructure(testFlow);
 			}
 		}

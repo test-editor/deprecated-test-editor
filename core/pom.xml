@@ -7,7 +7,7 @@
 
 	<groupId>org.testeditor</groupId>
 	<artifactId>Core</artifactId>
-	<version>1.7.2-SNAPSHOT</version>
+	<version>1.8.0</version>
 	<packaging>pom</packaging>
 
 	<name>Core Component</name>

@@ -38,8 +38,6 @@ import org.testeditor.metadata.core.model.MetaDataValue;
 /**
  * Tests the metadataservice.
  * 
- * @author Georg Portwich
- *
  */
 public class MetaDataServiceTest {
 
