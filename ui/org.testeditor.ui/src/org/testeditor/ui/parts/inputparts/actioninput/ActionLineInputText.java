@@ -171,6 +171,7 @@ public class ActionLineInputText extends ActionLineTextContainsInvalidText imple
 	 * 
 	 * @return true when the widget is disposed and false otherwise
 	 */
+	@Override
 	public boolean isDisposed() {
 		return wrappedText.isDisposed();
 	}
@@ -186,6 +187,7 @@ public class ActionLineInputText extends ActionLineTextContainsInvalidText imple
 	 * @param keyListener
 	 *            to add
 	 */
+	@Override
 	public void addKeyListener(KeyListener keyListener) {
 		wrappedText.addKeyListener(keyListener);
 	}

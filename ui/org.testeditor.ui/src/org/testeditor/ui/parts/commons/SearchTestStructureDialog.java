@@ -186,6 +186,7 @@ public class SearchTestStructureDialog extends Dialog {
 		return new Thread() {
 			private List<TestStructure> list;
 
+			@Override
 			public void run() {
 				updateLoadedTestsState("0%");
 				List<TestProject> projects = testProjectService.getProjects();

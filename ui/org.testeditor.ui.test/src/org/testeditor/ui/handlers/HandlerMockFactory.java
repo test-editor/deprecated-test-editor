@@ -38,6 +38,7 @@ public final class HandlerMockFactory {
 	public static TestProjectService getNonEmptyTestProjectService() {
 		return new TestProjectServiceAdapter() {
 
+			@Override
 			public List<TestProject> getProjects() {
 				ArrayList<TestProject> list = new ArrayList<TestProject>();
 				list.add(new TestProject());
@@ -53,6 +54,7 @@ public final class HandlerMockFactory {
 	 */
 	public static TestProjectService getEmptyTestProjectService() {
 		return new TestProjectServiceAdapter() {
+			@Override
 			public List<TestProject> getProjects() {
 				return new ArrayList<TestProject>();
 			}

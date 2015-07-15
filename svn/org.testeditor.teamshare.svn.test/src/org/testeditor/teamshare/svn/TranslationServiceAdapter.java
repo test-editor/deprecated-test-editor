@@ -23,6 +23,7 @@ public class TranslationServiceAdapter {
 	 */
 	public TranslationService getTranslationService() {
 		return new TranslationService() {
+			@Override
 			public String translate(String key, String contributorURI) {
 				String message = "translated key " + key + " {0} {1}";
 				return message;

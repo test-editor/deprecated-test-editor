@@ -32,6 +32,7 @@ public class TestActionGroupTestScenario extends TestActionGroup {
 	 * 
 	 * @return the sourcecode as String
 	 */
+	@Override
 	public String getSourceCode() {
 		StringBuilder sourceCode = new StringBuilder();
 		sourceCode.append("|note| Maske: ").append(getActionGroupName()).append("|\n");
