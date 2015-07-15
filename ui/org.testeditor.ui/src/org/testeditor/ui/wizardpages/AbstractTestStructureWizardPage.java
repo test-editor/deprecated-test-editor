@@ -226,11 +226,7 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		if (name == null || name.isEmpty()) {
 			return false;
 		}
-		if (getSelectedTestStrucutureElement() == null) {
-			return false;
-		}
-		if (testEditorReservedNamesService.isReservedName(name)
-				|| testStructureService.isReservedName(getSelectedTestStrucutureElement().getRootElement(), name)) {
+		if (isReservedName(name)) {
 			this.setErrorMessage(name + " " + translationService.translate("%wizard.error.msg.nameIsReservedWord"));
 			return false;
 		}
@@ -253,6 +249,18 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 			setErrorMessage(getNameInspector().nameInvalideMessage());
 			return false;
 		}
+	}
+	
+	protected boolean isReservedName(String name) {
+		// Handle reserved names in test structure
+		TestStructure selectedTestStrucutureElement = getSelectedTestStrucutureElement();
+		if (selectedTestStrucutureElement != null) {
+			if (testStructureService.isReservedName(selectedTestStrucutureElement.getRootElement(), name)) {
+				return true;
+			}
+		}
+		// Handle globally reserved names
+		return testEditorReservedNamesService.isReservedName(name);
 	}
 
 	/**
