@@ -917,6 +917,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 	}
 
+	@Override
 	public int availableUpdatesCount(TestProject testProject) throws SystemException {
 		SVNClientManager clientManager = getSVNClientManager(testProject);
 		try {

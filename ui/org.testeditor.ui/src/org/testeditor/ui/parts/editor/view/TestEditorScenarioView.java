@@ -42,6 +42,7 @@ public class TestEditorScenarioView extends TestEditView {
 	 * styled texts.
 	 * 
 	 */
+	@Override
 	protected void preRefreshStyledText() {
 		super.preRefreshStyledText();
 		scanForScenarioParameters();
