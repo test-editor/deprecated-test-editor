@@ -11,11 +11,14 @@
  *******************************************************************************/
 package org.testeditor.core.services.dispatcher;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
@@ -25,7 +28,7 @@ import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
  * Dispatcher to lookup the right plugIn of the TeamShareStatusService.
  *
  */
-public class TeamShareStatusServiceDispatcher implements TeamShareStatusService {
+public class TeamShareStatusServiceDispatcher implements TeamShareStatusService, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(TeamShareServiceDispatcher.class);
 	private Map<String, TeamShareStatusServicePlugIn> teamShareStatusServices = new HashMap<String, TeamShareStatusServicePlugIn>();
@@ -81,4 +84,16 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusService 
 		}
 		return null;
 	}
+
+	@Override
+	public Object compute(IEclipseContext context, String contextKey) {
+		Collection<TeamShareStatusServicePlugIn> plugins = teamShareStatusServices.values();
+		for (TeamShareStatusServicePlugIn plugin : plugins) {
+			if (plugin instanceof IContextFunction) {
+				((IContextFunction) plugin).compute(context, contextKey);
+			}
+		}
+		return this;
+	}
+
 }
