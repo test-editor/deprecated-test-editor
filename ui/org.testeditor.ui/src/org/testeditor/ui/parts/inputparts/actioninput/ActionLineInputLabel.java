@@ -79,6 +79,7 @@ public class ActionLineInputLabel implements IActionLineInputWidget {
 	 * @param listener
 	 *            the KeyListener
 	 */
+	@Override
 	public void addKeyListener(KeyListener listener) {
 		wrappedLabel.addKeyListener(listener);
 	}

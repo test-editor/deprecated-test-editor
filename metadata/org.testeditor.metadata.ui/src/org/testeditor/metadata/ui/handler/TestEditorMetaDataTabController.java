@@ -122,6 +122,7 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 	 *            state.
 	 * @return - the created tab
 	 */
+	@Override
 	public Composite createTab(CTabFolder parent, MPart mpart, TestEditorTranslationService translationService) {
 
 		composite = new Composite(parent, SWT.NONE);
@@ -189,6 +190,7 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 	 * @param testFlow
 	 *            - the testFlow
 	 */
+	@Override
 	public void setTestFlow(TestFlow testFlow) {
 		this.testFlow = testFlow;
 		metaDataTagsTable.removeAll();

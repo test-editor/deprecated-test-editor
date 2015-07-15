@@ -178,6 +178,7 @@ public class TestEditViewBasisTest {
 				TestEditorViewKeyHandler.class).getBundleContext());
 		context.set(Logger.class, null);
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
+			@Override
 			public String translate(String key, Object... params) {
 				return key;
 			};

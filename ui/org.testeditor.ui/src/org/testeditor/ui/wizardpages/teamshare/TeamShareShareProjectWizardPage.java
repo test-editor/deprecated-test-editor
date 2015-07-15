@@ -73,6 +73,7 @@ public class TeamShareShareProjectWizardPage extends TeamShareWizardPage {
 	/**
 	 * @return the TestProjectConfig of the TestProject
 	 */
+	@Override
 	public TestProjectConfig getTestProjectConfig() {
 		return testProject.getTestProjectConfig();
 	}
