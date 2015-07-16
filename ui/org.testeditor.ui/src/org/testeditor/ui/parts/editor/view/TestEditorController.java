@@ -547,7 +547,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public void objectUpdatetByTeamshare(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE) String testStructureFullName) {
 		if (testFlow != null) {
-			if (testStructureFullName.equals(testFlow.getFullName())) {
+			if (testFlow.getFullName().startsWith(testStructureFullName)) {
 				getMetaDataService().refresh(testFlow.getRootElement());
 				setTestStructure(testFlow);
 			}
