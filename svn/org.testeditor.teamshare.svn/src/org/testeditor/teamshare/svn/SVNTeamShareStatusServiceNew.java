@@ -20,6 +20,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
@@ -28,9 +29,9 @@ import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNStatusType;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class SVNTeamShareStatusServiceNewImpl implements TeamShareStatusServiceNew {
+public class SVNTeamShareStatusServiceNew implements TeamShareStatusServiceNew {
 
-	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusServiceNewImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusServiceNew.class);
 
 	/**
 	 * list of modificated teststructures.
