@@ -22,13 +22,14 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 
 /**
  * Dispatcher to lookup the right plugIn of the TeamShareStatusService.
  *
  */
-public class TeamShareStatusServiceDispatcher implements TeamShareStatusService, IContextFunction {
+public class TeamShareStatusServiceDispatcher implements TeamShareStatusServiceNew, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(TeamShareServiceDispatcher.class);
 	private Map<String, TeamShareStatusServicePlugIn> teamShareStatusServices = new HashMap<String, TeamShareStatusServicePlugIn>();
@@ -51,23 +52,6 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusService,
 	public void unBind(TeamShareStatusServicePlugIn teamShareService) {
 		teamShareStatusServices.remove(teamShareService.getId());
 		LOGGER.info("Removing TeamShareStatusServicePlugIn Plug-In " + teamShareService.getClass().getName());
-	}
-
-	@Override
-	public void setTeamStatusForProject(TestProject testProject) {
-		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testProject);
-		if (teamShareStatusServices != null) {
-			teamShareStatus.setTeamStatusForProject(testProject);
-		}
-	}
-
-	@Override
-	public List<String> getModifiedFilesFromTestStructure(TestStructure testStructure) {
-		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testStructure.getRootElement());
-		if (teamShareStatusServices != null) {
-			return teamShareStatus.getModifiedFilesFromTestStructure(testStructure);
-		}
-		return null;
 	}
 
 	/**
@@ -94,6 +78,43 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusService,
 			}
 		}
 		return this;
+	}
+
+	@Override
+	public List<String> getModified(TestProject testProject) {
+		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testProject);
+		if (teamShareStatusServices != null) {
+			return teamShareStatus.getModified(testProject);
+		}
+		return null;
+	}
+
+	@Override
+	public void update(TestProject testProject) {
+		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testProject);
+		if (teamShareStatusServices != null) {
+			teamShareStatus.update(testProject);
+		}
+	}
+
+	@Override
+	public boolean isModified(TestStructure testStructure) {
+		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testStructure.getRootElement());
+		if (teamShareStatusServices != null) {
+			return teamShareStatus.isModified(testStructure);
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean remove(TestProject testProject) {
+		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testProject);
+		if (teamShareStatusServices != null) {
+			return teamShareStatus.remove(testProject);
+		}
+		
+		return false;
 	}
 
 }

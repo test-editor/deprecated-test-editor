@@ -66,6 +66,7 @@ import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
@@ -99,7 +100,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public static final String TESTSCENARIO_ID = "org.testeditor.ui.partdescriptor.testScenarioView";
 
 	@Inject
-	private TeamShareStatusService teamShareStatusService;
+	private TeamShareStatusServiceNew teamShareStatusService;
 
 	@Inject
 	private IEclipseContext context;
@@ -208,7 +209,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private void updateTeamStateInformation() {
 		TestProject testProject = getTestStructure().getRootElement();
 		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
-			teamShareStatusService.setTeamStatusForProject(testProject);
+			teamShareStatusService.update(testProject);
 		}
 	}
 
