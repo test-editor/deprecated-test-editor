@@ -105,9 +105,8 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 	 */
 	private Image getScnearioSuiteImage(ScenarioSuite scenarioSuite) {
 
-		
 		if (teamShareStatusService.isModified(scenarioSuite)) {
-			return IconConstants.ICON_TESTSUITE_MODIFIED;
+			return IconConstants.ICON_SCENARIOSUITE_MODIFIED;
 
 		}
 		return IconConstants.ICON_SCENARIOSUITE;
@@ -122,8 +121,8 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 		if (teamShareStatusService.isModified(testScenario)) {
 			return IconConstants.ICON_SCENARIO_MODIFIED;
 
-		} 
-			return IconConstants.ICON_SCENARIO;
+		}
+		return IconConstants.ICON_SCENARIO;
 
 	}
 
@@ -160,7 +159,7 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 					return IconConstants.ICON_TESTCASE;
 				}
 			}
-			
+
 		} else {
 			if (testResult != null) {
 				if (testResult.isSuccessfully()) {
@@ -170,7 +169,7 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 				}
 			}
 		}
-		
+
 		return IconConstants.ICON_TESTCASE;
 
 	}
