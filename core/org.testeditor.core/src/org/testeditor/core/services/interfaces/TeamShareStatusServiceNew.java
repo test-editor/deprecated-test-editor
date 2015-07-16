@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.teamshare.svn;
+package org.testeditor.core.services.interfaces;
 
 import java.io.IOException;
 import java.util.List;

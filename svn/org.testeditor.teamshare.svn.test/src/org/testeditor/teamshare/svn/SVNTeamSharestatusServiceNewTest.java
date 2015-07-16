@@ -35,11 +35,12 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
-public class SVNTeamSharestatusServiceTest {
+public class SVNTeamSharestatusServiceNewTest {
 
 	List<TestStructure> testStructures;
 	TeamShareStatusServiceNew teamShareStatusServiceNew;
@@ -87,7 +88,7 @@ public class SVNTeamSharestatusServiceTest {
 		System.setProperty("svn.default.comment", "xyz");
 
 		teamService = new SVNTeamShareService();
-		statusService = new SVNTeamShareStatusServiceNewImpl();
+		statusService = new SVNTeamShareStatusServiceNew();
 
 		SVNRepositoryFactoryImpl.setup();
 
