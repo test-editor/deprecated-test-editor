@@ -62,7 +62,7 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 		LOGGER.trace("testProject" + testProject);
 
 		// clean project instance for update with newest data
-		projects.remove(testProject);
+		projects.put(testProject, new ArrayList<String>());
 
 		final ArrayList<String> testStructures = new ArrayList<String>();
 
@@ -132,12 +132,10 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 			listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
 		}
 
-		if (listOfModifiedTestStructures != null) {
-			for (String modifiedTestStructure : listOfModifiedTestStructures) {
+		for (String modifiedTestStructure : listOfModifiedTestStructures) {
 
-				if (modifiedTestStructure.contains(testStructure.getFullName())) {
-					return true;
-				}
+			if (modifiedTestStructure.contains(testStructure.getFullName())) {
+				return true;
 			}
 		}
 
