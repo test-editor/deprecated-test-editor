@@ -51,7 +51,7 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
@@ -85,7 +85,7 @@ public class TestExplorer {
 	private EPartService partService;
 
 	@Inject
-	private TeamShareStatusService teamShareStatusService;
+	private TeamShareStatusServiceNew teamShareStatusService;
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -194,7 +194,7 @@ public class TestExplorer {
 	public void reloadTeamShareStatusForProjects() {
 		for (TestProject project : testProjectService.getProjects()) {
 			if (project.getTestProjectConfig().isTeamSharedProject()) {
-				teamShareStatusService.setTeamStatusForProject(project);
+				teamShareStatusService.update(project);
 			}
 		}
 	}

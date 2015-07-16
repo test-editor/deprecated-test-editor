@@ -20,7 +20,7 @@ Import-Package: org.apache.commons.io;version="2.2.0",
  org.osgi.service.prefs;version="1.1.1"
 Service-Component: OSGI-INF/SVNTeamShareConfigurationService.xml,
  OSGI-INF/SVNTeamShareService.xml,
- OSGI-INF/SVNTeamShareStatusService.xml
+ OSGI-INF/SVNTeamShareStatusServiceNew.xml
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/commons-io-2.4.jar

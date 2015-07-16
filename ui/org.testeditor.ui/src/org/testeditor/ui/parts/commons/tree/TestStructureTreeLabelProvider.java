@@ -26,6 +26,7 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.util.TestStateProtocolService;
 import org.testeditor.ui.constants.IconConstants;
@@ -39,6 +40,9 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 
 	@Inject
 	private TestStateProtocolService testProtocolService;
+
+	@Inject
+	private TeamShareStatusServiceNew teamShareStatusService;
 
 	private boolean showFullName = false;
 
@@ -85,11 +89,13 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 	 * @return Image
 	 */
 	private Image getTestSuiteImage(TestSuite testSuite) {
-		if (testSuite.getTeamChangeType() == TeamChangeType.NONE) {
-			return IconConstants.ICON_TESTSUITE;
-		} else {
+
+		if (teamShareStatusService.isModified(testSuite)) {
 			return IconConstants.ICON_TESTSUITE_MODIFIED;
+
 		}
+
+		return IconConstants.ICON_TESTSUITE;
 	}
 
 	/**
@@ -98,11 +104,13 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 	 * @return Image
 	 */
 	private Image getScnearioSuiteImage(ScenarioSuite scenarioSuite) {
-		if (scenarioSuite.getTeamChangeType() == TeamChangeType.NONE) {
-			return IconConstants.ICON_SCENARIOSUITE;
-		} else {
-			return IconConstants.ICON_SCENARIOSUITE_MODIFIED;
+
+		
+		if (teamShareStatusService.isModified(scenarioSuite)) {
+			return IconConstants.ICON_TESTSUITE_MODIFIED;
+
 		}
+		return IconConstants.ICON_SCENARIOSUITE;
 	}
 
 	/**
@@ -111,11 +119,12 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 	 * @return image
 	 */
 	private Image getTestScenarioImage(TestScenario testScenario) {
-		if (testScenario.getTeamChangeType() == TeamChangeType.NONE) {
-			return IconConstants.ICON_SCENARIO;
-		} else {
+		if (teamShareStatusService.isModified(testScenario)) {
 			return IconConstants.ICON_SCENARIO_MODIFIED;
-		}
+
+		} 
+			return IconConstants.ICON_SCENARIO;
+
 	}
 
 	/**
@@ -130,7 +139,29 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 			return null;
 		}
 		TestResult testResult = testProtocolService.get(testCase);
-		if (testCase.getTeamChangeType() == TeamChangeType.NONE) {
+
+		TestProjectConfig testProjectConfig = testCase.getRootElement().getTestProjectConfig();
+		if (testProjectConfig.isTeamSharedProject()) {
+
+			if (testResult != null) {
+				if (teamShareStatusService.isModified(testCase)) {
+					if (testResult.isSuccessfully()) {
+						return IconConstants.ICON_TESTCASE_SUCCESSED_MODIFIED;
+					} else {
+						return IconConstants.ICON_TESTCASE_FAILED_MODIFIED;
+					}
+				}
+
+			} else {
+				if (teamShareStatusService.isModified(testCase)) {
+					return IconConstants.ICON_TESTCASE_MODIFIED;
+
+				} else {
+					return IconConstants.ICON_TESTCASE;
+				}
+			}
+			
+		} else {
 			if (testResult != null) {
 				if (testResult.isSuccessfully()) {
 					return IconConstants.ICON_TESTCASE_SUCCESSED;
@@ -138,17 +169,10 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 					return IconConstants.ICON_TESTCASE_FAILED;
 				}
 			}
-			return IconConstants.ICON_TESTCASE;
-		} else {
-			if (testResult != null) {
-				if (testResult.isSuccessfully()) {
-					return IconConstants.ICON_TESTCASE_SUCCESSED_MODIFIED;
-				} else {
-					return IconConstants.ICON_TESTCASE_FAILED_MODIFIED;
-				}
-			}
-			return IconConstants.ICON_TESTCASE_MODIFIED;
 		}
+		
+		return IconConstants.ICON_TESTCASE;
+
 	}
 
 	/**
@@ -166,11 +190,13 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 		}
 		TestProjectConfig testProjectConfig = testProject.getTestProjectConfig();
 		if (testProjectConfig.isTeamSharedProject()) {
-			if (testProject.getTeamChangeType() == TeamChangeType.NONE) {
-				return IconConstants.ICON_SHARED_PROJECT;
-			} else {
+
+			if (teamShareStatusService.isModified(testProject)) {
 				return IconConstants.ICON_SHARED_PROJECT_MODIFIED;
+			} else {
+				return IconConstants.ICON_SHARED_PROJECT;
 			}
+
 		} else {
 			return IconConstants.ICON_PROJECT;
 		}
