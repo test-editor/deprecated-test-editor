@@ -18,9 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
@@ -29,9 +32,11 @@ import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNStatusType;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class SVNTeamShareStatusServiceNew implements TeamShareStatusServiceNew {
+public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugIn, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusServiceNew.class);
+
+	private IEventBroker eventBroker;
 
 	/**
 	 * list of modificated teststructures.
@@ -85,18 +90,7 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServiceNew {
 
 							String fullName = teamShareService.convertFileToFullname(status.getFile(), testProject);
 
-							if (SVNStatusType.STATUS_DELETED == statusType) {
-								// fileList.put(fullName.substring(0,
-								// fullName.lastIndexOf(".")),
-								// TeamChangeType.MODIFY);
-								testStructures.add(fullName);
-
-							} else {
-								// fileList.put(fullName,
-								// getTeamChangeTypeFromSVNStatusType(statusType));
-								testStructures.add(fullName);
-
-							}
+							testStructures.add(fullName);
 
 						}
 					}
@@ -133,10 +127,17 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServiceNew {
 
 		List<String> listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
 
-		for (String modifiedTestStructure : listOfModifiedTestStructures) {
+		if (listOfModifiedTestStructures == null) {
+			update(testStructure.getRootElement());
+			listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
+		}
 
-			if (modifiedTestStructure.equals(testStructure.getFullName())) {
-				return true;
+		if (listOfModifiedTestStructures != null) {
+			for (String modifiedTestStructure : listOfModifiedTestStructures) {
+
+				if (modifiedTestStructure.contains(testStructure.getFullName())) {
+					return true;
+				}
 			}
 		}
 
@@ -154,6 +155,19 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServiceNew {
 		LOGGER.debug("project " + testProject + " does not exists for removing");
 		return false;
 
+	}
+
+	@Override
+	public Object compute(IEclipseContext context, String contextKey) {
+		if (eventBroker == null) {
+			eventBroker = context.get(IEventBroker.class);
+		}
+		return this;
+	}
+
+	@Override
+	public String getId() {
+		return SVNTeamShareConfig.SVN_TEAM_SHARE_PLUGIN_ID;
 	}
 
 }
