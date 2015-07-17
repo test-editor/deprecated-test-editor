@@ -127,7 +127,7 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 
 		List<String> listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
 
-		if (listOfModifiedTestStructures == null) {
+		if (listOfModifiedTestStructures == null || listOfModifiedTestStructures.isEmpty()) {
 			update(testStructure.getRootElement());
 			listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
 		}
