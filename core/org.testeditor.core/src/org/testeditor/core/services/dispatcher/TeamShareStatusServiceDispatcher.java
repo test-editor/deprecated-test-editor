@@ -21,7 +21,6 @@ import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 
@@ -100,10 +99,10 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusServiceN
 	@Override
 	public boolean isModified(TestStructure testStructure) {
 		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testStructure.getRootElement());
-		if (teamShareStatusServices != null) {
+		if (teamShareStatusServices != null && teamShareStatus != null) {
 			return teamShareStatus.isModified(testStructure);
 		}
-		
+
 		return false;
 	}
 
@@ -113,7 +112,7 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusServiceN
 		if (teamShareStatusServices != null) {
 			return teamShareStatus.remove(testProject);
 		}
-		
+
 		return false;
 	}
 
