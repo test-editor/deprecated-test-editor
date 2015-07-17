@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.testeditor.teamshare.svn;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.After;
@@ -27,12 +28,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
@@ -53,10 +54,11 @@ public class TeamShareStatusServiceTest {
 
 	private static String projectpath;
 	private TeamShareService teamService;
+	private TeamShareStatusServiceNew teamshareStatusService;
 
 	private TranslationService translationService = new TranslationServiceAdapter().getTranslationService();
 
-	private static final Logger LOGGER = Logger.getLogger(TeamShareStatusServiceTest.class);
+	private static final Logger LOGGER = LogManager.getLogger(TeamShareStatusServiceTest.class);
 
 	/**
 	 * Setup for testing.
@@ -86,6 +88,7 @@ public class TeamShareStatusServiceTest {
 		System.setProperty("svn.default.comment", "xyz");
 
 		teamService = new SVNTeamShareService();
+		teamshareStatusService = new SVNTeamShareStatusServiceNew();
 
 		SVNRepositoryFactoryImpl.setup();
 
@@ -162,22 +165,25 @@ public class TeamShareStatusServiceTest {
 	@Test
 	public void testStatusOnProjectChanges() throws IOException, SVNException, SystemException, InterruptedException {
 
+		// create a project
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		boolean testprojectIsModified;
 
+		// share project
 		teamService.share(testProject, translationService, "");
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
 
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
+		// check if project has no changes
+		assertFalse(testprojectIsModified);
 
+		// make a change and update the project
 		String appendString = "do Something";
 		File updateFile = new File(projectpath + "/AllActionGroups.xml");
 		SvnHelper.updateFile(updateFile, appendString);
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
+		// check if project has changes
+		assertTrue(testprojectIsModified);
 	}
 
 	/**
@@ -200,6 +206,7 @@ public class TeamShareStatusServiceTest {
 	@Test
 	public void testStatusOnSuiteChanges() throws IOException, SVNException, SystemException, InterruptedException {
 		String testSuiteName = "SuiteSvn";
+		boolean testprojectIsModified;
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 
 		// Add new Testpage
@@ -212,20 +219,23 @@ public class TeamShareStatusServiceTest {
 
 		teamService.share(testProject, translationService, "");
 
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testSuite.getTeamChangeType());
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertFalse(testprojectIsModified);
 
+		// Change teststructure
 		String appendString = "do Something";
 		File updateFile = new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testSuite + "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE != testSuite.getTeamChangeType());
+		// Teststructures should be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertTrue(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertTrue(testprojectIsModified);
+
 	}
 
 	/**
@@ -249,6 +259,7 @@ public class TeamShareStatusServiceTest {
 	public void testStatusOnCaseChanges() throws IOException, SVNException, SystemException, InterruptedException {
 		String testSuiteName = "SuiteSvn";
 		String testCaseName = "CaseSvn";
+		boolean testprojectIsModified;
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 
 		// Add new Testpage
@@ -265,23 +276,36 @@ public class TeamShareStatusServiceTest {
 
 		teamService.share(testProject, translationService, "");
 
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testSuite.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testCase.getTeamChangeType());
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testCase);
+		assertFalse(testprojectIsModified);
+
+		// assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
+		// assertTrue(TeamChangeType.NONE == testSuite.getTeamChangeType());
+		// assertTrue(TeamChangeType.NONE == testCase.getTeamChangeType());
 
 		String appendString = "do Something";
 		File updateFile = new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testSuite + "/" + testCase
 				+ "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE != testSuite.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE != testCase.getTeamChangeType());
+		// Teststructures should be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertTrue(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertTrue(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testCase);
+		assertTrue(testprojectIsModified);
+
+		// teamshareStatusService.setTeamStatusForProject(testProject);
+		//
+		// assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
+		// assertTrue(TeamChangeType.NONE != testSuite.getTeamChangeType());
+		// assertTrue(TeamChangeType.NONE != testCase.getTeamChangeType());
 	}
 
 	/**
@@ -307,19 +331,31 @@ public class TeamShareStatusServiceTest {
 			InterruptedException {
 
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		boolean testprojectIsModified;
 
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
+		// Teststructures should not be modified they are not under version
+		// control
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+
+		// assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
 
 		String appendString = "do Something";
 		File updateFile = new File(projectpath + "/AllActionGroups.xml");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
+		// Teststructures should not be modified they are not under version
+		// control
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+
+		// SVNTeamShareStatusService teamShareStatusService = new
+		// SVNTeamShareStatusService();
+		// teamShareStatusService.setTeamStatusForProject(testProject);
+		// while (!teamShareStatusService.isFinished()) {
+		// LOGGER.debug("Wait for thread ends");
+		// }
+		// assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
 	}
 
 	/**
@@ -338,24 +374,33 @@ public class TeamShareStatusServiceTest {
 	 */
 	@Test
 	public void testStatusOnSzenarioChange() throws IOException, SVNException, SystemException, InterruptedException {
-
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		boolean testprojectIsModified;
 
 		teamService.share(testProject, translationService, "");
 
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+
+		// assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
 
 		String appendString = "do Something";
 		File updateFile = new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME
 				+ "/TestKomponenten/SucheGoogleSzenario/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertTrue(testprojectIsModified);
+
+		// SVNTeamShareStatusService teamShareStatusService = new
+		// SVNTeamShareStatusService();
+		// teamShareStatusService.setTeamStatusForProject(testProject);
+		// while (!teamShareStatusService.isFinished()) {
+		// LOGGER.debug("Wait for thread ends");
+		// }
+		// assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
 	}
 
 	/**
@@ -380,6 +425,7 @@ public class TeamShareStatusServiceTest {
 			InterruptedException {
 		String testSuiteName = "SuiteSvn";
 		String testCaseName = "CaseSvn";
+		boolean testprojectIsModified;
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 
 		// Add new Testpage
@@ -396,33 +442,38 @@ public class TeamShareStatusServiceTest {
 
 		teamService.share(testProject, translationService, "");
 
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testSuite.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testCase.getTeamChangeType());
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testCase);
+		assertFalse(testprojectIsModified);
 
 		String appendString = "do Something";
 		File updateFile = new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testSuite + "/" + testCase
 				+ "/content.txt");
 		SvnHelper.updateFile(updateFile, appendString);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE != testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE != testSuite.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE != testCase.getTeamChangeType());
+		// Teststructures should be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertTrue(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertTrue(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testCase);
+		assertTrue(testprojectIsModified);
 
+		// commit on svn
 		teamService.approve(testProject, translationService, "");
 
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertTrue(TeamChangeType.NONE == testProject.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testSuite.getTeamChangeType());
-		assertTrue(TeamChangeType.NONE == testCase.getTeamChangeType());
+		// Teststructures should not be modified
+		teamshareStatusService.update(testProject);
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testCase);
+		assertFalse(testprojectIsModified);
 	}
 
 	/**
@@ -447,6 +498,7 @@ public class TeamShareStatusServiceTest {
 
 		String testSuiteName = "SuiteSvn";
 		String testCaseName = "CaseSvn";
+		boolean testprojectIsModified;
 		final TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 
 		// Add new Testpage
@@ -463,20 +515,31 @@ public class TeamShareStatusServiceTest {
 
 		teamService.share(testProject, translationService, "");
 
-		assertEquals(TeamChangeType.NONE, testProject.getTeamChangeType());
-		assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
-		assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testCase);
+		assertFalse(testprojectIsModified);
 
+		// delete teststructure
 		teamService.delete(testCase, translationService);
 		testSuite.removeChild(testCase);
 
-		SVNTeamShareStatusService teamShareStatusService = new SVNTeamShareStatusService();
-		teamShareStatusService.setTeamStatusForProject(testProject);
-		while (!teamShareStatusService.isFinished()) {
-			LOGGER.debug("Wait for thread ends");
-		}
-		assertEquals(TeamChangeType.MODIFY, testProject.getTeamChangeType());
-		assertEquals(TeamChangeType.MODIFY, testSuite.getTeamChangeType());
+		// SVNTeamShareStatusService teamShareStatusService = new
+		// SVNTeamShareStatusService();
+		// teamShareStatusService.setTeamStatusForProject(testProject);
+		// while (!teamShareStatusService.isFinished()) {
+		// LOGGER.debug("Wait for thread ends");
+		// }
+		// assertEquals(TeamChangeType.MODIFY, testProject.getTeamChangeType());
+		// assertEquals(TeamChangeType.MODIFY, testSuite.getTeamChangeType());
+
+		// Teststructures should not be modified
+		testprojectIsModified = teamshareStatusService.isModified(testProject);
+		assertFalse(testprojectIsModified);
+		testprojectIsModified = teamshareStatusService.isModified(testSuite);
 
 	}
 
