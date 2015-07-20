@@ -22,6 +22,7 @@ import java.util.Set;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -30,6 +31,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -296,12 +298,14 @@ public class NewTestPageTest {
 	 * @return the IEclipseContext for the test.
 	 */
 	private IEclipseContext getContext() {
-		IEclipseContext context = EclipseContextFactory.create();
+		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
+				.getBundleContext());
 		context.set(Shell.class, null);
 		context.set(TestStructureService.class, ServiceLookUpForTest.getService(TestStructureService.class));
 		context.set(TestEditorTranslationService.class, getTranslationServiceMock());
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(TestEditorReservedNamesService.class, getTestEditorReservedNamesServiceMock());
+		context.set(Logger.class, null);
 		return context;
 	}
 
