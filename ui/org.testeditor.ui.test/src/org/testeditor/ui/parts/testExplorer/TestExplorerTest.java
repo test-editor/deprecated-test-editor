@@ -17,23 +17,12 @@ import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.commands.Category;
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.IParameter;
-import org.eclipse.core.commands.ParameterizedCommand;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.log.Logger;
-import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
@@ -42,13 +31,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
-import org.testeditor.ui.mocks.EventBrokerMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -69,56 +58,13 @@ public class TestExplorerTest {
 	 */
 	@Before
 	public void initOUT() {
-		context = EclipseContextFactory.create();
+		context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(this.getClass()).getBundleContext());
 		context.set(MPart.class, null);
-		context.set(ECommandService.class, new ECommandService() {
-
-			@Override
-			public Command getCommand(String commandId) {
-				return null;
-			}
-
-			@Override
-			public Category getCategory(String categoryId) {
-				return null;
-			}
-
-			@Override
-			public Command defineCommand(String id, String name, String description, Category category,
-					IParameter[] parameters) {
-				return null;
-			}
-
-			@Override
-			public Category defineCategory(String id, String name, String description) {
-				return null;
-			}
-
-			@Override
-			public ParameterizedCommand createCommand(String id, Map parameters) {
-				return null;
-			}
-		});
-		context.set(IEventBroker.class, new EventBrokerMock() {
-			@Override
-			public boolean send(String topic, Object data) {
-				return true;
-			}
-
-			@Override
-			public boolean post(String topic, Object data) {
-				return true;
-			}
-		});
 		context.set(EPartService.class, getPartServiceMock());
-		context.set(EHandlerService.class, null);
-		context.set(TranslationService.class, null);
 		context.set(EMenuService.class, null);
 		context.set(TestEditorTranslationService.class, null);
-		context.set(MWindow.class, null);
 		context.set(Logger.class, null);
-		context.set(MApplication.class, null);
-		context.set(TeamShareStatusService.class, null);
+		context.set(TeamShareStatusServiceNew.class, null);
 
 		shell = new Shell();
 		composite = new Composite(shell, SWT.NORMAL);
