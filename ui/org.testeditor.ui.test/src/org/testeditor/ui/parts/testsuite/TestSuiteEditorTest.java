@@ -45,11 +45,13 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.TestStateProtocolService;
+import org.testeditor.teamshare.svn.SVNTeamShareStatusServiceNew;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
@@ -264,6 +266,7 @@ public class TestSuiteEditorTest {
 		context.set(TestStateProtocolService.class, null);
 		context.set(TestStructureService.class, null);
 		eventBroker = new EventBrokerMock();
+		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusServiceNew());
 		context.set(IEventBroker.class, eventBroker);
 		context.set(TestStructureContentService.class, new TestStructureContentServiceAdapter() {
 			@Override
