@@ -220,7 +220,7 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 		}
 	}
 
-	public void unbindTeamShareService() {
+	public void unBindTeamShareService(TeamShareService teamShareService) {
 		this.teamShareService = null;
 	}
 
