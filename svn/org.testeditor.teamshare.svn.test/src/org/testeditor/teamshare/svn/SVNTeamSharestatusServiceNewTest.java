@@ -222,7 +222,7 @@ public class SVNTeamSharestatusServiceNewTest {
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
-		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\LoginValidTest\\content.txt");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
 
 		// when
 		statusService.update(testProject);
@@ -251,8 +251,8 @@ public class SVNTeamSharestatusServiceNewTest {
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
-		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\LoginValidTest\\content.txt");
-		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\content.txt");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/content.txt");
 
 		// when
 		statusService.update(testProject);
@@ -417,7 +417,7 @@ public class SVNTeamSharestatusServiceNewTest {
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
-		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\LoginValidTest\\content.txt");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
 
 		// when
 		statusService.update(testProject);
