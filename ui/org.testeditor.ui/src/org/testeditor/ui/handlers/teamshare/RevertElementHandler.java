@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers.teamshare;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareRevertWizardPage;
@@ -113,6 +113,8 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 				}
 			});
 			return false;
+		} catch (FileNotFoundException e) {
+			LOGGER.error(e);
 		}
 		return true;
 	}

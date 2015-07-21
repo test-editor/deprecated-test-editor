@@ -11,44 +11,53 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 
+/**
+ * Service for handling team share state.
+ *
+ */
 public interface TeamShareStatusServiceNew {
 
 	/**
-	 * Returns the list of modificated teststructures
 	 * 
 	 * @param testProject
 	 *            {@link TestProject}
 	 * 
-	 * @throws SystemException
 	 * @throws IOException
+	 * 
+	 * @return the list of modificated teststructures.
 	 */
 	List<String> getModified(TestProject testProject);
 
 	/**
 	 * Update the internal map of modifications, list must be in synch with SVN
-	 * state
+	 * state.
 	 * 
 	 * @param testProject
 	 *            {@link TestProject}
 	 * 
+	 * @throws FileNotFoundException
+	 *             if given project not exists
+	 * 
 	 */
-	void update(TestProject testProject);
+	void update(TestProject testProject) throws FileNotFoundException;
 
 	/**
-	 * Checks if given teststructure is midificated
+	 * Checks if given teststructure is modificated.
 	 * 
 	 * @param testStructure
 	 *            {@link TestStructure}
 	 * 
 	 * @throws SystemException
 	 * @throws IOException
+	 * 
+	 * @return true if given file is modificated.
 	 * 
 	 */
 	boolean isModified(TestStructure testStructure);

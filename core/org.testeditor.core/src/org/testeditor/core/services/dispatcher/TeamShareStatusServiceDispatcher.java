@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.services.dispatcher;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -82,16 +83,16 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusServiceN
 	@Override
 	public List<String> getModified(TestProject testProject) {
 		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testProject);
-		if (teamShareStatusServices != null) {
+		if (teamShareStatus != null) {
 			return teamShareStatus.getModified(testProject);
 		}
 		return null;
 	}
 
 	@Override
-	public void update(TestProject testProject) {
+	public void update(TestProject testProject) throws FileNotFoundException {
 		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testProject);
-		if (teamShareStatusServices != null) {
+		if (teamShareStatus != null) {
 			teamShareStatus.update(testProject);
 		}
 	}
@@ -99,7 +100,7 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusServiceN
 	@Override
 	public boolean isModified(TestStructure testStructure) {
 		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testStructure.getRootElement());
-		if (teamShareStatusServices != null && teamShareStatus != null) {
+		if (teamShareStatus != null && teamShareStatus != null) {
 			return teamShareStatus.isModified(testStructure);
 		}
 

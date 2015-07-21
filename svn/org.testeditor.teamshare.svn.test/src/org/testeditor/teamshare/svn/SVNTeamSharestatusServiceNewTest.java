@@ -16,17 +16,23 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.EclipseContextFactory;
+import org.eclipse.e4.core.contexts.IContextFunction;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
@@ -96,6 +102,8 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		FileUtils.deleteDirectory(new File(REPOSITORY_PATH));
 		SVNRepositoryFactory.createLocalRepository(new File(REPOSITORY_PATH), true, false);
+
+		buildContext();
 	}
 
 	/**
@@ -105,7 +113,7 @@ public class SVNTeamSharestatusServiceNewTest {
 	 *             on File cleanups.
 	 */
 	@After
-	public void cleanUpdLocalSVN() throws IOException {
+	public void cleanUpLocalSVN() throws IOException {
 		if (new File(targetWorkspacePath).exists()) {
 			FileUtils.deleteDirectory(new File(targetWorkspacePath));
 		}
@@ -201,14 +209,15 @@ public class SVNTeamSharestatusServiceNewTest {
 	}
 
 	/**
-	 * Update the internal map of midifications, list must in synch with SVN
+	 * Update the internal map of modifications, list must be in synch with SVN
 	 * state
 	 * 
 	 * @throws SystemException
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void testUpdateModified() throws SystemException, IOException {
+	public void testUpdateModified() throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -217,6 +226,9 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		// when
 		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
 
 		// then
 		List<String> teststructures = statusService.getModified(testProject);
@@ -230,10 +242,11 @@ public class SVNTeamSharestatusServiceNewTest {
 	 * 
 	 * @throws SystemException
 	 * @throws IOException
+	 * @throws InterruptedException
 	 * 
 	 */
 	@Test
-	public void testIsModified() throws SystemException, IOException {
+	public void testIsModified() throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -243,6 +256,9 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		// when
 		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
 
 		// then
 		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
@@ -252,13 +268,38 @@ public class SVNTeamSharestatusServiceNewTest {
 	}
 
 	/**
+	 * 
+	 */
+	private void buildContext() {
+		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
+				.getBundleContext());
+		context.set(IEventBroker.class, null);
+		context.set(TeamShareService.class, new SVNTeamShareService());
+		((IContextFunction) statusService).compute(context, null);
+	}
+
+	/**
+	 * 
+	 * @param threadName
+	 * @return
+	 */
+	public Thread getThreadByName(String threadName) {
+		for (Thread t : Thread.getAllStackTraces().keySet()) {
+			if (t.getName().equals(threadName))
+				return t;
+		}
+		return null;
+	}
+
+	/**
 	 * Tests that given teststructure is not modified.
 	 * 
 	 * @throws SystemException
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void testIsModifiedWithoutResult() throws SystemException, IOException {
+	public void testIsModifiedWithoutResult() throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -268,6 +309,9 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		// when
 		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
 
 		// then
 		TestStructure testStructure = createTestStructure("DemoWebTests", "LocalDemoSuite", "LoginSuite",
@@ -281,10 +325,11 @@ public class SVNTeamSharestatusServiceNewTest {
 	 * 
 	 * @throws SystemException
 	 * @throws IOException
+	 * @throws InterruptedException
 	 * 
 	 */
 	@Test
-	public void testRemove() throws SystemException, IOException {
+	public void testRemove() throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -293,6 +338,9 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		// when
 		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
 
 		// then
 		assertTrue(statusService.remove(testProject));
@@ -305,10 +353,11 @@ public class SVNTeamSharestatusServiceNewTest {
 	 * 
 	 * @throws SystemException
 	 * @throws IOException
+	 * @throws InterruptedException
 	 * 
 	 */
 	@Test
-	public void testRemoveNoFound() throws SystemException, IOException {
+	public void testRemoveNoFound() throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = new TestProject();
@@ -319,11 +368,75 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		// when
 		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
 
 		// then
 		testProject = new TestProject();
-		testProject.setName("blabla");
+		testProject.setName("dummyProject");
 		assertFalse(statusService.remove(testProject));
 
 	}
+
+	/**
+	 * Tests that given teststructure is not modified.
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	@Test(expected = FileNotFoundException.class)
+	public void testUpdateIfProjectNoExists() throws SystemException, IOException, InterruptedException {
+
+		// given
+		TestProject testProject = new TestProject();
+		String projectName = "noProject";
+		testProject.setName(projectName);
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+		testProjectConfig.setProjectPath(targetWorkspacePath + File.separator + projectName);
+		testProject.setTestProjectConfig(testProjectConfig);
+
+		// when
+		statusService.update(testProject);
+
+	}
+
+	/**
+	 * Tests the state after approve a project.
+	 * 
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
+	 */
+	@Test
+	public void testStateAfterApprove() throws SystemException, IOException, InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\LoginValidTest\\content.txt");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		assertTrue(statusService.isModified(testProject));
+
+		teamService.approve(testProject, translationService, "comment");
+
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		assertFalse(statusService.isModified(testProject));
+
+	}
+
 }
