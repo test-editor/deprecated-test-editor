@@ -164,8 +164,10 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 		}
 	}
 
-	public void unBind() {
-		this.teamShareService = null;
+	public void unBind(TeamShareServicePlugIn teamShareService) {
+		if (teamShareService.getId().equals(getId())) {
+			this.teamShareService = null;
+		}
 	}
 
 	@Override
