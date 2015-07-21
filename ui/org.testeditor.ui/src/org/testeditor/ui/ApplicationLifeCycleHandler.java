@@ -28,18 +28,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.lifecycle.PostContextCreate;
 import org.eclipse.e4.ui.workbench.lifecycle.PreSave;
-import org.eclipse.e4.ui.workbench.lifecycle.ProcessAdditions;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.jobs.TeamModificationCheckJob;
@@ -49,8 +44,6 @@ import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.editor.view.TestEditorController;
-import org.testeditor.ui.parts.projecteditor.TestProjectEditor;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -144,68 +137,6 @@ public class ApplicationLifeCycleHandler {
 		jobRunner.start();
 		jobs.add(jobRunner);
 		LOGGER.info("Team server observer started.");
-	}
-
-	/**
-	 * Activates all parts, which are visible in the editor, but not activated.
-	 * Without activation closing (for deleting or renaming) would fail.
-	 * 
-	 */
-	@ProcessAdditions
-	public void initUI() {
-		MApplication application = context.get(MApplication.class);
-		LOGGER.info("Starting Delayed UI init thread.");
-		getUIInitDelayed(application).start();
-	}
-
-	/**
-	 * Inits the UI delayed after it is rendered.
-	 * 
-	 * @param application
-	 *            used to access the ui.
-	 * @return Thread that waits until ui is rendered.
-	 */
-	private Thread getUIInitDelayed(final MApplication application) {
-		return new Thread() {
-
-			@Override
-			public void run() {
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						Display.getDefault().getActiveShell().forceActive();
-					}
-				});
-				while (application.getContext().getActiveChild() == null) {
-					try {
-						LOGGER.info("Waiting for ui is ready.");
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						LOGGER.error("Interrupt on waiting for ui.", e);
-					}
-				}
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						EPartService partService = application.getContext().get(EPartService.class);
-						MPart activePart = partService.getActivePart();
-						Collection<MPart> allVisibleParts = partService.getParts();
-						for (MPart visiblePart : allVisibleParts) {
-							if (visiblePart.getElementId().equals(TestEditorController.TESTCASE_ID)
-									|| visiblePart.getElementId().equals(TestEditorController.TESTSUITE_ID)
-									|| visiblePart.getElementId().equals(TestEditorController.TESTSCENARIO_ID)
-									|| visiblePart.getElementId().equals(TestProjectEditor.ID)) {
-								partService.bringToTop(visiblePart);
-							}
-						}
-						partService.activate(activePart, true);
-						LOGGER.info("UI Init finished.");
-					}
-				});
-			}
-		};
 	}
 
 	/**
