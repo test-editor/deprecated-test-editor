@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
@@ -44,6 +45,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.jobs.TeamModificationCheckJob;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -99,6 +101,7 @@ public class ApplicationLifeCycleHandler {
 		context.set(TestEditorTranslationService.class,
 				ContextInjectionFactory.make(TestEditorTranslationService.class, context));
 		initTestEditorCronJobs();
+		initTeamStatusInformation();
 		try {
 			testEditorConfigService.exportGlobalVariablesToSystemProperties();
 			testEditorConfigService.initializeSystemProperties();
@@ -109,6 +112,25 @@ public class ApplicationLifeCycleHandler {
 			LOGGER.error("Error setting SystemVariables", e);
 		}
 		startBackendServers();
+	}
+
+	/**
+	 * for all given projects the svn update will be invoked.
+	 */
+	private void initTeamStatusInformation() {
+
+		TestProjectService testProjectService = context.get(TestProjectService.class);
+		TeamShareStatusServiceNew teamShareStatusService = context.get(TeamShareStatusServiceNew.class);
+
+		List<TestProject> projects = testProjectService.getProjects();
+		for (TestProject testProject : projects) {
+			try {
+				teamShareStatusService.update(testProject);
+			} catch (FileNotFoundException e) {
+				LOGGER.error(e);
+			}
+		}
+
 	}
 
 	/**

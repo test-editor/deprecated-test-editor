@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.editor.view;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,7 +66,6 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.LibraryConstructionException;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
@@ -91,6 +91,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * 
  */
 public abstract class TestEditorController implements ITestEditorController, ITestStructureEditor {
+
+	private static final Logger LOGGER = Logger.getLogger(TestEditorController.class);
 
 	private static final String EDITOR_OBJECT_ID_FOR_RESTORE = "editor_object_id_for_restore";
 
@@ -146,8 +148,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private TestFlow testFlow;
 
 	private TestEditView testEditViewArea;
-
-	private static final Logger LOGGER = Logger.getLogger(TestEditorController.class);
 
 	private Map<String, TestEditorInputObject> cachedTestComponentInputMap = new HashMap<String, TestEditorInputObject>();
 
@@ -209,7 +209,11 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	private void updateTeamStateInformation() {
 		TestProject testProject = getTestStructure().getRootElement();
 		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
-			teamShareStatusService.update(testProject);
+			try {
+				teamShareStatusService.update(testProject);
+			} catch (FileNotFoundException e) {
+				LOGGER.error(e);
+			}
 		}
 	}
 

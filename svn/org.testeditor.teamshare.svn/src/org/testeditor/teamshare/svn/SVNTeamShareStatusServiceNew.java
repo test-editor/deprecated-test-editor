@@ -12,6 +12,7 @@
 package org.testeditor.teamshare.svn;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +22,17 @@ import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNStatus;
-import org.tmatesoft.svn.core.wc.SVNStatusType;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugIn, IContextFunction {
@@ -42,6 +45,8 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 	 * list of modificated teststructures.
 	 */
 	Map<TestProject, List<String>> projects = new HashMap<TestProject, List<String>>();
+
+	private TeamShareService teamShareService;
 
 	@Override
 	public List<String> getModified(TestProject testProject) {
@@ -57,7 +62,7 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void update(final TestProject testProject) {
+	public void update(final TestProject testProject) throws FileNotFoundException {
 
 		LOGGER.trace("testProject" + testProject);
 
@@ -67,46 +72,57 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 		final ArrayList<String> testStructures = new ArrayList<String>();
 
 		// init with new data
-		File file = new File(testProject.getTestProjectConfig().getProjectPath());
+		final File file = new File(testProject.getTestProjectConfig().getProjectPath());
 
 		if (file.exists()) {
-			final SVNTeamShareService teamShareService = new SVNTeamShareService();
-			SVNClientManager clientManager = getSVNClientManager();
-			try {
+			final SVNClientManager clientManager = getSVNClientManager();
 
-				clientManager.getStatusClient().doStatus(file, true, true, true, true,
+			new Thread(new Runnable() {
 
-				new ISVNStatusHandler() {
+				@Override
+				public void run() {
 
-					@Override
-					public void handleStatus(SVNStatus status) throws SVNException {
+					try {
 
-						LOGGER.info(status.getFile().getAbsolutePath());
+						clientManager.getStatusClient().doStatus(file, true, false, false, false,
 
-						SVNStatusType statusType = status.getCombinedNodeAndContentsStatus();
+						new ISVNStatusHandler() {
+							@Override
+							public void handleStatus(SVNStatus status) throws SVNException {
 
-						if (statusType != SVNStatusType.STATUS_NONE && statusType != SVNStatusType.STATUS_NORMAL
-								&& statusType != SVNStatusType.STATUS_IGNORED) {
+								String fullName = ((SVNTeamShareService) teamShareService).convertFileToFullname(
+										status.getFile(), testProject);
 
-							String fullName = teamShareService.convertFileToFullname(status.getFile(), testProject);
+								if (!testStructures.contains(fullName)) {
+									LOGGER.info(status.getFile().getAbsolutePath());
+									testStructures.add(fullName);
+								}
+							}
+						});
 
-							testStructures.add(fullName);
-
+						if (testStructures.size() > 0) {
+							projects.put(testProject, testStructures);
+						} else {
+							projects.put(testProject, new ArrayList<String>());
 						}
+
+						if (eventBroker != null) {
+							eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
+									testProject.getName());
+						}
+
+					} catch (Exception e) {
+						LOGGER.error("Could not read the SVNStatus from Project: " + testProject.getName()
+								+ "\n error: " + e.getMessage(), e);
 					}
+				}
 
-				});
-			} catch (Exception e) {
-				LOGGER.error(
-						"Could not read the SVNStatus from Project: " + testProject.getName() + "\n error: "
-								+ e.getMessage(), e);
-			}
+			}, "threadStatusService").start();
+
+		} else {
+			LOGGER.warn("Given project " + file + " does not exist");
+			throw new FileNotFoundException(file.getAbsolutePath());
 		}
-
-		if (testStructures.size() > 0) {
-			projects.put(testProject, testStructures);
-		}
-
 	}
 
 	/**
@@ -127,19 +143,29 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 
 		List<String> listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
 
-		if (listOfModifiedTestStructures == null || listOfModifiedTestStructures.isEmpty()) {
-			update(testStructure.getRootElement());
-			listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
-		}
+		if (listOfModifiedTestStructures != null) {
+			for (String modifiedTestStructure : listOfModifiedTestStructures) {
 
-		for (String modifiedTestStructure : listOfModifiedTestStructures) {
-
-			if (modifiedTestStructure.contains(testStructure.getFullName())) {
-				return true;
+				if (modifiedTestStructure.contains(testStructure.getFullName())) {
+					return true;
+				}
 			}
+
 		}
 
 		return false;
+	}
+
+	public void bind(TeamShareServicePlugIn teamShareService) {
+		if (teamShareService.getId().equals(getId())) {
+			this.teamShareService = teamShareService;
+		} else {
+			LOGGER.error("No SVN Plugin available");
+		}
+	}
+
+	public void unBind() {
+		this.teamShareService = null;
 	}
 
 	@Override
@@ -159,6 +185,9 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
+		}
+		if (teamShareService == null) {
+			teamShareService = context.get(TeamShareService.class);
 		}
 		return this;
 	}
