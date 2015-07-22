@@ -1,0 +1,19 @@
+Dieser Test überprüft den Login eines gültigen Benutzers. Auf der Anmelde-Maske wird ein gültiger Benutzername und Passwort eingegeben und auf den Login-Button geklickt. Anschließend wird geprüft ob der Login erfolgreich war.
+!include <DemoWebTests.TestSzenarien.BrowserStartSzenario
+!|script|
+|Browser Start Szenario|
+#
+# Maske: Allgemein Browser
+-!|script|
+|navigiere auf die Seite|http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html|
+# Maske: Lokale Anmeldung
+-!|script|
+|gebe in das Feld|user|den Wert|Max Mustermann|ein|
+|gebe in das Feld|password|den Wert|maxi|ein|
+|wähle in Feld|land|den Wert|Deutschland|aus|
+|klicke auf|login|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|war erfolgreich|vorhanden ist|
+|überprüfe ob nicht der Text|Login|vorhanden ist|
+|beende Browser|

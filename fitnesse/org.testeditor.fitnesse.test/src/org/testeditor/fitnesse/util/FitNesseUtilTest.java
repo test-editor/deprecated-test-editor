@@ -12,6 +12,8 @@
 package org.testeditor.fitnesse.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -96,4 +98,43 @@ public class FitNesseUtilTest {
 
 	}
 
+	/**
+	 * Tests file with properties.xml.
+	 */
+	@Test
+	public void testConvertToFitNessePathWithPropertiesXml2() {
+
+		String input = "DemoWebTests.LocalDemoSuite.Login.A.B";
+		String modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests.LocalDemoSuite";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests.GoogleSucheSuite.LoginSuite";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests.LocalDemoSuite";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests.LocalDemoSuite.LoginSuite.LocalDemoSuite.LoginSuite";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(FitNesseUtil.contains(input, modified));
+
+		input = "DemoWebTests.LocalDemoSuite.LoginSuiteBla";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(FitNesseUtil.contains(input, modified));
+
+	}
 }
