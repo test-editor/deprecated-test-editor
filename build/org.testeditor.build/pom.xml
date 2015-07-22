@@ -32,7 +32,8 @@
 		<tycho.showEclipseLog>true</tycho.showEclipseLog>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<testeditor.build>build/org.testeditor.build</testeditor.build>
-		<te-target>file:///${basedir}/../../../te.target</te-target>
+		<te-target>file:///${project.basedir}/../../../te.target</te-target>
+		<aml-repo>file:///${project.basedir}/../../rcp/org.testeditor.aml.rcp.updatesite/target/site/</aml-repo>
 		<os-jvm-flags />
 	</properties>
 
@@ -41,6 +42,11 @@
 			<id>te-target</id>
 			<layout>p2</layout>
 			<url>${te-target}</url>
+		</repository>
+		<repository>
+			<id>aml-repo</id>
+			<layout>p2</layout>
+			<url>${aml-repo}</url>
 		</repository>
 	</repositories>
 
