@@ -21,6 +21,7 @@ import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -53,7 +54,7 @@ public class RestartAndResetUIHandler {
 	 *            service to store the reset application state on restart.
 	 */
 	@Execute
-	public void resetAndRestart(@Optional IWorkbench workbench,
+	public void resetAndRestart(IWorkbench workbench,
 			@Optional @Named(IServiceConstants.ACTIVE_SHELL) Shell shell, TestEditorTranslationService translate,
 			TestEditorConfigurationService testEditorConfigService, EPartService partService) {
 		if (shell != null) {
@@ -65,7 +66,12 @@ public class RestartAndResetUIHandler {
 		try {
 			testEditorConfigService.setResetApplicationState(true);
 			partService.saveAll(true);
-			workbench.restart();
+			// Workaround for the compatibility layer
+			if (PlatformUI.isWorkbenchRunning()) {
+				PlatformUI.getWorkbench().restart();
+			} else {
+				workbench.restart();
+			}
 		} catch (BackingStoreException e) {
 			LOGGER.error("Error storing the restart command. Restart aborted.", e);
 			MessageDialog.openError(shell, translate.translate("%error"), translate.translate("%error.restart"));
