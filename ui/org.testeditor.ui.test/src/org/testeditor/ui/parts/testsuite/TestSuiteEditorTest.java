@@ -322,8 +322,8 @@ public class TestSuiteEditorTest {
 						}
 
 						@Override
-						public List toList() {
-							ArrayList list = new ArrayList();
+						public List<Object> toList() {
+							ArrayList<Object> list = new ArrayList<Object>();
 							list.add(getFirstElement());
 							return list;
 						}
@@ -339,7 +339,7 @@ public class TestSuiteEditorTest {
 						}
 
 						@Override
-						public Iterator iterator() {
+						public Iterator<Object> iterator() {
 							return toList().iterator();
 						}
 

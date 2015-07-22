@@ -114,7 +114,7 @@ public class TestStructureSelectionDialogTest {
 							}
 
 							@Override
-							public List toList() {
+							public List<?> toList() {
 								return null;
 							}
 
@@ -129,7 +129,7 @@ public class TestStructureSelectionDialogTest {
 							}
 
 							@Override
-							public Iterator iterator() {
+							public Iterator<?> iterator() {
 								return null;
 							}
 

@@ -22,6 +22,5 @@ Service-Component: OSGI-INF/SVNTeamShareConfigurationService.xml,
  OSGI-INF/SVNTeamShareService.xml,
  OSGI-INF/SVNTeamShareStatusServiceNew.xml
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .,
- lib/commons-io-2.4.jar
+Bundle-ClassPath: .
 Export-Package: org.testeditor.teamshare.svn
