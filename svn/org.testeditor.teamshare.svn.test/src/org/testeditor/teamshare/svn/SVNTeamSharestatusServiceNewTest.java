@@ -440,4 +440,41 @@ public class SVNTeamSharestatusServiceNewTest {
 
 	}
 
+	/**
+	 * Checks if only given teststructure is modified and not included in an
+	 * other testcase.
+	 * 
+	 * e.g. given "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest"
+	 * "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValid" must not return
+	 * modify flag
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
+	 */
+	@Test
+	public void testIsModifiedWithOneTestnameIncludedInAnother() throws SystemException, IOException,
+			InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
+				"LoginSuite", "LoginValidTest" });
+		assertTrue(statusService.isModified(testStructure));
+		testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValid" });
+		assertFalse(statusService.isModified(testStructure));
+
+	}
+
 }
