@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Test-Editor" uid="TestEditor" id="org.testeditor.ui.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.7.2.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="Test-Editor" uid="TestEditor" id="org.testeditor.ui.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.8.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
