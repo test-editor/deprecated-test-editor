@@ -196,24 +196,26 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 
 	}
 
+	
 	private void readMetaDataForFolder(String projectName, File directory) {
-
 		File[] listOfFiles = directory.listFiles();
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile() && listOfFiles[i].getName().equals(META_DATA_XML)) {
 				String xmlTagFile = listOfFiles[i].getAbsolutePath();
 				Object fromXML = xStream.fromXML(new File(xmlTagFile));
 				if (fromXML instanceof List<?>) {
-					List<MetaDataStoreObject> metaDataStoreObjects = (List<MetaDataStoreObject>) fromXML;
-					for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
-						getMetaDataStore(projectName).put(metaDataStoreObject.getTestCase(),
-								metaDataStoreObject.getMetaDataTags());
+					List<?> metaDataStoreObjects = (List<?>) fromXML;
+					for (Object object : metaDataStoreObjects) {
+						if (object instanceof MetaDataStoreObject) {
+							MetaDataStoreObject metaDataStoreObject = (MetaDataStoreObject) object;
+							getMetaDataStore(projectName).put(metaDataStoreObject.getTestCase(),
+									metaDataStoreObject.getMetaDataTags());
+						}
 					}
 				} else {
 					throw new RuntimeException("illegal class of type " + fromXML.getClass().getName() + " found in "
 							+ listOfFiles[i].getAbsolutePath());
 				}
-
 			} else if (listOfFiles[i].isDirectory()) {
 				readMetaDataForFolder(projectName, listOfFiles[i]);
 			}
