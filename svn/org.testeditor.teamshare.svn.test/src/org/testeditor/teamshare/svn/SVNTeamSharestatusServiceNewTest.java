@@ -48,9 +48,6 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
 public class SVNTeamSharestatusServiceNewTest {
 
-	List<TestStructure> testStructures;
-	TeamShareStatusServiceNew teamShareStatusServiceNew;
-
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
 
