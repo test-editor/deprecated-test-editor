@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.List;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -42,7 +43,7 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	private TestEditorTranslationService translationService;
 
 	@Inject
-	private TeamShareStatusService teamShareStatusHandlerService;
+	private TeamShareStatusServiceNew teamShareStatusHandlerService;
 
 	private Collection<String> changedDatas;
 
@@ -75,8 +76,7 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		// TeamShareStatus shareStatus = new TeamShareStatus();
-		setChangedDatas(teamShareStatusHandlerService.getModifiedFilesFromTestStructure(testStructure));
+		setChangedDatas(teamShareStatusHandlerService.getModified(testStructure.getRootElement()));
 		super.createControl(parent);
 		setPageComplete(true);
 		refreshList();
