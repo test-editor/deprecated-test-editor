@@ -100,7 +100,7 @@ public class TeamShareStatusServiceDispatcher implements TeamShareStatusServiceN
 	@Override
 	public boolean isModified(TestStructure testStructure) {
 		TeamShareStatusServicePlugIn teamShareStatus = getTeamShareStatusPlugIn(testStructure.getRootElement());
-		if (teamShareStatus != null && teamShareStatus != null) {
+		if (teamShareStatus != null) {
 			return teamShareStatus.isModified(testStructure);
 		}
 
