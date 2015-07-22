@@ -13,6 +13,7 @@ package org.testeditor.teamshare.svn;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -808,9 +809,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
 					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
-						// TODO send an event asynchron to delete the
-						// testStructure via the TestStructureService and delete
-						// the history
+						Files.walkFileTree(fileToDeleteLc.toPath(),
+								org.testeditor.core.util.FileUtils.getDeleteRecursiveVisitor());
 					} else {
 						if (fileToDeleteLc.exists()) {
 							if (!fileToDeleteLc.delete()) {
@@ -826,6 +826,9 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			LOGGER.error(e.getMessage(), e);
 			String message = substitudeSVNException(e, translationService);
 			throw new SystemException(message, e);
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new SystemException(e.getLocalizedMessage(), e);
 		}
 		return result;
 	}
