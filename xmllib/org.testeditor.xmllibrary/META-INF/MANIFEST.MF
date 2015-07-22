@@ -21,9 +21,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
 Service-Component: OSGI-INF/LibraryReaderImpl.xml,
  OSGI-INF/LibraryConfigurationServiceImpl.xml
 Eclipse-BundleShape: dir
-Export-Package: org.testeditor.xmllibrary.services.impl;
-  uses:="org.testeditor.core.model.action,
-   org.testeditor.core.services.interfaces,
-   javax.xml.validation,
-   javax.xml.bind"
 
