@@ -37,7 +37,6 @@ import org.testeditor.core.exceptions.SystemException;
  * 
  *         project drop down menu for LastRunTable
  */
-@SuppressWarnings("restriction")
 public class DirectMenuItem {
 
 	@Inject

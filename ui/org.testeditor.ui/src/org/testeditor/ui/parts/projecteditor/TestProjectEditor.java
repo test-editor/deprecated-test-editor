@@ -74,7 +74,6 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * EditorPart to edit the ProjectConfiguration.
  * 
  */
-@SuppressWarnings("restriction")
 public class TestProjectEditor implements ITestStructureEditor {
 
 	private static final Logger LOGGER = Logger.getLogger(TestProjectEditor.class);
