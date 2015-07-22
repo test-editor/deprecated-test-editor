@@ -78,8 +78,8 @@ public class SystemConfigurationEditingSupport extends EditingSupport {
 		String oldData;
 		String message = "error on setting the value";
 		try {
-			Method getMethod = element.getClass().getMethod("get" + mappedData, null);
-			oldData = (String) getMethod.invoke(element, null);
+			Method getMethod = element.getClass().getMethod("get" + mappedData);
+			oldData = (String) getMethod.invoke(element);
 
 			if (!oldData.equals(value)) {
 				Method setMethod = element.getClass().getMethod("set" + mappedData, new Class[] { value.getClass() });
@@ -109,12 +109,12 @@ public class SystemConfigurationEditingSupport extends EditingSupport {
 		Method method;
 		String message = "error on getting the value";
 		try {
-			method = element.getClass().getMethod("get" + mappedData, null);
-			String value = (String) method.invoke(element, null);
+			method = element.getClass().getMethod("get" + mappedData);
+			String value = (String) method.invoke(element);
 			if (mappedData.equalsIgnoreCase("Key") && value.equalsIgnoreCase("-1")) {
 				return "";
 			}
-			return (String) method.invoke(element, null);
+			return (String) method.invoke(element);
 		} catch (NoSuchMethodException e) {
 			LOGGER.error(message, e);
 		} catch (SecurityException e) {
