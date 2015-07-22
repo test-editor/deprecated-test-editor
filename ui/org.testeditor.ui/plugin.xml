@@ -6,7 +6,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             name="Test-Editor"
-            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+            application="org.testeditor.ui.application">
          <property
                name="appName"
                value="Test-Editor">
@@ -24,6 +24,18 @@
 				value="bundleclass://org.testeditor.ui/org.testeditor.ui.ApplicationLifeCycleHandler">
 		</property>
       </product>
+   </extension>
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="org.testeditor.ui.application.TestEditorApplication">
+         </run>
+      </application>
    </extension>
 
 </plugin>
