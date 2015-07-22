@@ -119,6 +119,7 @@ public class DemoWizardPage extends WizardPage {
 		button.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY, demoProjectsDirs[i].getName());
 
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				selectedDemosToBuild = new ArrayList<File>();

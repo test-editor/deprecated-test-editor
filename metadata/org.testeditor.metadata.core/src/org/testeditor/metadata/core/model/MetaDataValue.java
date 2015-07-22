@@ -81,6 +81,7 @@ public class MetaDataValue implements Comparable<MetaDataValue> {
 		return getMetaData().getKey() + "-" + getKey();
 	}
 
+	@Override
 	public String toString() {
 		return label;
 	}
