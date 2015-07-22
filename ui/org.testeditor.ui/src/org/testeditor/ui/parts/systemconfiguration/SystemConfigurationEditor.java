@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
@@ -66,9 +65,6 @@ public class SystemConfigurationEditor {
 
 	@Inject
 	private IEventBroker eventBroker;
-
-	@Inject
-	private IEclipseContext context;
 
 	@Inject
 	private TestEditorConfigurationService testEditorConfigService;
