@@ -37,6 +37,7 @@ import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.handlers.DeleteTestHandler;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
+import static java.lang.System.lineSeparator;
 
 /**
  * purges the test-history of the selected element.
@@ -94,14 +95,17 @@ public class PurgeTestHistoryHandler {
 		boolean userConfirms = checkUserConfirmation(translationService, selection);
 		if (userConfirms) {
 			try {
-				Iterator<TestStructure> iterator = selection.iterator();
+				Iterator<?> iterator = selection.iterator();
 				while (iterator.hasNext()) {
-					TestStructure ts = iterator.next();
-					if (ts instanceof TestSuite || ts instanceof TestProject) {
-						List<TestStructure> allTestChildren = ((TestCompositeStructure) ts).getAllTestChildren();
-						purgeTestHistories(allTestChildren);
-					} else {
-						purgeTestHistoryFromTestStructure(ts);
+					Object next = iterator.next();
+					if (next instanceof TestStructure) {
+						TestStructure ts = (TestStructure) next;
+						if (ts instanceof TestSuite || ts instanceof TestProject) {
+							List<TestStructure> allTestChildren = ((TestCompositeStructure) ts).getAllTestChildren();
+							purgeTestHistories(allTestChildren);
+						} else {
+							purgeTestHistoryFromTestStructure(ts);
+						}
 					}
 				}
 			} catch (SystemException e) {
@@ -185,34 +189,38 @@ public class PurgeTestHistoryHandler {
 	 * @return comma separated String containing the <code>TestStructure</code>
 	 *         names.
 	 */
-	protected StringBuilder getCommaListOfTestStructuresNames(Iterator<TestStructure> iterator,
+	protected StringBuilder getCommaListOfTestStructuresNames(Iterator<?> iterator,
 			TestEditorTranslationService translationService, int childrenDepth, boolean firstLayer) {
 
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		while (iterator.hasNext()) {
-			TestStructure testStructure = iterator.next();
-			if (first) {
-				first = false;
-			} else {
-				sb.append(", ");
-			}
-			if (testStructure instanceof TestSuite) {
-				if (!first) {
-					sb.append(System.getProperty("line.separator"));
+			Object next = iterator.next();
+			if (next instanceof TestStructure) {
+				TestStructure testStructure = (TestStructure) next;
+				if (first) {
+					first = false;
+				} else {
+					sb.append(", ");
 				}
-				sb.append(testStructure.getName());
-				TestSuite suite = (TestSuite) testStructure;
-				if (childrenDepth > 0 && !suite.getTestChildren().isEmpty()) {
-					sb.append(System.getProperty("line.separator")).append("  ");
-					sb.append(translationService.translate("%popupmenu.label.purgeHistory.itemChildren"));
-					sb.append(" ");
-					sb.append(getCommaListOfTestStructuresNames(suite.getTestChildren().iterator(), translationService,
-							childrenDepth--, false));
+				if (testStructure instanceof TestSuite) {
+					if (!first) {
+						sb.append(lineSeparator());
+					}
+					sb.append(testStructure.getName());
+					TestSuite suite = (TestSuite) testStructure;
+					if (childrenDepth > 0 && !suite.getTestChildren().isEmpty()) {
+						sb.append(lineSeparator()).append("  ");
+						sb.append(translationService.translate("%popupmenu.label.purgeHistory.itemChildren"));
+						sb.append(" ");
+						sb.append(getCommaListOfTestStructuresNames(suite.getTestChildren().iterator(), translationService,
+								childrenDepth--, false));
+					}
+				} else if (!(testStructure instanceof TestSuite)) {
+					sb.append(testStructure.getName());
 				}
-			} else if (!(testStructure instanceof TestSuite)) {
-				sb.append(testStructure.getName());
 			}
+			
 		}
 		return sb;
 	}
