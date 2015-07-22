@@ -57,4 +57,32 @@ public final class FitNesseUtil {
 
 		return result;
 	}
+
+	/**
+	 * 
+	 * @param input
+	 *            (input) delimited with points "a.b.cde"
+	 * @param modified
+	 *            (modified) delimited with points "a.b.cd"
+	 * @return true if input is not part of modified
+	 */
+	public static boolean contains(String input, String modified) {
+
+		String[] inputString = input.split("\\.");
+		String[] modifiedString = modified.split("\\.");
+
+		if (inputString.length > modifiedString.length) {
+			return false;
+		} else if (inputString.length < modifiedString.length) {
+			return modified.contains(input);
+		}
+
+		for (int i = 0; i < modifiedString.length; i++) {
+			if (!inputString[i].equals(modifiedString[i])) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

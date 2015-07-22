@@ -28,6 +28,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
+import org.testeditor.fitnesse.util.FitNesseUtil;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
@@ -145,7 +146,11 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 		if (listOfModifiedTestStructures != null) {
 			for (String modifiedTestStructure : listOfModifiedTestStructures) {
 
-				if (modifiedTestStructure.contains(testStructure.getFullName().replace('.', File.separatorChar))) {
+				String modifiedTestStructureAsFitNessePath = FitNesseUtil.convertToFitNessePath(modifiedTestStructure);
+
+				if (modifiedTestStructureAsFitNessePath.equals(testStructure.getFullName())) {
+					return true;
+				} else if (FitNesseUtil.contains(testStructure.getFullName(), modifiedTestStructureAsFitNessePath)) {
 					return true;
 				}
 			}
