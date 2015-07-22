@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testExplorer;
 
+import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +52,7 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.ITestStructureEditor;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
@@ -85,7 +86,7 @@ public class TestExplorer {
 	private EPartService partService;
 
 	@Inject
-	private TeamShareStatusService teamShareStatusService;
+	private TeamShareStatusServiceNew teamShareStatusService;
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -194,7 +195,11 @@ public class TestExplorer {
 	public void reloadTeamShareStatusForProjects() {
 		for (TestProject project : testProjectService.getProjects()) {
 			if (project.getTestProjectConfig().isTeamSharedProject()) {
-				teamShareStatusService.setTeamStatusForProject(project);
+				try {
+					teamShareStatusService.update(project);
+				} catch (FileNotFoundException e) {
+					LOGGER.error(e);
+				}
 			}
 		}
 	}
@@ -318,7 +323,6 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	protected void refresh(@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED) String data) {
-		reloadTeamShareStatusForProjects();
 		getTreeViewer().refresh();
 	}
 
@@ -339,6 +343,24 @@ public class TestExplorer {
 			refreshTreeViewerOnTestStrucutre(testProjectService.findTestStructureByFullName(testStructureName));
 		} catch (SystemException e) {
 			LOGGER.error("Error reading teststructure by name", e);
+		}
+	}
+
+	/**
+	 * Executes the update method of svn status handler.
+	 * 
+	 * @param testProject
+	 *            send from the sender.
+	 */
+	@Inject
+	@Optional
+	protected void refreshTreeByLoadedSVnState(
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) TestProject testProject) {
+
+		try {
+			teamShareStatusService.update(testProject);
+		} catch (FileNotFoundException e) {
+			LOGGER.error(e);
 		}
 	}
 }

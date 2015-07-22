@@ -11,7 +11,8 @@
  *******************************************************************************/
 package org.testeditor.core.services.plugins;
 
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
+
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 
 /**
  * 
@@ -19,7 +20,7 @@ import org.testeditor.core.services.interfaces.TeamShareStatusService;
  * implement this interface and not the TeamShareStatusService.
  *
  */
-public interface TeamShareStatusServicePlugIn extends TeamShareStatusService {
+public interface TeamShareStatusServicePlugIn extends TeamShareStatusServiceNew {
 
 	/**
 	 * This id is used to identify the Team Share plug-in. It must the same ID
