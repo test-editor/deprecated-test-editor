@@ -35,9 +35,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
  org.eclipse.e4.ui.model.workbench;bundle-version="1.0.0",
  org.eclipse.ui,
  org.eclipse.equinox.ds;bundle-version="1.4.100",
- org.eclipse.nebula.widgets.grid;bundle-version="1.0.0",
- javax.annotation,
- javax.inject
+ org.eclipse.nebula.widgets.grid;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.annotation;version="1.0.0",
  javax.inject;version="1.0.0",

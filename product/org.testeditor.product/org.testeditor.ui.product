@@ -126,22 +126,29 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <plugins>
       <plugin id="com.google.gson"/>
+      <plugin id="com.google.guava"/>
+      <plugin id="com.google.inject"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.trilead.ssh2"/>
       <plugin id="javax.annotation"/>
       <plugin id="javax.inject"/>
       <plugin id="javax.xml"/>
+      <plugin id="org.antlr.runtime"/>
       <plugin id="org.apache.batik.css"/>
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>
+      <plugin id="org.apache.commons.cli"/>
       <plugin id="org.apache.commons.codec"/>
       <plugin id="org.apache.commons.io"/>
+      <plugin id="org.apache.commons.lang"/>
       <plugin id="org.apache.commons.logging"/>
       <plugin id="org.apache.felix.gogo.command"/>
       <plugin id="org.apache.felix.gogo.runtime"/>
       <plugin id="org.apache.felix.gogo.shell"/>
       <plugin id="org.apache.log4j"/>
       <plugin id="org.apache.poi"/>
+      <plugin id="org.eclipse.compare"/>
+      <plugin id="org.eclipse.compare.core"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -149,67 +156,166 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.core.databinding.observable"/>
       <plugin id="org.eclipse.core.databinding.property"/>
       <plugin id="org.eclipse.core.expressions"/>
+      <plugin id="org.eclipse.core.filebuffers"/>
       <plugin id="org.eclipse.core.filesystem"/>
+      <plugin id="org.eclipse.core.filesystem.java7" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.java7.nl_de" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.linux.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.macosx" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.nl_de" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.filesystem.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.resources"/>
       <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.resources.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
+      <plugin id="org.eclipse.core.variables"/>
+      <plugin id="org.eclipse.debug.core"/>
+      <plugin id="org.eclipse.debug.ui"/>
       <plugin id="org.eclipse.e4.core.commands"/>
       <plugin id="org.eclipse.e4.core.contexts"/>
       <plugin id="org.eclipse.e4.core.di"/>
       <plugin id="org.eclipse.e4.core.di.extensions"/>
       <plugin id="org.eclipse.e4.core.services"/>
       <plugin id="org.eclipse.e4.ui.bindings"/>
+      <plugin id="org.eclipse.e4.ui.bindings.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.css.core"/>
+      <plugin id="org.eclipse.e4.ui.css.core.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.css.swt"/>
+      <plugin id="org.eclipse.e4.ui.css.swt.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.css.swt.theme"/>
+      <plugin id="org.eclipse.e4.ui.css.swt.theme.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.di"/>
+      <plugin id="org.eclipse.e4.ui.di.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.model.workbench"/>
       <plugin id="org.eclipse.e4.ui.model.workbench.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.services"/>
+      <plugin id="org.eclipse.e4.ui.services.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.widgets"/>
       <plugin id="org.eclipse.e4.ui.widgets.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.workbench"/>
       <plugin id="org.eclipse.e4.ui.workbench.addons.swt"/>
+      <plugin id="org.eclipse.e4.ui.workbench.addons.swt.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.workbench.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.workbench.renderers.swt"/>
+      <plugin id="org.eclipse.e4.ui.workbench.renderers.swt.cocoa" fragment="true"/>
+      <plugin id="org.eclipse.e4.ui.workbench.renderers.swt.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.workbench.swt"/>
       <plugin id="org.eclipse.e4.ui.workbench.swt.nl_de" fragment="true"/>
       <plugin id="org.eclipse.e4.ui.workbench3"/>
       <plugin id="org.eclipse.e4.ui.workbench3.nl_de" fragment="true"/>
+      <plugin id="org.eclipse.emf.codegen"/>
+      <plugin id="org.eclipse.emf.codegen.ecore"/>
+      <plugin id="org.eclipse.emf.codegen.ecore.xtext"/>
       <plugin id="org.eclipse.emf.common"/>
+      <plugin id="org.eclipse.emf.common.ui"/>
       <plugin id="org.eclipse.emf.ecore"/>
       <plugin id="org.eclipse.emf.ecore.change"/>
+      <plugin id="org.eclipse.emf.ecore.xcore"/>
+      <plugin id="org.eclipse.emf.ecore.xcore.lib"/>
       <plugin id="org.eclipse.emf.ecore.xmi"/>
+      <plugin id="org.eclipse.emf.edit"/>
+      <plugin id="org.eclipse.emf.edit.ui"/>
+      <plugin id="org.eclipse.emf.mwe.core"/>
+      <plugin id="org.eclipse.emf.mwe2.runtime"/>
       <plugin id="org.eclipse.equinox.app"/>
+      <plugin id="org.eclipse.equinox.bidi"/>
       <plugin id="org.eclipse.equinox.common"/>
       <plugin id="org.eclipse.equinox.console"/>
       <plugin id="org.eclipse.equinox.ds"/>
       <plugin id="org.eclipse.equinox.event"/>
+      <plugin id="org.eclipse.equinox.launcher"/>
       <plugin id="org.eclipse.equinox.launcher.cocoa.macosx.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.equinox.launcher.gtk.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.equinox.launcher.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.equinox.launcher.win32.win32.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.equinox.p2.core"/>
+      <plugin id="org.eclipse.equinox.p2.engine"/>
+      <plugin id="org.eclipse.equinox.p2.metadata"/>
+      <plugin id="org.eclipse.equinox.p2.metadata.repository"/>
+      <plugin id="org.eclipse.equinox.p2.repository"/>
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.equinox.security"/>
+      <plugin id="org.eclipse.equinox.security.macosx" fragment="true"/>
+      <plugin id="org.eclipse.equinox.security.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.equinox.security.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.equinox.util"/>
+      <plugin id="org.eclipse.help"/>
+      <plugin id="org.eclipse.jdt.compiler.apt" fragment="true"/>
+      <plugin id="org.eclipse.jdt.compiler.tool" fragment="true"/>
+      <plugin id="org.eclipse.jdt.core"/>
+      <plugin id="org.eclipse.jdt.core.manipulation"/>
+      <plugin id="org.eclipse.jdt.debug"/>
+      <plugin id="org.eclipse.jdt.debug.ui"/>
+      <plugin id="org.eclipse.jdt.launching"/>
+      <plugin id="org.eclipse.jdt.ui"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
+      <plugin id="org.eclipse.jface.databinding.nl_de" fragment="true"/>
       <plugin id="org.eclipse.jface.nl_de" fragment="true"/>
+      <plugin id="org.eclipse.jface.text"/>
+      <plugin id="org.eclipse.jface.text.nl_de" fragment="true"/>
+      <plugin id="org.eclipse.ltk.core.refactoring"/>
+      <plugin id="org.eclipse.ltk.ui.refactoring"/>
       <plugin id="org.eclipse.nebula.widgets.grid"/>
       <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.search"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.cocoa.macosx.x86_64" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true"/>
       <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.team.core"/>
+      <plugin id="org.eclipse.team.ui"/>
       <plugin id="org.eclipse.text"/>
+      <plugin id="org.eclipse.text.nl_de" fragment="true"/>
+      <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.cocoa" fragment="true"/>
+      <plugin id="org.eclipse.ui.console"/>
+      <plugin id="org.eclipse.ui.editors"/>
+      <plugin id="org.eclipse.ui.forms"/>
+      <plugin id="org.eclipse.ui.ide"/>
+      <plugin id="org.eclipse.ui.navigator"/>
+      <plugin id="org.eclipse.ui.navigator.resources"/>
+      <plugin id="org.eclipse.ui.views"/>
+      <plugin id="org.eclipse.ui.views.properties.tabbed"/>
+      <plugin id="org.eclipse.ui.win32" fragment="true"/>
+      <plugin id="org.eclipse.ui.workbench"/>
+      <plugin id="org.eclipse.ui.workbench.texteditor"/>
+      <plugin id="org.eclipse.xpand"/>
+      <plugin id="org.eclipse.xtend"/>
+      <plugin id="org.eclipse.xtend.lib"/>
+      <plugin id="org.eclipse.xtend.lib.macro"/>
+      <plugin id="org.eclipse.xtext"/>
+      <plugin id="org.eclipse.xtext.builder"/>
+      <plugin id="org.eclipse.xtext.common.types"/>
+      <plugin id="org.eclipse.xtext.common.types.ui"/>
+      <plugin id="org.eclipse.xtext.ecore"/>
+      <plugin id="org.eclipse.xtext.ide"/>
+      <plugin id="org.eclipse.xtext.logging" fragment="true"/>
+      <plugin id="org.eclipse.xtext.ui"/>
+      <plugin id="org.eclipse.xtext.ui.codetemplates"/>
+      <plugin id="org.eclipse.xtext.ui.codetemplates.ui"/>
+      <plugin id="org.eclipse.xtext.ui.shared"/>
+      <plugin id="org.eclipse.xtext.util"/>
+      <plugin id="org.eclipse.xtext.xbase"/>
+      <plugin id="org.eclipse.xtext.xbase.lib"/>
+      <plugin id="org.eclipse.xtext.xbase.ui"/>
       <plugin id="org.hamcrest.core"/>
       <plugin id="org.junit"/>
+      <plugin id="org.objectweb.asm"/>
       <plugin id="org.testeditor.agent.swtbot"/>
+      <plugin id="org.testeditor.agent.swtbot.test" fragment="true"/>
+      <plugin id="org.testeditor.aml.dsl"/>
+      <plugin id="org.testeditor.aml.dsl.ui"/>
+      <plugin id="org.testeditor.aml.legacy.importer.ui"/>
+      <plugin id="org.testeditor.aml.legacy.model"/>
+      <plugin id="org.testeditor.aml.model"/>
       <plugin id="org.testeditor.core"/>
       <plugin id="org.testeditor.demo"/>
       <plugin id="org.testeditor.fitnesse"/>
@@ -267,8 +373,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.preferences" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.registry" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <plugin id="org.eclipse.equinox.util" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.jface" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.jface.databinding" autoStart="true" startLevel="0" />
