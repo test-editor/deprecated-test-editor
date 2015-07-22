@@ -27,7 +27,6 @@ public class PaintImageAndTableListenerTest {
 
 	private Shell shell;
 	private Composite composite;
-	private PaintImageAndTableListener paintImageAndTableListener;
 
 	/**
 	 * initialize before the tests.
@@ -37,8 +36,7 @@ public class PaintImageAndTableListenerTest {
 		shell = new Shell();
 		composite = new Composite(shell, SWT.NORMAL);
 
-		paintImageAndTableListener = new PaintImageAndTableListener(new StyledText(composite, SWT.NONE));
-
+		new PaintImageAndTableListener(new StyledText(composite, SWT.NONE));
 	}
 
 	/**

@@ -25,14 +25,12 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
-import org.testeditor.core.services.interfaces.TestStructureService;
 
 /**
  * Tests the test structure service.
  */
 public class TestStructureServiceTest {
 
-	private static TestStructureService testStructureService;
 	private static TestStructureContentService testStructureContentService;
 
 	/**
@@ -43,7 +41,6 @@ public class TestStructureServiceTest {
 	 */
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		testStructureService = ServiceLookUpForTest.getService(TestStructureService.class);
 		testStructureContentService = ServiceLookUpForTest.getService(TestStructureContentService.class);
 		ServiceLookUpForTest.getService(TestServerService.class).startTestServer(getTestProject());
 	}
