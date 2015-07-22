@@ -22,6 +22,7 @@ import org.junit.After;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.util.FileUtils;
 
 /**
  * Abstract class for common setup and cleanup for FitnesseFilesystem based
@@ -93,7 +94,7 @@ public abstract class FitnesseFileSystemAbstractTest {
 		Path directory = Paths.get(Platform.getLocation().toFile().toString() + "/tp");
 
 		if (directory.toFile().isDirectory()) {
-			Files.walkFileTree(directory, FitnesseFileSystemUtility.getDeleteRecursiveVisitor());
+			Files.walkFileTree(directory, FileUtils.getDeleteRecursiveVisitor());
 		}
 	}
 
