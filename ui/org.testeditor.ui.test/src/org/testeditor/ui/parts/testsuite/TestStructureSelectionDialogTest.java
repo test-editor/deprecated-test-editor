@@ -98,10 +98,12 @@ public class TestStructureSelectionDialogTest {
 	 * @return OUT
 	 */
 	private TestStructureSelectionDialog getOUTWith(final TestStructure testStructure) {
+		final IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
+				TestStructureSelectionDialog.class).getBundleContext());
 		TestStructureSelectionDialog dialog = new TestStructureSelectionDialog(shell) {
 			@Override
 			protected TestStructureTree createTestStructureTree() {
-				return new TestStructureTree() {
+				TestStructureTree tree = new TestStructureTree() {
 					@Override
 					public IStructuredSelection getSelection() {
 						return new IStructuredSelection() {
@@ -136,18 +138,18 @@ public class TestStructureSelectionDialogTest {
 								return testStructure;
 							}
 						};
+
 					}
 
 					@Override
 					public TestStructure getSelectedTestStrucuture() {
 						return testStructure;
 					}
-
 				};
+				ContextInjectionFactory.inject(tree, context);
+				return tree;
 			}
 		};
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-				TestStructureSelectionDialog.class).getBundleContext());
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
 			@Override
 			public String translate(String key, Object... params) {

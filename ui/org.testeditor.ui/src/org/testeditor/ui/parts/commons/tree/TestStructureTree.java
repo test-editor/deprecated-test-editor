@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureTreeModel;
 import org.testeditor.ui.parts.commons.TestStructureViewerComparator;
@@ -43,8 +43,9 @@ public class TestStructureTree {
 	private ReservedNameFilter reservedNameFilter;
 
 	private TreeViewer treeViewer;
-	private IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-			TestStructureTree.class).getBundleContext());
+
+	@Inject
+	private IEclipseContext context;
 
 	/**
 	 * Creates a Tree to Display TestStrucutres in the parent Composite.
