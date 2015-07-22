@@ -233,7 +233,8 @@ public class SVNTeamSharestatusServiceNewTest {
 		// then
 		List<String> teststructures = statusService.getModified(testProject);
 		assertEquals(1, teststructures.size());
-		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest", teststructures.get(0));
+		assertTrue(teststructures.get(0).contains(
+				"DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest".replace('.', File.separatorChar)));
 
 	}
 

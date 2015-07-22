@@ -90,11 +90,10 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 							@Override
 							public void handleStatus(SVNStatus status) throws SVNException {
 
-								String fullName = ((SVNTeamShareService) teamShareService).convertFileToFullname(
-										status.getFile(), testProject);
+								String fullName = status.getFile().getAbsolutePath();
 
 								if (!testStructures.contains(fullName)) {
-									LOGGER.info(status.getFile().getAbsolutePath());
+									LOGGER.info(fullName);
 									testStructures.add(fullName);
 								}
 							}
@@ -146,7 +145,7 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 		if (listOfModifiedTestStructures != null) {
 			for (String modifiedTestStructure : listOfModifiedTestStructures) {
 
-				if (modifiedTestStructure.contains(testStructure.getFullName())) {
+				if (modifiedTestStructure.contains(testStructure.getFullName().replace('.', File.separatorChar))) {
 					return true;
 				}
 			}
