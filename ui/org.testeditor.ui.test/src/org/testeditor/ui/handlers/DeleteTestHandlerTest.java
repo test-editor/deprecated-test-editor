@@ -349,7 +349,7 @@ public class DeleteTestHandlerTest {
 			public IStructuredSelection getSelection() {
 				return new TreeSelection() {
 					@Override
-					public Iterator iterator() {
+					public Iterator<TestStructure> iterator() {
 						List<TestStructure> list = new ArrayList<TestStructure>();
 						TestCase testCase = new TestCase();
 						testCase.setName("forDel");
@@ -390,7 +390,7 @@ public class DeleteTestHandlerTest {
 			public IStructuredSelection getSelection() {
 				return new TreeSelection() {
 					@Override
-					public Iterator iterator() {
+					public Iterator<TestStructure> iterator() {
 						List<TestStructure> list = new ArrayList<TestStructure>();
 						TestSuite testSuite = new TestSuite();
 						testSuite.setName("forDel");
