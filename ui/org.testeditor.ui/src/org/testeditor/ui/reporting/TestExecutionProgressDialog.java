@@ -45,6 +45,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.fitnesse.util.FitNesseRestClient;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorFontConstants;
@@ -89,6 +90,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 	private Point defaultDialogSize = new Point(500, 400);
 	private static final Point ENLARGED_DIALOG_SIZE = new Point(850, 600);
+
+	private TestStructure toExecute;
 
 	/**
 	 * Constructor of the Dialog.
@@ -191,6 +194,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 	 * @return the TestResult of the Test execution.
 	 */
 	public TestResult executeTest(final TestStructure toExecute) throws InvocationTargetException, InterruptedException {
+
+		this.toExecute = toExecute;
 		testResult = null;
 		this.run(true, true, new IRunnableWithProgress() {
 
@@ -250,8 +255,93 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 		// adding new button for closing the dialog on demand
 		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL, true);
-
 		detailsButton.addSelectionListener(getSwitchDetailSelectionListener());
+
+		// adding new button for closing the dialog on demand
+
+		final Button pauseButton = createButton(parent, IDialogConstants.STOP_ID,
+		IDialogConstants.STOP_LABEL, false);
+		final Button resumeButton = createButton(parent, IDialogConstants.IGNORE_ID,
+		IDialogConstants.STOP_LABEL, false);
+		final Button stepwiseButton = createButton(parent, IDialogConstants.INTERNAL_ID,
+		IDialogConstants.STOP_LABEL, false);
+		
+		resumeButton.setEnabled(false);
+		stepwiseButton.setEnabled(false);
+		
+		
+		pauseButton.setImage(IconConstants.ICON_TEST_PAUSE);
+		pauseButton.setText("");
+
+		pauseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				System.out.println("PAUSE ..........");
+				try {
+					FitNesseRestClient.pauseTest(toExecute);
+					
+					resumeButton.setEnabled(true);
+					stepwiseButton.setEnabled(true);
+					pauseButton.setEnabled(false);
+					
+				} catch (SystemException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+
+		});
+
+
+		resumeButton.setImage(IconConstants.ICON_TEST_RESUME);
+		resumeButton.setText("");
+
+		resumeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+	
+				System.out.println("RESUME ..........");
+				try {
+					FitNesseRestClient.resumeTest(toExecute);
+					
+					resumeButton.setEnabled(false);
+					stepwiseButton.setEnabled(false);
+					pauseButton.setEnabled(true);
+					
+				} catch (SystemException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+		});
+		
+
+
+		stepwiseButton.setImage(IconConstants.ICON_TEST_STEP_FORWARD);
+		stepwiseButton.setText("");
+
+		stepwiseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+	
+				System.out.println("Step forward ..........");
+				try {
+					FitNesseRestClient.stepwiseTest(toExecute);
+					
+					resumeButton.setEnabled(true);
+					stepwiseButton.setEnabled(true);
+					pauseButton.setEnabled(false);
+					
+				} catch (SystemException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+		});
 
 		super.createButtonsForButtonBar(parent);
 	}

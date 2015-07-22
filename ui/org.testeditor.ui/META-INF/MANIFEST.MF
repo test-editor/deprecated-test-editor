@@ -55,6 +55,7 @@ Import-Package: javax.annotation;version="1.0.0",
  org.testeditor.core.services.interfaces,
  org.testeditor.core.services.plugins,
  org.testeditor.core.util,
+ org.testeditor.fitnesse.util,
  org.testeditor.metadata.core,
  org.testeditor.metadata.core.model
 Bundle-ActivationPolicy: lazy
