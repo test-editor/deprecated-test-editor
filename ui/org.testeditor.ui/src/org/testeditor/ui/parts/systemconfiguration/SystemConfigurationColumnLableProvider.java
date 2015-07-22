@@ -46,8 +46,8 @@ public class SystemConfigurationColumnLableProvider extends ColumnLabelProvider 
 		Method method;
 		String message = "error on getText";
 		try {
-			method = element.getClass().getMethod("get" + mappedData, null);
-			return (String) method.invoke(element, null);
+			method = element.getClass().getMethod("get" + mappedData);
+			return (String) method.invoke(element);
 		} catch (NoSuchMethodException e) {
 			LOGGER.error(message, e);
 		} catch (SecurityException e) {

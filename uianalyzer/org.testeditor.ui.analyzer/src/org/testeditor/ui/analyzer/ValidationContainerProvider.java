@@ -15,7 +15,6 @@ import java.util.Collection;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.ui.analyzer.errormodel.ErrorContainer;
 
 /**
@@ -36,7 +35,10 @@ public class ValidationContainerProvider implements ITreeContentProvider {
 
 	@Override
 	public Object[] getElements(Object inputElement) {
-		return ((Collection<TestFlow>) inputElement).toArray();
+		if (inputElement instanceof Collection) {
+			return ((Collection<?>) inputElement).toArray();
+		}
+		return new Object[0];
 	}
 
 	@Override

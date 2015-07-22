@@ -49,3 +49,4 @@ Bundle-ClassPath: .,
  lib/jdom-2.0.5.jar,
  lib/jfreechart-1.0.19-swt.jar,
  lib/jfreechart-1.0.19.jar
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

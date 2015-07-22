@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
 import org.testeditor.ui.constants.IconConstants;
