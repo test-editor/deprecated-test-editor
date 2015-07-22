@@ -189,12 +189,13 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 
 	@Override
 	public void rename(TestStructure testStructure, String newName) throws SystemException {
-		if (metaDataStore.containsKey(testStructure.getFullName())) {
-			init(testStructure.getRootElement());
-			String projectName = testStructure.getRootElement().getFullName();
+		init(testStructure.getRootElement());
+		String projectName = testStructure.getRootElement().getFullName();
+
+		if (getMetaDataStore(projectName).containsKey(testStructure.getFullName())) {
 			String newFullName = testStructure.getParent().getFullName() + "." + newName;
 			getMetaDataStore(projectName).put(newFullName, getMetaDataTags(testStructure));
-			getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
+			getMetaDataStore(projectName).remove(testStructure.getFullName()).clear();
 			store(testStructure);
 			String oldName = testStructure.getName();
 			testStructure.setName(newName);

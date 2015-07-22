@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Testeditor XML-Library
 Bundle-SymbolicName: org.testeditor.xmllibrary
-Bundle-Version: 1.7.2.qualifier
+Bundle-Version: 1.8.0
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.inject;version="1.0.0",
@@ -21,9 +21,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
 Service-Component: OSGI-INF/LibraryReaderImpl.xml,
  OSGI-INF/LibraryConfigurationServiceImpl.xml
 Eclipse-BundleShape: dir
-Export-Package: org.testeditor.xmllibrary.services.impl;
-  uses:="org.testeditor.core.model.action,
-   org.testeditor.core.services.interfaces,
-   javax.xml.validation,
-   javax.xml.bind"
 
