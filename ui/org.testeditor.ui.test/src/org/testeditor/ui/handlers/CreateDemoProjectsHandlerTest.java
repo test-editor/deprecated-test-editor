@@ -66,11 +66,6 @@ public class CreateDemoProjectsHandlerTest {
 				return new ArrayList<TestProject>();
 			}
 
-			public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
-				fail("test should not call this method");
-				return null;
-			}
-
 			@Override
 			public void storeProjectConfig(TestProject testProject, TestProjectConfig config) throws SystemException {
 				fail("test should not call this method");

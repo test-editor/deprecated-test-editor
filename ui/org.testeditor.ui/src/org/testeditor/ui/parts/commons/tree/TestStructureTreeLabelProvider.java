@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
 import org.testeditor.core.model.teststructure.ScenarioSuite;

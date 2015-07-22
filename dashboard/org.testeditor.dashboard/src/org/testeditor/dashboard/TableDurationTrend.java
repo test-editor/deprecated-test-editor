@@ -54,7 +54,6 @@ import org.testeditor.ui.constants.ColorConstants;
  *         table shows duration trend for in LastRunsTAble selected test case or
  *         suite now limited to display to not more than 30 runs
  */
-@SuppressWarnings("restriction")
 public class TableDurationTrend {
 
 	@Inject

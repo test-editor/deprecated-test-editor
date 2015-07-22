@@ -80,7 +80,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 		testProjectSet = new HashSet<TestProject>();
 		final IStructuredSelection selection = (IStructuredSelection) application.getSelectedElement().getContext()
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		final Iterator<TestStructure> iter = selection.iterator();
+		final Iterator<?> iter = selection.iterator();
 		final Shell activeShell = Display.getCurrent().getActiveShell();
 		final ProgressMonitorDialog dialog = new ProgressMonitorDialog(activeShell);
 		try {
@@ -91,32 +91,32 @@ public abstract class AbstractUpdateOrApproveHandler {
 					monitor.beginTask(getMessage(), IProgressMonitor.UNKNOWN);
 
 					try {
-
 						boolean noError = true;
-
 						while (iter.hasNext()) {
-							TestStructure testStructure = iter.next();
-							teamShareService.addProgressListener(testStructure, new ProgressListener() {
-								@Override
-								public void log(String progressInfo) {
-									monitor.subTask(progressInfo);
+							Object next = iter.next();
+							if (next instanceof TestStructure) {
+								TestStructure testStructure = (TestStructure) next;
+								teamShareService.addProgressListener(testStructure, new ProgressListener() {
+									@Override
+									public void log(String progressInfo) {
+										monitor.subTask(progressInfo);
+									}
+
+									@Override
+									public boolean isCanceled() {
+										return monitor.isCanceled();
+									}
+								});
+
+								if (executeSpecials(testStructure)) {
+									addToProjectSet(testStructure.getRootElement());
+								} else {
+									noError = false;
 								}
-
-								@Override
-								public boolean isCanceled() {
-									return monitor.isCanceled();
+								if (noError) {
+									showCompletedMessage();
 								}
-							});
-
-							if (executeSpecials(testStructure)) {
-								addToProjectSet(testStructure.getRootElement());
-							} else {
-								noError = false;
 							}
-							if (noError) {
-								showCompletedMessage();
-							}
-
 						}
 					} catch (Exception e) {
 						MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());

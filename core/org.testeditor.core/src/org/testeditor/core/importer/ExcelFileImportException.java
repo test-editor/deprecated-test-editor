@@ -21,6 +21,8 @@ import org.testeditor.core.exceptions.SystemException;
  */
 public class ExcelFileImportException extends SystemException {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * constructor.
 	 * 
