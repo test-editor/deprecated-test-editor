@@ -13,7 +13,7 @@ public class TestEditorWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void preWindowOpen() {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
         configurer.setShowMenuBar(true);
-        configurer.setShowCoolBar(true);
+        configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
     }
     
