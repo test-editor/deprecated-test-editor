@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         id="org.testeditor.aml.dsl.e4.ui.fragment"
+         point="org.eclipse.e4.workbench.model">
+      <fragment
+            uri="fragment.e4xmi">
+      </fragment>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="org.testeditor.aml.dsl.ui.AmlExecutableExtensionFactory:org.testeditor.aml.dsl.ui.wizard.AmlNewProjectWizard"
+            id="org.testeditor.aml.dsl.e4.ui.wizard1"
+            name="name">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.testeditor.aml.dsl.e4.ui"
+            name="Sample Category">
+      </category>
+      <view
+            category="org.testeditor.aml.dsl.e4.ui"
+            class="org.testeditor.aml.dsl.e4.ui.views.SampleView"
+            icon="icons/sample.gif"
+            id="org.testeditor.aml.dsl.e4.ui.views.SampleView"
+            name="Sample View">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="org.testeditor.aml.dsl.e4.ui.views.SampleView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+
+</plugin>

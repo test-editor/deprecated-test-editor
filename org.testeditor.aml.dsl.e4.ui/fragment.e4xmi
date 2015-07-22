@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/descriptor/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_BypsMCvUEeWBwJWTjbVCOQ">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BypsMivUEeWBwJWTjbVCOQ" featurename="children" parentElementId="menu:org.eclipse.ui.main.menu">
+    <elements xsi:type="menu:Menu" xmi:id="_BypsMyvUEeWBwJWTjbVCOQ" elementId="org.testeditor.ui.menu.aml" label="AML">
+      <children xsi:type="menu:HandledMenuItem" xmi:id="_zsGy0CvUEeWBwJWTjbVCOQ" elementId="xyt123456" label="test" iconURI="platform:/plugin/org.testeditor.ui/icons/user_guide.gif" command="_xJ7J8CvUEeWBwJWTjbVCOQ"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_BypsNSvUEeWBwJWTjbVCOQ" featurename="descriptors" parentElementId="org.eclipse.e4.ide.application">
+    <elements xsi:type="basic:PartDescriptor" xmi:id="_BypsNivUEeWBwJWTjbVCOQ" elementId="org.testeditor.aml.dsl.Aml" label="Aml Editor" iconURI="" allowMultiple="true" closeable="true" dirtyable="true" contributionURI="bundleclass://org.testeditor.aml.dsl.e4.ui/org.testeditor.aml.dsl.e4.ui.MyXtextEditor">
+      <menus xmi:id="_BypsNyvUEeWBwJWTjbVCOQ" elementId="org.testeditor.aml.dsl.Aml">
+        <tags>ViewMenu</tags>
+      </menus>
+      <toolbar xmi:id="_BypsOCvUEeWBwJWTjbVCOQ" elementId="org.testeditor.aml.dsl.Aml"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_VfoNICvUEeWBwJWTjbVCOQ" featurename="commands" parentElementId="org.eclipse.e4.ide.application">
+    <elements xsi:type="commands:Command" xmi:id="_xJ7J8CvUEeWBwJWTjbVCOQ" elementId="org.testeditor.aml.dsl.e4.ui.command.test" commandName="Open Test Handler"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_55wn4CvUEeWBwJWTjbVCOQ" featurename="handlers" parentElementId="org.eclipse.e4.ide.application">
+    <elements xsi:type="commands:Handler" xmi:id="_-itI8CvUEeWBwJWTjbVCOQ" elementId="org.testeditor.aml.dsl.e4.ui.handler.0" contributionURI="bundleclass://org.testeditor.aml.dsl.e4.ui/org.testeditor.aml.dsl.e4.ui.TestHandler" command="_xJ7J8CvUEeWBwJWTjbVCOQ"/>
+  </fragments>
+</fragment:ModelFragments>
