@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.swt.widgets.Composite;
@@ -41,7 +40,6 @@ public class RenameTestProjectWizardPage extends AbstractRenameTestStructureWiza
 	private IEclipseContext context;
 	private INameInspector nameInspector = new TestProjectNameInspector();
 	private List<TestProject> projects;
-	private static final Logger LOGGER = Logger.getLogger(RenameTestProjectWizardPage.class);
 
 	/**
 	 * {@inheritDoc}

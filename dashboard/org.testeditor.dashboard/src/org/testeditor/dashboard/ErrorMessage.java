@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Shell;
  * 
  *         errors for file access
  */
-@SuppressWarnings("restriction")
 public final class ErrorMessage {
 
 	@Inject

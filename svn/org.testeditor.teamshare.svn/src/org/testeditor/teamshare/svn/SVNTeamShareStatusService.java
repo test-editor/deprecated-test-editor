@@ -11,28 +11,12 @@
  *******************************************************************************/
 package org.testeditor.teamshare.svn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.team.TeamChangeType;
-import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
-import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
-import org.tmatesoft.svn.core.wc.SVNClientManager;
-import org.tmatesoft.svn.core.wc.SVNStatus;
-import org.tmatesoft.svn.core.wc.SVNStatusType;
-import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 /**
  * Service to retrieve the state of a team shared test structures. SVN based
@@ -41,30 +25,12 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  */
 public class SVNTeamShareStatusService implements  IContextFunction {
 
-	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusService.class);
 	private Thread svnStateRunner;
 
 	private IEventBroker eventBroker;
 	protected Map<String, TeamChangeType> lastSVNState;
 
-	/**
-	 * Convert the SVNStatusType to the matching TeamChangeType.
-	 * 
-	 * @param statusType
-	 *            Status type of svn
-	 * @return Core TeamChangeType that is team provider independent.
-	 */
-	private TeamChangeType getTeamChangeTypeFromSVNStatusType(SVNStatusType statusType) {
-		if (statusType == SVNStatusType.STATUS_ADDED) {
-			return TeamChangeType.ADD;
-		} else if (statusType == SVNStatusType.STATUS_MODIFIED) {
-			return TeamChangeType.MODIFY;
-		} else if (statusType == SVNStatusType.STATUS_DELETED) {
-			return TeamChangeType.DELETE;
-		} else {
-			return TeamChangeType.NONE;
-		}
-	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -178,16 +144,6 @@ public class SVNTeamShareStatusService implements  IContextFunction {
 //		}
 //	}
 
-
-	/**
-	 * create a new SVNClientManager without Credentials.
-	 * 
-	 * @return a new {@link SVNClientManager};
-	 */
-	private SVNClientManager getSVNClientManager() {
-		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager();
-		return SVNClientManager.newInstance(null, authManager);
-	}
 
 	/**
 	 * Checks if the modification information retrieve process is finished.
