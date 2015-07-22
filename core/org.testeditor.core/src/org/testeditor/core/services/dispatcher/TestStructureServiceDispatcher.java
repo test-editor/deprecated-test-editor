@@ -126,8 +126,6 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 
 	@Override
 	public Runnable getTestProjectLazyLoader(TestCompositeStructure toBeLoadedLazy) {
-		LOGGER.error("Loading for project: " + toBeLoadedLazy.getRootElement());
-		LOGGER.error("Loading for project: " + toBeLoadedLazy.getRootElement().getTestProjectConfig());
 		if (testStructureServices.get(toBeLoadedLazy.getRootElement().getTestProjectConfig().getTestServerID()) != null) {
 			return testStructureServices.get(toBeLoadedLazy.getRootElement().getTestProjectConfig().getTestServerID())
 					.getTestProjectLazyLoader(toBeLoadedLazy);

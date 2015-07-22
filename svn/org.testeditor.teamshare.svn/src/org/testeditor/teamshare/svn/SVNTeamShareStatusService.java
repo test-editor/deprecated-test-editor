@@ -39,7 +39,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
  * implementation of the service.
  *
  */
-public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, IContextFunction {
+public class SVNTeamShareStatusService implements  IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusService.class);
 	private Thread svnStateRunner;
@@ -73,148 +73,111 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	 * org.testeditor.teamshare.svn.xxx#setSVNStatusForProject(org.testeditor
 	 * .core.model.teststructure.TestProject)
 	 */
-	@Override
-	public void setTeamStatusForProject(final TestProject testProject) {
-		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
-			svnStateRunner = new Thread(new Runnable() {
+//	@Override
+//	public void setTeamStatusForProject(final TestProject testProject) {
+//		if (testProject.getTestProjectConfig().isTeamSharedProject()) {
+//			svnStateRunner = new Thread(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					testProject.setTeamChangeType(TeamChangeType.NONE);
+//					if (lastSVNState != null) {
+//						for (String fullname : lastSVNState.keySet()) {
+//							TestStructure child = testProject.getTestChildByFullName(fullname);
+//							if (child != null) {
+//								child.setTeamChangeType(TeamChangeType.NONE);
+//							}
+//						}
+//					}
+//					Map<String, TeamChangeType> statusFromProjectFiles = getSvnStatusFromProjectFiles(testProject);
+//					lastSVNState = statusFromProjectFiles;
+//					updateTeamStatusInChilds(testProject, statusFromProjectFiles);
+//					LOGGER.info("Loaded SVN State for files in: " + testProject.getName());
+//					if (eventBroker != null) {
+//						eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
+//					}
+//				}
+//
+//				/**
+//				 * set the TeamChangeType from the child`s of the project. (sets
+//				 * only modified ones).
+//				 * 
+//				 * @param changeFilelist
+//				 *            Map<String, TeamChangeType> list of childs with
+//				 *            their TeamChangeTypes
+//				 */
+//				public void updateTeamStatusInChilds(TestProject testProject, Map<String, TeamChangeType> changeFilelist) {
+//					if (changeFilelist != null) {
+//						for (String fullname : changeFilelist.keySet()) {
+//							if (!fullname.equals(testProject.getName())) {
+//								TestStructure child = testProject.getTestChildByFullName(fullname);
+//								if (child != null) {
+//									child.setTeamChangeType(changeFilelist.get(fullname));
+//								}
+//							} else {
+//								testProject.setTeamChangeType(changeFilelist.get(fullname));
+//							}
+//						}
+//					}
+//				}
+//
+//				/**
+//				 * Looks in the given Project for the SVNStatus and returns
+//				 * every File change in the TestProject in a Map<Fullname,
+//				 * SVNStatusType>. (None Normal and Ingnore states will not be
+//				 * in the List.
+//				 * 
+//				 * @param testProject
+//				 *            TestProject
+//				 * @return Map<String, SVNStatusType> String is the fullname of
+//				 *         the modified TestStructure, SVNStatusType SVNStatus
+//				 */
+//				@SuppressWarnings("deprecation")
+//				private Map<String, TeamChangeType> getSvnStatusFromProjectFiles(final TestProject testProject) {
+//					File file = new File(testProject.getTestProjectConfig().getProjectPath());
+//					final Map<String, TeamChangeType> fileList = new HashMap<String, TeamChangeType>();
+//					if (file.exists()) {
+//						final SVNTeamShareService teamShareService = new SVNTeamShareService();
+//						SVNClientManager clientManager = getSVNClientManager();
+//						try {
+//
+//							clientManager.getStatusClient().doStatus(file, true, true, true, true,
+//
+//							new ISVNStatusHandler() {
+//
+//								@Override
+//								public void handleStatus(SVNStatus status) throws SVNException {
+//									SVNStatusType statusType = status.getCombinedNodeAndContentsStatus();
+//
+//									if (statusType != SVNStatusType.STATUS_NONE
+//											&& statusType != SVNStatusType.STATUS_NORMAL
+//											&& statusType != SVNStatusType.STATUS_IGNORED) {
+//										String fullName = teamShareService.convertFileToFullname(status.getFile(),
+//												testProject);
+//										if (SVNStatusType.STATUS_DELETED == statusType) {
+//											fileList.put(fullName.substring(0, fullName.lastIndexOf(".")),
+//													TeamChangeType.MODIFY);
+//										} else {
+//											fileList.put(fullName, getTeamChangeTypeFromSVNStatusType(statusType));
+//										}
+//
+//									}
+//								}
+//
+//							});
+//						} catch (Exception e) {
+//							LOGGER.error("Could not read the SVNStatus from Project: " + testProject.getName()
+//									+ "\n error: " + e.getMessage(), e);
+//						}
+//					}
+//					return fileList;
+//				}
+//
+//			});
+//			svnStateRunner.start();
+//		}
+//	}
 
-				@Override
-				public void run() {
-					testProject.setTeamChangeType(TeamChangeType.NONE);
-					if (lastSVNState != null) {
-						for (String fullname : lastSVNState.keySet()) {
-							TestStructure child = testProject.getTestChildByFullName(fullname);
-							if (child != null) {
-								child.setTeamChangeType(TeamChangeType.NONE);
-							}
-						}
-					}
-					Map<String, TeamChangeType> statusFromProjectFiles = getSvnStatusFromProjectFiles(testProject);
-					lastSVNState = statusFromProjectFiles;
-					updateTeamStatusInChilds(testProject, statusFromProjectFiles);
-					LOGGER.info("Loaded SVN State for files in: " + testProject.getName());
-					if (eventBroker != null) {
-						eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
-					}
-				}
-
-				/**
-				 * set the TeamChangeType from the child`s of the project. (sets
-				 * only modified ones).
-				 * 
-				 * @param changeFilelist
-				 *            Map<String, TeamChangeType> list of childs with
-				 *            their TeamChangeTypes
-				 */
-				public void updateTeamStatusInChilds(TestProject testProject, Map<String, TeamChangeType> changeFilelist) {
-					if (changeFilelist != null) {
-						for (String fullname : changeFilelist.keySet()) {
-							if (!fullname.equals(testProject.getName())) {
-								TestStructure child = testProject.getTestChildByFullName(fullname);
-								if (child != null) {
-									child.setTeamChangeType(changeFilelist.get(fullname));
-								}
-							} else {
-								testProject.setTeamChangeType(changeFilelist.get(fullname));
-							}
-						}
-					}
-				}
-
-				/**
-				 * Looks in the given Project for the SVNStatus and returns
-				 * every File change in the TestProject in a Map<Fullname,
-				 * SVNStatusType>. (None Normal and Ingnore states will not be
-				 * in the List.
-				 * 
-				 * @param testProject
-				 *            TestProject
-				 * @return Map<String, SVNStatusType> String is the fullname of
-				 *         the modified TestStructure, SVNStatusType SVNStatus
-				 */
-				@SuppressWarnings("deprecation")
-				private Map<String, TeamChangeType> getSvnStatusFromProjectFiles(final TestProject testProject) {
-					File file = new File(testProject.getTestProjectConfig().getProjectPath());
-					final Map<String, TeamChangeType> fileList = new HashMap<String, TeamChangeType>();
-					if (file.exists()) {
-						final SVNTeamShareService teamShareService = new SVNTeamShareService();
-						SVNClientManager clientManager = getSVNClientManager();
-						try {
-
-							clientManager.getStatusClient().doStatus(file, true, true, true, true,
-
-							new ISVNStatusHandler() {
-
-								@Override
-								public void handleStatus(SVNStatus status) throws SVNException {
-									SVNStatusType statusType = status.getCombinedNodeAndContentsStatus();
-
-									if (statusType != SVNStatusType.STATUS_NONE
-											&& statusType != SVNStatusType.STATUS_NORMAL
-											&& statusType != SVNStatusType.STATUS_IGNORED) {
-										String fullName = teamShareService.convertFileToFullname(status.getFile(),
-												testProject);
-										if (SVNStatusType.STATUS_DELETED == statusType) {
-											fileList.put(fullName.substring(0, fullName.lastIndexOf(".")),
-													TeamChangeType.MODIFY);
-										} else {
-											fileList.put(fullName, getTeamChangeTypeFromSVNStatusType(statusType));
-										}
-
-									}
-								}
-
-							});
-						} catch (Exception e) {
-							LOGGER.error("Could not read the SVNStatus from Project: " + testProject.getName()
-									+ "\n error: " + e.getMessage(), e);
-						}
-					}
-					return fileList;
-				}
-
-			});
-			svnStateRunner.start();
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.testeditor.teamshare.svn.xxx#getModifiedFilesFromTestStructure(org
-	 * .testeditor.core.model.teststructure.TestStructure)
-	 */
-	@Override
-	@SuppressWarnings("deprecation")
-	public List<String> getModifiedFilesFromTestStructure(final TestStructure testStructure) {
-		SVNTeamShareService teamShareService = new SVNTeamShareService();
-		final List<String> result = new ArrayList<String>();
-		final File file = teamShareService.getFile(testStructure);
-		if (file.exists()) {
-			SVNClientManager clientManager = getSVNClientManager();
-			try {
-				clientManager.getStatusClient().doStatus(file, true, false, true, false, new ISVNStatusHandler() {
-
-					@Override
-					public void handleStatus(SVNStatus status) throws SVNException {
-						SVNStatusType statusType = status.getContentsStatus();
-
-						if (statusType != SVNStatusType.STATUS_NONE && statusType != SVNStatusType.STATUS_NORMAL
-								&& statusType != SVNStatusType.STATUS_IGNORED) {
-							result.add(status.getFile().getPath());
-						}
-					}
-
-				});
-			} catch (SVNException e) {
-				LOGGER.error("Could not read the SVNStatus from TestStructure: " + testStructure.getFullName()
-						+ "\n error: " + e.getMessage());
-			}
-
-		}
-		return result;
-	}
 
 	/**
 	 * create a new SVNClientManager without Credentials.
@@ -243,9 +206,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 		return this;
 	}
 
-	@Override
-	public String getId() {
-		return SVNTeamShareConfig.SVN_TEAM_SHARE_PLUGIN_ID;
-	}
+
+
 
 }
