@@ -73,14 +73,15 @@ public final class FitNesseUtil {
 
 		if (inputString.length > modifiedString.length) {
 			return false;
-		} else if (inputString.length < modifiedString.length) {
-			return modified.contains(input);
-		}
+		} else if (inputString.length <= modifiedString.length) {
 
-		for (int i = 0; i < modifiedString.length; i++) {
-			if (!inputString[i].equals(modifiedString[i])) {
-				return false;
+			for (int i = 0; i < inputString.length; i++) {
+				if (!inputString[i].equals(modifiedString[i])) {
+					return false;
+				}
 			}
+
+			return modified.contains(input);
 		}
 
 		return true;
