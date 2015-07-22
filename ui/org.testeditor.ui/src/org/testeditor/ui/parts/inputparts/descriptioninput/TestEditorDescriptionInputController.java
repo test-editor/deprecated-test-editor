@@ -150,6 +150,7 @@ public class TestEditorDescriptionInputController extends AbstractTestEditorInpu
 	/**
 	 * clean the DescriptionInputArea and close them.
 	 */
+	@Override
 	public void cleanViewsSynchron() {
 		cleanViews();
 	}
@@ -175,6 +176,7 @@ public class TestEditorDescriptionInputController extends AbstractTestEditorInpu
 	/**
 	 * disables the views.
 	 */
+	@Override
 	public void disableViews() {
 		editArea.disabelViews();
 

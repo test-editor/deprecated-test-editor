@@ -126,6 +126,7 @@ public class ApplicationLifeCycleHandlerTest {
 	public void testShutDownApplication() {
 		final HashSet<String> set = new HashSet<String>();
 		ApplicationLifeCycleHandler handler = new ApplicationLifeCycleHandler() {
+			@Override
 			public void stopBackendServers(org.eclipse.core.runtime.IProgressMonitor monitor) {
 				set.add("stop");
 			}
