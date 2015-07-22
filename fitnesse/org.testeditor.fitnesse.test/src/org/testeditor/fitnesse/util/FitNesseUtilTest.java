@@ -136,5 +136,8 @@ public class FitNesseUtilTest {
 		modified = "DemoWebTests.LocalDemoSuite.LoginSuite";
 		assertFalse(FitNesseUtil.contains(input, modified));
 
+		input = "DemoWebTests.LocalDemoSuite.LoginSui";
+		modified = "DemoWebTests.LocalDemoSuite.LoginSuite.LoginInvalidTest2";
+		assertFalse(FitNesseUtil.contains(input, modified));
 	}
 }
