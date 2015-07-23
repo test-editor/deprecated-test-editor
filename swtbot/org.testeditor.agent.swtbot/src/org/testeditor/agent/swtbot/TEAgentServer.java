@@ -410,7 +410,15 @@ public class TEAgentServer extends Thread implements ITestHarness {
 						Arrays.copyOfRange(nodes, 1, nodes.length));
 				expandNode.select();
 			} else {
-				SWTBotTreeItem expandNode = bot.tree().expandNode(nodes);
+				SWTBotTree tree = null;
+				try {
+					tree = bot.treeWithId("testexplorer.tree");
+				} catch (Exception e) {
+					// Try again.
+					Thread.sleep(100);
+					tree = bot.treeWithId("testexplorer.tree");
+				}
+				SWTBotTreeItem expandNode = tree.expandNode(nodes);
 				expandNode.select();
 			}
 			bot.tree().setFocus();
