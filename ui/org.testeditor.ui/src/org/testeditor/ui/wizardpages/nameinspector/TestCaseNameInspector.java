@@ -20,15 +20,14 @@ public class TestCaseNameInspector extends DefaultNameInspector implements IName
 
 	@Override
 	public boolean isNameValid(String name) {
-		if (!name.contains("Suite")) {
-			return true;
+		if (!super.isNameValid(name)) {
+			return false;
 		}
-		return false;
-	}
-
-	@Override
-	public String nameInvalideMessage() {
-		return translate("%wizard.error.msgNameFailureTest");
+		if (name.contains("Suite")) {
+			setNameInvalidMessage(translate("%wizard.error.msgNameFailureTest"));
+			return false;
+		}
+		return true;
 	}
 
 }
