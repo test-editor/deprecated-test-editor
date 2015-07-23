@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.contexts.Active;
@@ -57,6 +58,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * 
  */
 public class TestExecutionProgressDialog extends ProgressMonitorDialog {
+
+	private static final Logger LOGGER = Logger.getLogger(TestLogViewer.class);
 
 	private TestLogViewer logViewer;
 
@@ -259,17 +262,14 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 		// adding new button for closing the dialog on demand
 
-		final Button pauseButton = createButton(parent, IDialogConstants.STOP_ID,
-		IDialogConstants.STOP_LABEL, false);
-		final Button resumeButton = createButton(parent, IDialogConstants.IGNORE_ID,
-		IDialogConstants.STOP_LABEL, false);
-		final Button stepwiseButton = createButton(parent, IDialogConstants.INTERNAL_ID,
-		IDialogConstants.STOP_LABEL, false);
-		
+		final Button pauseButton = createButton(parent, IDialogConstants.STOP_ID, IDialogConstants.STOP_LABEL, false);
+		final Button resumeButton = createButton(parent, IDialogConstants.IGNORE_ID, IDialogConstants.STOP_LABEL, false);
+		final Button stepwiseButton = createButton(parent, IDialogConstants.INTERNAL_ID, IDialogConstants.STOP_LABEL,
+				false);
+
 		resumeButton.setEnabled(false);
 		stepwiseButton.setEnabled(false);
-		
-		
+
 		pauseButton.setImage(IconConstants.ICON_TEST_PAUSE);
 		pauseButton.setText("");
 
@@ -277,23 +277,21 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				System.out.println("PAUSE ..........");
+				LOGGER.trace("PAUSE ..........");
 				try {
 					FitNesseRestClient.pauseTest(toExecute);
-					
+
 					resumeButton.setEnabled(true);
 					stepwiseButton.setEnabled(true);
 					pauseButton.setEnabled(false);
-					
+
 				} catch (SystemException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					LOGGER.error(e1.getMessage(), e1);
 				}
 
 			}
 
 		});
-
 
 		resumeButton.setImage(IconConstants.ICON_TEST_RESUME);
 		resumeButton.setText("");
@@ -301,24 +299,21 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 		resumeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-	
-				System.out.println("RESUME ..........");
+
+				LOGGER.trace("RESUME ..........");
 				try {
 					FitNesseRestClient.resumeTest(toExecute);
-					
+
 					resumeButton.setEnabled(false);
 					stepwiseButton.setEnabled(false);
 					pauseButton.setEnabled(true);
-					
+
 				} catch (SystemException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					LOGGER.error(e1.getMessage(), e1);
 				}
 			}
 
 		});
-		
-
 
 		stepwiseButton.setImage(IconConstants.ICON_TEST_STEP_FORWARD);
 		stepwiseButton.setText("");
@@ -326,18 +321,17 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 		stepwiseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-	
-				System.out.println("Step forward ..........");
+
+				LOGGER.trace("Step forward ..........");
 				try {
 					FitNesseRestClient.stepwiseTest(toExecute);
-					
+
 					resumeButton.setEnabled(true);
 					stepwiseButton.setEnabled(true);
 					pauseButton.setEnabled(false);
-					
+
 				} catch (SystemException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					LOGGER.error(e1.getMessage(), e1);
 				}
 			}
 
