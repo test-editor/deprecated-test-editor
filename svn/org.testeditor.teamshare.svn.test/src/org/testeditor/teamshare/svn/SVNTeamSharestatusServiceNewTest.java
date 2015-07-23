@@ -230,7 +230,8 @@ public class SVNTeamSharestatusServiceNewTest {
 		// then
 		List<String> teststructures = statusService.getModified(testProject);
 		assertEquals(1, teststructures.size());
-		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest", teststructures.get(0));
+		assertTrue(teststructures.get(0).contains(
+				"DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest".replace('.', File.separatorChar)));
 
 	}
 
@@ -433,6 +434,80 @@ public class SVNTeamSharestatusServiceNewTest {
 
 		// then
 		assertFalse(statusService.isModified(testProject));
+
+	}
+
+	/**
+	 * Checks if only given teststructure is modified and not included in an
+	 * other testcase.
+	 * 
+	 * e.g. given "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest"
+	 * "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValid" must not return
+	 * modify flag
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
+	 */
+	@Test
+	public void testIsModifiedWithOneTestnameIncludedInAnother() throws SystemException, IOException,
+			InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
+				"LoginSuite", "LoginValidTest" });
+		assertTrue(statusService.isModified(testStructure));
+		testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValid" });
+		assertFalse(statusService.isModified(testStructure));
+
+	}
+
+	/**
+	 * Checks if only given teststructure is modified and not included in an
+	 * other testcase.
+	 * 
+	 * e.g. given "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest"
+	 * "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValid" must not return
+	 * modify flag
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
+	 */
+	@Test
+	public void testIsModifiedWithOneTestnameIncludedInAnother2() throws SystemException, IOException,
+			InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
+				"LoginSuite", "LoginValidTest" });
+		assertTrue(statusService.isModified(testStructure));
+		testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite", "LoginValid" });
+		assertFalse(statusService.isModified(testStructure));
 
 	}
 
