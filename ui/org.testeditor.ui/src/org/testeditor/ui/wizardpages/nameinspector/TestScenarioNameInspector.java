@@ -20,16 +20,14 @@ public class TestScenarioNameInspector extends DefaultNameInspector implements I
 
 	@Override
 	public boolean isNameValid(String name) {
-		if (!name.contains("Test") && !name.contains("Suite")) {
-			return true;
+		if (!super.isNameValid(name)) {
+			return false;
 		}
-		return false;
-	}
-
-	@Override
-	public String nameInvalideMessage() {
-
-		return translate("%wizard.error.msgNameFailureScenario");
+		if (name.contains("Test") || name.contains("Suite")) {
+			setNameInvalidMessage(translate("%wizard.error.msgNameFailureScenario"));
+			return false;
+		}
+		return true;
 	}
 
 }
