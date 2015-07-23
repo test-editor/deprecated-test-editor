@@ -412,10 +412,11 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			} else {
 				SWTBotTree tree = null;
 				try {
-					tree = bot.treeWithId("testexplorer.tree");
+					tree = bot.tree();
 				} catch (Exception e) {
 					// Try again.
-					Thread.sleep(100);
+					Thread.sleep(300);
+					analyzeWidgets();
 					tree = bot.treeWithId("testexplorer.tree");
 				}
 				SWTBotTreeItem expandNode = tree.expandNode(nodes);
