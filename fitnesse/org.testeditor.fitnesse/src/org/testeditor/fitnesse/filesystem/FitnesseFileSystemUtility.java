@@ -73,19 +73,6 @@ public final class FitnesseFileSystemUtility {
 	}
 
 	/**
-	 * Checks if for given testStructure if an content.txt exixts in error log
-	 * path of fitnesse.
-	 * 
-	 * @param testStructure
-	 *            to be used for lookup.
-	 * @return the path as string to the TestStructure.
-	 */
-	public static boolean existsContentTxtInPathOfTestStructureInErrorDirectory(TestStructure testStructure) {
-		String pathToTestStructureErrorDirectory = getPathToTestStructureErrorDirectory(testStructure);
-		return new File(pathToTestStructureErrorDirectory + File.separatorChar + "content.txt").exists();
-	}
-
-	/**
 	 * 
 	 * 
 	 * @param testStructure

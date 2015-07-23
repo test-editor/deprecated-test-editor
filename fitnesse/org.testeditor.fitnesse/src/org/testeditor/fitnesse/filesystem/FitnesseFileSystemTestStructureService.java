@@ -308,10 +308,12 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 	@Override
 	public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
-		Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility
-				.getPathToTestStructureErrorDirectory(testStructure));
-		return FitnesseFileSystemUtility.getContentOfFitnesseFileForTestStructure(testStructure,
-				pathToTestStructure.toString() + File.separator + "content.txt");
+		return getTestHistory(testStructure).get(0).getTestExecutionLog();
+		// Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility
+		// .getPathToTestStructureErrorDirectory(testStructure));
+		// return
+		// FitnesseFileSystemUtility.getContentOfFitnesseFileForTestStructure(testStructure,
+		// pathToTestStructure.toString() + File.separator + "content.txt");
 	}
 
 	@Override
@@ -444,7 +446,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
-		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
+		return getTestHistory(testStructure).size() > 0;
 	}
 
 }

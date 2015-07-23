@@ -39,6 +39,7 @@ public class TestResult {
 	private int runTimeMillis;
 	private List<InstructionsResult> instructionResultTables;
 	private List<ActionResultTable> actionResultTables;
+	private String errorLog;
 
 	/**
 	 * 
@@ -279,6 +280,23 @@ public class TestResult {
 	 */
 	public void setActionResultTables(List<ActionResultTable> actionResultTables) {
 		this.actionResultTables = actionResultTables;
+	}
+
+	/**
+	 * 
+	 * @param errorLog
+	 *            of the test execution.
+	 */
+	public void setTestExecutionLog(String errorLog) {
+		this.errorLog = errorLog;
+	}
+
+	/**
+	 * 
+	 * @return log of the test execution.
+	 */
+	public String getTestExecutionLog() {
+		return errorLog;
 	}
 
 }

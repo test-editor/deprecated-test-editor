@@ -11,14 +11,12 @@
  *******************************************************************************/
 package org.testeditor.ui.wizardpages.nameinspector;
 
-
 /**
  * special name-inspector for the testcase.
  * 
- * @author llipinski
  * 
  */
-public class TestCaseNameInspector extends NameInspector implements INameInspector {
+public class TestCaseNameInspector extends DefaultNameInspector implements INameInspector {
 
 	@Override
 	public boolean isNameValid(String name) {
