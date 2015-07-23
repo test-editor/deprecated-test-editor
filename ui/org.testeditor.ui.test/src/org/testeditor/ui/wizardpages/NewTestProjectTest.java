@@ -79,9 +79,9 @@ public class NewTestProjectTest {
 			}
 		};
 		ContextInjectionFactory.inject(page, getContextMock());
-		assertFalse(page.isNameValid("otto"));
-		assertFalse(page.isNameValid("Otto"));
-		assertFalse(page.isNameValid("OTto"));
+		assertTrue(page.isNameValid("otto"));
+		assertTrue(page.isNameValid("Otto"));
+		assertTrue(page.isNameValid("OTto"));
 		assertTrue(page.isNameValid("OttO"));
 	}
 

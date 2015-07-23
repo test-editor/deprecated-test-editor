@@ -11,11 +11,9 @@
  *******************************************************************************/
 package org.testeditor.ui.wizardpages.nameinspector;
 
-
 /**
  * Interface for the name-inspectors for the new and rename wizards.
  * 
- * @author llipinski
  * 
  */
 public interface INameInspector {

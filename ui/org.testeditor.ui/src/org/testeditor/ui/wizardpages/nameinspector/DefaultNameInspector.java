@@ -18,10 +18,9 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * abstract Class for the handling of the TestEditorTranslationService.
  * 
- * @author llipinski
  * 
  */
-public abstract class NameInspector {
+public class DefaultNameInspector implements INameInspector {
 	@Inject
 	private TestEditorTranslationService translationService;
 
@@ -35,4 +34,16 @@ public abstract class NameInspector {
 	protected String translate(String msgKey, Object... params) {
 		return translationService.translate(msgKey, params);
 	}
+
+	@Override
+	public boolean isNameValid(String name) {
+		return true;
+
+	}
+
+	@Override
+	public String nameInvalideMessage() {
+		return null;
+	}
+
 }

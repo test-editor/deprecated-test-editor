@@ -18,7 +18,7 @@ package org.testeditor.ui.wizardpages.nameinspector;
  * @author llipinski
  * 
  */
-public class TestSuiteNameInspector extends NameInspector implements INameInspector{
+public class TestSuiteNameInspector extends DefaultNameInspector implements INameInspector{
 
 	@Override
 	public boolean isNameValid(String name) {

@@ -21,13 +21,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
+import org.testeditor.ui.wizardpages.nameinspector.DefaultNameInspector;
 import org.testeditor.ui.wizardpages.nameinspector.INameInspector;
-import org.testeditor.ui.wizardpages.nameinspector.TestProjectNameInspector;
 
 /**
  * This is a Wizard for renaming an existing test-project.
  * 
- * @author fokoh
  * 
  */
 public class RenameTestProjectWizardPage extends AbstractRenameTestStructureWizardPage {
@@ -38,7 +37,6 @@ public class RenameTestProjectWizardPage extends AbstractRenameTestStructureWiza
 	private TestProjectService testProjectService;
 	@Inject
 	private IEclipseContext context;
-	private INameInspector nameInspector = new TestProjectNameInspector();
 	private List<TestProject> projects;
 
 	/**
@@ -61,10 +59,8 @@ public class RenameTestProjectWizardPage extends AbstractRenameTestStructureWiza
 	 */
 	@Override
 	protected INameInspector getNameInspector() {
-		if (nameInspector == null) {
-			nameInspector = ContextInjectionFactory.make(TestProjectNameInspector.class, context);
-		}
-		return this.nameInspector;
+		DefaultNameInspector nameInspector = ContextInjectionFactory.make(DefaultNameInspector.class, context);
+		return nameInspector;
 	}
 
 	/**
