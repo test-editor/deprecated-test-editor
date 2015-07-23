@@ -28,7 +28,6 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
@@ -417,7 +416,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 					// Try again.
 					Thread.sleep(300);
 					analyzeWidgets();
-					tree = bot.treeWithId("testexplorer.tree");
+					tree = bot.tree();
 				}
 				SWTBotTreeItem expandNode = tree.expandNode(nodes);
 				expandNode.select();
@@ -1339,9 +1338,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return message
 	 */
 	private String analyzeWidgets() {
-
-		Level oldLevel = LOGGER.getLevel();
-		LOGGER.setLevel(Level.TRACE);
 		LOGGER.trace("analyzeWidgets start");
 		LOGGER.trace("---------------------------------------------");
 
@@ -1381,10 +1377,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 						sb.append(" widget: " + widget).append("\n");
 					}
 
-					Level oldLevel = LOGGER.getLevel();
-					LOGGER.setLevel(Level.TRACE);
 					LOGGER.trace(sb.toString());
-					LOGGER.setLevel(oldLevel);
 
 				} catch (Exception e) {
 					LOGGER.error("ERROR " + e.getMessage());
@@ -1394,7 +1387,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		});
 		LOGGER.trace("analyzeWidgets end");
 		LOGGER.trace("---------------------------------------------");
-		LOGGER.setLevel(oldLevel);
 
 		return Boolean.toString(true);
 
