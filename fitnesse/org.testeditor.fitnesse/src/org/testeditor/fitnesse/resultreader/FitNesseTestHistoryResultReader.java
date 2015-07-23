@@ -62,12 +62,15 @@ public class FitNesseTestHistoryResultReader implements FitNesseResultReader {
 			String ignores = finalCounts.getElementsByTagName("ignores").item(0).getTextContent();
 			String exceptions = finalCounts.getElementsByTagName("exceptions").item(0).getTextContent();
 			String runTimeInMillis = doc.getElementsByTagName("runTimeInMillis").item(0).getTextContent();
-			
-			if(right.isEmpty() && wrong.isEmpty() && ignores.isEmpty()) {
+
+			String errorLog = doc.getElementsByTagName("stdOut").item(0).getTextContent();
+
+			if (right.isEmpty() && wrong.isEmpty() && ignores.isEmpty()) {
 				// this case will be exists if test were canceled.
 				return testResult;
 			}
 
+			testResult.setTestExecutionLog(errorLog);
 			testResult.setRight(Integer.parseInt(right));
 			testResult.setWrong(Integer.parseInt(wrong));
 			testResult.setIgnored(Integer.parseInt(ignores));

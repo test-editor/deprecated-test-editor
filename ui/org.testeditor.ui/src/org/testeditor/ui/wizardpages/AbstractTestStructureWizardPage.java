@@ -12,7 +12,6 @@
 package org.testeditor.ui.wizardpages;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -52,11 +51,6 @@ import org.testeditor.ui.wizardpages.nameinspector.INameInspector;
  */
 public abstract class AbstractTestStructureWizardPage extends WizardPage {
 
-	/*
-	 * Name must match the regular expression of FitNesse
-	 */
-	private static final Pattern NAME_PATTERN = Pattern
-			.compile("(?:[<>^.])?(?:\\b[A-Z](?:[a-z0-9]+[A-Z][a-z0-9]*)+[.]?)+\\b");
 	private static final Logger LOGGER = Logger.getLogger(AbstractTestStructureWizardPage.class);
 
 	private Composite container;
@@ -231,11 +225,6 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 			return false;
 		}
 
-		// Ensure the naming-rule via regular expression matching
-//		if (!NAME_PATTERN.matcher(name).matches()) {
-//			this.setErrorMessage(translationService.translate("%wizard.error.msg.nameDoesntMatchThePattern"));
-//			return false;
-//		}
 		// On renaming check if name already exist on the current tree-path,
 		// only if it differs from the old name...
 		if (getSelectedTestStrucutureElement() != null) {
@@ -250,7 +239,14 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @param name
+	 *            of the new teststructure
+	 * @return true if it is a reserved name of the test server or a testeditor
+	 *         global reserved name.
+	 */
 	protected boolean isReservedName(String name) {
 		// Handle reserved names in test structure
 		TestStructure selectedTestStrucutureElement = getSelectedTestStrucutureElement();

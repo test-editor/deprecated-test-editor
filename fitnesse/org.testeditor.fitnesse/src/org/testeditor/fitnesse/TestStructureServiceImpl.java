@@ -35,7 +35,6 @@ import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
-import org.testeditor.fitnesse.filesystem.FitnesseFileSystemUtility;
 import org.testeditor.fitnesse.util.FitNesseRestClient;
 
 /**
@@ -244,7 +243,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 
 	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
-		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
+		return new FitnesseFileSystemTestStructureService().hasTestExecutionLog(testStructure);
 	}
 
 }
