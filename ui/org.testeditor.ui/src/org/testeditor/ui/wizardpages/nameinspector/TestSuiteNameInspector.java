@@ -11,26 +11,23 @@
  *******************************************************************************/
 package org.testeditor.ui.wizardpages.nameinspector;
 
-
 /**
  * special name-inspector for the testsuite.
  * 
- * @author llipinski
  * 
  */
-public class TestSuiteNameInspector extends DefaultNameInspector implements INameInspector{
+public class TestSuiteNameInspector extends DefaultNameInspector implements INameInspector {
 
 	@Override
 	public boolean isNameValid(String name) {
-		if (!name.contains("Test")) {
-			return true;
+		if (!super.isNameValid(name)) {
+			return false;
 		}
-		return false;
-	}
-
-	@Override
-	public String nameInvalideMessage() {
-		return translate("%wizard.error.msgNameFailureSuite");
+		if (name.contains("Test")) {
+			setNameInvalidMessage(translate("%wizard.error.msgNameFailureSuite"));
+			return false;
+		}
+		return true;
 	}
 
 }

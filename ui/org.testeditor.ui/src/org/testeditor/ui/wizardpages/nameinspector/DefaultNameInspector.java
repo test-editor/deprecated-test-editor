@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.testeditor.ui.wizardpages.nameinspector;
 
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -23,6 +25,10 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 public class DefaultNameInspector implements INameInspector {
 	@Inject
 	private TestEditorTranslationService translationService;
+
+	private Pattern nameVerifier = Pattern.compile("(?:[<>^.])?(?:\\b[A-Z](?:[a-z0-9A-Z]*)+[.]?)+\\b");
+
+	private String nameInvalidMessage;
 
 	/**
 	 * @param msgKey
@@ -37,13 +43,26 @@ public class DefaultNameInspector implements INameInspector {
 
 	@Override
 	public boolean isNameValid(String name) {
-		return true;
-
+		if (nameVerifier.matcher(name).matches()) {
+			return true;
+		}
+		setNameInvalidMessage(translate("%wizard.error.msg.nameDoesntMatchThePattern"));
+		return false;
 	}
 
 	@Override
 	public String nameInvalideMessage() {
-		return null;
+		return nameInvalidMessage;
+	}
+
+	/**
+	 * Sets the error message.
+	 * 
+	 * @param nameInvalidMessage
+	 *            to shown in ui.
+	 */
+	protected void setNameInvalidMessage(String nameInvalidMessage) {
+		this.nameInvalidMessage = nameInvalidMessage;
 	}
 
 }
