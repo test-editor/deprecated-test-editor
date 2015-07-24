@@ -33,7 +33,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.util.TestStateProtocolService;
-import org.testeditor.teamshare.svn.SVNTeamShareStatusServiceNew;
+import org.testeditor.teamshare.svn.SVNTeamShareStatusService;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.commons.tree.TestStructureTreeLabelProvider;
@@ -152,7 +152,7 @@ public class TestStructureTreeLabelProviderTest {
 			}
 		});
 		context.set(IEventBroker.class, new EventBroker());
-		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusServiceNew());
+		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusService());
 		TestStructureTreeLabelProvider provider = ContextInjectionFactory.make(TestStructureTreeLabelProvider.class,
 				context);
 		TestProject testProject = new TestProject();

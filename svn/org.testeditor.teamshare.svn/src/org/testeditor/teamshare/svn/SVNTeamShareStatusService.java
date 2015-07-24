@@ -36,9 +36,9 @@ import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugIn, IContextFunction {
+public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, IContextFunction {
 
-	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusServiceNew.class);
+	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusService.class);
 
 	private IEventBroker eventBroker;
 
