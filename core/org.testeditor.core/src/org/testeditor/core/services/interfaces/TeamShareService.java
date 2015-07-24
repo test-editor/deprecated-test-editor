@@ -11,12 +11,9 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
-import java.util.List;
-
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
-import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 
@@ -181,11 +178,10 @@ public interface TeamShareService {
 	 *            to revert
 	 * @param translationService
 	 *            used to translate team server error messages.
-	 * @return List of Team Changes created by this revert operation.
 	 * @throws SystemException
 	 *             on error reverting the local changes
 	 */
-	List<TeamChange> revert(TestStructure testStructure, TranslationService translationService) throws SystemException;
+	void revert(TestStructure testStructure, TranslationService translationService) throws SystemException;
 
 	/**
 	 * Informs the Team server about a renaming operation and renames the
@@ -228,8 +224,9 @@ public interface TeamShareService {
 	 *             on error removing file from teamshare
 	 */
 	void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
+
 	/**
-	* This operation checks the team server for available updates of the
+	 * This operation checks the team server for available updates of the
 	 * working copy of the project. It will return the number of commits that
 	 * can be loaded to the working copy.
 	 * 
