@@ -1039,7 +1039,7 @@ public class SVNTeamShareServiceLocalTest {
 	 * @throws SystemException
 	 *             System failure
 	 */
-	@Test
+	@Ignore("https://testeditor.atlassian.net/browse/TE-235")
 	public void testShareProjectDisconnect() throws IOException, SVNException, SystemException {
 
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -1163,7 +1163,7 @@ public class SVNTeamShareServiceLocalTest {
 	 * @throws Exception
 	 *             on SVN error.
 	 */
-	@Test
+	@Ignore("https://testeditor.atlassian.net/browse/TE-235")
 	public void testDisconnectProject() throws Exception {
 		TestProject testProject = createTestProject(System.getProperty("java.io.tmpdir") + File.separator
 				+ "disconnectPrj", "", "");
