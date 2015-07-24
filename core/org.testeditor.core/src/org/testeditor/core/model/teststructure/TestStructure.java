@@ -13,8 +13,6 @@ package org.testeditor.core.model.teststructure;
 
 import java.util.List;
 
-import org.testeditor.core.model.team.TeamChangeType;
-
 /**
  * Abstract POJO for the test structure (e.g. test cases and suites).
  */
@@ -23,29 +21,6 @@ public abstract class TestStructure {
 	private String name;
 	private TestStructure parent;
 	private String oldNameBeforeRename;
-	private TeamChangeType teamChangeType = TeamChangeType.NONE;
-
-	/**
-	 * @return the TeamChangeType
-	 */
-	public TeamChangeType getTeamChangeType() {
-		return teamChangeType;
-	}
-
-	/**
-	 * @param teamChangeType
-	 *            the TeamChangeType to set
-	 */
-	public void setTeamChangeType(TeamChangeType teamChangeType) {
-		if (getParent() != null && !(this instanceof TestProject)) {
-			if (teamChangeType.equals(TeamChangeType.MOVED)) {
-				getParent().setTeamChangeType(TeamChangeType.MODIFY);
-			} else {
-				getParent().setTeamChangeType(teamChangeType);
-			}
-		}
-		this.teamChangeType = teamChangeType;
-	}
 
 	/**
 	 * Initialize the Object with an empty Name and a null Parent.
