@@ -129,8 +129,6 @@ public class MyViewerComparator extends ViewerComparator {
 	 * 
 	 * @param dateString
 	 *            date to format
-	 * @param date
-	 *            formatted date
 	 * @return formated date
 	 * @throws ParseException
 	 */

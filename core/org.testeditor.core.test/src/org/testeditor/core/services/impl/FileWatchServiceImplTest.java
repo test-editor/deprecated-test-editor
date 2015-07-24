@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Signal Iduna Corporation and others.
+ * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,9 @@ import org.testeditor.core.services.interfaces.FileWatchService;
  */
 public class FileWatchServiceImplTest {
 
+	/**
+	 * First draft of a fileWatchService.
+	 */
 	@Ignore("test is in work")
 	public void testFileWatchService() {
 
@@ -40,8 +43,6 @@ public class FileWatchServiceImplTest {
 		testProjectConfig.setProjectPath("c:\\transfer\\p2\\");
 		testProject1.setTestProjectConfig(testProjectConfig);
 		fileWatchService.watch(testProject1);
-
-		System.out.println();
 
 	}
 }
