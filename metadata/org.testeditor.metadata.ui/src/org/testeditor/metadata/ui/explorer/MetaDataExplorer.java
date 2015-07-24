@@ -24,12 +24,16 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.e4.ui.workbench.UIEvents;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.viewers.IOpenListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.OpenEvent;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -62,9 +66,6 @@ public class MetaDataExplorer {
 
 	private EPartService partService;
 
-	@Inject
-	private IEventBroker eventBroker;
-
 	private MetaDataStructureTree metaDataStructureTree;
 
 	/**
@@ -87,7 +88,7 @@ public class MetaDataExplorer {
 			setSelectionOn(projects.get(0));
 		}
 		if (service != null) {
-			service.registerContextMenu(treeViewer.getControl(), "org.testeditor.ui.popupmenu");
+			service.registerContextMenu(treeViewer.getControl(), "org.testeditor.ui.metadata.popupmenu");
 		}
 		// Make the tree viewer accessible in the popup-menu handlers and
 		// content-provider
@@ -98,6 +99,16 @@ public class MetaDataExplorer {
 				OpenTestStructureHandler handler = ContextInjectionFactory
 						.make(OpenTestStructureHandler.class, context);
 				handler.execute(context);
+			}
+		});
+		final IEventBroker eventBroker = context.get(IEventBroker.class);
+		treeViewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				context.get(MApplication.class).getContext()
+						.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, getSelection());
+				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 			}
 		});
 	}
@@ -122,7 +133,6 @@ public class MetaDataExplorer {
 		}
 		metaDataStructureTree.selectTestStructure(selectedElement);
 		getTreeViewer().getControl().setRedraw(true);
-		OpenTestStructureHandler openHandler = ContextInjectionFactory.make(OpenTestStructureHandler.class, context);
 	}
 
 	/**

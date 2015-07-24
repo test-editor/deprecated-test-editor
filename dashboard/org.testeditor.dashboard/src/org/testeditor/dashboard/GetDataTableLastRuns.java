@@ -130,12 +130,8 @@ public class GetDataTableLastRuns {
 	 * 
 	 * @param root
 	 *            with test results
-	 * @param testResultDir
-	 *            test results directory (for example
-	 *            ...\.testeditor\DemoSwingTests
-	 *            \FitNesseRoot\files\testResults)
-	 * @param list
-	 *            of XML files
+	 * @param testResultsDir
+	 *            of type file
 	 * @param app
 	 * @return root with test results
 	 * @throws JDOMException
@@ -180,8 +176,6 @@ public class GetDataTableLastRuns {
 	 * 
 	 * @param root
 	 *            with test results
-	 * @param list
-	 *            of XML files
 	 * @param i
 	 *            file counter
 	 * @param testCaseName
@@ -233,19 +227,10 @@ public class GetDataTableLastRuns {
 	 * @param testCaseName
 	 *            name of test case
 	 *            DemoSwingTests.GeburtstagsVerwaltungsSuite.MassenAnlageTest
-	 * @param resultDirectory
-	 *            directory
-	 *            C:\Users\alebedev\.testeditor\DemoSwingTests\FitNesseRoot
-	 *            \files\testResults\DemoSwingTests.GeburtstagsVerwaltungsSuite.
-	 *            MassenAnlageTest
+	 * @param testCaseFolder
+	 *            fileobject of the testCaseFolder
 	 * @param runCount
 	 *            all runs counter
-	 * @param lastModFile
-	 *            last modified file
-	 *            C:\Users\alebedev\.testeditor\DemoSwingTests
-	 *            \FitNesseRoot\files
-	 *            \testResults\DemoSwingTests.GeburtstagsVerwaltungsSuite
-	 *            .MassenAnlageTest\20141023205106_20_0_0_0.xml
 	 * @return root with test results
 	 * @throws JDOMException
 	 *             if one of the arguments is invalid
@@ -517,6 +502,13 @@ public class GetDataTableLastRuns {
 		return root;
 	}
 
+	/**
+	 * generates the messages for the number of wrong testcases.
+	 * 
+	 * @param testResult
+	 *            the test result
+	 * @return a string containing the resultString
+	 */
 	private static String subSetWrongOfAsString(TestResult testResult) {
 		String subSetWrongOf = Integer.toString(testResult.getQuantityWrong() + testResult.getQuantityExceptions())
 				+ " "
@@ -527,6 +519,13 @@ public class GetDataTableLastRuns {
 		return subSetWrongOf;
 	}
 
+	/**
+	 * generates the messages for the number of wrong testcases.
+	 * 
+	 * @param testResult
+	 *            the test result
+	 * @return a string containing the resultString
+	 */
 	private static String subSetRightOfAsString(TestResult testResult) {
 		String subSetRightOf = testResult.getQuantityRight()
 				+ " "

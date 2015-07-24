@@ -142,7 +142,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 * Creates a formated summary string of the test result.
 	 * 
 	 * @param testResult
-	 *            to be formatted.
+	 *            to be formated.
 	 * @return a summary of the test result as string.
 	 */
 	protected String getTestSummaryFrom(TestResult testResult) {
