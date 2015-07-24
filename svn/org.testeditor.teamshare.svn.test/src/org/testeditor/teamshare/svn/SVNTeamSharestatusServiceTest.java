@@ -46,7 +46,7 @@ import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
-public class SVNTeamSharestatusServiceNewTest {
+public class SVNTeamSharestatusServiceTest {
 
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
@@ -91,7 +91,7 @@ public class SVNTeamSharestatusServiceNewTest {
 		System.setProperty("svn.default.comment", "xyz");
 
 		teamService = new SVNTeamShareService();
-		statusService = new SVNTeamShareStatusServiceNew();
+		statusService = new SVNTeamShareStatusService();
 
 		SVNRepositoryFactoryImpl.setup();
 

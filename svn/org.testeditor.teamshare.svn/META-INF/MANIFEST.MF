@@ -21,7 +21,7 @@ Import-Package: org.apache.commons.io;version="2.2.0",
  org.testeditor.fitnesse.util
 Service-Component: OSGI-INF/SVNTeamShareConfigurationService.xml,
  OSGI-INF/SVNTeamShareService.xml,
- OSGI-INF/SVNTeamShareStatusServiceNew.xml
+ OSGI-INF/SVNTeamShareStatusService.xml
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.testeditor.teamshare.svn
