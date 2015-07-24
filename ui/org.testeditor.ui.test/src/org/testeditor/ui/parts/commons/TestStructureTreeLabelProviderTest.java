@@ -114,6 +114,32 @@ public class TestStructureTreeLabelProviderTest {
 	}
 
 	/**
+	 * Tests the logic to get an image on a Testcase which is shared, modfied
+	 * and executed.
+	 * 
+	 * @throws Exception
+	 *             on Test failure.
+	 */
+	@Test
+	public void testGetExecutionResultImageOnTeamSharedTestCase() throws Exception {
+		TestProject testProject = new TestProject();
+		testProject.setTestProjectConfig(new TestProjectConfig() {
+			@Override
+			public boolean isTeamSharedProject() {
+				return true;
+			}
+		});
+		TestCase testCase = new TestCase();
+		TestResult testResult = new TestResult();
+		testProject.addChild(testCase);
+		ServiceLookUpForTest.getService(TestStateProtocolService.class).set(testCase, testResult);
+		testResult.setWrong(0);
+		testResult.setException(0);
+		testResult.setIgnored(0);
+		assertSame(labelProvider.getImage(testCase), IconConstants.ICON_TESTCASE_SUCCESSED);
+	}
+
+	/**
 	 * Tests the labeling of the teststructure depending on the fullname switch.
 	 */
 	@Test
