@@ -758,9 +758,14 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 
 			try {
-				new SWTBotMenu(menuItem).click();
+				SWTBotMenu menu = new SWTBotMenu(menuItem);
+				if (menu.widget.isDisposed()) {
+					LOGGER.warn("Menu is allready disposed. Check the Application state.");
+				} else {
+					menu.click();
+				}
 			} catch (Exception e) {
-				LOGGER.error("foo", e);
+				LOGGER.error("Can't click on menu item: " + menuItem, e);
 			}
 
 			if (LOGGER.isTraceEnabled()) {
@@ -768,7 +773,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("foo", e);
+			LOGGER.error("Unable to find and click on menu", e);
 			return "ERROR " + e.getMessage();
 		}
 
