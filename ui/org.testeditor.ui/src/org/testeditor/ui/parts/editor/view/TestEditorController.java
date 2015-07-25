@@ -245,6 +245,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			if (userWantsToReplaceContent()) {
 				loadAndRerender();
 			}
+		} else {
+			loadAndRerender();
 		}
 	}
 
