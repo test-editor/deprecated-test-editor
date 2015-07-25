@@ -1053,6 +1053,11 @@ public class TestEditorControllerTest {
 				testCtrl.put("loadRender", true);
 			}
 
+			@Override
+			protected String getId() {
+				return null;
+			}
+
 		};
 		ctrl.reloadAndRefresh("");
 		assertTrue(testCtrl.containsKey("loadRender"));

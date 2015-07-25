@@ -35,6 +35,8 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.e4.ui.workbench.modeling.IPartListener;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -390,10 +392,57 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			if (structure != null) {
 				setTestFlow(structure);
 			}
-
+			partService.addPartListener(getRestorePartListener());
 		}
 
 	}
+
+	/**
+	 * 
+	 * @return a PartListener to ensure that old editor instance are restored on
+	 *         making the part visible. It checks if the part is an
+	 *         uninitialized part editor. In that case it runs a asnyc thread to
+	 *         trigger a restore.
+	 */
+	private IPartListener getRestorePartListener() {
+		return new IPartListener() {
+
+			@Override
+			public void partVisible(final MPart part) {
+				if (part.getElementId().equals(getId()) && part.getObject() == null) {
+					Display.getDefault().asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							partService.showPart(part, PartState.ACTIVATE);
+						}
+					});
+				}
+			}
+
+			@Override
+			public void partHidden(MPart part) {
+			}
+
+			@Override
+			public void partDeactivated(MPart part) {
+			}
+
+			@Override
+			public void partBroughtToTop(MPart part) {
+			}
+
+			@Override
+			public void partActivated(MPart part) {
+			}
+		};
+	}
+
+	/**
+	 * 
+	 * @return the e4 model Id of the part.
+	 */
+	protected abstract String getId();
 
 	/**
 	 * 
@@ -804,8 +853,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	@Override
 	@Focus
 	public void setFocus(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		// TODO why is this needed.
-		shell.setDefaultButton(null);
 		eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testFlow);
 		if (!hasFocus) {
 			hasFocus = true;

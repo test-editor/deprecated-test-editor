@@ -99,4 +99,9 @@ public class TestEditorTestCaseController extends TestEditorController {
 	public String getInvalidChars() {
 		return "";
 	}
+
+	@Override
+	protected String getId() {
+		return ID;
+	}
 }
