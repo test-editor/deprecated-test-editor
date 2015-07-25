@@ -148,6 +148,12 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 					} else {
 						return IconConstants.ICON_TESTCASE_FAILED_MODIFIED;
 					}
+				} else {
+					if (testResult.isSuccessfully()) {
+						return IconConstants.ICON_TESTCASE_SUCCESSED;
+					} else {
+						return IconConstants.ICON_TESTCASE_FAILED;
+					}
 				}
 
 			} else {
