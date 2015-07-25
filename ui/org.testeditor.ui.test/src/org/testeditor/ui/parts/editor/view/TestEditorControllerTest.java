@@ -1055,7 +1055,7 @@ public class TestEditorControllerTest {
 
 		};
 		ctrl.reloadAndRefresh("");
-		assertFalse(testCtrl.containsKey("loadRender"));
+		assertTrue(testCtrl.containsKey("loadRender"));
 		testCtrl.remove("loadRender");
 		testCtrl.put("userSays", true);
 		testCtrl.put("dirty", true);
