@@ -42,7 +42,6 @@ import org.testeditor.ui.parts.editor.ITestEditorScenarioController;
  * specialized {@link TestEditorController} class for the
  * TestEditorTestScenarioController.
  * 
- * @author llipinski
  */
 public class TestEditorTestScenarioController extends TestEditorController implements ITestEditorScenarioController {
 
@@ -210,6 +209,11 @@ public class TestEditorTestScenarioController extends TestEditorController imple
 		if (testStructureFullName != null && getTestStructure().getFullName().startsWith(testStructureFullName)) {
 			closePart();
 		}
+	}
+
+	@Override
+	protected String getId() {
+		return ID;
 	}
 
 }
