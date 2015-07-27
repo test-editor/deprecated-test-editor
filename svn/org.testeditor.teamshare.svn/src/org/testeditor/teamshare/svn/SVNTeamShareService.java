@@ -761,6 +761,49 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	/**
+	 * convert the given File from the path to a TestStructure FullName. If the
+	 * TestStructure FullName don't start with the given TestProject it will
+	 * return "";
+	 * 
+	 * @param file
+	 *            File to convert the oath to FullName.
+	 * @param testProject
+	 *            TestProject where the TestStructure should be.
+	 * @return TestStructure FullName of the given file.
+	 */
+	public String convertFileToFullname(File file, TestProject testProject) {
+		/*
+		 * Cut the Path before the workspace because everything before
+		 * .testeditor is not needed.
+		 */
+		if (file.isFile()) {
+			file = file.getParentFile();
+		}
+		String path;
+		if (!file.getPath().equals(testProject.getTestProjectConfig().getProjectPath())) {
+			if (file.getPath().length() < testProject.getTestProjectConfig().getProjectPath().length() + 2) {
+				return testProject.getName();
+			}
+			path = file.getPath().substring(testProject.getTestProjectConfig().getProjectPath().length() + 1);
+		} else {
+			return testProject.getName();
+		}
+		/*
+		 * Changes in the RecentChanges will not be showed.
+		 */
+		path = path.replace(File.separator, ".");
+		if (!path.startsWith("FitNesseRoot.RecentChanges")) {
+			if (path.contains("FitNesseRoot.")) {
+				path = path.substring("FitNesseRoot.".length(), path.length());
+			}
+			if (path.startsWith(testProject.getName())) {
+				return path;
+			}
+		}
+		return testProject.getName();
+	}
+
+	/**
 	 * Drops the Objects in the memory of this teststructure.
 	 * 
 	 * @param testStructure
