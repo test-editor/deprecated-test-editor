@@ -153,8 +153,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 *            TestStructure
 	 * @return File
 	 */
-	public File getFile(TestStructure testStructure) {
-
+	private File getFile(TestStructure testStructure) {
 		return new File(getFolderName(testStructure));
 	}
 
@@ -168,7 +167,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 */
 	private String getFolderName(TestStructure testStructure) {
 		TestProject testProject = testStructure.getRootElement();
-
 		if (testStructure instanceof TestProject) {
 			// in case of project the root of project above FitNesseRoot will be
 			// checked in.
@@ -735,6 +733,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
 					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
+						eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
+								convertFileToFullname(fileToDeleteLc, testStructure.getRootElement()));
 						Files.walkFileTree(fileToDeleteLc.toPath(),
 								org.testeditor.core.util.FileUtils.getDeleteRecursiveVisitor());
 					} else {
