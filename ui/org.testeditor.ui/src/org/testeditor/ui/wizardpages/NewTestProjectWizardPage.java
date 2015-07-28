@@ -23,8 +23,8 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
+import org.testeditor.ui.wizardpages.nameinspector.DefaultNameInspector;
 import org.testeditor.ui.wizardpages.nameinspector.INameInspector;
-import org.testeditor.ui.wizardpages.nameinspector.TestProjectNameInspector;
 
 /**
  * This class creates new Test Project.
@@ -77,7 +77,7 @@ public class NewTestProjectWizardPage extends AbstractNewTestStructureWizardPage
 	@Override
 	protected INameInspector getNameInspector() {
 		if (nameInspector == null) {
-			nameInspector = ContextInjectionFactory.make(TestProjectNameInspector.class, context);
+			nameInspector = ContextInjectionFactory.make(DefaultNameInspector.class, context);
 		}
 		return nameInspector;
 	}

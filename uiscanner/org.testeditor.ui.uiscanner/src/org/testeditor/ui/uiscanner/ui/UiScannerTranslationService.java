@@ -22,7 +22,6 @@ import org.eclipse.e4.core.services.translation.TranslationService;
  * @author dkuhlmann
  *
  */
-@SuppressWarnings("restriction")
 public class UiScannerTranslationService {
 	@Inject
 	private TranslationService translationService;

@@ -50,6 +50,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.model.teststructure.TestType;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.core.util.FileUtils;
 import org.testeditor.fitnesse.resultreader.FitNesseResultReader;
 import org.testeditor.fitnesse.resultreader.FitNesseResultReaderFactory;
 import org.testeditor.fitnesse.util.FitNesseRestClient;
@@ -258,7 +259,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 			try {
 				Files.walkFileTree(Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure)),
-						FitnesseFileSystemUtility.getDeleteRecursiveVisitor());
+						FileUtils.getDeleteRecursiveVisitor());
 				LOGGER.trace("Deleted teststructrue: " + testStructure);
 			} catch (IOException e) {
 				LOGGER.error("Error deleting teststructrue: " + testStructure, e);
@@ -307,10 +308,12 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 	@Override
 	public String getTestExecutionLog(TestStructure testStructure) throws SystemException {
-		Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility
-				.getPathToTestStructureErrorDirectory(testStructure));
-		return FitnesseFileSystemUtility.getContentOfFitnesseFileForTestStructure(testStructure,
-				pathToTestStructure.toString() + File.separator + "content.txt");
+		return getTestHistory(testStructure).get(0).getTestExecutionLog();
+		// Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility
+		// .getPathToTestStructureErrorDirectory(testStructure));
+		// return
+		// FitnesseFileSystemUtility.getContentOfFitnesseFileForTestStructure(testStructure,
+		// pathToTestStructure.toString() + File.separator + "content.txt");
 	}
 
 	@Override
@@ -416,7 +419,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 		String pathToTestResults = getPathToTestResults(testStructure);
 		try {
 			if (new File(pathToTestResults).exists()) {
-				Files.walkFileTree(Paths.get(pathToTestResults), FitnesseFileSystemUtility.getDeleteRecursiveVisitor());
+				Files.walkFileTree(Paths.get(pathToTestResults), FileUtils.getDeleteRecursiveVisitor());
 			}
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
@@ -443,7 +446,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
-		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
+		return getTestHistory(testStructure).size() > 0;
 	}
 
 }

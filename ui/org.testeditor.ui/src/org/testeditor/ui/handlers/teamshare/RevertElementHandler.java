@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers.teamshare;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -29,10 +27,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
-import org.testeditor.ui.constants.TestEditorUIEventConstants;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareRevertWizardPage;
 
 /**
@@ -55,7 +51,7 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 	private Shell shell;
 
 	@Inject
-	private TeamShareStatusService teamShareStatusService;
+	private TeamShareStatusServiceNew teamShareStatusService;
 
 	/**
 	 * executes the event for the selected-elements.
@@ -93,13 +89,8 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 	boolean executeSpecials(TestStructure testStructure) {
 
 		try {
-			List<TeamChange> revertedTestStructurs = getTeamService().revert(testStructure, translate);
-			for (TeamChange teamChange : revertedTestStructurs) {
-				eventBroker.post(TestEditorUIEventConstants.TESTSTRUCTURE_REVERTED,
-						teamChange.getRelativeTestStructureFullName());
-			}
 
-			teamShareStatusService.setTeamStatusForProject(testStructure.getRootElement());
+			getTeamService().revert(testStructure, translate);
 
 		} catch (final SystemException e) {
 			LOGGER.error(e.getMessage(), e);
@@ -114,19 +105,6 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Searches for the teststructure with the path.
-	 * 
-	 * @param change
-	 *            used to find the TestStructure.
-	 * @return teststructure found by the path.
-	 * @throws SystemException
-	 *             on failure of the backend.
-	 */
-	protected TestStructure lookUpTestStructureFrom(TeamChange change) throws SystemException {
-		return change.getReleatedTestStructure();
 	}
 
 	@Override

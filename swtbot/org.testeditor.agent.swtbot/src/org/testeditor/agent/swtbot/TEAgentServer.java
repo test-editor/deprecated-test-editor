@@ -28,7 +28,6 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
@@ -410,7 +409,16 @@ public class TEAgentServer extends Thread implements ITestHarness {
 						Arrays.copyOfRange(nodes, 1, nodes.length));
 				expandNode.select();
 			} else {
-				SWTBotTreeItem expandNode = bot.tree().expandNode(nodes);
+				SWTBotTree tree = null;
+				try {
+					tree = bot.tree();
+				} catch (Exception e) {
+					// Try again.
+					Thread.sleep(300);
+					analyzeWidgets();
+					tree = bot.tree();
+				}
+				SWTBotTreeItem expandNode = tree.expandNode(nodes);
 				expandNode.select();
 			}
 			bot.tree().setFocus();
@@ -750,9 +758,14 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 
 			try {
-				new SWTBotMenu(menuItem).click();
+				SWTBotMenu menu = new SWTBotMenu(menuItem);
+				if (menu.widget.isDisposed()) {
+					LOGGER.warn("Menu is allready disposed. Check the Application state.");
+				} else {
+					menu.click();
+				}
 			} catch (Exception e) {
-				LOGGER.error("foo", e);
+				LOGGER.error("Can't click on menu item: " + menuItem, e);
 			}
 
 			if (LOGGER.isTraceEnabled()) {
@@ -760,7 +773,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("foo", e);
+			LOGGER.error("Unable to find and click on menu", e);
 			return "ERROR " + e.getMessage();
 		}
 
@@ -1330,9 +1343,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return message
 	 */
 	private String analyzeWidgets() {
-
-		Level oldLevel = LOGGER.getLevel();
-		LOGGER.setLevel(Level.TRACE);
 		LOGGER.trace("analyzeWidgets start");
 		LOGGER.trace("---------------------------------------------");
 
@@ -1372,10 +1382,7 @@ public class TEAgentServer extends Thread implements ITestHarness {
 						sb.append(" widget: " + widget).append("\n");
 					}
 
-					Level oldLevel = LOGGER.getLevel();
-					LOGGER.setLevel(Level.TRACE);
 					LOGGER.trace(sb.toString());
-					LOGGER.setLevel(oldLevel);
 
 				} catch (Exception e) {
 					LOGGER.error("ERROR " + e.getMessage());
@@ -1385,7 +1392,6 @@ public class TEAgentServer extends Thread implements ITestHarness {
 		});
 		LOGGER.trace("analyzeWidgets end");
 		LOGGER.trace("---------------------------------------------");
-		LOGGER.setLevel(oldLevel);
 
 		return Boolean.toString(true);
 

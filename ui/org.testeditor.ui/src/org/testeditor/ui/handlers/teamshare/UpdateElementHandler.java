@@ -18,7 +18,6 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.metadata.core.MetaDataService;
 
@@ -59,19 +58,6 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Searches for the teststructure with the path.
-	 * 
-	 * @param change
-	 *            used to find the TestStructure.
-	 * @return teststructure found by the path.
-	 * @throws SystemException
-	 *             on failure of the backend.
-	 */
-	protected TestStructure lookUpTestStructureFrom(TeamChange change) throws SystemException {
-		return change.getReleatedTestStructure();
 	}
 
 	@Override
