@@ -34,8 +34,8 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -93,7 +93,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 	private IEventBroker eventBroker;
 
-	private TeamShareStatusServiceNew teamShareStatusService;
+	private TeamShareStatusServicePlugIn teamShareStatusService;
 
 	static {
 
@@ -153,8 +153,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 *            TestStructure
 	 * @return File
 	 */
-	public File getFile(TestStructure testStructure) {
-
+	private File getFile(TestStructure testStructure) {
 		return new File(getFolderName(testStructure));
 	}
 
@@ -168,7 +167,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 */
 	private String getFolderName(TestStructure testStructure) {
 		TestProject testProject = testStructure.getRootElement();
-
 		if (testStructure instanceof TestProject) {
 			// in case of project the root of project above FitNesseRoot will be
 			// checked in.
@@ -302,7 +300,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 
 		try {
-			final TestProject testProject = testStructure.getRootElement();
+			TestProject testProject = testStructure.getRootElement();
 
 			SVNClientManager clientManager = getSVNClientManager(testProject);
 
@@ -735,6 +733,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
 					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
+						eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
+								convertFileToFullname(fileToDeleteLc, testStructure.getRootElement()));
 						Files.walkFileTree(fileToDeleteLc.toPath(),
 								org.testeditor.core.util.FileUtils.getDeleteRecursiveVisitor());
 					} else {
@@ -758,6 +758,49 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			throw new SystemException(e.getLocalizedMessage(), e);
 		}
 
+	}
+
+	/**
+	 * convert the given File from the path to a TestStructure FullName. If the
+	 * TestStructure FullName don't start with the given TestProject it will
+	 * return "";
+	 * 
+	 * @param file
+	 *            File to convert the oath to FullName.
+	 * @param testProject
+	 *            TestProject where the TestStructure should be.
+	 * @return TestStructure FullName of the given file.
+	 */
+	public String convertFileToFullname(File file, TestProject testProject) {
+		/*
+		 * Cut the Path before the workspace because everything before
+		 * .testeditor is not needed.
+		 */
+		if (file.isFile()) {
+			file = file.getParentFile();
+		}
+		String path;
+		if (!file.getPath().equals(testProject.getTestProjectConfig().getProjectPath())) {
+			if (file.getPath().length() < testProject.getTestProjectConfig().getProjectPath().length() + 2) {
+				return testProject.getName();
+			}
+			path = file.getPath().substring(testProject.getTestProjectConfig().getProjectPath().length() + 1);
+		} else {
+			return testProject.getName();
+		}
+		/*
+		 * Changes in the RecentChanges will not be showed.
+		 */
+		path = path.replace(File.separator, ".");
+		if (!path.startsWith("FitNesseRoot.RecentChanges")) {
+			if (path.contains("FitNesseRoot.")) {
+				path = path.substring("FitNesseRoot.".length(), path.length());
+			}
+			if (path.startsWith(testProject.getName())) {
+				return path;
+			}
+		}
+		return testProject.getName();
 	}
 
 	/**
@@ -800,9 +843,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-		}
-		if (teamShareStatusService == null) {
-			teamShareStatusService = context.get(TeamShareStatusServiceNew.class);
 		}
 		return this;
 	}
@@ -884,6 +924,28 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param teamShareStatusPlugin
+	 *            to be binded to this service.
+	 */
+	public void bind(TeamShareStatusServicePlugIn teamShareStatusPlugin) {
+		if (teamShareStatusPlugin.getId().equals(getId())) {
+			teamShareStatusService = teamShareStatusPlugin;
+		}
+	}
+
+	/**
+	 * 
+	 * @param teamShareStatusPlugin
+	 *            on shutdown plug-in remove this service.
+	 */
+	public void unBind(TeamShareStatusServicePlugIn teamShareStatusPlugin) {
+		if (teamShareStatusPlugin.getId().equals(getId())) {
+			teamShareStatusService = null;
 		}
 	}
 
