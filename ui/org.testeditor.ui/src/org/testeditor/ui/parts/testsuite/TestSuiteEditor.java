@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testsuite;
 
+import java.io.FileNotFoundException;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
@@ -55,8 +56,10 @@ import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
 import org.testeditor.core.model.teststructure.TestCase;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.ui.ITestStructureEditor;
@@ -111,6 +114,9 @@ public class TestSuiteEditor implements ITestStructureEditor {
 	private IEventBroker eventBroker;
 	private Label tableLabel;
 	private TestStructureSelectionDialog selectionDialog;
+
+	@Inject
+	private TeamShareStatusServiceNew teamShareStatusService;
 
 	/**
 	 * 
@@ -377,6 +383,14 @@ public class TestSuiteEditor implements ITestStructureEditor {
 		try {
 			testStructureContentService.saveTestStructureData(testSuite);
 			mpart.setDirty(false);
+			TestProject testProject = getTestStructure().getRootElement();
+			if (testProject.getTestProjectConfig() != null && testProject.getTestProjectConfig().isTeamSharedProject()) {
+				try {
+					teamShareStatusService.update(testProject);
+				} catch (FileNotFoundException e) {
+					LOGGER.error(e);
+				}
+			}
 		} catch (SystemException e) {
 			LOGGER.trace("Error saving Config", e);
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e.getCause().getMessage());
