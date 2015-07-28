@@ -34,8 +34,8 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -93,7 +93,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 	private IEventBroker eventBroker;
 
-	private TeamShareStatusServiceNew teamShareStatusService;
+	private TeamShareStatusServicePlugIn teamShareStatusService;
 
 	static {
 
@@ -300,7 +300,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 
 		try {
-			final TestProject testProject = testStructure.getRootElement();
+			TestProject testProject = testStructure.getRootElement();
 
 			SVNClientManager clientManager = getSVNClientManager(testProject);
 
@@ -844,9 +844,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
 		}
-		if (teamShareStatusService == null) {
-			teamShareStatusService = context.get(TeamShareStatusServiceNew.class);
-		}
 		return this;
 	}
 
@@ -927,6 +924,28 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param teamShareStatusPlugin
+	 *            to be binded to this service.
+	 */
+	public void bind(TeamShareStatusServicePlugIn teamShareStatusPlugin) {
+		if (teamShareStatusPlugin.getId().equals(getId())) {
+			teamShareStatusService = teamShareStatusPlugin;
+		}
+	}
+
+	/**
+	 * 
+	 * @param teamShareStatusPlugin
+	 *            on shutdown plug-in remove this service.
+	 */
+	public void unBind(TeamShareStatusServicePlugIn teamShareStatusPlugin) {
+		if (teamShareStatusPlugin.getId().equals(getId())) {
+			teamShareStatusService = null;
 		}
 	}
 
