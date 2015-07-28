@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_V3KMwDRuEeWm-oFBtj17Ug">
+  <imports xsi:type="commands:Command" xmi:id="_z5g3ADR3EeWm-oFBtj17Ug" elementId="org.testeditor.ui.command.OpenTestStructureCommand"/>
+  <imports xsi:type="commands:Command" xmi:id="_jWCdYDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.command.runtest"/>
+  <imports xsi:type="commands:Command" xmi:id="_mC6TUDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.command.openLogData"/>
+  <imports xsi:type="commands:Command" xmi:id="_yM15kDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.opentesthistory.command"/>
+  <imports xsi:type="commands:Command" xmi:id="_5caeoDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.clearHistory.command"/>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_YQGaEDRuEeWm-oFBtj17Ug" featurename="children" parentElementId="PartStack.org.testeditor.testexplorer" positionInList="index:2">
+    <elements xsi:type="basic:Part" xmi:id="_NLiD8DRvEeWm-oFBtj17Ug" elementId="org.testeditor.ui.part.metadataexplorer2" containerData="50" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.explorer.MetaDataExplorer" label="%part.label.metadataexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif" tooltip="">
+      <menus xsi:type="menu:PopupMenu" xmi:id="_kP-9YDR3EeWm-oFBtj17Ug" elementId="org.testeditor.ui.metadata.popupmenu" label="%command.description.metadataexplorerpopupmenudescription">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_e0D_4DR6EeWm-oFBtj17Ug" elementId="org.testeditor.ui.handledmenuitem.opentestcase" label="%popupmenu.label.open.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/open.png" command="_z5g3ADR3EeWm-oFBtj17Ug"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_MEiFwDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.menuseparator.0"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_NhhBIDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.handledmenuitem.popupmenulabelopentestcase" label="%popupmenu.label.runtest.item" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" command="_jWCdYDUWEeWm-oFBtj17Ug"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_OYj94DUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.menuseparator.1"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RaZ-QDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.handledmenuitem.popupmenulabelshow_testlogitem" label="%popupmenu.label.show_testlog.item" iconURI="platform:/plugin/org.testeditor.ui/icons/testlog.gif" command="_mC6TUDUWEeWm-oFBtj17Ug"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_SKTxMDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.menuseparator.2"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_SrfLoDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.handledmenuitem.popupmenulabelshow_testhistoryitem" label="%popupmenu.label.show_testhistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/history_view.gif" command="_yM15kDUWEeWm-oFBtj17Ug"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_THKbADUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.handledmenuitem.popupmenulabelshow_cleartesthistoryitem" label="%popupmenu.label.show_cleartesthistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/clear_co.gif" command="_5caeoDUWEeWm-oFBtj17Ug"/>
+      </menus>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>

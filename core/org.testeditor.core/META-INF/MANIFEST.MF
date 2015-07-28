@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test Editor Core
 Bundle-SymbolicName: org.testeditor.core;singleton:=true
-Bundle-Version: 1.8.0
+Bundle-Version: 1.9.0.qualifier
 Bundle-Activator: org.testeditor.core.CoreActivator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

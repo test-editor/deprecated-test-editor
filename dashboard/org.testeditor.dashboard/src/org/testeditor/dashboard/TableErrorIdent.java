@@ -55,7 +55,6 @@ import org.xml.sax.InputSource;
  *         AllRunsTAble identification as error is performed, when slimresult is
  *         not OK or TRUE
  */
-@SuppressWarnings("restriction")
 public class TableErrorIdent {
 
 	@Inject

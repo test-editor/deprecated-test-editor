@@ -258,8 +258,8 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 					}
 
 					@Override
-					public Iterator iterator() {
-						return new Iterator() {
+					public Iterator<?> iterator() {
+						return new Iterator<Object>() {
 							private int countHasNext = 0;
 
 							@Override
@@ -589,7 +589,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 					}
 
 					@Override
-					public Iterator iterator() {
+					public Iterator<?> iterator() {
 						ArrayList<Object> list = new ArrayList<Object>();
 						list.add(getFirstElement());
 						return list.iterator();

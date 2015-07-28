@@ -13,7 +13,6 @@ package org.testeditor.core.services.dispatcher;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -22,7 +21,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
-import org.testeditor.core.model.team.TeamChange;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
@@ -168,13 +166,12 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public List<TeamChange> revert(TestStructure testStructure, TranslationService translationService)
-			throws SystemException {
+	public void revert(TestStructure testStructure, TranslationService translationService) throws SystemException {
 		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
-			return teamShareService.revert(testStructure, translationService);
+			teamShareService.revert(testStructure, translationService);
 		}
-		return null;
+
 	}
 
 	@Override

@@ -49,18 +49,6 @@
                 <children xsi:type="menu:DirectToolItem" xmi:id="_4CzeYO6sEeS2OYADBOtGQg" elementId="org.testeditor.ui.testexplorer.searchTestStructure" iconURI="platform:/plugin/org.testeditor.ui/icons/search.gif" tooltip="%handledtoolitem.search.tree.tooltip" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.SearchTestStructureHandler"/>
               </toolbar>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_F7OVgDHyEeWlcZ1apqRbjA" elementId="org.testeditor.ui.part.metadataexplorer" contributorURI="platform:/plugin/org.testeditor.metadata.ui" containerData="40" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.explorer.MetaDataExplorer" label="%part.label.metadataexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_B1gjgDHVEeWlcZ1apqRbjA" elementId="org.testeditor.ui.metadata.popupmenu" label="%command.description.metadataexplorerpopupmenudescription">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_eIiUQDHVEeWlcZ1apqRbjA" elementId="org.testeditor.ui.handledmenuitem.opentestcase" label="%popupmenu.label.open.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/open.png" command="_K6bh4D7GEeKXX6nM9hjBXQ"/>
-                <children xsi:type="menu:MenuSeparator" xmi:id="_YetTEDHXEeWlcZ1apqRbjA" elementId="org.testeditor.ui.menuseparator.11"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_Z-qp8DHXEeWlcZ1apqRbjA" elementId="org.testeditor.ui.handledmenuitem.run" label="%popupmenu.label.runtest.item" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" command="_4tsekEqgEeKVwrxWYw_qcA"/>
-                <children xsi:type="menu:MenuSeparator" xmi:id="_s1SXYDHnEeWlcZ1apqRbjA" elementId="org.testeditor.ui.menuseparator.12"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_tonRwDHnEeWlcZ1apqRbjA" elementId="org.testeditor.ui.handler.openLogData" label="%popupmenu.label.show_testlog.item" iconURI="platform:/plugin/org.testeditor.ui/icons/testlog.gif" command="_hPrA0KdZEeKIcI0tdcqdJg"/>
-                <children xsi:type="menu:MenuSeparator" xmi:id="_CABPwDHoEeWlcZ1apqRbjA" elementId="org.testeditor.ui.menuseparator.13"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_uEumADHnEeWlcZ1apqRbjA" elementId="org.testeditor.ui.handledmenuitem.opentetshistory" label="%popupmenu.label.show_testhistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/history_view.gif" command="_EXfLEFszEeOeLIc7pxHLHA"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_DKQOQDHoEeWlcZ1apqRbjA" elementId="org.testeditor.ui.ClearHistory.handledmenuitem" label="%popupmenu.label.show_cleartesthistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/clear_co.gif" command="_fvzJkImiEeO2m8BNTNOEzA"/>
-              </menus>
-            </children>
           </children>
           <children xsi:type="basic:PartSashContainer" xmi:id="_77-DsFKUEeOU_N3uSNRofQ" elementId="org.testeditor.ui.partsashcontainer.0" containerData="48">
             <children xsi:type="basic:PartStack" xmi:id="_vtvnCCNOEeKR9Jsu4DQSAw" elementId="org.testeditor.ui.partstack.testeditor" contributorURI="platform:/plugin/org.testeditor.ui" containerData="70">

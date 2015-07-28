@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.testeditor.core.exceptions.SystemException;
@@ -38,7 +37,6 @@ import org.testeditor.metadata.core.model.MetaDataValue;
  */
 public class MetaDataTreeContentProvider implements ITreeContentProvider {
 
-	private static final Logger LOGGER = Logger.getLogger(MetaDataTreeContentProvider.class);
 	private MetaDataService metaDataService;
 	@Inject
 	private TestProjectService testProjectService;
