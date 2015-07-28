@@ -1257,8 +1257,13 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		try {
 			testStructureContentService.refreshTestCaseComponents(testFlow);
 		} catch (SystemException e) {
-			LOGGER.error("set Testcase:: FAILED", e);
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e.getLocalizedMessage());
+			if (e.getCause() instanceof FileNotFoundException) {
+				LOGGER.info("TestStructure was deleted cloasing the editor instance.");
+				closePart();
+			} else {
+				LOGGER.error("set Testcase:: FAILED", e);
+				MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e.getLocalizedMessage());
+			}
 		} catch (TestCycleDetectException e) {
 			messsageArea.setBackground(ColorConstants.COLOR_YELLOW);
 			Label label = new Label(messsageArea, SWT.WRAP);
