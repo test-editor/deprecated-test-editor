@@ -30,8 +30,10 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.util.TestStateProtocolService;
+import org.testeditor.teamshare.svn.SVNTeamShareStatusService;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.commons.tree.TestStructureTreeLabelProvider;
@@ -77,8 +79,12 @@ public class TestStructureTreeLabelProviderTest {
 	 */
 	@Test
 	public void testGetImageForTestSuite() throws Exception {
+		TestProject testProject = new TestProject();
+		testProject.setTestProjectConfig(new TestProjectConfig());
 		TestSuite ts = new TestSuite();
-		new TestSuite().addChild(ts);
+		TestSuite ts2 = new TestSuite();
+		ts2.addChild(ts);
+		testProject.addChild(ts2);
 		assertSame(labelProvider.getImage(ts), IconConstants.ICON_TESTSUITE);
 	}
 
@@ -90,9 +96,13 @@ public class TestStructureTreeLabelProviderTest {
 	 */
 	@Test
 	public void testGetImageForTestCase() throws Exception {
-		assertSame(labelProvider.getImage(new TestCase()), IconConstants.ICON_TESTCASE);
+		TestProject testProject = new TestProject();
+		testProject.setTestProjectConfig(new TestProjectConfig());
+
 		TestCase testCase = new TestCase();
 		TestResult testResult = new TestResult();
+		testProject.addChild(testCase);
+		assertSame(labelProvider.getImage(testCase), IconConstants.ICON_TESTCASE);
 		ServiceLookUpForTest.getService(TestStateProtocolService.class).set(testCase, testResult);
 		testResult.setWrong(0);
 		testResult.setException(0);
@@ -142,6 +152,7 @@ public class TestStructureTreeLabelProviderTest {
 			}
 		});
 		context.set(IEventBroker.class, new EventBroker());
+		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusService());
 		TestStructureTreeLabelProvider provider = ContextInjectionFactory.make(TestStructureTreeLabelProvider.class,
 				context);
 		TestProject testProject = new TestProject();

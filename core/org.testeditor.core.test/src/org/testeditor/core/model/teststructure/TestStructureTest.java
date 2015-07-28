@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.testeditor.core.model.teststructure;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -21,7 +20,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
-import org.testeditor.core.model.team.TeamChangeType;
 
 /**
  * 
@@ -309,43 +307,6 @@ public class TestStructureTest {
 		assertSame(parents.get(1), testSuite1);
 		assertSame(parents.get(2), testProject);
 		assertTrue(parents.size() == 3);
-	}
-
-	/**
-	 * Test that every parent gets a teamChangeType in the hierarchy.
-	 */
-	@Test
-	public void testSetTeamChangeTypeAlongParentHierarchy() {
-		TestCase testCase = getMinThreeLevelTestStrutureTree();
-		testCase.setTeamChangeType(TeamChangeType.MODIFY);
-		assertEquals(TeamChangeType.MODIFY, testCase.getTeamChangeType());
-		assertEquals(TeamChangeType.MODIFY, testCase.getParent().getTeamChangeType());
-	}
-
-	/**
-	 * Test that only the node has a TeamChange.Moved event and the parents in
-	 * the hierarchy an modify event.
-	 */
-	@Test
-	public void testSetTeamChangeMovedPropagationOnlyOnSubNode() {
-		TestCase testCase = getMinThreeLevelTestStrutureTree();
-		testCase.setTeamChangeType(TeamChangeType.MOVED);
-		assertEquals(TeamChangeType.MOVED, testCase.getTeamChangeType());
-		assertEquals(TeamChangeType.MODIFY, testCase.getParent().getTeamChangeType());
-	}
-
-	/**
-	 * 
-	 * @return a TestCase with a TestSuite as parent as a child of a
-	 *         TestProject.
-	 */
-	private TestCase getMinThreeLevelTestStrutureTree() {
-		TestProject testProject = new TestProject();
-		TestSuite testSuite = new TestSuite();
-		testProject.addChild(testSuite);
-		TestCase testCase = new TestCase();
-		testSuite.addChild(testCase);
-		return testCase;
 	}
 
 }

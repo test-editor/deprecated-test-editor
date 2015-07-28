@@ -201,8 +201,14 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			if (isTestProjectDirectory(file)) {
 				TestProject testProject = createProjectFrom(file);
 				testProjects.add(testProject);
+
+				if (eventBroker != null) {
+					eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
+				}
+
 			}
 		}
+
 		if (eventBroker != null) {
 			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED, "");
 		}

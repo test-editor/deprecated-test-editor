@@ -43,7 +43,6 @@ import org.testeditor.core.exceptions.SystemException;
  *         table shows only last "stand alone" runs from each suite and test
  *         case. if test case run was in suite run,it will not be displayed.
  */
-@SuppressWarnings("restriction")
 public class TableLastRuns {
 
 	@Inject

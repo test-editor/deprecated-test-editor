@@ -48,7 +48,6 @@ import org.xml.sax.InputSource;
  * 
  *         get data from XML files for LastRunTable
  */
-@SuppressWarnings("restriction")
 public class GetDataTableLastRuns {
 
 	@Inject

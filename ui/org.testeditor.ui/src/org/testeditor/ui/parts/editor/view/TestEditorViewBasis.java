@@ -32,6 +32,8 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MenuDetectListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -505,7 +507,13 @@ public abstract class TestEditorViewBasis {
 				}
 
 			});
+			styledText.addModifyListener(new ModifyListener() {
 
+				@Override
+				public void modifyText(ModifyEvent e) {
+					eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
+				}
+			});
 		}
 
 	}

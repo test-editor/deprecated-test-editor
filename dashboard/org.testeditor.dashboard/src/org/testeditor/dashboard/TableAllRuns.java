@@ -69,7 +69,6 @@ import org.xml.sax.SAXException;
  *         double click on test result cell sends data to ErrorTable to update
  *         it
  */
-@SuppressWarnings("restriction")
 public class TableAllRuns {
 
 	@Inject
@@ -355,6 +354,7 @@ public class TableAllRuns {
 		table.addListener(SWT.MouseDoubleClick, new Listener() {
 			private int columnCount = table.getColumnCount();
 
+			@Override
 			public void handleEvent(Event event) {
 				Point pt = new Point(event.x, event.y);
 				TableItem item = table.getItem(pt);
