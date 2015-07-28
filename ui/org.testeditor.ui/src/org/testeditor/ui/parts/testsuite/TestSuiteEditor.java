@@ -384,7 +384,7 @@ public class TestSuiteEditor implements ITestStructureEditor {
 			testStructureContentService.saveTestStructureData(testSuite);
 			mpart.setDirty(false);
 			TestProject testProject = getTestStructure().getRootElement();
-			if (testProject.getTestProjectConfig().isTeamSharedProject()) {
+			if (testProject.getTestProjectConfig() != null && testProject.getTestProjectConfig().isTeamSharedProject()) {
 				try {
 					teamShareStatusService.update(testProject);
 				} catch (FileNotFoundException e) {
