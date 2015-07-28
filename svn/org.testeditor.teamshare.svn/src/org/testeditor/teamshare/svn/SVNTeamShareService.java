@@ -36,7 +36,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
@@ -96,8 +95,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	private ProgressListener listener;
 
 	private IEventBroker eventBroker;
-
-	private TeamShareStatusService teamShareStatusService;
 
 	static {
 
@@ -347,7 +344,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 
 		try {
-			final TestProject testProject = testStructure.getRootElement();
+			TestProject testProject = testStructure.getRootElement();
 
 			SVNClientManager clientManager = getSVNClientManager(testProject);
 
@@ -873,9 +870,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-		}
-		if (teamShareStatusService == null) {
-			teamShareStatusService = context.get(TeamShareStatusService.class);
 		}
 		return this;
 	}
