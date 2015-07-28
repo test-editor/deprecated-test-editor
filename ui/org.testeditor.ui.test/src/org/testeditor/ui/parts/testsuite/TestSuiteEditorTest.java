@@ -43,6 +43,7 @@ import org.junit.Test;
 import org.osgi.service.event.EventHandler;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
@@ -106,6 +107,7 @@ public class TestSuiteEditorTest {
 	public void testSave() {
 		out.getMPart().setDirty(true);
 		TestSuite testSuite = new TestSuite();
+		new TestProject().addChild(testSuite);
 		TestCase testCase = new TestCase();
 		testSuite.addReferredTestStructure(testCase);
 		out.setTestSuite(testSuite);
