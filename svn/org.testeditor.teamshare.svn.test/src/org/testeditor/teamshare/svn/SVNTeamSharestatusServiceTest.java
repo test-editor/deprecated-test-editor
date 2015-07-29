@@ -48,6 +48,9 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
 public class SVNTeamSharestatusServiceTest {
 
+	List<TestStructure> testStructures;
+	TeamShareStatusServiceNew teamShareStatusServiceNew;
+
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
 
@@ -509,6 +512,111 @@ public class SVNTeamSharestatusServiceTest {
 		testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite", "LoginValid" });
 		assertFalse(statusService.isModified(testStructure));
 
+	}
+
+	/**
+	 * Checks if change of no teststructure e.g AllActionGroups.xml is modified.
+	 * 
+	 * see white list of non teststructures in class
+	 * {@link SVNTeamShareStatusServiceNew}.
+	 * 
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
+	 */
+	@Test
+	public void testIsModifiedOutsideFitNesseRoot() throws SystemException, IOException, InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/AllActionGroups.xml");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		assertTrue(statusService.isModified(testProject));
+	}
+
+	@Test
+	public void testIsModifiedOutsideFitNesseRootNotInWhiteList() throws SystemException, IOException,
+			InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/noteststructure.xml");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		assertFalse(statusService.isModified(testProject));
+	}
+
+	/**
+	 * Checks a teststructure which is not a testproject and change a file
+	 * outside the project e.g. AllActionGroups.xml. Given Teststructure e.g.
+	 * "GoogleSucheSuite" must not return true if isModified will be invoked.
+	 * 
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	@Test
+	public void testIsModifiedOutsideFitNesseRootNotAffectedUnModifiedTestStructure() throws SystemException,
+			IOException, InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/AllActionGroups.xml");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "GoogleSucheSuite" });
+		assertFalse(statusService.isModified(testStructure));
+	}
+
+	/**
+	 * Checks changes by considering the ignore list.
+	 * 
+	 * 
+	 * @throws SystemException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	@Test
+	public void testIsModifiedWithIgnoreList() throws SystemException, IOException, InterruptedException {
+
+		// given
+		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		teamService.share(testProject, translationService, "");
+		update("/FitNesseRoot/files/testProgress/LoginInvalidTest.txt");
+
+		// when
+		statusService.update(testProject);
+		// because update method runs in a thread, waits here until thread has
+		// ended.
+		getThreadByName("threadStatusService").join();
+
+		// then
+		assertFalse(statusService.isModified(testProject));
 	}
 
 }

@@ -23,7 +23,6 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -37,6 +36,7 @@ import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
+import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -44,8 +44,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * 
  */
 public abstract class AbstractUpdateOrApproveHandler {
-	@Inject
-	private MApplication application;
+
 	@Inject
 	private TeamShareService teamShareService;
 	@Inject
@@ -57,13 +56,18 @@ public abstract class AbstractUpdateOrApproveHandler {
 
 	/**
 	 * 
+	 * @param context
+	 *            current Context of the Application.
+	 * 
 	 * @return true, if the project of every testStructure is under
 	 *         version-control.
 	 */
 	@CanExecute
-	public boolean canExecute() {
-		IStructuredSelection selection = (IStructuredSelection) application.getSelectedElement().getContext()
-				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
+	public boolean canExecute(IEclipseContext context) {
+
+		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+
+		IStructuredSelection selection = testExplorer.getSelection();
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
 		return canExecuteTestExplorerHandlerRules.canExecuteOnOneOrManyElementRule(selection)
 				&& canExecuteTestExplorerHandlerRules.canExecuteTeamShareApproveOrUpdate(selection);
@@ -74,13 +78,15 @@ public abstract class AbstractUpdateOrApproveHandler {
 	 * 
 	 * @param eventBroker
 	 *            used to send an update message.
+	 * @param context
+	 *            Eclipse context to look up the selection to work on.
 	 */
 	@Execute
-	public void execute(IEventBroker eventBroker) {
+	public void execute(IEventBroker eventBroker, IEclipseContext context) {
 		testProjectSet = new HashSet<TestProject>();
-		final IStructuredSelection selection = (IStructuredSelection) application.getSelectedElement().getContext()
-				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		final Iterator<?> iter = selection.iterator();
+		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+
+		final Iterator<TestStructure> iter = testExplorer.getSelection().iterator();
 		final Shell activeShell = Display.getCurrent().getActiveShell();
 		final ProgressMonitorDialog dialog = new ProgressMonitorDialog(activeShell);
 		try {
@@ -126,7 +132,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 				}
 			});
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED,
-					((TestStructure) selection.getFirstElement()).getFullName());
+					((TestStructure) testExplorer.getSelection().getFirstElement()).getFullName());
 		} catch (InvocationTargetException e) {
 			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 			LOGGER.error(e.getMessage());
@@ -183,14 +189,6 @@ public abstract class AbstractUpdateOrApproveHandler {
 			display = Display.getDefault();
 		}
 		return display;
-	}
-
-	/**
-	 * 
-	 * @return Eclipse Conctext to be used in subclasses.
-	 */
-	protected IEclipseContext getContext() {
-		return application.getContext();
 	}
 
 	/**

@@ -79,7 +79,7 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 			WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
 
 			if (wizardDialog.open() == Window.OK) {
-				super.execute(context.get(IEventBroker.class));
+				super.execute(context.get(IEventBroker.class), context);
 			}
 		}
 	}
