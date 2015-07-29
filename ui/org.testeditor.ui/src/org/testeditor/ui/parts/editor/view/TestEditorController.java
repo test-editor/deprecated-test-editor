@@ -621,6 +621,13 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public void handleLibraryLoadedEvent(
 			@UIEventTopic(TestEditorUIEventConstants.LIBRARY_LOADED_FOR_PROJECT) TestProject testProject) {
 		setTestFlow(testFlow);
+
+		try {
+			teamShareStatusService.update(testProject);
+		} catch (FileNotFoundException e) {
+			LOGGER.error(e);
+		}
+
 	}
 
 	/**
