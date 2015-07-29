@@ -14,6 +14,7 @@ package org.testeditor.teamshare.svn;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,9 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 	 * list of modificated teststructures.
 	 */
 	Map<TestProject, List<String>> projects = new HashMap<TestProject, List<String>>();
+
+	List<String> whiteListForNonTestStructures = Arrays.asList("AllActionGroups.xml", "config.tpr", "ElementList.conf",
+			"TechnicalBindingTypeCollection.xml", "MetaData.properties");
 
 	private TeamShareService teamShareService;
 
@@ -93,11 +97,32 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 
 								String fullName = status.getFile().getAbsolutePath();
 
-								if (!testStructures.contains(fullName)) {
+								if (!testStructures.contains(fullName) && !isInIgnoreList(fullName)) {
 									LOGGER.info(fullName);
 									testStructures.add(fullName);
 								}
 							}
+
+							/**
+							 * 
+							 * @param fullName
+							 * @return Returns true if given string is in ignore
+							 *         list.
+							 */
+							private boolean isInIgnoreList(String fullName) {
+
+								boolean inIgnoreList = false;
+
+								for (int i = 0; i < SVNTeamShareService.IGNORE_LIST.length; i++) {
+									if (fullName.matches(".*FitNesseRoot.*" + SVNTeamShareService.IGNORE_LIST[i])) {
+										inIgnoreList = true;
+										break;
+									}
+								}
+
+								return inIgnoreList;
+							}
+
 						});
 
 						if (testStructures.size() > 0) {
@@ -151,6 +176,10 @@ public class SVNTeamShareStatusServiceNew implements TeamShareStatusServicePlugI
 				if (modifiedTestStructureAsFitNessePath.equals(testStructure.getFullName())) {
 					return true;
 				} else if (FitNesseUtil.contains(testStructure.getFullName(), modifiedTestStructureAsFitNessePath)) {
+					return true;
+				} else if (whiteListForNonTestStructures.contains(modifiedTestStructureAsFitNessePath)
+						&& (testStructure instanceof TestProject)) {
+					// only if given teststructure is not a project
 					return true;
 				}
 			}
