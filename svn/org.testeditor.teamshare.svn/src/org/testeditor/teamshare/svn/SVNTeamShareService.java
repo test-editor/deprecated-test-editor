@@ -83,7 +83,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	private static final int AUTHENTICATION_REQUIRED_2 = 170001;
 
 	// all files/directories in list will be ignored during import to SVN
-	static final String[] IGNORE_LIST = { "ErrorLogs", "testProgress", "testResults", ".DS_Store" };
+	public static final String[] IGNORE_LIST = { "ErrorLogs", "testProgress", "testResults", ".DS_Store" };
 
 	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareService.class);
 
