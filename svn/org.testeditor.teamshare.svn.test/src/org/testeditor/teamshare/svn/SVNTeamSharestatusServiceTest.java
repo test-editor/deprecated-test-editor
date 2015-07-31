@@ -48,9 +48,6 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
 public class SVNTeamSharestatusServiceTest {
 
-	List<TestStructure> testStructures;
-	TeamShareStatusServiceNew teamShareStatusServiceNew;
-
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
 
@@ -522,8 +519,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * 
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
@@ -544,6 +544,16 @@ public class SVNTeamSharestatusServiceTest {
 		assertTrue(statusService.isModified(testProject));
 	}
 
+	/**
+	 * Test for modifications outside the fitnesse root directory.
+	 * 
+	 * @throws SystemException
+	 *             on test failure
+	 * @throws IOException
+	 *             on test failure
+	 * @throws InterruptedException
+	 *             on test failure
+	 */
 	@Test
 	public void testIsModifiedOutsideFitNesseRootNotInWhiteList() throws SystemException, IOException,
 			InterruptedException {
@@ -570,8 +580,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * 
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 */
 	@Test
 	public void testIsModifiedOutsideFitNesseRootNotAffectedUnModifiedTestStructure() throws SystemException,
@@ -598,8 +611,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * 
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 */
 	@Test
 	public void testIsModifiedWithIgnoreList() throws SystemException, IOException, InterruptedException {
