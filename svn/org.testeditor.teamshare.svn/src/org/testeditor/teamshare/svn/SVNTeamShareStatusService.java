@@ -46,10 +46,10 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	/**
 	 * list of modificated teststructures.
 	 */
-	Map<TestProject, List<String>> projects = new HashMap<TestProject, List<String>>();
+	private Map<TestProject, List<String>> projects = new HashMap<TestProject, List<String>>();
 
-	List<String> whiteListForNonTestStructures = Arrays.asList("AllActionGroups.xml", "config.tpr", "ElementList.conf",
-			"TechnicalBindingTypeCollection.xml", "MetaData.properties");
+	private List<String> whiteListForNonTestStructures = Arrays.asList("AllActionGroups.xml", "config.tpr",
+			"ElementList.conf", "TechnicalBindingTypeCollection.xml", "MetaData.properties");
 
 	private TeamShareService teamShareService;
 
