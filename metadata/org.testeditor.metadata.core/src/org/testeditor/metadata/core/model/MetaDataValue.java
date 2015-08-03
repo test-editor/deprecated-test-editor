@@ -14,6 +14,10 @@ package org.testeditor.metadata.core.model;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * The MetaDataValue represents all tags that belong to a MetaData.
+ *
+ */
 public class MetaDataValue implements Comparable<MetaDataValue> {
 
 	private String label;
@@ -21,6 +25,17 @@ public class MetaDataValue implements Comparable<MetaDataValue> {
 	private String key;
 	private Set<String> testCases = new TreeSet<String>();
 
+	/**
+	 * Creates a new MetaDataValue that belongs to a given MetaData an consists
+	 * of key and a label.
+	 * 
+	 * @param metaData
+	 *            - the metaData
+	 * @param key
+	 *            - the key to identify the MetaDataValue
+	 * @param label
+	 *            - the label to display the MetaDataValue in a UI
+	 */
 	public MetaDataValue(MetaData metaData, String key, String label) {
 		this.metaData = metaData;
 		this.key = key;
@@ -28,6 +43,11 @@ public class MetaDataValue implements Comparable<MetaDataValue> {
 		metaData.getValues().add(this);
 	}
 
+	/**
+	 * The MetaData-Object the MetaDataValue belongs to.
+	 * 
+	 * @return - the MetaData.
+	 */
 	public MetaData getMetaData() {
 		return metaData;
 	}
@@ -64,7 +84,10 @@ public class MetaDataValue implements Comparable<MetaDataValue> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result;
+		if (label != null) {
+			result += label.hashCode();
+		}
 		return result;
 	}
 

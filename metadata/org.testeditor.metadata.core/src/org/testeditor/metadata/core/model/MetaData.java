@@ -114,9 +114,16 @@ public class MetaData {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((values == null) ? 0 : values.hashCode());
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result;
+		if (values != null) {
+			result += values.hashCode();
+		}
+		if (key != null) {
+			result += key.hashCode();
+		}
+		if (label != null) {
+			result += label.hashCode();
+		}
 		return result;
 	}
 
@@ -131,7 +138,17 @@ public class MetaData {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		MetaData other = (MetaData) obj;
+		return equals((MetaData) obj);
+	}
+
+	/**
+	 * Compares two MetaData Objects.
+	 * 
+	 * @param other
+	 *            - the other metaDataObject
+	 * @return - true if both objects are equal
+	 */
+	public boolean equals(MetaData other) {
 		if (values == null) {
 			if (other.values != null) {
 				return false;
@@ -156,6 +173,10 @@ public class MetaData {
 		return true;
 	}
 
+	/**
+	 * Comparator to order MetaData in alphabetik order.
+	 *
+	 */
 	public static class MetaDataTagListComparator implements Comparator<MetaData> {
 
 		@Override
