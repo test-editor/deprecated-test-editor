@@ -19,7 +19,6 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * abstract class for the renaming of test-structures.
  * 
- * @author llipinski
  * 
  */
 public abstract class AbstractRenameTestStructureWizardPage extends AbstractTestStructureWizardPage {

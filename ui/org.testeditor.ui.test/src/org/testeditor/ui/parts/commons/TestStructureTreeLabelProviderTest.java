@@ -33,7 +33,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.util.TestStateProtocolService;
-import org.testeditor.teamshare.svn.SVNTeamShareStatusServiceNew;
+import org.testeditor.teamshare.svn.SVNTeamShareStatusService;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.parts.commons.tree.TestStructureTree;
 import org.testeditor.ui.parts.commons.tree.TestStructureTreeLabelProvider;
@@ -114,6 +114,32 @@ public class TestStructureTreeLabelProviderTest {
 	}
 
 	/**
+	 * Tests the logic to get an image on a Testcase which is shared, modfied
+	 * and executed.
+	 * 
+	 * @throws Exception
+	 *             on Test failure.
+	 */
+	@Test
+	public void testGetExecutionResultImageOnTeamSharedTestCase() throws Exception {
+		TestProject testProject = new TestProject();
+		testProject.setTestProjectConfig(new TestProjectConfig() {
+			@Override
+			public boolean isTeamSharedProject() {
+				return true;
+			}
+		});
+		TestCase testCase = new TestCase();
+		TestResult testResult = new TestResult();
+		testProject.addChild(testCase);
+		ServiceLookUpForTest.getService(TestStateProtocolService.class).set(testCase, testResult);
+		testResult.setWrong(0);
+		testResult.setException(0);
+		testResult.setIgnored(0);
+		assertSame(labelProvider.getImage(testCase), IconConstants.ICON_TESTCASE_SUCCESSED);
+	}
+
+	/**
 	 * Tests the labeling of the teststructure depending on the fullname switch.
 	 */
 	@Test
@@ -152,7 +178,7 @@ public class TestStructureTreeLabelProviderTest {
 			}
 		});
 		context.set(IEventBroker.class, new EventBroker());
-		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusServiceNew());
+		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusService());
 		TestStructureTreeLabelProvider provider = ContextInjectionFactory.make(TestStructureTreeLabelProvider.class,
 				context);
 		TestProject testProject = new TestProject();

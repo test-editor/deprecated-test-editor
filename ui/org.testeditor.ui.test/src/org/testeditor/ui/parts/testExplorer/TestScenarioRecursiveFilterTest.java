@@ -21,7 +21,7 @@ import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.ui.parts.commons.tree.filter.TestScenarioRecursiveFilter;
 
 /**
- * test the TestScenarioRecursiveFilter
+ * test the TestScenarioRecursiveFilter.
  * 
  * @author llipinski
  * 

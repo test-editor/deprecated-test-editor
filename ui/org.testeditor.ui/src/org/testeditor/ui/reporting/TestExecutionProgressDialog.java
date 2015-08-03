@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.contexts.Active;
@@ -45,6 +46,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.fitnesse.util.FitNesseRestClient;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorFontConstants;
@@ -56,6 +58,8 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  * 
  */
 public class TestExecutionProgressDialog extends ProgressMonitorDialog {
+
+	private static final Logger LOGGER = Logger.getLogger(TestLogViewer.class);
 
 	private TestLogViewer logViewer;
 
@@ -89,6 +93,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 	private Point defaultDialogSize = new Point(500, 400);
 	private static final Point ENLARGED_DIALOG_SIZE = new Point(850, 600);
+
+	private TestStructure toExecute;
 
 	/**
 	 * Constructor of the Dialog.
@@ -191,6 +197,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 	 * @return the TestResult of the Test execution.
 	 */
 	public TestResult executeTest(final TestStructure toExecute) throws InvocationTargetException, InterruptedException {
+
+		this.toExecute = toExecute;
 		testResult = null;
 		this.run(true, true, new IRunnableWithProgress() {
 
@@ -250,8 +258,84 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 		// adding new button for closing the dialog on demand
 		detailsButton = createButton(parent, IDialogConstants.DETAILS_ID, IDialogConstants.SHOW_DETAILS_LABEL, true);
-
 		detailsButton.addSelectionListener(getSwitchDetailSelectionListener());
+
+		// adding new button for closing the dialog on demand
+
+		final Button pauseButton = createButton(parent, IDialogConstants.STOP_ID, IDialogConstants.STOP_LABEL, false);
+		final Button resumeButton = createButton(parent, IDialogConstants.IGNORE_ID, IDialogConstants.STOP_LABEL, false);
+		final Button stepwiseButton = createButton(parent, IDialogConstants.INTERNAL_ID, IDialogConstants.STOP_LABEL,
+				false);
+
+		resumeButton.setEnabled(false);
+		stepwiseButton.setEnabled(false);
+
+		pauseButton.setImage(IconConstants.ICON_TEST_PAUSE);
+		pauseButton.setText("");
+
+		pauseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				LOGGER.trace("PAUSE ..........");
+				try {
+					FitNesseRestClient.pauseTest(toExecute);
+
+					resumeButton.setEnabled(true);
+					stepwiseButton.setEnabled(true);
+					pauseButton.setEnabled(false);
+
+				} catch (SystemException e1) {
+					LOGGER.error(e1.getMessage(), e1);
+				}
+
+			}
+
+		});
+
+		resumeButton.setImage(IconConstants.ICON_TEST_RESUME);
+		resumeButton.setText("");
+
+		resumeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				LOGGER.trace("RESUME ..........");
+				try {
+					FitNesseRestClient.resumeTest(toExecute);
+
+					resumeButton.setEnabled(false);
+					stepwiseButton.setEnabled(false);
+					pauseButton.setEnabled(true);
+
+				} catch (SystemException e1) {
+					LOGGER.error(e1.getMessage(), e1);
+				}
+			}
+
+		});
+
+		stepwiseButton.setImage(IconConstants.ICON_TEST_STEP_FORWARD);
+		stepwiseButton.setText("");
+
+		stepwiseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				LOGGER.trace("Step forward ..........");
+				try {
+					FitNesseRestClient.stepwiseTest(toExecute);
+
+					resumeButton.setEnabled(true);
+					stepwiseButton.setEnabled(true);
+					pauseButton.setEnabled(false);
+
+				} catch (SystemException e1) {
+					LOGGER.error(e1.getMessage(), e1);
+				}
+			}
+
+		});
 
 		super.createButtonsForButtonBar(parent);
 	}

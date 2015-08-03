@@ -1,5 +1,5 @@
 /*******************************************************************************
-a * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
+ * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 	private static final Logger LOGGER = Logger.getLogger(MetaDataServiceFileImpl.class);
 
 	/**
-	 * The contstructor will prepare the XSTREAM for the metadata.xml - files
+	 * The contstructor will prepare the XSTREAM for the metadata.xml - files.
 	 */
 	public MetaDataServiceFileImpl() {
 		super();
@@ -141,32 +141,12 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 		String projectName = testProject.getName();
 		String projectPath = testProject.getTestProjectConfig().getProjectPath();
 
-		Properties prop = new Properties();
+		Properties prop = readMetaDataProperties(projectPath);
 
-		String propertiesFileName = projectPath + File.separator + META_DATA_PROPERTIES;
-		File propertiesFile = null;
-		InputStream inputStream = null;
-		try {
-			propertiesFile = new File(propertiesFileName);
-			if (!propertiesFile.exists()) {
-				return;
-			}
-			inputStream = new FileInputStream(propertiesFile);
-			prop.load(inputStream);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("the propertiesfile " + propertiesFileName + " was not found");
-		} catch (IOException e) {
-			throw new RuntimeException("the propertiesfile " + propertiesFileName + " could not be read. Reason: " + e,
-					e);
-		} finally {
-			try {
-				if (inputStream != null) {
-					inputStream.close();
-				}
-			} catch (Throwable e) {
-				LOGGER.error("could not close inputStream. Message " + e.getMessage(), e);
-			}
+		if (prop == null) {
+			return;
 		}
+
 		for (Object object : prop.keySet()) {
 			String key = (String) object;
 			if (key.indexOf('.') == -1) {
@@ -192,32 +172,65 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 
 		String projectRootPath = projectPath + File.separator + "FitNesseRoot" + File.separator + projectName;
 		File projectRoot = new File(projectRootPath);
-		readMetaDataForFolder(projectName, projectRoot);
+		readMetaDataForFolder(testProject, projectRoot);
 
 	}
 
-	
-	private void readMetaDataForFolder(String projectName, File directory) {
+	private Properties readMetaDataProperties(String projectPath) {
+		Properties prop = new Properties();
+
+		String propertiesFileName = projectPath + File.separator + META_DATA_PROPERTIES;
+		File propertiesFile = null;
+		InputStream inputStream = null;
+		try {
+			propertiesFile = new File(propertiesFileName);
+			if (!propertiesFile.exists()) {
+				return null;
+			}
+			inputStream = new FileInputStream(propertiesFile);
+			prop.load(inputStream);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("the propertiesfile " + propertiesFileName + " was not found");
+		} catch (IOException e) {
+			throw new RuntimeException("the propertiesfile " + propertiesFileName + " could not be read. Reason: " + e,
+					e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (Throwable e) {
+				LOGGER.error("could not close inputStream. Message " + e.getMessage(), e);
+			}
+		}
+		return prop;
+	}
+
+	private void readMetaDataForFolder(TestProject testProject, File directory) {
+
 		File[] listOfFiles = directory.listFiles();
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile() && listOfFiles[i].getName().equals(META_DATA_XML)) {
 				String xmlTagFile = listOfFiles[i].getAbsolutePath();
 				Object fromXML = xStream.fromXML(new File(xmlTagFile));
 				if (fromXML instanceof List<?>) {
-					List<?> metaDataStoreObjects = (List<?>) fromXML;
-					for (Object object : metaDataStoreObjects) {
-						if (object instanceof MetaDataStoreObject) {
-							MetaDataStoreObject metaDataStoreObject = (MetaDataStoreObject) object;
-							getMetaDataStore(projectName).put(metaDataStoreObject.getTestCase(),
-									metaDataStoreObject.getMetaDataTags());
+					List<MetaDataStoreObject> metaDataStoreObjects = (List<MetaDataStoreObject>) fromXML;
+					for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
+						getMetaDataStore(testProject.getName()).put(metaDataStoreObject.getTestCase(),
+								metaDataStoreObject.getMetaDataTags());
+
+						for (MetaDataTag metaDataTag : metaDataStoreObject.getMetaDataTags()) {
+							getMetaDataValue(metaDataTag, testProject).getTestCases().add(
+									metaDataStoreObject.getTestCase());
 						}
 					}
 				} else {
 					throw new RuntimeException("illegal class of type " + fromXML.getClass().getName() + " found in "
 							+ listOfFiles[i].getAbsolutePath());
 				}
+
 			} else if (listOfFiles[i].isDirectory()) {
-				readMetaDataForFolder(projectName, listOfFiles[i]);
+				readMetaDataForFolder(testProject, listOfFiles[i]);
 			}
 		}
 	}

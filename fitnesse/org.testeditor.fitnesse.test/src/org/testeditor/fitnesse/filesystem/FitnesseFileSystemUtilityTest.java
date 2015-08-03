@@ -11,20 +11,15 @@
  *******************************************************************************/
 package org.testeditor.fitnesse.filesystem;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.eclipse.core.runtime.Platform;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.util.FileUtils;
 
 /**
  * Tests for the FitnesseFileSystemUtility to lookup an access Files in the
@@ -72,38 +67,6 @@ public class FitnesseFileSystemUtilityTest {
 		testProject.addChild(testSuite);
 		testSuite.addChild(testStructure);
 		return testStructure;
-	}
-
-	/**
-	 * Tests the Method
-	 * {@link FitnesseFileSystemUtility#existsContentTxtInPathOfTestStructureInErrorDirectory(TestStructure)}
-	 * .
-	 * 
-	 * @throws IOException
-	 *             IOException
-	 * @throws IllegalStateException
-	 *             IllegalStateException
-	 */
-	@Test
-	public void testExistsContentTxtInPathOfTestStructureInErrorDirectory() throws IllegalStateException, IOException {
-
-		FileUtils
-				.copyFolder(new File("./ressources/MyTestPrj"), new File(Platform.getLocation().toFile(), "MyTestPrj"));
-
-		TestStructure testStructure = createTestStructureForTest();
-
-		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		testProjectConfig.setPathToTestFiles(Platform.getLocation().toFile().getAbsolutePath());
-
-		// content.txt for test must be exist
-		assertTrue("content.txt for suite " + testStructure.getParent().getFullName() + " must exist",
-				FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure));
-
-		// content.txt for suite must not be exist
-		assertFalse("content.txt for suite " + testStructure.getParent().getFullName() + " must not exist",
-				FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure
-						.getParent()));
-
 	}
 
 }

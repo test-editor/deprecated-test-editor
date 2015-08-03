@@ -89,6 +89,7 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 	private TestFlow testFlow;
 
 	private List<MetaDataTag> metaDataTagList = new ArrayList<MetaDataTag>();
+	private List<MetaDataTag> metaDataTagListOrg = new ArrayList<MetaDataTag>();
 
 	private MPart mpart;
 
@@ -196,7 +197,9 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 		metaDataTagsTable.removeAll();
 
 		metaDataTagList.clear();
+		metaDataTagListOrg.clear();
 		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
+		metaDataTagListOrg.addAll(getMetaDataService().getMetaDataTags(testFlow));
 
 		Collections.sort(metaDataTagList, new MetaDataTagComparator(metaDataService, testFlow.getRootElement()));
 
@@ -267,7 +270,7 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 	 */
 	@Override
 	public void save() throws SystemException {
-		getMetaDataService().storeMetaDataTags(metaDataTagList, testFlow);
+		getMetaDataService().storeMetaDataTags(metaDataTagList, metaDataTagListOrg, testFlow);
 	}
 
 	@Override

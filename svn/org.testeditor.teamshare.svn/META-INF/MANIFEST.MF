@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Team Share over Subversion
 Bundle-SymbolicName: org.testeditor.teamshare.svn
-Bundle-Version: 1.8.0
+Bundle-Version: 1.9.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.testeditor.core;bundle-version="1.5.0",
  org.eclipse.equinox.ds,
@@ -17,10 +17,11 @@ Import-Package: org.apache.commons.io;version="2.2.0",
  org.eclipse.e4.core.contexts,
  org.eclipse.e4.core.services.translation,
  org.osgi.framework;version="1.7.0",
- org.osgi.service.prefs;version="1.1.1"
+ org.osgi.service.prefs;version="1.1.1",
+ org.testeditor.fitnesse.util
 Service-Component: OSGI-INF/SVNTeamShareConfigurationService.xml,
  OSGI-INF/SVNTeamShareService.xml,
- OSGI-INF/SVNTeamShareStatusServiceNew.xml
+ OSGI-INF/SVNTeamShareStatusService.xml
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.testeditor.teamshare.svn

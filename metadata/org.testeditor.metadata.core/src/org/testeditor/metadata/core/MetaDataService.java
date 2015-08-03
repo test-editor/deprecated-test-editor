@@ -26,7 +26,8 @@ import org.testeditor.metadata.core.model.MetaDataValue;
  * in the TestStructures. The services defines the following structure for the
  * metadata:
  * <ul>
- * <li>a <b>MetaDataValue<b> is a value that could be assigned to a TestStrucure
+ * <li>a <b>MetaDataValue</b> is a value that could be assigned to a
+ * TestStrucure
  * <li>The <b>MetaData</b> is a group of MetaDataValues
  * <li>A <b> MetaDataTag</b> is an association between a TestStructure and a
  * MetaDataValue.
@@ -39,7 +40,7 @@ import org.testeditor.metadata.core.model.MetaDataValue;
 public interface MetaDataService {
 
 	/**
-	 * Returns a list of all MetaData that are handled by the service
+	 * Returns a list of all MetaData that are handled by the service.
 	 * 
 	 * @return - the list of MetaData
 	 */
@@ -59,12 +60,16 @@ public interface MetaDataService {
 	 * Stores the metatags for a testsctures.
 	 * 
 	 * @param metaDataTags
-	 *            - the list of metatags
+	 *            - the list of metatags that should be stored
+	 * @param orgMetaDataTags
+	 *            - the list of metatags before the changes
 	 * @param testStructure
 	 *            - the teststructure of the metatags
 	 * @throws SystemException
+	 *             - SystemException
 	 */
-	void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure) throws SystemException;
+	void storeMetaDataTags(List<MetaDataTag> metaDataTags, List<MetaDataTag> orgMetaDataTags,
+			TestStructure testStructure) throws SystemException;
 
 	/**
 	 * Gets the MetaDataValue for a metaDataTag. In the metaDataTag are only the
@@ -73,9 +78,11 @@ public interface MetaDataService {
 	 * 
 	 * @param metaDataTag
 	 *            - the metadatatag
+	 * @param testProject
+	 *            - the teststructure of the metatags
 	 * @return - the corresponding MetaDataTag
 	 */
-	MetaDataValue getMetaDataValue(MetaDataTag metaDataTag, TestProject project);
+	MetaDataValue getMetaDataValue(MetaDataTag metaDataTag, TestProject testProject);
 
 	/**
 	 * Handles the renaming of a given testStructure.
@@ -93,7 +100,7 @@ public interface MetaDataService {
 	 * Deletes the metaData for a teststructure. If no metadata are available
 	 * for the teststructure, nothing will be done
 	 * 
-	 * @param selectedTestStructure
+	 * @param testStructure
 	 *            - the teststrcuture
 	 * @throws SystemException
 	 */

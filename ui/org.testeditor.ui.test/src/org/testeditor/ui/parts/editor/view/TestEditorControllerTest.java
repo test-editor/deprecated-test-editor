@@ -1053,9 +1053,14 @@ public class TestEditorControllerTest {
 				testCtrl.put("loadRender", true);
 			}
 
+			@Override
+			protected String getId() {
+				return null;
+			}
+
 		};
 		ctrl.reloadAndRefresh("");
-		assertFalse(testCtrl.containsKey("loadRender"));
+		assertTrue(testCtrl.containsKey("loadRender"));
 		testCtrl.remove("loadRender");
 		testCtrl.put("userSays", true);
 		testCtrl.put("dirty", true);

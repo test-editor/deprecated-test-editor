@@ -260,7 +260,7 @@ public class DeleteTestHandler {
 	 * 
 	 * @return the service
 	 */
-	private MetaDataService getMetaDataService() throws SystemException {
+	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
 			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}

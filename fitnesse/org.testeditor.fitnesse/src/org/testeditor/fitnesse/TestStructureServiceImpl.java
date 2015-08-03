@@ -26,7 +26,6 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -35,7 +34,6 @@ import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
-import org.testeditor.fitnesse.filesystem.FitnesseFileSystemUtility;
 import org.testeditor.fitnesse.util.FitNesseRestClient;
 
 /**
@@ -115,7 +113,6 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			LOGGER.trace("Looking up for team share service with id: " + id);
 			TeamShareService teamShareService = teamShareServices.get(id);
 			teamShareService.rename(testStructure, newName, context.get(TranslationService.class));
-			testStructure.setTeamChangeType(TeamChangeType.MOVED);
 		} else {
 			new FitnesseFileSystemTestStructureService().rename(testStructure, newName);
 		}
@@ -244,7 +241,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 
 	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
-		return FitnesseFileSystemUtility.existsContentTxtInPathOfTestStructureInErrorDirectory(testStructure);
+		return new FitnesseFileSystemTestStructureService().hasTestExecutionLog(testStructure);
 	}
 
 }

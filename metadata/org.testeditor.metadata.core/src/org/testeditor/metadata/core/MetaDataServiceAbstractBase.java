@@ -132,7 +132,7 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	 * @param testProject
 	 *            - the testproject
 	 */
-	abstract protected void doInit(TestProject testProject);
+	protected abstract void doInit(TestProject testProject);
 
 	@Override
 	public List<MetaData> getAllMetaData(TestProject project) {
@@ -164,7 +164,8 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	}
 
 	@Override
-	public void storeMetaDataTags(List<MetaDataTag> metaDataTags, TestStructure testStructure) throws SystemException {
+	public void storeMetaDataTags(List<MetaDataTag> metaDataTags, List<MetaDataTag> orgMetaDataTags,
+			TestStructure testStructure) throws SystemException {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
 		if (!getMetaDataStore(projectName).containsKey(testStructure.getFullName())) {
@@ -172,6 +173,13 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 		}
 		getMetaDataStore(projectName).get(testStructure.getFullName()).clear();
 		getMetaDataStore(projectName).get(testStructure.getFullName()).addAll(metaDataTags);
+		for (MetaDataTag metaDataTag : orgMetaDataTags) {
+			getMetaDataValue(metaDataTag, testStructure.getRootElement()).getTestCases()
+					.remove(testStructure.getName());
+		}
+		for (MetaDataTag metaDataTag : metaDataTags) {
+			getMetaDataValue(metaDataTag, testStructure.getRootElement()).getTestCases().add(testStructure.getName());
+		}
 		store(testStructure);
 
 	}
@@ -185,7 +193,7 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	 * @throws SystemException
 	 *             - a systemexception
 	 */
-	abstract protected void store(TestStructure testStructure) throws SystemException;
+	protected abstract void store(TestStructure testStructure) throws SystemException;
 
 	@Override
 	public void rename(TestStructure testStructure, String newName) throws SystemException {

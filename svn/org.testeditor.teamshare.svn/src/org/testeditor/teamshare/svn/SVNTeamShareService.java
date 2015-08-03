@@ -28,16 +28,14 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
-import org.testeditor.core.model.team.TeamChange;
-import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
-import org.testeditor.core.services.interfaces.TeamShareStatusService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -57,8 +55,6 @@ import org.tmatesoft.svn.core.wc.ISVNOptions;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNCommitClient;
-import org.tmatesoft.svn.core.wc.SVNEvent;
-import org.tmatesoft.svn.core.wc.SVNEventAction;
 import org.tmatesoft.svn.core.wc.SVNMoveClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNStatus;
@@ -87,7 +83,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	private static final int AUTHENTICATION_REQUIRED_2 = 170001;
 
 	// all files/directories in list will be ignored during import to SVN
-	static final String[] IGNORE_LIST = { "ErrorLogs", "testProgress", "testResults", ".DS_Store" };
+	public static final String[] IGNORE_LIST = { "ErrorLogs", "testProgress", "testResults", ".DS_Store" };
 
 	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareService.class);
 
@@ -97,7 +93,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 	private IEventBroker eventBroker;
 
-	private TeamShareStatusService teamShareStatusService;
+	private TeamShareStatusServicePlugIn teamShareStatusService;
 
 	static {
 
@@ -157,8 +153,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 *            TestStructure
 	 * @return File
 	 */
-	public File getFile(TestStructure testStructure) {
-
+	private File getFile(TestStructure testStructure) {
 		return new File(getFolderName(testStructure));
 	}
 
@@ -172,7 +167,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 */
 	private String getFolderName(TestStructure testStructure) {
 		TestProject testProject = testStructure.getRootElement();
-
 		if (testStructure instanceof TestProject) {
 			// in case of project the root of project above FitNesseRoot will be
 			// checked in.
@@ -182,49 +176,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					+ testStructure.getFullName().replaceAll("\\.", "/");
 		}
 
-	}
-
-	/**
-	 * convert the given File from the path to a TestStructure FullName. If the
-	 * TestStructure FullName don't start with the given TestProject it will
-	 * return "";
-	 * 
-	 * @param file
-	 *            File to convert the oath to FullName.
-	 * @param testProject
-	 *            TestProject where the TestStructure should be.
-	 * @return TestStructure FullName of the given file.
-	 */
-	public String convertFileToFullname(File file, TestProject testProject) {
-		/*
-		 * Cut the Path before the workspace because everything before
-		 * .testeditor is not needed.
-		 */
-		if (file.isFile()) {
-			file = file.getParentFile();
-		}
-		String path;
-		if (!file.getPath().equals(testProject.getTestProjectConfig().getProjectPath())) {
-			if (file.getPath().length() < testProject.getTestProjectConfig().getProjectPath().length() + 2) {
-				return testProject.getName();
-			}
-			path = file.getPath().substring(testProject.getTestProjectConfig().getProjectPath().length() + 1);
-		} else {
-			return testProject.getName();
-		}
-		/*
-		 * Changes in the RecentChanges will not be showed.
-		 */
-		path = path.replace(File.separator, ".");
-		if (!path.startsWith("FitNesseRoot.RecentChanges")) {
-			if (path.contains("FitNesseRoot.")) {
-				path = path.substring("FitNesseRoot.".length(), path.length());
-			}
-			if (path.startsWith(testProject.getName())) {
-				return path;
-			}
-		}
-		return testProject.getName();
 	}
 
 	@Override
@@ -349,7 +300,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 
 		try {
-			final TestProject testProject = testStructure.getRootElement();
+			TestProject testProject = testStructure.getRootElement();
 
 			SVNClientManager clientManager = getSVNClientManager(testProject);
 
@@ -710,13 +661,14 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	public void disconnect(TestProject testProject, TranslationService translationService) throws SystemException {
 		testProject.getTestProjectConfig().setTeamShareConfig(null);
 		deleteSvnMetaData(testProject);
-		List<TestStructure> childrenWithScenarios = testProject.getAllTestChildrenWithScenarios();
-		for (TestStructure testStructure : childrenWithScenarios) {
-			testStructure.setTeamChangeType(TeamChangeType.NONE);
-		}
+
 		if (eventBroker != null) {
 			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED, testProject.getFullName());
+
 		}
+
+		teamShareStatusService.remove(testProject);
+
 	}
 
 	/**
@@ -752,10 +704,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public List<TeamChange> revert(TestStructure testStructure, TranslationService translationService)
-			throws SystemException {
+	public void revert(TestStructure testStructure, TranslationService translationService) throws SystemException {
 
-		final List<TeamChange> result = new ArrayList<TeamChange>();
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("testStructure: " + testStructure.getFullName());
 		}
@@ -767,32 +717,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			SVNWCClient wcClient = clientManager.getWCClient();
 			File fileToRevert = getFile(testStructure);
-
-			wcClient.setEventHandler(new SVNLoggingEventHandler(listener, LOGGER) {
-				@Override
-				public void handleEvent(SVNEvent arg0, double arg1) throws SVNException {
-					super.handleEvent(arg0, arg1);
-					TeamChange teamChange = new TeamChange(getTeamChangeTypeFrom(arg0), getRelativePathFrom(arg0),
-							testProject);
-					// We only want the information of chnages not of events
-					// like started update and others.
-					if (teamChange.getTeamChangeType() != null) {
-						result.add(teamChange);
-					}
-				}
-
-				private String getRelativePathFrom(SVNEvent arg0) {
-					return convertFileToFullname(arg0.getFile(), testProject);
-				}
-
-				private TeamChangeType getTeamChangeTypeFrom(SVNEvent arg0) {
-					if (arg0.getAction().equals(SVNEventAction.REVERT)) {
-						return TeamChangeType.REVERT;
-					}
-					return null;
-				}
-
-			});
 
 			Collection<String> changeList = new ArrayList<String>();
 			File[] filesToReverted = new File[1];
@@ -809,6 +733,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
 					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
+						eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
+								convertFileToFullname(fileToDeleteLc, testStructure.getRootElement()));
 						Files.walkFileTree(fileToDeleteLc.toPath(),
 								org.testeditor.core.util.FileUtils.getDeleteRecursiveVisitor());
 					} else {
@@ -822,6 +748,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			}
 
 			revertMemoryModel(testStructure);
+			updateSvnstate(testStructure);
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			String message = substitudeSVNException(e, translationService);
@@ -830,7 +757,50 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			LOGGER.error(e.getMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);
 		}
-		return result;
+
+	}
+
+	/**
+	 * convert the given File from the path to a TestStructure FullName. If the
+	 * TestStructure FullName don't start with the given TestProject it will
+	 * return "";
+	 * 
+	 * @param file
+	 *            File to convert the oath to FullName.
+	 * @param testProject
+	 *            TestProject where the TestStructure should be.
+	 * @return TestStructure FullName of the given file.
+	 */
+	public String convertFileToFullname(File file, TestProject testProject) {
+		/*
+		 * Cut the Path before the workspace because everything before
+		 * .testeditor is not needed.
+		 */
+		if (file.isFile()) {
+			file = file.getParentFile();
+		}
+		String path;
+		if (!file.getPath().equals(testProject.getTestProjectConfig().getProjectPath())) {
+			if (file.getPath().length() < testProject.getTestProjectConfig().getProjectPath().length() + 2) {
+				return testProject.getName();
+			}
+			path = file.getPath().substring(testProject.getTestProjectConfig().getProjectPath().length() + 1);
+		} else {
+			return testProject.getName();
+		}
+		/*
+		 * Changes in the RecentChanges will not be showed.
+		 */
+		path = path.replace(File.separator, ".");
+		if (!path.startsWith("FitNesseRoot.RecentChanges")) {
+			if (path.contains("FitNesseRoot.")) {
+				path = path.substring("FitNesseRoot.".length(), path.length());
+			}
+			if (path.startsWith(testProject.getName())) {
+				return path;
+			}
+		}
+		return testProject.getName();
 	}
 
 	/**
@@ -873,9 +843,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-		}
-		if (teamShareStatusService == null) {
-			teamShareStatusService = context.get(TeamShareStatusService.class);
 		}
 		return this;
 	}
@@ -957,6 +924,28 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		} catch (SVNException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param teamShareStatusPlugin
+	 *            to be binded to this service.
+	 */
+	public void bind(TeamShareStatusServicePlugIn teamShareStatusPlugin) {
+		if (teamShareStatusPlugin.getId().equals(getId())) {
+			teamShareStatusService = teamShareStatusPlugin;
+		}
+	}
+
+	/**
+	 * 
+	 * @param teamShareStatusPlugin
+	 *            on shutdown plug-in remove this service.
+	 */
+	public void unBind(TeamShareStatusServicePlugIn teamShareStatusPlugin) {
+		if (teamShareStatusPlugin.getId().equals(getId())) {
+			teamShareStatusService = null;
 		}
 	}
 

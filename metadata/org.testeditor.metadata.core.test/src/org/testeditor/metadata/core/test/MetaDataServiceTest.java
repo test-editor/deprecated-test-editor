@@ -278,7 +278,7 @@ public class MetaDataServiceTest {
 
 		List<MetaDataTag> metaDataTagList = getMetTagList(testCase, project, 2);
 
-		getNewServiceObject().storeMetaDataTags(metaDataTagList, testCase);
+		getNewServiceObject().storeMetaDataTags(metaDataTagList, metaDataTagList, testCase);
 
 		List<MetaDataTag> metaDataTagListResult = getNewServiceObject().getMetaDataTags(testCase);
 		assertTrue("" + metaDataTagListResult.size() + " found for Testcase. Expected was 2",
@@ -301,7 +301,8 @@ public class MetaDataServiceTest {
 
 		for (int index = 1; index <= 3; index++) {
 			TestCase testCase = createTestCase(project.getName(), "testCase" + index);
-			getNewServiceObject().storeMetaDataTags(getMetTagList(testCase, project, index), testCase);
+			List<MetaDataTag> metaDataList = getMetTagList(testCase, project, index);
+			getNewServiceObject().storeMetaDataTags(metaDataList, metaDataList, testCase);
 		}
 	}
 

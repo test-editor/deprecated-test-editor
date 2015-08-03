@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -64,8 +65,18 @@ public class MetaDataTreeContentProvider implements ITreeContentProvider {
 		}
 		if (parentElement instanceof MetaDataValue) {
 			MetaDataValue metaDataValue = (MetaDataValue) parentElement;
-			List<String> testCases = metaDataService.getTestCases(metaDataValue.getMetaData().getTestProject(),
+			List<String> testCaseNames = metaDataService.getTestCases(metaDataValue.getMetaData().getTestProject(),
 					metaDataValue);
+
+			List<TestStructure> testCases = new ArrayList<TestStructure>();
+			for (String testCaseName : testCaseNames) {
+				try {
+					testCases.add(testProjectService.findTestStructureByFullName(testCaseName));
+				} catch (SystemException e) {
+					e.printStackTrace();
+				}
+			}
+
 			return testCases.toArray();
 
 		}
