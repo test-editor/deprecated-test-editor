@@ -5,8 +5,8 @@
   <imports xsi:type="commands:Command" xmi:id="_mC6TUDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.command.openLogData"/>
   <imports xsi:type="commands:Command" xmi:id="_yM15kDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.opentesthistory.command"/>
   <imports xsi:type="commands:Command" xmi:id="_5caeoDUWEeWm-oFBtj17Ug" elementId="org.testeditor.ui.clearHistory.command"/>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_YQGaEDRuEeWm-oFBtj17Ug" featurename="children" parentElementId="PartStack.org.testeditor.testexplorer" positionInList="index:2">
-    <elements xsi:type="basic:Part" xmi:id="_NLiD8DRvEeWm-oFBtj17Ug" elementId="org.testeditor.ui.part.metadataexplorer2" containerData="50" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.explorer.MetaDataExplorer" label="%part.label.metadataexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif" tooltip="">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_YQGaEDRuEeWm-oFBtj17Ug" featurename="children" parentElementId="PartStack.org.testeditor.testexplorer" positionInList="index:1">
+    <elements xsi:type="basic:Part" xmi:id="_NLiD8DRvEeWm-oFBtj17Ug" elementId="org.testeditor.ui.part.metadataexplorer" contributorURI="platform:/plugin/org.testeditor.metadata.ui" containerData="50" contributionURI="bundleclass://org.testeditor.metadata.ui/org.testeditor.metadata.ui.explorer.MetaDataExplorer" label="%part.label.metadataexplorer" iconURI="platform:/plugin/org.testeditor.ui/icons/test_explorer.gif" tooltip="">
       <menus xsi:type="menu:PopupMenu" xmi:id="_kP-9YDR3EeWm-oFBtj17Ug" elementId="org.testeditor.ui.metadata.popupmenu" label="%command.description.metadataexplorerpopupmenudescription">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_e0D_4DR6EeWm-oFBtj17Ug" elementId="org.testeditor.ui.handledmenuitem.opentestcase" label="%popupmenu.label.open.test.case" iconURI="platform:/plugin/org.testeditor.ui/icons/open.png" command="_z5g3ADR3EeWm-oFBtj17Ug"/>
         <children xsi:type="menu:MenuSeparator" xmi:id="_MEiFwDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.menuseparator.0"/>

@@ -76,7 +76,8 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 
 			String testCaseName = testStructure.getFullName();
 			String testCasePath = "FitNesseRoot" + File.separator + testCaseName.replace(".", File.separator);
-			if (new File(fileName = projectPath + File.separator + testCasePath).exists()) {
+			fileName = projectPath + File.separator + testCasePath;
+			if (new File(fileName).exists()) {
 				fileName = projectPath + File.separator + testCasePath + File.separator + META_DATA_XML;
 				File xmlFile = new File(fileName);
 				List<MetaDataTag> metaDataTags = getMetaDataStore(testProject.getName()).get(testCaseName);
@@ -176,6 +177,15 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 
 	}
 
+	/**
+	 * Read the properties-file containing the metadata.properties. If no file
+	 * was found, a null is returned.
+	 * 
+	 * @param projectPath
+	 *            - the path of the project where the properties have to be
+	 *            read.
+	 * @return an object containg all properties of the project or null.
+	 */
 	private Properties readMetaDataProperties(String projectPath) {
 		Properties prop = new Properties();
 
@@ -248,7 +258,7 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 	 * metadata.xml of a testcase. Its task is to order the entries in the
 	 * metadata.xml file to ensure the same order of the entries.
 	 */
-	static private class MetaDataStoreObject {
+	private static class MetaDataStoreObject {
 		public String getTestCase() {
 			return testCase;
 		}

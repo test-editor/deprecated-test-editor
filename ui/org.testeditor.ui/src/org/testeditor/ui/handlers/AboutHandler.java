@@ -75,8 +75,8 @@ public class AboutHandler {
 		for (Bundle bundle : bundles) {
 
 			if (bundle.getSymbolicName().startsWith("org.testeditor")) {
-				versionInfo.append("\n" + bundle.getSymbolicName() + ": " + bundle.getVersion().getMajor() + "."
-						+ bundle.getVersion().getMinor() + "." + bundle.getVersion().getMicro());
+				versionInfo.append("\n" + bundle.getSymbolicName() + ": "
+						+ bundle.getVersion().toString().replace(".qualifier", "-SNAPSHOT"));
 				if (bundle.getSymbolicName().equals("org.testeditor.ui")) {
 					versionOfTestEditor = bundle.getVersion();
 				}
@@ -92,11 +92,8 @@ public class AboutHandler {
 
 		}
 
-		information.append(String.format(
-				translationService.translate("%about.information.text"),
-				versionOfTestEditor.getMajor() + "." + versionOfTestEditor.getMinor() + "."
-						+ versionOfTestEditor.getMicro(), copyright));
-
+		information.append(String.format(translationService.translate("%about.information.text"), versionOfTestEditor
+				.toString().replace(".qualifier", "-SNAPSHOT"), copyright));
 		information.append(versionInfo);
 		information.append(svnVersionInfo);
 	}

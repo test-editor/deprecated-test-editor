@@ -16,20 +16,48 @@ import java.util.Comparator;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.metadata.core.MetaDataService;
 
+/**
+ * A MetaDataTag is the connection between a testCase and a MetaDataValue. The
+ * MetaDataValues of a testcase are stored as a list in the MetaDataServerice
+ * together with the corresponding testCase.
+ */
 public class MetaDataTag {
 
+	/**
+	 * The key for the tag.
+	 * 
+	 * @return the key
+	 */
 	public String getKey() {
 		return key;
 	}
 
+	/**
+	 * Sets the key for the tag.
+	 * 
+	 * @param key
+	 *            - the key.
+	 */
 	public void setKey(String key) {
 		this.key = key;
 	}
 
+	/**
+	 * The parentKey is the key of the MetaData. *
+	 * 
+	 * @return - the key of the metaData.
+	 */
 	public String getParentKey() {
 		return parentKey;
 	}
 
+	/**
+	 * sets the parent key. The key identifies the MetaDataValue of a
+	 * MetaData-object
+	 * 
+	 * @param parentKey
+	 *            - the parent key.
+	 */
 	public void setParentKey(String parentKey) {
 		this.parentKey = parentKey;
 	}
@@ -37,9 +65,18 @@ public class MetaDataTag {
 	private String key;
 	private String parentKey;
 
+	/**
+	 * Creates an empty new metaData object.
+	 */
 	public MetaDataTag() {
 	}
 
+	/**
+	 * Creates a MetaDataTag that points to a given MetaDataValue.
+	 * 
+	 * @param metaDataValue
+	 *            - the metaDataValue
+	 */
 	public MetaDataTag(MetaDataValue metaDataValue) {
 		key = metaDataValue.getKey();
 		parentKey = metaDataValue.getMetaData().getKey();
@@ -49,8 +86,14 @@ public class MetaDataTag {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((getKey() == null) ? 0 : getKey().hashCode());
-		result = prime * result + ((getParentKey() == null) ? 0 : getParentKey().hashCode());
+		result = prime * result;
+		if (getKey() != null) {
+			result += getKey().hashCode();
+		}
+		result = prime * result;
+		if (getParentKey() != null) {
+			result = prime * getParentKey().hashCode();
+		}
 		return result;
 	}
 
@@ -87,11 +130,27 @@ public class MetaDataTag {
 		return getParentKey() + "-" + getKey();
 	}
 
-	static public class MetaDataTagComparator implements Comparator<MetaDataTag> {
+	/**
+	 * Class to compare two metaDataTags. The compare is based on the alphabetic
+	 * order of the MetaData / MetaDataValue.
+	 * 
+	 */
+	public static class MetaDataTagComparator implements Comparator<MetaDataTag> {
 
 		private MetaDataService metaDataService;
 		private TestProject testProject;
 
+		/**
+		 * Constructor for the MetaDataTagComparator. The MetaDataService and
+		 * the project is needed to find the MetaData / MetaDataValue for a
+		 * corresponding MetaDataTag.
+		 * 
+		 * @param metaDataService
+		 *            - the MetaDataService to get MetaData and MetaDataValue
+		 *            for a MetaDataTag
+		 * @param testProject
+		 *            - parameter ist needed to find the correct MetaData
+		 */
 		public MetaDataTagComparator(MetaDataService metaDataService, TestProject testProject) {
 			this.metaDataService = metaDataService;
 			this.testProject = testProject;
