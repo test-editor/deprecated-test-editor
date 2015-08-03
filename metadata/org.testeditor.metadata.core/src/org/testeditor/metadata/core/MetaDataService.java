@@ -93,6 +93,7 @@ public interface MetaDataService {
 	 *            - the new name without the path information (not the
 	 *            fullName).
 	 * @throws SystemException
+	 *             - SystemException
 	 */
 	void rename(TestStructure selectedTestStructure, String newName) throws SystemException;
 
@@ -103,13 +104,44 @@ public interface MetaDataService {
 	 * @param testStructure
 	 *            - the teststrcuture
 	 * @throws SystemException
+	 *             - SystemException
 	 */
 	void delete(TestStructure testStructure) throws SystemException;
 
+	/**
+	 * Clears the local cache and reads the metadatainformation from the local
+	 * disk. This method is used on the refresh button in the TestEditor
+	 * explorer.
+	 * 
+	 * @param testProject
+	 *            - the project to be refreshed
+	 */
 	void refresh(TestProject testProject);
 
+	/**
+	 * Gets all TestCases that are tagged for a given MetaDataValue. The method
+	 * will return a list of Strings that refer to the testcases.
+	 * 
+	 * @param project
+	 *            - the project that has to be searched.
+	 * @param metaDataValue
+	 *            - the metadatavalue to be searched
+	 * @return - the list of ID of the matching testcases
+	 */
 	List<String> getTestCases(TestProject project, MetaDataValue metaDataValue);
 
+	/**
+	 * Gets all TestCases that are tagged for a list of given MetaDataValues.
+	 * Only testcases that are tagged for all metadatavalues are returned
+	 * (AND-Logic). The method will return a list of Strings that refer to the
+	 * testcases.
+	 * 
+	 * @param project
+	 *            - the project that has to be searched.
+	 * @param metaDataValueList
+	 *            - the list of metadatavalues to be searched
+	 * @return - the list of ID of the matching testcases
+	 */
 	List<String> getTestCases(TestProject project, List<MetaDataValue> metaDataValueList);
 
 }
