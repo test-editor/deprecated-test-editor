@@ -99,4 +99,9 @@ public class TestStructureServiceAdapter implements TestStructureService {
 		return false;
 	}
 
+	@Override
+	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+		return null;
+	}
+
 }

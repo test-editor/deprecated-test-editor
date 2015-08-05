@@ -259,10 +259,10 @@ public class TestStructureTest {
 		testStruckure2.setName("MyTestSuite2");
 		TestStructure leaf = createTestStruckure();
 		testStruckure2.addChild(leaf);
-		assertTrue(leaf.isTestStructureInParentHirachieOfChildTestStructure(tp));
-		assertTrue(leaf.isTestStructureInParentHirachieOfChildTestStructure(testStruckure));
-		assertTrue(leaf.isTestStructureInParentHirachieOfChildTestStructure(testStruckure2));
-		assertFalse(leaf.isTestStructureInParentHirachieOfChildTestStructure(otherTS));
+		assertTrue(leaf.isInParentHirachieOfChildTestStructure(tp));
+		assertTrue(leaf.isInParentHirachieOfChildTestStructure(testStruckure));
+		assertTrue(leaf.isInParentHirachieOfChildTestStructure(testStruckure2));
+		assertFalse(leaf.isInParentHirachieOfChildTestStructure(otherTS));
 	}
 
 	/**

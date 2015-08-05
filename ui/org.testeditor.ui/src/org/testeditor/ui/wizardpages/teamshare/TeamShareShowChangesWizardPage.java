@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
+import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
-import org.testeditor.fitnesse.util.FitNesseUtil;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -42,6 +42,9 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 
 	@Inject
 	private TeamShareStatusServiceNew teamShareStatusHandlerService;
+
+	@Inject
+	private TestStructureService teStructureService;
 
 	private Collection<String> changedDatas;
 
@@ -177,7 +180,8 @@ public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {
 				if (developerView.getSelection()) {
 					changesList.add(data);
 				} else {
-					String name = FitNesseUtil.convertToFitNessePath(data);
+					String name = teStructureService
+							.lookUpTestStructureFullNameMatchedToPath(testStructure.getRootElement(), data);
 					if (changesList.getItemCount() == 0
 							|| !changesList.getItem(changesList.getItemCount() - 1).equals(name)) {
 						changesList.add(name);

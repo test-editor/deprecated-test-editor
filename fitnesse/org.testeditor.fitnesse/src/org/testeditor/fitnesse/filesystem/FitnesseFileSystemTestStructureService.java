@@ -188,8 +188,8 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	 *            of the TestComposite.
 	 */
 	private void initLazyLoader(TestCompositeStructure testCmp, File propertyFile) {
-		testCmp.setChildCountInBackend(propertyFile.getParentFile().listFiles(
-				FitnesseFileSystemUtility.getDirectoryFilter()).length);
+		testCmp.setChildCountInBackend(
+				propertyFile.getParentFile().listFiles(FitnesseFileSystemUtility.getDirectoryFilter()).length);
 		testCmp.setLazyLoader(getTestProjectLazyLoader(testCmp));
 	}
 
@@ -201,8 +201,8 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 		}
 		try {
 			Files.createDirectories(pathToTestStructure);
-			Files.write(Paths.get(pathToTestStructure.toString() + File.separator + "content.txt"), testStructure
-					.getSourceCode().getBytes(StandardCharsets.UTF_8));
+			Files.write(Paths.get(pathToTestStructure.toString() + File.separator + "content.txt"),
+					testStructure.getSourceCode().getBytes(StandardCharsets.UTF_8));
 
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -337,8 +337,8 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(testResultsDirOfTestStructure)) {
 
 			for (Path path : stream) {
-				FitNesseResultReader reader = FitNesseResultReaderFactory.getHistoryReader(TestType
-						.valueOf(testStructure.getPageType().toUpperCase()));
+				FitNesseResultReader reader = FitNesseResultReaderFactory
+						.getHistoryReader(TestType.valueOf(testStructure.getPageType().toUpperCase()));
 				FileInputStream fileInputStream = new FileInputStream(path.toFile());
 				TestResult testResult = reader.readTestResult(fileInputStream);
 				String timestampString = path.getFileName().toString().substring(0, 14);
@@ -353,8 +353,8 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 		} catch (IOException | ParseException e) {
 			LOGGER.error("Error reading testresults of teststructrue: " + testStructure, e);
-			throw new SystemException("Error reading testresults of teststructrue: " + testStructure + "\n"
-					+ e.getMessage(), e);
+			throw new SystemException(
+					"Error reading testresults of teststructrue: " + testStructure + "\n" + e.getMessage(), e);
 		}
 
 		Collections.sort(result, new Comparator<TestResult>() {
@@ -447,6 +447,32 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return getTestHistory(testStructure).size() > 0;
+	}
+
+	@Override
+	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+		String pointSeparatedFile = path.replace(File.separatorChar, '.');
+
+		String result = "";
+		if (pointSeparatedFile.indexOf(".content.txt") > 0) {
+			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.indexOf(".content.txt"));
+		} else if (pointSeparatedFile.indexOf(".metadata.xml") > 0) {
+			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.indexOf(".metadata.xml"));
+		} else if (pointSeparatedFile.indexOf(".properties.xml") > 0) {
+			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.indexOf(".properties.xml"));
+		} else if (pointSeparatedFile.contains("FitNesseRoot")) {
+			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.length());
+		} else {
+			String[] split = pointSeparatedFile.split("\\.");
+
+			result = split[split.length - 2] + "." + split[split.length - 1];
+		}
+
+		return result;
 	}
 
 }
