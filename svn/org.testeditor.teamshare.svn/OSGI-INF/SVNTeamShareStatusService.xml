@@ -5,7 +5,4 @@
       <provide interface="org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn"/>
       <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>
-   <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.plugins.TeamShareServicePlugIn" name="TeamShareService" policy="dynamic" unbind="unBind"/>
-   <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.interfaces.TestStructureService" name="TestStructureService" policy="dynamic" unbind="unBind"/>
-   <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.interfaces.TestProjectService" name="TestProjectService" policy="dynamic" unbind="unBind"/>
 </scr:component>
