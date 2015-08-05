@@ -15,7 +15,8 @@ import java.io.File;
 
 /**
  * Utility class for special FitNesse string/file operations.
- *
+ * 
+ * @deprecated
  */
 public final class FitNesseUtil {
 
@@ -64,7 +65,7 @@ public final class FitNesseUtil {
 	 *            (input) delimited with points "a.b.cde"
 	 * @param modified
 	 *            (modified) delimited with points "a.b.cd"
-	 * @return true if input is not part of modified
+	 * @return true if input is part of modified
 	 */
 	public static boolean contains(String input, String modified) {
 

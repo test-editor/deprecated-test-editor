@@ -244,4 +244,9 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		return new FitnesseFileSystemTestStructureService().hasTestExecutionLog(testStructure);
 	}
 
+	@Override
+	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+		return new FitnesseFileSystemTestStructureService().lookUpTestStructureFullNameMatchedToPath(testProject, path);
+	}
+
 }

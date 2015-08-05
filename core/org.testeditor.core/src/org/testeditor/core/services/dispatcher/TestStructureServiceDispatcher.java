@@ -68,20 +68,20 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 
 	@Override
 	public void create(TestStructure testStructure) throws SystemException {
-		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID()).create(
-				testStructure);
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.create(testStructure);
 	}
 
 	@Override
 	public void delete(TestStructure testStructure) throws SystemException {
-		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID()).delete(
-				testStructure);
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.delete(testStructure);
 	}
 
 	@Override
 	public void rename(TestStructure testStructure, String newName) throws SystemException {
-		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID()).rename(
-				testStructure, newName);
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.rename(testStructure, newName);
 	}
 
 	@Override
@@ -118,15 +118,16 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 	@Override
 	public boolean isReservedName(TestProject testProject, String name) {
 		if (testProject != null) {
-			return testStructureServices.get(testProject.getTestProjectConfig().getTestServerID()).isReservedName(
-					testProject, name);
+			return testStructureServices.get(testProject.getTestProjectConfig().getTestServerID())
+					.isReservedName(testProject, name);
 		}
 		return true;
 	}
 
 	@Override
 	public Runnable getTestProjectLazyLoader(TestCompositeStructure toBeLoadedLazy) {
-		if (testStructureServices.get(toBeLoadedLazy.getRootElement().getTestProjectConfig().getTestServerID()) != null) {
+		if (testStructureServices
+				.get(toBeLoadedLazy.getRootElement().getTestProjectConfig().getTestServerID()) != null) {
 			return testStructureServices.get(toBeLoadedLazy.getRootElement().getTestProjectConfig().getTestServerID())
 					.getTestProjectLazyLoader(toBeLoadedLazy);
 		}
@@ -142,6 +143,11 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 			}
 		}
 		return this;
+	}
+
+	@Override
+	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+		return testStructureServices.get(testProject).lookUpTestStructureFullNameMatchedToPath(testProject, path);
 	}
 
 }
