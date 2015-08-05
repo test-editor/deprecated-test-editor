@@ -242,7 +242,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	 *            that is gone.
 	 */
 	public void unBind(TestStructureService testStructureService) {
-		testStructureService = null;
+		this.testStructureService = null;
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	 *            that is gone.
 	 */
 	public void unBind(TestProjectService testProjectService) {
-		testProjectService = null;
+		this.testProjectService = null;
 	}
 
 	@Override

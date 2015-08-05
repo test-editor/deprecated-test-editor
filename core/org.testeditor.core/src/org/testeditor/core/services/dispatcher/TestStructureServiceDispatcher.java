@@ -147,7 +147,8 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 
 	@Override
 	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-		return testStructureServices.get(testProject).lookUpTestStructureFullNameMatchedToPath(testProject, path);
+		return testStructureServices.get(testProject.getTestProjectConfig().getTestServerID())
+				.lookUpTestStructureFullNameMatchedToPath(testProject, path);
 	}
 
 }
