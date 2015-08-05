@@ -27,10 +27,8 @@ import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
@@ -53,7 +51,6 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	private List<String> whiteListForNonTestStructures = Arrays.asList("AllActionGroups.xml", "config.tpr",
 			"ElementList.conf", "TechnicalBindingTypeCollection.xml", "MetaData.properties");
 
-	private TeamShareService teamShareService;
 	private TestStructureService testStructureService;
 	private TestProjectService testProjectService;
 
@@ -201,32 +198,6 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	}
 
 	/**
-	 * Binds the service if it's part of this plug-in.
-	 * 
-	 * @param teamShareService
-	 *            to be binded.
-	 */
-	public void bind(TeamShareServicePlugIn teamShareService) {
-		if (teamShareService.getId().equals(getId())) {
-			this.teamShareService = teamShareService;
-		} else {
-			LOGGER.error("No SVN Plugin available");
-		}
-	}
-
-	/**
-	 * checks if the service belongs to this plug-in and removes it.
-	 * 
-	 * @param teamShareService
-	 *            to be removed.
-	 */
-	public void unBind(TeamShareServicePlugIn teamShareService) {
-		if (teamShareService.getId().equals(getId())) {
-			this.teamShareService = null;
-		}
-	}
-
-	/**
 	 * 
 	 * @param testStructureService
 	 *            used by this service.
@@ -236,32 +207,12 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	}
 
 	/**
-	 * Unbind the TestStructure service.
-	 * 
-	 * @param testStructureService
-	 *            that is gone.
-	 */
-	public void unBind(TestStructureService testStructureService) {
-		this.testStructureService = null;
-	}
-
-	/**
 	 * 
 	 * @param testProjectService
 	 *            used by this service.
 	 */
 	public void bind(TestProjectService testProjectService) {
 		this.testProjectService = testProjectService;
-	}
-
-	/**
-	 * Unbind the testProjectService service.
-	 * 
-	 * @param testProjectService
-	 *            that is gone.
-	 */
-	public void unBind(TestProjectService testProjectService) {
-		this.testProjectService = null;
 	}
 
 	@Override
@@ -281,9 +232,8 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-		}
-		if (teamShareService == null) {
-			teamShareService = context.get(TeamShareService.class);
+			bind(context.get(TestStructureService.class));
+			bind(context.get(TestProjectService.class));
 		}
 		return this;
 	}
