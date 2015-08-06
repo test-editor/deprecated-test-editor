@@ -215,17 +215,20 @@ public abstract class TestStructure {
 	 * Checks if the given TestStructure is in the parent path of this
 	 * TestStructure.
 	 * 
-	 * @param childTestStructure
-	 *            the updated- {@link TestStructure}
+	 * @param testStructure
+	 *            that may is the parent the updated- {@link TestStructure}
 	 * @return true, if a parent or grantParent of the childTestStrcture is
 	 *         equal to the updated- {@link TestStructure}
 	 */
-	public boolean isInParentHirachieOfChildTestStructure(TestStructure childTestStructure) {
+	public boolean isInParentHirachieOfChildTestStructure(TestStructure testStructure) {
+		if (this.equals(testStructure)) {
+			return true;
+		}
 		TestProject root = getRootElement();
 		TestStructure parent = this;
 		while (!parent.equals(root)) {
 			parent = parent.getParent();
-			if (parent.equals(childTestStructure)) {
+			if (parent.equals(testStructure)) {
 				return true;
 			}
 		}
