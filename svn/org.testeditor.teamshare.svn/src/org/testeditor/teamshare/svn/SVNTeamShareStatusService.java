@@ -179,8 +179,9 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 					return true;
 				} else
 					try {
-						if (testStructure.isInParentHirachieOfChildTestStructure(
-								testProjectService.findTestStructureByFullName(modifiedTestStructureFullName))) {
+						TestStructure parent = testProjectService
+								.findTestStructureByFullName(modifiedTestStructureFullName);
+						if (parent != null && parent.isInParentHirachieOfChildTestStructure(testStructure)) {
 							return true;
 						} else if (whiteListForNonTestStructures.contains(modifiedTestStructureFullName)
 								&& (testStructure instanceof TestProject)) {
