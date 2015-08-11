@@ -13,6 +13,7 @@ package org.testeditor.teamshare.svn;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -31,7 +32,6 @@ import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.exceptions.SystemException;
@@ -461,7 +461,6 @@ public class SVNTeamSharestatusServiceTest {
 	 * 
 	 */
 	@Test
-	@Ignore
 	public void testStateAfterApprove() throws SystemException, IOException, InterruptedException {
 
 		// given
@@ -485,7 +484,7 @@ public class SVNTeamSharestatusServiceTest {
 		// ended.
 		getThreadByName("threadStatusService").join();
 
-		assertTrue(statusService.isModified(testProject));
+		assertNotNull("Expecting changes for", statusService.getModified(testProject));
 
 		teamService.approve(testProject, translationService, "comment");
 
