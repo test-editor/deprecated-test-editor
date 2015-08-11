@@ -735,8 +735,10 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					String fileName = split.substring(0, split.lastIndexOf(searchString) - 1);
 					File fileToDeleteLc = new File(fileName);
 					if (fileToDeleteLc.isDirectory()) {
-						eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
-								convertFileToFullname(fileToDeleteLc, testStructure.getRootElement()));
+						if (eventBroker != null) {
+							eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
+									convertFileToFullname(fileToDeleteLc, testStructure.getRootElement()));
+						}
 						Files.walkFileTree(fileToDeleteLc.toPath(),
 								org.testeditor.core.util.FileUtils.getDeleteRecursiveVisitor());
 					} else {
