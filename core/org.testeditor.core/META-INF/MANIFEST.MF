@@ -6,7 +6,8 @@ Bundle-Version: 1.9.0.qualifier
 Bundle-Activator: org.testeditor.core.CoreActivator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.apache.commons.io.monitor;version="2.2.0",
+Import-Package: org.apache.commons.io.filefilter;version="2.2.0",
+ org.apache.commons.io.monitor;version="2.2.0",
  org.eclipse.e4.core.contexts,
  org.eclipse.e4.core.di,
  org.eclipse.e4.core.services.events,

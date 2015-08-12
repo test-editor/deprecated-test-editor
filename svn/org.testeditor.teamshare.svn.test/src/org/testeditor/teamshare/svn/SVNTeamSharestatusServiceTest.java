@@ -41,8 +41,10 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
+import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
@@ -100,8 +102,6 @@ public class SVNTeamSharestatusServiceTest {
 
 		FileUtils.deleteDirectory(new File(REPOSITORY_PATH));
 		SVNRepositoryFactory.createLocalRepository(new File(REPOSITORY_PATH), true, false);
-
-		buildContext();
 	}
 
 	/**
@@ -301,17 +301,6 @@ public class SVNTeamSharestatusServiceTest {
 	}
 
 	/**
-	 * Creates a context for the tests.
-	 */
-	private void buildContext() {
-		IEclipseContext context = EclipseContextFactory
-				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
-		context.set(IEventBroker.class, null);
-		context.set(TeamShareService.class, new SVNTeamShareService());
-		((IContextFunction) statusService).compute(context, null);
-	}
-
-	/**
 	 * 
 	 * @param threadName
 	 *            of the thread.
@@ -343,6 +332,14 @@ public class SVNTeamSharestatusServiceTest {
 		teamService.share(testProject, translationService, "");
 		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\LoginValidTest\\content.txt");
 		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\content.txt");
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTestNotExists";
+			}
+		});
+		svnStatusService.bind(ServiceLookUpForTest.getService(TestProjectService.class));
 
 		// when
 		statusService.update(testProject);
