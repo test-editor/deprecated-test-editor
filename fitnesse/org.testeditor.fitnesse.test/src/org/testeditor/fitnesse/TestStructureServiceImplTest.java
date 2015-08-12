@@ -119,21 +119,6 @@ public class TestStructureServiceImplTest {
 	}
 
 	/**
-	 * Tests the building of a fitnesse url.
-	 */
-	@Test
-	public void testGetFitnesseURL() {
-		TestStructureServiceImpl service = new TestStructureServiceImpl();
-		TestProject tp = new TestProject();
-		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		testProjectConfig.setPort("8080");
-		tp.setTestProjectConfig(testProjectConfig);
-		TestCase testStructure = new TestCase();
-		tp.addChild(testStructure);
-		assertEquals("http://localhost:8080/", service.getFitnesseUrl(testStructure));
-	}
-
-	/**
 	 * Test the Creation of an empty History List for non executable
 	 * TestStructures.
 	 * 
