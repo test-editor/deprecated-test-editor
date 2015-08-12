@@ -12,14 +12,19 @@
 package org.testeditor.ui.handlers.teamshare;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.translation.TranslationService;
+import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.exceptions.TeamAuthentificationException;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.metadata.core.MetaDataService;
+import org.testeditor.ui.dialogs.TeamShareAuthentificationDialog;
 
 /**
  * executes the update-element event.
@@ -28,10 +33,14 @@ import org.testeditor.metadata.core.MetaDataService;
  */
 public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 
-	private static final Logger LOGGER = Logger.getLogger(UpdateElementHandler.class);
+	private static final Logger logger = Logger.getLogger(UpdateElementHandler.class);
 
 	@Inject
 	private TranslationService translate;
+
+	@Inject
+	@Named(IServiceConstants.ACTIVE_SHELL)
+	private Shell shell;
 
 	@Inject
 	@Optional
@@ -46,7 +55,7 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 				getMetaDataService().refresh(testStructure.getRootElement());
 			}
 		} catch (final SystemException e) {
-			LOGGER.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			getDisplay().syncExec(new Runnable() {
 
 				@Override
@@ -56,6 +65,14 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 				}
 			});
 			return false;
+		} catch (TeamAuthentificationException e) {
+			logger.warn(e.getMessage(), e);
+			TeamShareAuthentificationDialog dialog = new TeamShareAuthentificationDialog(shell);
+			dialog.create();
+			dialog.setTitle("adasd");
+
+			dialog.open();
+
 		}
 		return true;
 	}
@@ -79,7 +96,7 @@ public class UpdateElementHandler extends AbstractUpdateOrApproveHandler {
 	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
-			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			logger.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 	}

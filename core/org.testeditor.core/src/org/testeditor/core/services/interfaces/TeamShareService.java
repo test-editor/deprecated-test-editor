@@ -87,9 +87,12 @@ public interface TeamShareService {
 	 *            {@link TranslationService}
 	 * @throws SystemException
 	 *             if the sharing of the project fails
+	 * @throws TeamAuthentificationException
+	 *             if authorization credentials are wrong
 	 * @return state Information of the update operation.
 	 */
-	String update(TestStructure testStructure, TranslationService translationService) throws SystemException;
+	String update(TestStructure testStructure, TranslationService translationService) throws SystemException,
+			TeamAuthentificationException;
 
 	/**
 	 * This method imports a new project from the teamshare-repository and put

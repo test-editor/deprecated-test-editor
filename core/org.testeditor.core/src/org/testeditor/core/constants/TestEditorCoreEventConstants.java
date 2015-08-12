@@ -51,11 +51,16 @@ public final class TestEditorCoreEventConstants {
 
 	/**
 	 * This event will be send when a team shared project loaded from all files
-	 * the SVN state and set them in the child`s. It is Asynchrony because it
+	 * the team share state and set them in the child`s. It is Asynchrony because it
 	 * will be throw from a Thread and the User should not be Interrupted.
 	 */
 	public static final String TESTSTRUCTURE_STATE_UPDATED = "TESTSTRUCTURE/STATE/CHNAGED";
 
+	/**
+	 * This event will be send when a team share authorization failed, and the credentials has to be set.  
+	 */
+	public static final String TEAM_SHARE_AUTHORIZATION_FAILED = "TEAMSHARE/AUTHORIZATION/FAILED";
+	
 	public static final String TESTSTRUCTURE_HISTORY_DELETED = "TESTHISTORY/DELETED";
 
 	/**

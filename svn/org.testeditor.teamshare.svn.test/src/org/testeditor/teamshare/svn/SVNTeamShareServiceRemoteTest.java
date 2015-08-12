@@ -29,6 +29,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.testeditor.core.exceptions.SystemException;
+import org.testeditor.core.exceptions.TeamAuthentificationException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
@@ -221,9 +222,11 @@ public class SVNTeamShareServiceRemoteTest {
 	 *             SVN failure
 	 * @throws SystemException
 	 *             System failure
+	 * @throws TeamAuthentificationException
+	 *             authorization failed
 	 */
 	@Ignore("only for debugging")
-	public void testUpdateSuite() throws IOException, SVNException, SystemException {
+	public void testUpdateSuite() throws IOException, SVNException, SystemException, TeamAuthentificationException {
 
 		TestProject testProject = createTestProject(REPOSITORY_PATH, USERNAME, PASSWORD);
 		teamService.share(testProject, translationService, "");

@@ -84,7 +84,8 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public String update(TestStructure testStructure, TranslationService translationService) throws SystemException {
+	public String update(TestStructure testStructure, TranslationService translationService) throws SystemException,
+			TeamAuthentificationException {
 		TeamShareServicePlugIn teamShareService = getTeamShare(testStructure.getRootElement());
 		if (teamShareService != null) {
 			return teamShareService.update(testStructure, translationService);
