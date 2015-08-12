@@ -137,20 +137,6 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		renamedTestStructures.put(path + newName, oldName);
 	}
 
-	/**
-	 * Looks up the TestProjectConfiguration to build the Fitnesse URL.
-	 * 
-	 * @param testStructure
-	 *            to retrive the TestProjectConfiguration
-	 * @return the url to the fitnesse server.
-	 */
-	protected String getFitnesseUrl(TestStructure testStructure) {
-		StringBuilder sb = new StringBuilder();
-		TestProject tp = testStructure.getRootElement();
-		sb.append("http://localhost:").append(tp.getTestProjectConfig().getPort()).append("/");
-		return sb.toString();
-	}
-
 	@Override
 	public TestResult executeTestStructure(TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
