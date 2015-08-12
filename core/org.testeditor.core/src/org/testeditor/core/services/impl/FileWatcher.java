@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -69,37 +70,32 @@ public class FileWatcher {
 
 		String pathToTestFiles = testProjekt.getTestProjectConfig().getProjectPath();
 
-		File folder = new File(pathToTestFiles);
-
-		if (!folder.exists()) {
-			// Test to see if monitored folder exists
-			throw new RuntimeException("Directory not found: " + pathToTestFiles);
-		}
-
-		FileAlterationObserver observer = new FileAlterationObserver(folder);
 		monitor = new FileAlterationMonitor(pollingInterval);
 
 		FileAlterationListener listener = new FileAlterationListenerAdaptor() {
 			@Override
 			public void onFileChange(File file) {
 
-				if (watchFileList.contains(file.getName())) {
-					try {
+				try {
 
-						LOGGER.info("Projekt: " + testProjekt.getName());
-						LOGGER.info("File changed: " + file.getCanonicalPath());
+					LOGGER.info("Projekt: " + testProjekt.getName());
+					LOGGER.info("File changed: " + file.getCanonicalPath());
 
-						notifyObserver();
+					notifyObserver();
 
-					} catch (IOException e) {
-						LOGGER.error(e.getMessage(), e);
-					}
+				} catch (IOException e) {
+					LOGGER.error(e.getMessage(), e);
 				}
 			}
 		};
 
-		observer.addListener(listener);
-		monitor.addObserver(observer);
+		File projectDir = new File(pathToTestFiles);
+		for (String fileName : watchFileList) {
+			FileAlterationObserver observer = new FileAlterationObserver(projectDir,
+					FileFilterUtils.nameFileFilter(fileName));
+			observer.addListener(listener);
+			monitor.addObserver(observer);
+		}
 		monitor.start();
 	}
 
