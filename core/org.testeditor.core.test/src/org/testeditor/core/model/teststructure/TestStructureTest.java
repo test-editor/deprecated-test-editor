@@ -259,10 +259,10 @@ public class TestStructureTest {
 		testStruckure2.setName("MyTestSuite2");
 		TestStructure leaf = createTestStruckure();
 		testStruckure2.addChild(leaf);
-		assertTrue(leaf.isTestStructureInParentHirachieOfChildTestStructure(tp));
-		assertTrue(leaf.isTestStructureInParentHirachieOfChildTestStructure(testStruckure));
-		assertTrue(leaf.isTestStructureInParentHirachieOfChildTestStructure(testStruckure2));
-		assertFalse(leaf.isTestStructureInParentHirachieOfChildTestStructure(otherTS));
+		assertTrue(leaf.isInParentHirachieOfChildTestStructure(tp));
+		assertTrue(leaf.isInParentHirachieOfChildTestStructure(testStruckure));
+		assertTrue(leaf.isInParentHirachieOfChildTestStructure(testStruckure2));
+		assertFalse(leaf.isInParentHirachieOfChildTestStructure(otherTS));
 	}
 
 	/**
@@ -307,6 +307,66 @@ public class TestStructureTest {
 		assertSame(parents.get(1), testSuite1);
 		assertSame(parents.get(2), testProject);
 		assertTrue(parents.size() == 3);
+	}
+
+	/**
+	 * Tests the lookup in the parent path.
+	 */
+	@Test
+	public void testLookupInParentPath() {
+		TestProject demoProject = new TestProject();
+		demoProject.setName("DemoWebTests");
+		TestSuite localDemoSuite = new TestSuite();
+		localDemoSuite.setName("LocalDemoSuite");
+		demoProject.addChild(localDemoSuite);
+		TestSuite loginSuite = new TestSuite();
+		loginSuite.setName("LoginSuite");
+		localDemoSuite.addChild(loginSuite);
+		TestSuite login = new TestSuite();
+		login.setName("Login");
+		localDemoSuite.addChild(login);
+		TestSuite a = new TestSuite();
+		a.setName("A");
+		login.addChild(a);
+		TestCase b = new TestCase();
+		b.setName("B");
+		a.addChild(b);
+
+		// TC "DemoWebTests.LocalDemoSuite.Login.A.B";
+		// Possible Parent "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(b.isInParentHirachieOfChildTestStructure(loginSuite));
+
+		// TC "DemoWebTests.LocalDemoSuite";
+		// Possible Parent = "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(loginSuite.isInParentHirachieOfChildTestStructure(localDemoSuite));
+
+		TestSuite googleSucheSuite = new TestSuite();
+		googleSucheSuite.setName("GoogleSucheSuite");
+		demoProject.addChild(googleSucheSuite);
+		TestSuite gLoginSuite = new TestSuite();
+		gLoginSuite.setName("LoginSuite");
+		googleSucheSuite.addChild(gLoginSuite);
+
+		// TC "DemoWebTests.GoogleSucheSuite.LoginSuite";
+		// Possible Parent "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(loginSuite.isInParentHirachieOfChildTestStructure(gLoginSuite));
+		//
+		// TC "DemoWebTests";
+		// Possible Parent "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(loginSuite.isInParentHirachieOfChildTestStructure(demoProject));
+		//
+		// TC "DemoWebTests.LocalDemoSuite";
+		// Possible Parent "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(loginSuite.isInParentHirachieOfChildTestStructure(localDemoSuite));
+		//
+		// TC "DemoWebTests.LocalDemoSuite.LoginSuite";
+		// Possible Parent "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertTrue(loginSuite.isInParentHirachieOfChildTestStructure(loginSuite));
+		//
+		// TC
+		// "DemoWebTests.LocalDemoSuite.LoginSuite.LocalDemoSuite.LoginSuite";
+		// Possible Parent "DemoWebTests.LocalDemoSuite.LoginSuite";
+		assertFalse(gLoginSuite.isInParentHirachieOfChildTestStructure(loginSuite));
 	}
 
 }

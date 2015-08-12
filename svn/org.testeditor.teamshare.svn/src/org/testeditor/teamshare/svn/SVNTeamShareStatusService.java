@@ -24,12 +24,12 @@ import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
+import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
-import org.testeditor.fitnesse.util.FitNesseUtil;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
@@ -51,7 +51,8 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	private List<String> whiteListForNonTestStructures = Arrays.asList("AllActionGroups.xml", "config.tpr",
 			"ElementList.conf", "TechnicalBindingTypeCollection.xml", "MetaData.properties");
 
-	private TeamShareService teamShareService;
+	private TestStructureService testStructureService;
+	private TestProjectService testProjectService;
 
 	@Override
 	public List<String> getModified(TestProject testProject) {
@@ -171,17 +172,25 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 		if (listOfModifiedTestStructures != null) {
 			for (String modifiedTestStructure : listOfModifiedTestStructures) {
 
-				String modifiedTestStructureAsFitNessePath = FitNesseUtil.convertToFitNessePath(modifiedTestStructure);
+				String modifiedTestStructureFullName = testStructureService.lookUpTestStructureFullNameMatchedToPath(
+						testStructure.getRootElement(), modifiedTestStructure);
 
-				if (modifiedTestStructureAsFitNessePath.equals(testStructure.getFullName())) {
+				if (modifiedTestStructureFullName.equals(testStructure.getFullName())) {
 					return true;
-				} else if (FitNesseUtil.contains(testStructure.getFullName(), modifiedTestStructureAsFitNessePath)) {
-					return true;
-				} else if (whiteListForNonTestStructures.contains(modifiedTestStructureAsFitNessePath)
-						&& (testStructure instanceof TestProject)) {
-					// only if given teststructure is not a project
-					return true;
-				}
+				} else
+					try {
+						TestStructure parent = testProjectService
+								.findTestStructureByFullName(modifiedTestStructureFullName);
+						if (parent != null && parent.isInParentHirachieOfChildTestStructure(testStructure)) {
+							return true;
+						} else if (whiteListForNonTestStructures.contains(modifiedTestStructureFullName)
+								&& (testStructure instanceof TestProject)) {
+							// only if given teststructure is not a project
+							return true;
+						}
+					} catch (SystemException e) {
+						LOGGER.warn("Error looking up teststructure by name.", e);
+					}
 			}
 
 		}
@@ -189,18 +198,22 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 		return false;
 	}
 
-	public void bind(TeamShareServicePlugIn teamShareService) {
-		if (teamShareService.getId().equals(getId())) {
-			this.teamShareService = teamShareService;
-		} else {
-			LOGGER.error("No SVN Plugin available");
-		}
+	/**
+	 * 
+	 * @param testStructureService
+	 *            used by this service.
+	 */
+	public void bind(TestStructureService testStructureService) {
+		this.testStructureService = testStructureService;
 	}
 
-	public void unBind(TeamShareServicePlugIn teamShareService) {
-		if (teamShareService.getId().equals(getId())) {
-			this.teamShareService = null;
-		}
+	/**
+	 * 
+	 * @param testProjectService
+	 *            used by this service.
+	 */
+	public void bind(TestProjectService testProjectService) {
+		this.testProjectService = testProjectService;
 	}
 
 	@Override
@@ -220,9 +233,8 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-		}
-		if (teamShareService == null) {
-			teamShareService = context.get(TeamShareService.class);
+			bind(context.get(TestStructureService.class));
+			bind(context.get(TestProjectService.class));
 		}
 		return this;
 	}

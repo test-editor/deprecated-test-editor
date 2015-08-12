@@ -17,6 +17,7 @@ package org.testeditor.teamshare.svn;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,7 +38,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
@@ -47,6 +47,7 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNErrorCode;
@@ -135,7 +136,8 @@ public class SVNTeamShareServiceLocalTest {
 	 * This method creates a new Testproject.
 	 * 
 	 * @param repositoryPath
-	 *            can be local (on file system usage: "file:///c:/tmp/testrepo") <br>
+	 *            can be local (on file system usage: "file:///c:/tmp/testrepo")
+	 *            <br>
 	 *            or remote (on a remote svn system)
 	 * @param userName
 	 *            can be empty for local share
@@ -431,8 +433,8 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.checkout(testProject, translationService);
 
 		// checkout was successfull
-		assertTrue(FileUtils.directoryContains(new File(targetWorkspacePath), new File(targetWorkspacePath + "/"
-				+ PROJEKT_NAME)));
+		assertTrue(FileUtils.directoryContains(new File(targetWorkspacePath),
+				new File(targetWorkspacePath + "/" + PROJEKT_NAME)));
 
 	}
 
@@ -511,8 +513,8 @@ public class SVNTeamShareServiceLocalTest {
 		TestStructure parent = testSuite.getParent();
 
 		String testCaseName = "MyFirstTestCase";
-		Path createdNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/"
-				+ testPageName, testCaseName);
+		Path createdNewTestPage = SvnHelper
+				.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testPageName, testCaseName);
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
@@ -593,8 +595,8 @@ public class SVNTeamShareServiceLocalTest {
 		testProject.addChild(testSuite);
 
 		String testCaseName = "MyFirstTestCase";
-		Path createdNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/"
-				+ testPageName, testCaseName);
+		Path createdNewTestPage = SvnHelper
+				.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testPageName, testCaseName);
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
@@ -798,8 +800,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE175005Test() {
-		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.RA_DAV_ALREADY_EXISTS,
-				"Path 'myLocation/myFile' already exists"));
+		SVNException exception = new SVNException(
+				SVNErrorMessage.create(SVNErrorCode.RA_DAV_ALREADY_EXISTS, "Path 'myLocation/myFile' already exists"));
 
 		assertTrue(substitudeSVNException(exception, translationService).startsWith("translated key %svnE175005"));
 	}
@@ -811,8 +813,8 @@ public class SVNTeamShareServiceLocalTest {
 	public void substitudeSVNExceptionE170001Test() {
 		String message = "Authentication required for '<http://localhost:80> Subversion Repo'";
 		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.RA_NOT_AUTHORIZED, message));
-		assertTrue(substitudeSVNException(exception, translationService).startsWith(
-				"translated key %svnE170001 " + message.split("'")[1]));
+		assertTrue(substitudeSVNException(exception, translationService)
+				.startsWith("translated key %svnE170001 " + message.split("'")[1]));
 	}
 
 	/**
@@ -843,10 +845,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE160024Test() {
-		SVNException exception = new SVNException(
-				SVNErrorMessage
-						.create(SVNErrorCode.FS_CONFLICT,
-								"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
+		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.FS_CONFLICT,
+				"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
 
 		assertTrue(substitudeSVNException(exception, translationService).contains("E160024"));
 	}
@@ -856,10 +856,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE155015Test() {
-		SVNException exception = new SVNException(
-				SVNErrorMessage
-						.create(SVNErrorCode.WC_FOUND_CONFLICT,
-								"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
+		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.WC_FOUND_CONFLICT,
+				"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
 
 		assertTrue(substitudeSVNException(exception, translationService).contains("E155015"));
 	}
@@ -941,8 +939,8 @@ public class SVNTeamShareServiceLocalTest {
 	}
 
 	/**
-	 * Test for {@link
-	 * SVNTeamShareServiceRevert(org.testeditor.core.model.teststructure.
+	 * Test for
+	 * {@link SVNTeamShareServiceRevert(org.testeditor.core.model.teststructure.
 	 * TestStructure)} Method.
 	 * 
 	 * @throws IOException
@@ -1039,8 +1037,10 @@ public class SVNTeamShareServiceLocalTest {
 	 * @throws SystemException
 	 *             System failure
 	 */
-	@Ignore("https://testeditor.atlassian.net/browse/TE-235")
+	@Test
 	public void testShareProjectDisconnect() throws IOException, SVNException, SystemException {
+		TeamShareStatusServicePlugIn statusPlugin = new SVNTeamShareStatusService();
+		((SVNTeamShareService) teamService).bind(statusPlugin);
 
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
@@ -1052,7 +1052,15 @@ public class SVNTeamShareServiceLocalTest {
 		assertFalse(testProject.getTestProjectConfig().isTeamSharedProject());
 	}
 
-	@Ignore
+	/**
+	 * Test that the revert operation also removes added and not commited files
+	 * from the workspace.
+	 * 
+	 * @throws SystemException
+	 *             on test failure.
+	 * @throws IOException
+	 *             on test failure.
+	 */
 	@Test
 	public void testRevertWithAddedTestcase() throws SystemException, IOException {
 		String testPageName = "MyFirstTestRevertTest";
@@ -1073,8 +1081,8 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.addChild(testSuite, translationService);
 
 		TestCase testCase = new TestCase();
-		SvnHelper
-				.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, testPageName);
+		SvnHelper.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar,
+				testPageName);
 		testCase.setName(testPageName);
 		testSuite.addChild(testCase);
 		teamService.addChild(testCase, translationService);
@@ -1098,8 +1106,8 @@ public class SVNTeamShareServiceLocalTest {
 
 		status = teamService.getStatus(testProject, translationService);
 
-		File updateFile = new File(testProject.getTestProjectConfig().getProjectPath()
-				+ "/TechnicalBindingTypeCollection.xml");
+		File updateFile = new File(
+				testProject.getTestProjectConfig().getProjectPath() + "/TechnicalBindingTypeCollection.xml");
 		String appendedString = "This is a SVN-reverting Test";
 		SvnHelper.updateFile(updateFile, appendedString);
 
@@ -1125,8 +1133,8 @@ public class SVNTeamShareServiceLocalTest {
 		String newstatus = teamService.getStatus(testProject, translationService);
 		Assert.assertTrue(newstatus.contains("TechnicalBindingTypeCollection.xml;normal 1"));
 
-		Assert.assertFalse(SvnHelper.existsTestCase(pathToTestFiles + File.separatorChar + suiteName
-				+ File.separatorChar, scTestPageName));
+		Assert.assertFalse(SvnHelper
+				.existsTestCase(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, scTestPageName));
 
 		readFileToString = FileUtils.readFileToString(updateFile);
 		Assert.assertFalse(readFileToString.contains(appendedString));
@@ -1163,19 +1171,19 @@ public class SVNTeamShareServiceLocalTest {
 	 * @throws Exception
 	 *             on SVN error.
 	 */
-	@Ignore("https://testeditor.atlassian.net/browse/TE-235")
+	@Test
 	public void testDisconnectProject() throws Exception {
-		TestProject testProject = createTestProject(System.getProperty("java.io.tmpdir") + File.separator
-				+ "disconnectPrj", "", "");
+		TestProject testProject = createTestProject(
+				System.getProperty("java.io.tmpdir") + File.separator + "disconnectPrj", "", "");
 		TestSuite testSuite = new TestSuite();
 		testProject.addChild(testSuite);
 		TestCase testCase = new TestCase();
 		testSuite.addChild(testCase);
+		TeamShareStatusServicePlugIn statusPlugin = new SVNTeamShareStatusService();
+		((SVNTeamShareService) teamService).bind(statusPlugin);
 		teamService.disconnect(testProject, translationService);
-
-		// TODO SVN Refactoring Prüfung muss jetzt anders gestaltet werden
-		// assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
-		// assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
+		assertFalse(statusPlugin.isModified(testProject));
+		assertNull("Expecting test project is removed from statsus service.", statusPlugin.getModified(testProject));
 	}
 
 }

@@ -216,11 +216,14 @@ public abstract class TestStructure {
 	 * TestStructure.
 	 * 
 	 * @param testStructure
-	 *            the updated- {@link TestStructure}
+	 *            that may is the parent the updated- {@link TestStructure}
 	 * @return true, if a parent or grantParent of the childTestStrcture is
 	 *         equal to the updated- {@link TestStructure}
 	 */
-	public boolean isTestStructureInParentHirachieOfChildTestStructure(TestStructure testStructure) {
+	public boolean isInParentHirachieOfChildTestStructure(TestStructure testStructure) {
+		if (this.equals(testStructure)) {
+			return true;
+		}
 		TestProject root = getRootElement();
 		TestStructure parent = this;
 		while (!parent.equals(root)) {
