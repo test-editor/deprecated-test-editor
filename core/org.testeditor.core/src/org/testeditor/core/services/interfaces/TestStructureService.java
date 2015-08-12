@@ -90,8 +90,8 @@ public interface TestStructureService {
 	 * @throws InterruptedException
 	 *             test was interrupted
 	 */
-	TestResult executeTestStructure(TestStructure testStructure, IProgressMonitor monitor) throws SystemException,
-			InterruptedException;
+	TestResult executeTestStructure(TestStructure testStructure, IProgressMonitor monitor)
+			throws SystemException, InterruptedException;
 
 	/**
 	 * Returns the latest test execution log.
@@ -157,5 +157,30 @@ public interface TestStructureService {
 	 * @return runnable to execute the lazy loading.
 	 */
 	Runnable getTestProjectLazyLoader(TestCompositeStructure toBeLoadedLazy);
+
+	/**
+	 * Tries to match a path string with a teststructure managed by this
+	 * service. This method is used to lookup a teststructure or ressources by a
+	 * path.
+	 * 
+	 * Some examples of a file based implementation:
+	 * 
+	 * /home/user/.testeditor/MyProject/SomeDir/MyProject/MySuite/TestCase
+	 * returns: MyProject.MySuite.TestCase
+	 * 
+	 * /home/user/.testeditor/MyProject/allActionGroups.xml returns:
+	 * allActionGroups.xml
+	 *
+	 * /home/user/tools/testeditor returns: null
+	 *
+	 * @param testProject
+	 *            the start point for the search.
+	 * @param path
+	 *            in the storage system.
+	 * @return full name of the teststructure or resource path related to the
+	 *         project root. If the path doesn't match to any object in the
+	 *         project null.
+	 */
+	String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path);
 
 }

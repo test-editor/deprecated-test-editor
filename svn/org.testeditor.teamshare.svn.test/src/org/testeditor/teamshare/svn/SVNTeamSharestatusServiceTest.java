@@ -13,6 +13,7 @@ package org.testeditor.teamshare.svn;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -120,7 +121,8 @@ public class SVNTeamSharestatusServiceTest {
 	 * This method creates a new Testproject.
 	 * 
 	 * @param repositoryPath
-	 *            can be local (on file system usage: "file:///c:/tmp/testrepo") <br>
+	 *            can be local (on file system usage: "file:///c:/tmp/testrepo")
+	 *            <br>
 	 *            or remote (on a remote svn system)
 	 * @param userName
 	 *            can be empty for local share
@@ -151,6 +153,13 @@ public class SVNTeamSharestatusServiceTest {
 
 	}
 
+	/**
+	 * Creates a teststructure based on this string names.
+	 * 
+	 * @param strings
+	 *            path of the teststructure
+	 * @return teststructure.
+	 */
 	private TestStructure createTestStructure(String... strings) {
 
 		TestStructure testStructure = null;
@@ -180,6 +189,14 @@ public class SVNTeamSharestatusServiceTest {
 		return testStructure;
 	}
 
+	/**
+	 * Modifies the files in the workspace for test.
+	 * 
+	 * @param filePath
+	 *            to be changed
+	 * @throws IOException
+	 *             on io problems
+	 */
 	private void update(String filePath) throws IOException {
 		File updateFile = new File(projectpath + filePath);
 		String appendString = "do Something";
@@ -190,7 +207,10 @@ public class SVNTeamSharestatusServiceTest {
 	 * Returns the list of modificated teststructures for given project
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
+	 * 
 	 */
 	@Test
 	public void testGetModifiedEmpty() throws SystemException, IOException {
@@ -210,8 +230,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * state
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 */
 	@Test
 	public void testUpdateModified() throws SystemException, IOException, InterruptedException {
@@ -230,8 +253,8 @@ public class SVNTeamSharestatusServiceTest {
 		// then
 		List<String> teststructures = statusService.getModified(testProject);
 		assertEquals(1, teststructures.size());
-		assertTrue(teststructures.get(0).contains(
-				"DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest".replace('.', File.separatorChar)));
+		assertTrue(teststructures.get(0)
+				.contains("DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest".replace('.', File.separatorChar)));
 
 	}
 
@@ -239,8 +262,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * Checks if given teststructure is modificated
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
@@ -259,18 +285,27 @@ public class SVNTeamSharestatusServiceTest {
 		getThreadByName("threadStatusService").join();
 
 		// then
-		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
-				"LoginSuite", "LoginValidTest" });
+		TestStructure testStructure = createTestStructure(
+				new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValidTest" });
+
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
+			}
+		});
+
 		assertTrue(statusService.isModified(testStructure));
 
 	}
 
 	/**
-	 * 
+	 * Creates a context for the tests.
 	 */
 	private void buildContext() {
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
-				.getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
 		context.set(IEventBroker.class, null);
 		context.set(TeamShareService.class, new SVNTeamShareService());
 		((IContextFunction) statusService).compute(context, null);
@@ -279,7 +314,8 @@ public class SVNTeamSharestatusServiceTest {
 	/**
 	 * 
 	 * @param threadName
-	 * @return
+	 *            of the thread.
+	 * @return thread with the name.
 	 */
 	public Thread getThreadByName(String threadName) {
 		for (Thread t : Thread.getAllStackTraces().keySet()) {
@@ -293,8 +329,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * Tests that given teststructure is not modified.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 */
 	@Test
 	public void testIsModifiedWithoutResult() throws SystemException, IOException, InterruptedException {
@@ -322,8 +361,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * Remove given project from internal state of service
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
@@ -350,8 +392,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * perform because no project found.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
@@ -381,8 +426,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * Tests that given teststructure is not modified.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 */
 	@Test(expected = FileNotFoundException.class)
 	public void testUpdateIfProjectNoExists() throws SystemException, IOException, InterruptedException {
@@ -405,8 +453,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * 
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
@@ -414,8 +465,18 @@ public class SVNTeamSharestatusServiceTest {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
+		testProject.setName("DemoWebTests");
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
@@ -423,7 +484,7 @@ public class SVNTeamSharestatusServiceTest {
 		// ended.
 		getThreadByName("threadStatusService").join();
 
-		assertTrue(statusService.isModified(testProject));
+		assertNotNull("Expecting changes for", statusService.getModified(testProject));
 
 		teamService.approve(testProject, translationService, "comment");
 
@@ -446,18 +507,29 @@ public class SVNTeamSharestatusServiceTest {
 	 * modify flag
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
-	public void testIsModifiedWithOneTestnameIncludedInAnother() throws SystemException, IOException,
-			InterruptedException {
+	public void testIsModifiedWithOneTestnameIncludedInAnother()
+			throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
@@ -466,10 +538,11 @@ public class SVNTeamSharestatusServiceTest {
 		getThreadByName("threadStatusService").join();
 
 		// then
-		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
-				"LoginSuite", "LoginValidTest" });
+		TestStructure testStructure = createTestStructure(
+				new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValidTest" });
 		assertTrue(statusService.isModified(testStructure));
-		testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValid" });
+		testStructure = createTestStructure(
+				new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValid" });
 		assertFalse(statusService.isModified(testStructure));
 
 	}
@@ -483,18 +556,30 @@ public class SVNTeamSharestatusServiceTest {
 	 * modify flag
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 * @throws IOException
+	 *             on test failure
 	 * @throws InterruptedException
+	 *             on test failure
 	 * 
 	 */
 	@Test
-	public void testIsModifiedWithOneTestnameIncludedInAnother2() throws SystemException, IOException,
-			InterruptedException {
+	public void testIsModifiedWithOneTestnameIncludedInAnother2()
+			throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
+
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
@@ -503,8 +588,8 @@ public class SVNTeamSharestatusServiceTest {
 		getThreadByName("threadStatusService").join();
 
 		// then
-		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite",
-				"LoginSuite", "LoginValidTest" });
+		TestStructure testStructure = createTestStructure(
+				new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValidTest" });
 		assertTrue(statusService.isModified(testStructure));
 		testStructure = createTestStructure(new String[] { "DemoWebTests", "LocalDemoSuite", "LoginValid" });
 		assertFalse(statusService.isModified(testStructure));
@@ -534,6 +619,15 @@ public class SVNTeamSharestatusServiceTest {
 		teamService.share(testProject, translationService, "");
 		update("/AllActionGroups.xml");
 
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "AllActionGroups.xml";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
+
 		// when
 		statusService.update(testProject);
 		// because update method runs in a thread, waits here until thread has
@@ -555,13 +649,22 @@ public class SVNTeamSharestatusServiceTest {
 	 *             on test failure
 	 */
 	@Test
-	public void testIsModifiedOutsideFitNesseRootNotInWhiteList() throws SystemException, IOException,
-			InterruptedException {
+	public void testIsModifiedOutsideFitNesseRootNotInWhiteList()
+			throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/noteststructure.xml");
+
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "/noteststructure.xml";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
@@ -587,8 +690,8 @@ public class SVNTeamSharestatusServiceTest {
 	 *             on test failure
 	 */
 	@Test
-	public void testIsModifiedOutsideFitNesseRootNotAffectedUnModifiedTestStructure() throws SystemException,
-			IOException, InterruptedException {
+	public void testIsModifiedOutsideFitNesseRootNotAffectedUnModifiedTestStructure()
+			throws SystemException, IOException, InterruptedException {
 
 		// given
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
@@ -603,6 +706,14 @@ public class SVNTeamSharestatusServiceTest {
 
 		// then
 		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "GoogleSucheSuite" });
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "AllActionGroups.xml";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
 		assertFalse(statusService.isModified(testStructure));
 	}
 
@@ -624,6 +735,15 @@ public class SVNTeamSharestatusServiceTest {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/files/testProgress/LoginInvalidTest.txt");
+
+		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
+		svnStatusService.bind(new TestStructureServiceAdpater() {
+			@Override
+			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+				return "/LoginInvalidTest.txt";
+			}
+		});
+		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
