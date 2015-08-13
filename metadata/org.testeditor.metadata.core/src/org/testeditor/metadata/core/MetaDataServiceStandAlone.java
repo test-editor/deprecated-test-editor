@@ -18,8 +18,17 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.metadata.core.model.MetaDataTag;
 
+/**
+ * Implementing the MetaDataService for the use in a stand alone application
+ * without the context of the Testeditor. The implementation is used by the
+ * MetaDataExtractor and the MetaDataCrawler.
+ * 
+ */
 public class MetaDataServiceStandAlone extends MetaDataServiceFileImpl {
 
+	/**
+	 * Constructor for the class.
+	 */
 	public MetaDataServiceStandAlone() {
 	}
 
