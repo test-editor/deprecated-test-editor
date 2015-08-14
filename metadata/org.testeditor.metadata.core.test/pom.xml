@@ -9,12 +9,12 @@
   <parent>
 	<artifactId>parent</artifactId>
     <groupId>org.testeditor</groupId>
-    <version>1.8.0</version>
+    <version>1.8.1</version>
 	    <relativePath>../../build/org.testeditor.build</relativePath>	    
   </parent>
   
   <groupId>org.testeditor</groupId>
   <artifactId>org.testeditor.metadata.core.test</artifactId>
-  <version>1.8.0</version>
+  <version>1.8.1</version>
   <packaging>eclipse-test-plugin</packaging>  
 </project>

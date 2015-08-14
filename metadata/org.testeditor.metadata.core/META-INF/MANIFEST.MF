@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Metadata Core
 Bundle-SymbolicName: org.testeditor.metadata.core
-Bundle-Version: 1.8.0
+Bundle-Version: 1.8.1
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.apache.log4j;version="1.2.15",
  org.testeditor.core.services.interfaces,
