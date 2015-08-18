@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -120,7 +121,8 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 
 	protected String createExecCommand(TestStructure testStructure) throws IOException {
 		File vagrantFileDir = getVagrantFile(testStructure.getRootElement());
-		List<String> lines = Files.readAllLines(new File(vagrantFileDir, "Vagrantfile").toPath());
+		List<String> lines = Files.readAllLines(new File(vagrantFileDir, "Vagrantfile").toPath(),
+				StandardCharsets.UTF_8);
 		boolean isLinux = true;
 		for (String string : lines) {
 			if (!string.trim().startsWith("#")) {
