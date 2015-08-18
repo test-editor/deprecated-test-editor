@@ -53,7 +53,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		Process upPrc = builder.start();
 		createAndRunLoggerOnStream(upPrc.getInputStream(), false, monitor);
 		createAndRunLoggerOnStream(upPrc.getErrorStream(), true, null);
-		while (upPrc.isAlive()) {
+		while (isAlive(upPrc)) {
 			Thread.sleep(100);
 		}
 	}
@@ -73,7 +73,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		testsRunFlag = true;
 		createAndRunLoggerOnStream(execPrc.getInputStream(), false, null);
 		createAndRunLoggerOnStream(execPrc.getErrorStream(), true, null);
-		while (execPrc.isAlive() && testsRunFlag && !monitor.isCanceled()) {
+		while (isAlive(execPrc) && testsRunFlag && !monitor.isCanceled()) {
 			Thread.sleep(100);
 		}
 		execPrc.destroy();
@@ -97,8 +97,24 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		Process destroyPrc = builder.start();
 		createAndRunLoggerOnStream(destroyPrc.getInputStream(), false, null);
 		createAndRunLoggerOnStream(destroyPrc.getErrorStream(), true, null);
-		while (destroyPrc.isAlive()) {
+		while (isAlive(destroyPrc)) {
 			Thread.sleep(100);
+		}
+	}
+
+	/**
+	 * Checks if a process is alive
+	 * 
+	 * @param process
+	 *            to be checked.
+	 * @return true if process is alive otherwise false.
+	 */
+	private boolean isAlive(Process process) {
+		try {
+			process.exitValue();
+			return false;
+		} catch (IllegalThreadStateException e) {
+			return true;
 		}
 	}
 
