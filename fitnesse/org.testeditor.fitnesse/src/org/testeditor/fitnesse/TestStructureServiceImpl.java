@@ -163,7 +163,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		monitor.beginTask("Starting TestAgent...", 3);
 		LOGGER.info("Start Vagrant");
 		try {
-			TestExceutionEnvironmentService environmentService = new VagrantTestExecutionEnvironmentService();
+			TestExceutionEnvironmentService environmentService = context.get(TestExceutionEnvironmentService.class);
 			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
 			monitor.worked(1);
 			TestResult result = environmentService.executeTests(testStructure, monitor);
@@ -171,8 +171,10 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			environmentService.tearDownEnvironment(testStructure.getRootElement(), monitor);
 			return result;
 		} catch (IOException e) {
-			LOGGER.error("Error executing testenvironment: "
-					+ testStructure.getRootElement().getTestProjectConfig().getTestEnvironmentConfiguration(), e);
+			LOGGER.error(
+					"Error executing testenvironment: "
+							+ testStructure.getRootElement().getTestProjectConfig().getTestEnvironmentConfiguration(),
+					e);
 			throw new SystemException("Error executing testenvironment", e);
 		}
 	}

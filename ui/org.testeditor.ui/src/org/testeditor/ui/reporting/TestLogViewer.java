@@ -113,25 +113,25 @@ public class TestLogViewer {
 			public void run() {
 				try {
 					File wsDir = Platform.getLocation().toFile();
-					File interActionLogFile = new File(wsDir.getAbsolutePath() + File.separator + ".metadata"
-							+ File.separator + "logs" + File.separator
-							+ TestEditorCoreConstants.INTERACTION_LOG_FILE_NAME);
+					File interActionLogFile = new File(
+							wsDir.getAbsolutePath() + File.separator + ".metadata" + File.separator + "logs"
+									+ File.separator + TestEditorCoreConstants.INTERACTION_LOG_FILE_NAME);
 					int noLogErrorCounter = 0;
 					while (new Date().getTime()
 							- Files.readAttributes(interActionLogFile.toPath(), BasicFileAttributes.class)
 									.lastModifiedTime().toMillis() > 1000) {
 						try {
-							Thread.sleep(50);
+							Thread.sleep(300);
 							noLogErrorCounter++;
 							if (noLogErrorCounter == 1000) {
-								throw new RuntimeException("No Interaction Log found in 50 seconds.");
+								throw new RuntimeException("No Interaction Log found in 5 minutes.");
 							}
 						} catch (InterruptedException e) {
 							LOGGER.info("Interrupt during wating for new interaction log.", e);
 						}
 					}
-					final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(
-							interActionLogFile), "UTF-8"));
+					final BufferedReader br = new BufferedReader(
+							new InputStreamReader(new FileInputStream(interActionLogFile), "UTF-8"));
 					String fullTestName = executingTestStructure.getFullName().replace('.', '/');
 					while (watchingLogFile) {
 						Display.getDefault().asyncExec(getUIUpdateRunnable(br, fullTestName));
@@ -144,8 +144,8 @@ public class TestLogViewer {
 							// Syncing the final log entry
 							Display.getDefault().syncExec(getUIUpdateRunnable(br, fullTestName));
 							if (LOGGER.isInfoEnabled()) {
-								LOGGER.info("User " + System.getProperty("user.name")
-										+ " Interrupt while tail on testlog");
+								LOGGER.info(
+										"User " + System.getProperty("user.name") + " Interrupt while tail on testlog");
 							}
 						}
 					}

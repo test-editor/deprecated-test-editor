@@ -30,8 +30,8 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
 Export-Package: org.testeditor.fitnesse.filesystem,
  org.testeditor.fitnesse.resultreader,
  org.testeditor.fitnesse.util
-Service-Component: OSGI-INF/TestStructureServiceComponent.xml,OSGI-INF/TestCaseServiceComponent.xml,OSGI-INF/testServer.xml,OSGI-INF/TestScenarioServiceComponent.xml,
- OSGI-INF/FitnesseTechnicalBindingsDSLMappingServiceInt.xml
+Service-Component: OSGI-INF/TestStructureServiceComponent.xml,OSGI-INF/TestCaseServiceComponent.xml,OSGI-INF/testServer.xml,OSGI-INF/TestScenarioServiceComponent.xml,OSGI-INF/FitnesseTechnicalBindingsDSLMappingServiceInt.xml,
+ OSGI-INF/TestExecutionEnvService.xml
 Bundle-ClassPath: .,
  lib/commons-codec-1.6.jar,
  lib/commons-logging-1.1.3.jar,
