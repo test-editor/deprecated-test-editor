@@ -15,13 +15,17 @@ import java.util.HashMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.model.team.TeamShareConfig;
 
 /**
  * Configuration of a TestProject. Beans of this class contains informations
- * about: <li>Fixtures <li>Testmanagement Server
+ * about:
+ * <li>Fixtures
+ * <li>Testmanagement Server
+ * <li>TestAgent
  * 
  */
 public class TestProjectConfig {
@@ -35,6 +39,7 @@ public class TestProjectConfig {
 	private HashMap<String, String> globalProjectVariables = new HashMap<String, String>();
 	private String testServerID = "fitnesse_based_1.2";
 	private String projectConfigVersion = "";
+	private String testEnvironmentConfiguration = TestEditorCoreConstants.NONE_TEST_AGENT;
 
 	/***
 	 * 
@@ -302,4 +307,34 @@ public class TestProjectConfig {
 	public void setProjectConfigVersion(String projectConfigVersion) {
 		this.projectConfigVersion = projectConfigVersion;
 	}
+
+	/**
+	 * Checks id a TestAgent is configured to used in this project.
+	 * 
+	 * @return true is a testagent is configured or false if
+	 *         <code>TestEditorCoreConstants.NONE_TEST_AGENT</code> is set.
+	 */
+	public boolean usesTestAgent() {
+		return testEnvironmentConfiguration != TestEditorCoreConstants.NONE_TEST_AGENT;
+	}
+
+	/**
+	 * Configuration string of the test environment.
+	 * 
+	 * @return configuration string of the test environment.
+	 */
+	public String getTestEnvironmentConfiguration() {
+		return testEnvironmentConfiguration;
+	}
+
+	/**
+	 * Sets the configuration string of the test environment.
+	 * 
+	 * @param testEnvironmentConfiguration
+	 *            configuration.
+	 */
+	public void setTestEnvironmentConfiguration(String testEnvironmentConfiguration) {
+		this.testEnvironmentConfiguration = testEnvironmentConfiguration;
+	}
+
 }

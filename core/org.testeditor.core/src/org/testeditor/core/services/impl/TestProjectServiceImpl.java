@@ -33,6 +33,7 @@ import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.osgi.service.component.ComponentContext;
+import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.exceptions.SystemException;
@@ -42,6 +43,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.FileWatchService;
+import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -511,6 +513,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			testProjectConfig.setTestServerID(serverId);
 		}
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
+		if (properties.containsKey(TestExceutionEnvironmentService.CONFIG)) {
+			testProjectConfig.setTestEnvironmentConfiguration(properties.getProperty(TestExceutionEnvironmentService.CONFIG));
+		}
 		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
 			fixNonVersionProperties(properties);
 		} else {
@@ -615,7 +620,28 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		if (properties.getProperty(TestProjectService.VERSION_TAG).equals(TestProjectService.VERSION1_2)) {
 			return getTestProjectConfigFromVersion1dot2(testProjectConfig, properties);
 		}
+		if (properties.getProperty(TestProjectService.VERSION_TAG).equals(TestProjectService.VERSION1_3)) {
+			return getTestProjectConfigFromVersion1dot3(testProjectConfig, properties);
+		}
 		return new TestProjectConfig();
+	}
+
+	/**
+	 * gets the config-properties from the version 1.3 and initializes with new
+	 * .
+	 * 
+	 * @param testProjectConfig
+	 *            actual created configuration.
+	 * 
+	 * @param properties
+	 *            with BeanInformations for the configuration.
+	 * @return TestProjectConfig
+	 */
+	protected TestProjectConfig getTestProjectConfigFromVersion1dot3(TestProjectConfig testProjectConfig,
+			Properties properties) {
+		testProjectConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
+		testProjectConfig.setProjectConfigVersion(VERSION1_3);
+		return testProjectConfig;
 	}
 
 	/**
@@ -674,6 +700,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			properties.put("pathToTestFiles", config.getPathToTestFiles());
 		}
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
+		properties.put(TestExceutionEnvironmentService.CONFIG, config.getTestEnvironmentConfiguration());
 		if (plugInservice != null) {
 			if (config.getProjectLibraryConfig() != null) {
 				LibraryConfigurationServicePlugIn configurationService = plugInservice

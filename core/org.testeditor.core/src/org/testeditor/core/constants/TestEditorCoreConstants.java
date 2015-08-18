@@ -18,5 +18,6 @@ package org.testeditor.core.constants;
 public abstract class TestEditorCoreConstants {
 
 	public static final String INTERACTION_LOG_FILE_NAME = "interaction.log";
+	public static final String NONE_TEST_AGENT = "none Test Agent";
 
 }

@@ -14,11 +14,13 @@ package org.testeditor.core.model.teststructure;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
+import org.testeditor.core.constants.TestEditorCoreConstants;
 
 /**
  * 
@@ -39,8 +41,8 @@ public class TestProjectConfigTest {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 		Field[] fields = testProjectConfig.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			if (!(field.getName().startsWith("$") || field.getName().equals("projectLibraryConfig") || field.getName()
-					.equals("teamShareConfig"))) {
+			if (!(field.getName().startsWith("$") || field.getName().equals("projectLibraryConfig")
+					|| field.getName().equals("teamShareConfig"))) {
 				String methodName = "get" + Character.toUpperCase(field.getName().charAt(0))
 						+ field.getName().substring(1);
 				Method method = testProjectConfig.getClass().getMethod(methodName, new Class[] {});
@@ -61,6 +63,20 @@ public class TestProjectConfigTest {
 		assertFalse(testProjectConfig.equals(testProjectConfig2));
 		testProjectConfig.setPort("80");
 		assertEquals(testProjectConfig, testProjectConfig2);
+	}
+
+	/**
+	 * Test the usesTastAgent method. THis one should retrun true if an
+	 * testagent is configured, otherwise null.
+	 */
+	@Test
+	public void testUsesTestAgent() {
+		TestProjectConfig tpConfig = new TestProjectConfig();
+		assertFalse(tpConfig.usesTestAgent());
+		tpConfig.setTestEnvironmentConfiguration("");
+		assertTrue(tpConfig.usesTestAgent());
+		tpConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
+		assertFalse(tpConfig.usesTestAgent());
 	}
 
 }

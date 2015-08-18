@@ -130,7 +130,8 @@ public final class FitNesseRestClient {
 				if (monitor != null && monitor.isCanceled()) {
 
 					// stop test via REST-Call
-					URL urlStopTest = new URL(getFitnesseUrl(testStructure) + testStructure.getFullName() + "?stoptest");
+					URL urlStopTest = new URL(
+							getFitnesseUrl(testStructure) + testStructure.getFullName() + "?stoptest");
 					URLConnection conStopTest = urlStopTest.openConnection();
 					InputStream inputStream = conStopTest.getInputStream();
 
@@ -145,12 +146,7 @@ public final class FitNesseRestClient {
 			FileInputStream fileInputStream = new FileInputStream(resultFile);
 			TestResult result = reader.readTestResult(fileInputStream);
 			fileInputStream.close();
-			boolean isTestSystemExecuted = result.getRight() > 0 | result.getWrong() > 0 | result.getException() > 0;
-			if (isTestSystemExecuted) {
-				return result;
-			} else {
-				return new TestResult();
-			}
+			return result;
 		} catch (InterruptedException e) {
 			throw e;
 		} catch (Exception e) {
@@ -221,8 +217,8 @@ public final class FitNesseRestClient {
 
 			strOfWikiPages = new BasicResponseHandler().handleResponse(httpResponse);
 		} catch (Exception e) {
-			SystemException systemException = new SystemException("No Testcases found in: "
-					+ getFitnesseUrl(testStructure) + fullName + "\n", e);
+			SystemException systemException = new SystemException(
+					"No Testcases found in: " + getFitnesseUrl(testStructure) + fullName + "\n", e);
 			LOGGER.error("names :: FAILED", systemException);
 			throw systemException;
 		}
@@ -268,8 +264,8 @@ public final class FitNesseRestClient {
 				return true;
 			}
 		} catch (Exception e) {
-			SystemException systemException = new SystemException("No FitNesse found in: "
-					+ getFitnesseUrl(testProject) + projectName + "\n", e);
+			SystemException systemException = new SystemException(
+					"No FitNesse found in: " + getFitnesseUrl(testProject) + projectName + "\n", e);
 			LOGGER.error("No FitNesse found: ", systemException);
 		}
 
@@ -339,8 +335,8 @@ public final class FitNesseRestClient {
 
 			strOfWikiPages = new BasicResponseHandler().handleResponse(httpResponse);
 		} catch (Exception e) {
-			SystemException systemException = new SystemException("No Testcases found in: "
-					+ getFitnesseUrl(testStructure) + fullName + "\n", e);
+			SystemException systemException = new SystemException(
+					"No Testcases found in: " + getFitnesseUrl(testStructure) + fullName + "\n", e);
 			LOGGER.error("names :: FAILED", systemException);
 			throw systemException;
 		}

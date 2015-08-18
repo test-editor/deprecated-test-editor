@@ -25,7 +25,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 
 /**
  * 
- * Service to retrieve all known Projects.
+ * Service to manage the Projects in the workspace.
  * 
  */
 public interface TestProjectService extends TestStructureTreeModel {
@@ -34,9 +34,10 @@ public interface TestProjectService extends TestStructureTreeModel {
 
 	String VERSION1_1 = "1.1";
 	String VERSION1_2 = "1.2";
-	String VERSION = "1.3";
+	String VERSION1_3 = "1.3";
+	String VERSION = "1.4";
 
-	Set<String> SUPPORTED_VERSIONS = new HashSet<String>(Arrays.asList(VERSION, VERSION1_2));
+	Set<String> SUPPORTED_VERSIONS = new HashSet<String>(Arrays.asList(VERSION, VERSION1_2, VERSION1_3));
 	String UNSUPPORTED_CONFIG_VERSION = "unsupported";
 
 	/**

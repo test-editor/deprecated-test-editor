@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.fitnesse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
@@ -140,7 +142,39 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	@Override
 	public TestResult executeTestStructure(TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
-		return FitNesseRestClient.execute(testStructure, monitor);
+		TestResult result = new TestResult();
+		if (testStructure.getRootElement().getTestProjectConfig().usesTestAgent()
+				&& !System.getProperties().keySet().contains("headlessTE")) {
+			result = executeInVagrant(testStructure, monitor);
+		} else {
+			result = FitNesseRestClient.execute(testStructure, monitor);
+		}
+		boolean isTestSystemExecuted = result.getRight() > 0 | result.getWrong() > 0 | result.getException() > 0;
+		if (isTestSystemExecuted) {
+			return result;
+		} else {
+			return new TestResult();
+		}
+
+	}
+
+	private TestResult executeInVagrant(TestStructure testStructure, IProgressMonitor monitor)
+			throws SystemException, InterruptedException {
+		monitor.beginTask("Starting TestAgent...", 3);
+		LOGGER.info("Start Vagrant");
+		try {
+			TestExceutionEnvironmentService environmentService = new VagrantTestExecutionEnvironmentService();
+			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
+			monitor.worked(1);
+			TestResult result = environmentService.executeTests(testStructure, monitor);
+			monitor.worked(1);
+			environmentService.tearDownEnvironment(testStructure.getRootElement(), monitor);
+			return result;
+		} catch (IOException e) {
+			LOGGER.error("Error executing testenvironment: "
+					+ testStructure.getRootElement().getTestProjectConfig().getTestEnvironmentConfiguration(), e);
+			throw new SystemException("Error executing testenvironment", e);
+		}
 	}
 
 	@Override
