@@ -131,6 +131,10 @@ public class ApplicationLifeCycleHandlerTest {
 				set.add("stop");
 			}
 		};
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
+		context.set(IServiceConstants.ACTIVE_SHELL, null);
+		ContextInjectionFactory.inject(handler, context);
 		handler.shutDownApplication();
 		assertTrue(set.contains("stop"));
 	}
@@ -141,8 +145,8 @@ public class ApplicationLifeCycleHandlerTest {
 	 * @return IEclipseContext
 	 */
 	private IEclipseContext getContext() {
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-				ApplicationLifeCycleHandlerTest.class).getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(ApplicationLifeCycleHandlerTest.class).getBundleContext());
 		context.set(TranslationService.class, getTranslationServiceMock());
 		context.set(TestStructureService.class, null);
 		context.set(PreferencesService.class, new PreferencesServiceMock());

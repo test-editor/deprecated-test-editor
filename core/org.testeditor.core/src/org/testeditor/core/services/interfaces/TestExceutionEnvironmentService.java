@@ -75,4 +75,24 @@ public interface TestExceutionEnvironmentService {
 	void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException;
 
+	/**
+	 * Cleans up all running environments.
+	 * 
+	 * @throws InterruptedException
+	 *             on user interrupt
+	 * @throws IOException
+	 *             on failure shutting down the environments.
+	 */
+	void tearDownAllEnvironments() throws IOException, InterruptedException;
+
+	/**
+	 * Checks if a testenvironment for the project is launched.
+	 * 
+	 * @param testProject
+	 *            to be checked.
+	 * @return true if their is a testenvironment for execution launched
+	 *         otherwise false.
+	 */
+	boolean isTestEnvironmentLaunchedFor(TestProject testProject);
+
 }

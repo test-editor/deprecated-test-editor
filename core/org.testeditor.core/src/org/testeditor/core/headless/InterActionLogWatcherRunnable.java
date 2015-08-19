@@ -60,15 +60,14 @@ public class InterActionLogWatcherRunnable implements Runnable {
 			File interActionLogFile = new File(wsDir.getAbsolutePath() + File.separator + ".metadata" + File.separator
 					+ "logs" + File.separator + TestEditorCoreConstants.INTERACTION_LOG_FILE_NAME);
 			int noLogErrorCounter = 0;
-			while (new Date().getTime()
-					- Files.readAttributes(interActionLogFile.toPath(), BasicFileAttributes.class).lastModifiedTime()
-							.toMillis() > 1000) {
+			while (new Date().getTime() - Files.readAttributes(interActionLogFile.toPath(), BasicFileAttributes.class)
+					.lastModifiedTime().toMillis() > 1000) {
 				try {
-					Thread.sleep(50);
+					Thread.sleep(300);
 					noLogErrorCounter++;
 					if (noLogErrorCounter == 1000) {
-						throw new RuntimeException("No Interaction Log found in 50 seconds. \nAt: "
-								+ interActionLogFile.getAbsolutePath());
+						throw new RuntimeException(
+								"No Interaction Log found in 5 minutes. \nAt: " + interActionLogFile.getAbsolutePath());
 					}
 				} catch (InterruptedException e) {
 					LOGGER.info("Interrupt during wating for new interaction log.", e);
@@ -91,8 +90,8 @@ public class InterActionLogWatcherRunnable implements Runnable {
 	 *             on IO failure.
 	 */
 	protected void watchingTheLog(File interActionLogFile) throws IOException {
-		final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(interActionLogFile),
-				"UTF-8"));
+		final BufferedReader br = new BufferedReader(
+				new InputStreamReader(new FileInputStream(interActionLogFile), "UTF-8"));
 		watchingLogFile = true;
 		int foundTests = 0;
 		while (watchingLogFile) {
@@ -103,6 +102,7 @@ public class InterActionLogWatcherRunnable implements Runnable {
 					LOGGER.info("******* Executing TestCase: " + testcasename + " " + ++foundTests + " of " + count
 							+ " *******");
 					progressMonitor.subTask("Test: " + testcasename + " " + foundTests + "/" + count);
+					progressMonitor.worked(1);
 				} else {
 					if (!line.contains("Wait ")) {
 						LOGGER.trace(line);

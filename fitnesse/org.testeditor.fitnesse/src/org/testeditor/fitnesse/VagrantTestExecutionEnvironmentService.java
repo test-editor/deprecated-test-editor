@@ -18,10 +18,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -43,19 +46,25 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	private static final Logger LOGGER = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
 	private boolean testsRunFlag;
 
+	private Set<TestProject> runningEnvironments = new HashSet<TestProject>();
+
 	@Override
 	public void setUpEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
-		File vagrantFileDir = getVagrantFileDirectory(testProject);
-		LOGGER.info("Vagrant path: " + vagrantFileDir);
-		ProcessBuilder builder = new ProcessBuilder("vagrant", "up");
-		builder.directory(vagrantFileDir);
-		builder.redirectErrorStream(true);
-		Process upPrc = builder.start();
-		createAndRunLoggerOnStream(upPrc.getInputStream(), false, monitor);
-		createAndRunLoggerOnStream(upPrc.getErrorStream(), true, null);
-		while (isAlive(upPrc)) {
-			Thread.sleep(100);
+		try {
+			File vagrantFileDir = getVagrantFileDirectory(testProject);
+			LOGGER.info("Vagrant path: " + vagrantFileDir);
+			ProcessBuilder builder = new ProcessBuilder("vagrant", "up");
+			configureBuilder(builder, vagrantFileDir);
+			Process upPrc = builder.start();
+			createAndRunLoggerOnStream(upPrc.getInputStream(), false, monitor);
+			createAndRunLoggerOnStream(upPrc.getErrorStream(), true, null);
+			while (isAlive(upPrc)) {
+				Thread.sleep(100);
+			}
+			runningEnvironments.add(testProject);
+		} catch (Exception e) {
+			LOGGER.error("error start", e);
 		}
 	}
 
@@ -68,8 +77,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		String execCommand = createExecCommand(testStructure);
 
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "ssh", "-c", execCommand);
-		builder.directory(vagrantFileDir);
-		builder.redirectErrorStream(true);
+		configureBuilder(builder, vagrantFileDir);
 		Process execPrc = builder.start();
 		testsRunFlag = true;
 		createAndRunLoggerOnStream(execPrc.getInputStream(), false, null);
@@ -93,14 +101,29 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 			throws IOException, InterruptedException {
 		monitor.setTaskName("Shutdown TestAgent..");
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "destroy", "-f");
-		builder.directory(getVagrantFileDirectory(testProject));
-		builder.redirectErrorStream(true);
+		configureBuilder(builder, getVagrantFileDirectory(testProject));
 		Process destroyPrc = builder.start();
 		createAndRunLoggerOnStream(destroyPrc.getInputStream(), false, null);
 		createAndRunLoggerOnStream(destroyPrc.getErrorStream(), true, null);
 		while (isAlive(destroyPrc)) {
 			Thread.sleep(100);
 		}
+		runningEnvironments.remove(testProject);
+	}
+
+	/**
+	 * Configures the ProcessBuild with parameters to run vagrant.
+	 * 
+	 * @param builder
+	 *            to be configured.
+	 * @param vagrantFileDir
+	 *            used for this vagrant launch.
+	 */
+	private void configureBuilder(ProcessBuilder builder, File vagrantFileDir) {
+		builder.directory(vagrantFileDir);
+		builder.redirectErrorStream(true);
+		LOGGER.trace("TESTEDITOR_HOME env variable: " + System.getProperty("TESTEDITOR_HOME"));
+		builder.environment().put("TESTEDITOR_HOME", System.getProperty("TESTEDITOR_HOME"));
 	}
 
 	/**
@@ -197,6 +220,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		sb.append(" -consoleLog -data /vagrant_data/  ExecuteTest=");
 		sb.append(testStructure.getFullName());
 		sb.append("\n");
+		sb.append("sudo pkill X").append("\n");
 		sb.append("echo TE terminated.\n");
 
 		return sb.toString();
@@ -253,6 +277,18 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 				}
 			}
 		}).start();
+	}
+
+	@Override
+	public void tearDownAllEnvironments() throws IOException, InterruptedException {
+		for (TestProject testProject : runningEnvironments) {
+			tearDownEnvironment(testProject, new NullProgressMonitor());
+		}
+	}
+
+	@Override
+	public boolean isTestEnvironmentLaunchedFor(TestProject testProject) {
+		return runningEnvironments.contains(testProject);
 	}
 
 }

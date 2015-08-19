@@ -31,6 +31,7 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
@@ -159,7 +160,11 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 
 	private TestResult executeInVagrant(TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
-		monitor.beginTask("Starting test execution environment...", 3);
+		int workToDo = 3;
+		if (testStructure instanceof TestSuite) {
+			workToDo = workToDo + ((TestSuite) testStructure).getAllTestChildrensAndReferedTestcases().size();
+		}
+		monitor.beginTask("Starting test execution environment...", workToDo);
 		LOGGER.info("Start test execution environment");
 		try {
 			TestExceutionEnvironmentService environmentService = context.get(TestExceutionEnvironmentService.class);
@@ -167,7 +172,6 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			monitor.worked(1);
 			TestResult result = environmentService.executeTests(testStructure, monitor);
 			monitor.worked(1);
-			environmentService.tearDownEnvironment(testStructure.getRootElement(), monitor);
 			return result;
 		} catch (IOException e) {
 			LOGGER.error(
