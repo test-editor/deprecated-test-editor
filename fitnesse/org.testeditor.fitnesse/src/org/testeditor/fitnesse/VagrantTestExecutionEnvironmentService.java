@@ -169,8 +169,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	protected String getExecutionScriptForWindows(TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("@echo off").append("\n");
-		sb.append("c:/vagrant_bin/jre/bin/java -DPATH_TO_TESTEDITOR_AUT=c:/vagrant_bin/testeditor.exe");
-		sb.append(" -Daut.workspace.path=c:/vagrant/autws -Dwaits.afterteststep=10ms");
+		sb.append("c:/vagrant_bin/jre/bin/java ");
 		sb.append("  -jar c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar");
 		sb.append("  -application org.testeditor.core.headlesstestrunner -consoleLog");
 		sb.append(" -data c:/vagrant_data/  ExecuteTest=");
@@ -192,8 +191,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		sb.append("#!/bin/bash").append("\n");
 		sb.append("sudo startx &").append("\n");
 		sb.append("export DISPLAY=:0").append("\n");
-		sb.append(
-				"sudo /usr/bin/java -DPATH_TO_TESTEDITOR_AUT=/vagrant_bin/testeditor -Daut.workspace.path=/vagrant/autws -Dwaits.afterteststep=10ms");
+		sb.append("sudo /usr/bin/java ");
 		sb.append(
 				" -jar /vagrant_bin/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar -application org.testeditor.core.headlesstestrunner");
 		sb.append(" -consoleLog -data /vagrant_data/  ExecuteTest=");
