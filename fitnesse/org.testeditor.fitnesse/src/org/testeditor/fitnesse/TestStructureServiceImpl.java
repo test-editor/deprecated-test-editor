@@ -155,13 +155,12 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		} else {
 			return new TestResult();
 		}
-
 	}
 
 	private TestResult executeInVagrant(TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
-		monitor.beginTask("Starting TestAgent...", 3);
-		LOGGER.info("Start Vagrant");
+		monitor.beginTask("Starting test execution environment...", 3);
+		LOGGER.info("Start test execution environment");
 		try {
 			TestExceutionEnvironmentService environmentService = context.get(TestExceutionEnvironmentService.class);
 			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
