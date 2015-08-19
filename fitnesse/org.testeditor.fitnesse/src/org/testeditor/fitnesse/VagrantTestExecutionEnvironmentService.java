@@ -46,7 +46,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	@Override
 	public void setUpEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
-		File vagrantFileDir = getVagrantFile(testProject);
+		File vagrantFileDir = getVagrantFileDirectory(testProject);
 		LOGGER.info("Vagrant path: " + vagrantFileDir);
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "up");
 		builder.directory(vagrantFileDir);
@@ -64,7 +64,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 			throws IOException, InterruptedException {
 		monitor.setTaskName("Execute Test... " + testStructure.getFullName());
 
-		File vagrantFileDir = getVagrantFile(testStructure.getRootElement());
+		File vagrantFileDir = getVagrantFileDirectory(testStructure.getRootElement());
 		String execCommand = createExecCommand(testStructure);
 
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "ssh", "-c", execCommand);
@@ -93,7 +93,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 			throws IOException, InterruptedException {
 		monitor.setTaskName("Shutdown TestAgent..");
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "destroy", "-f");
-		builder.directory(getVagrantFile(testProject));
+		builder.directory(getVagrantFileDirectory(testProject));
 		builder.redirectErrorStream(true);
 		Process destroyPrc = builder.start();
 		createAndRunLoggerOnStream(destroyPrc.getInputStream(), false, null);
@@ -119,8 +119,18 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		}
 	}
 
+	/**
+	 * Creates an script to execute the tests in the target system and returns
+	 * the command to launch it with vagrant.
+	 * 
+	 * @param testStructure
+	 *            to be executed as test.
+	 * @return string with the command used in the vagrant ssh call.
+	 * @throws IOException
+	 *             on failure.
+	 */
 	protected String createExecCommand(TestStructure testStructure) throws IOException {
-		File vagrantFileDir = getVagrantFile(testStructure.getRootElement());
+		File vagrantFileDir = getVagrantFileDirectory(testStructure.getRootElement());
 		List<String> lines = Files.readAllLines(new File(vagrantFileDir, "Vagrantfile").toPath(),
 				StandardCharsets.UTF_8);
 		boolean isLinux = true;
@@ -149,6 +159,13 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		return execCommand;
 	}
 
+	/**
+	 * Creates the content of a test execution script on windows.
+	 * 
+	 * @param testStructure
+	 *            used for test execution.
+	 * @return string with the script content.
+	 */
 	protected String getExecutionScriptForWindows(TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("@echo off").append("\n");
@@ -163,6 +180,13 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		return sb.toString();
 	}
 
+	/**
+	 * Creates the content of a test execution script on linux.
+	 * 
+	 * @param testStructure
+	 *            used for test execution.
+	 * @return string with the script content.
+	 */
 	protected String getExecutionScriptForLinux(TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("#!/bin/bash").append("\n");
@@ -180,11 +204,29 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		return sb.toString();
 	}
 
-	protected File getVagrantFile(TestProject testProject) {
+	/**
+	 * Looks up the directory containing the vagrant file in the testproject.
+	 * 
+	 * @param testProject
+	 *            with vagrant config.
+	 * @return file to the vagrantfile parent directory.
+	 */
+	protected File getVagrantFileDirectory(TestProject testProject) {
 		return new File(FitnesseFileSystemUtility.getPathToProject(testProject),
 				testProject.getTestProjectConfig().getTestEnvironmentConfiguration());
 	}
 
+	/**
+	 * Creates and starts a runnable watching the input stream. The content of
+	 * the stream is redirected to the logger.
+	 * 
+	 * @param inputStream
+	 *            to be redirected to the logger.
+	 * @param errorStream
+	 *            to indicate the log level.
+	 * @param monitor
+	 *            to show log entries.
+	 */
 	private void createAndRunLoggerOnStream(final InputStream inputStream, final boolean errorStream,
 			final IProgressMonitor monitor) {
 		new Thread(new Runnable() {
@@ -193,7 +235,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 				char[] cbuf = new char[8192];
 				int len = -1;
 				try {
-					InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
+					InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 					while ((len = reader.read(cbuf)) > 0) {
 						String message = new String(cbuf, 0, len);
 						if (message.contains("TE terminated.")) {
