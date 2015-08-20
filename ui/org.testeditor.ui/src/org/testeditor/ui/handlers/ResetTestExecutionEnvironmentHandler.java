@@ -23,6 +23,9 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.ui.constants.TestEditorConstants;
 
+/**
+ * Handler to Rest a Test execution environment.
+ */
 public class ResetTestExecutionEnvironmentHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ResetTestExecutionEnvironmentHandler.class);

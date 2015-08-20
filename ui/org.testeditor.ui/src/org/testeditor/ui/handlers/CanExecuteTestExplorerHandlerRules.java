@@ -282,6 +282,14 @@ public class CanExecuteTestExplorerHandlerRules {
 		return true;
 	}
 
+	/**
+	 * Can execute on this selection is determined. if the selection belongs to
+	 * a test project with test environment it will return true.
+	 * 
+	 * @param selection
+	 *            of the test explorer.
+	 * @return true on selection with test agent.
+	 */
 	public boolean canExecuteOnTestStructureWithLaunchedTestExecutionEnvironment(IStructuredSelection selection) {
 		if (selection.getFirstElement() instanceof TestStructure) {
 			TestStructure ts = (TestStructure) selection.getFirstElement();
