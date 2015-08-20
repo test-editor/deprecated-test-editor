@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -106,14 +107,19 @@ public class HeadlessTestRunnerApplication implements IApplication {
 			} catch (TestCycleDetectException e) {
 				LOGGER.warn("Cycle detected in: " + ts.getFullName());
 			}
-			interActionLogWatcherRunnable.setTestCaseCount(ts.getReferredTestStrcutures().size()
-					+ ts.getAllTestChildren().size());
+			interActionLogWatcherRunnable
+					.setTestCaseCount(ts.getReferredTestStrcutures().size() + ts.getAllTestChildren().size());
 		}
 		new Thread(interActionLogWatcherRunnable).start();
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
 		interActionLogWatcherRunnable.stopWatching();
 		LOGGER.info(getTestSummaryFrom(testResult));
 		publishTestResultFile(testResult);
+		if (args != null && Arrays.asList(args).contains("-keepRunning")) {
+			while (true) {
+				Thread.sleep(1000);
+			}
+		}
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
 		LOGGER.info("Shutdown Testengine.");
@@ -188,8 +194,8 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 * @throws IOException
 	 *             on reading project.
 	 */
-	public TestStructure getTestStructureToExecute(String[] args) throws InvalidArgumentException, IOException,
-			URISyntaxException {
+	public TestStructure getTestStructureToExecute(String[] args)
+			throws InvalidArgumentException, IOException, URISyntaxException {
 		Map<String, String> parameter = new HashMap<String, String>();
 		for (String string : args) {
 			if (string.contains("=")) {
