@@ -22,6 +22,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 
 /**
@@ -35,6 +36,9 @@ public class CanExecuteTestExplorerHandlerRules {
 	@Inject
 	private TestScenarioService testScenarioService;
 
+	@Inject
+	private TestExceutionEnvironmentService testExecService;
+
 	/**
 	 * Check if this Handler is enabled on the selection. Only one Teststructure
 	 * is valid as a selection.
@@ -44,9 +48,8 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * @return true if only one element is selected.
 	 */
 	public boolean canExecuteOnlyOneElementRule(IStructuredSelection selection) {
-		if (selection.size() == 1
-				&& !(selection.getFirstElement() instanceof TestProject && ((TestProject) selection.getFirstElement())
-						.getTestProjectConfig() == null)) {
+		if (selection.size() == 1 && !(selection.getFirstElement() instanceof TestProject
+				&& ((TestProject) selection.getFirstElement()).getTestProjectConfig() == null)) {
 			return true;
 		}
 		return false;
@@ -277,6 +280,14 @@ public class CanExecuteTestExplorerHandlerRules {
 			}
 		}
 		return true;
+	}
+
+	public boolean canExecuteOnTestStructureWithLaunchedTestExecutionEnvironment(IStructuredSelection selection) {
+		if (selection.getFirstElement() instanceof TestStructure) {
+			TestStructure ts = (TestStructure) selection.getFirstElement();
+			return testExecService.isTestEnvironmentLaunchedFor(ts.getRootElement());
+		}
+		return false;
 	}
 
 }

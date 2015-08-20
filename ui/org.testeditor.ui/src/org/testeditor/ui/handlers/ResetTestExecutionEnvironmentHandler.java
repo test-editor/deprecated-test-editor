@@ -23,13 +23,13 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.ui.constants.TestEditorConstants;
 
-public class TearDownTestExecutionEnvironmentHandler {
+public class ResetTestExecutionEnvironmentHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ResetTestExecutionEnvironmentHandler.class);
 
 	/**
-	 * Check if the current selection belongs to project that has a launched
-	 * test execution environment.
+	 * Check if the current selection belongs to project that has a lanched test
+	 * execution environment.
 	 * 
 	 * @param context
 	 *            to get the selection.
@@ -47,8 +47,8 @@ public class TearDownTestExecutionEnvironmentHandler {
 	}
 
 	/**
-	 * Executes the tear down of a test environment. It will only stop it,
-	 * nothing is reseted.
+	 * Executes the tear down of a test environment. It will stop it and reset
+	 * it to initial state.
 	 * 
 	 * @param context
 	 *            eclipse context to retrieve the current selection in the
@@ -63,9 +63,9 @@ public class TearDownTestExecutionEnvironmentHandler {
 		if (selection.getFirstElement() instanceof TestStructure) {
 			TestStructure ts = (TestStructure) selection.getFirstElement();
 			try {
-				testExecService.tearDownEnvironment(ts.getRootElement(), new NullProgressMonitor());
+				testExecService.resetEnvironment(ts.getRootElement(), new NullProgressMonitor());
 			} catch (IOException | InterruptedException e) {
-				LOGGER.error("Error tearDown Execution Environment.", e);
+				LOGGER.error("Error reset Execution Environment.", e);
 			}
 		}
 	}

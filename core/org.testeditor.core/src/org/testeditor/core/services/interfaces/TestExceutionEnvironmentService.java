@@ -61,7 +61,7 @@ public interface TestExceutionEnvironmentService {
 			throws IOException, InterruptedException;
 
 	/**
-	 * Cleans up the environment and releases any ressources.
+	 * Stops the environment.
 	 * 
 	 * @param testProject
 	 *            with configuration to the test environment.
@@ -74,6 +74,20 @@ public interface TestExceutionEnvironmentService {
 	 */
 	void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException;
+
+	/**
+	 * Cleans up the environment and releases any ressources.
+	 * 
+	 * @param testProject
+	 *            with configuration to the test environment.
+	 * @param monitor
+	 *            to report the progress.
+	 * @throws IOException
+	 *             on failure to setup the environment.
+	 * @throws InterruptedException
+	 *             on interrupting the setup.
+	 */
+	void resetEnvironment(TestProject testProject, IProgressMonitor monitor) throws IOException, InterruptedException;
 
 	/**
 	 * Cleans up all running environments.

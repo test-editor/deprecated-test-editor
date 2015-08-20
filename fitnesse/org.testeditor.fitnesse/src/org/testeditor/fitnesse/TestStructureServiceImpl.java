@@ -158,6 +158,19 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		}
 	}
 
+	/**
+	 * Executes the test in an vagrant environment.
+	 * 
+	 * @param testStructure
+	 *            to be executed
+	 * @param monitor
+	 *            used to report progress.
+	 * @return test result of the test execution
+	 * @throws SystemException
+	 *             on failure
+	 * @throws InterruptedException
+	 *             on user interrupt
+	 */
 	private TestResult executeInVagrant(TestStructure testStructure, IProgressMonitor monitor)
 			throws SystemException, InterruptedException {
 		int workToDo = 3;

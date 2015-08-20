@@ -100,7 +100,33 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	public void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
 		monitor.setTaskName("Shutdown TestAgent..");
+		ProcessBuilder builder = new ProcessBuilder("vagrant", "suspend", "-f");
+		internalExecutionOfShutdownTestEnvironment(builder, testProject);
+	}
+
+	@Override
+	public void resetEnvironment(TestProject testProject, IProgressMonitor monitor)
+			throws IOException, InterruptedException {
+		monitor.setTaskName("Shutdown and resetting TestAgent..");
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "destroy", "-f");
+		internalExecutionOfShutdownTestEnvironment(builder, testProject);
+	}
+
+	/**
+	 * Executes the shutdown of the vagrant box. The command is defined in the
+	 * builder.
+	 * 
+	 * @param builder
+	 *            to create the process with the predefined command.
+	 * @param testProject
+	 *            of the test environment.
+	 * @throws IOException
+	 *             on failure
+	 * @throws InterruptedException
+	 *             on user interrupt.
+	 */
+	private void internalExecutionOfShutdownTestEnvironment(ProcessBuilder builder, TestProject testProject)
+			throws IOException, InterruptedException {
 		configureBuilder(builder, getVagrantFileDirectory(testProject));
 		Process destroyPrc = builder.start();
 		createAndRunLoggerOnStream(destroyPrc.getInputStream(), false, null);
@@ -127,7 +153,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	}
 
 	/**
-	 * Checks if a process is alive
+	 * Checks if a process is alive.
 	 * 
 	 * @param process
 	 *            to be checked.

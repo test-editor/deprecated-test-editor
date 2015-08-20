@@ -41,6 +41,7 @@
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_MCg_YJSrEeSBt7RsTs2qPA" elementId="org.testeditor.ui.handledmenuitem.showChanges" label="%popupmenu.label.showChanges" iconURI="platform:/plugin/org.testeditor.ui/icons/show_changes.png" command="_5P-GYJSqEeSBt7RsTs2qPA"/>
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_JSfXUEauEeWR66uzhUPE3Q" elementId="org.testeditor.ui.tearDownTestEnv.handledmenuitem" label="Tear down test execution environment" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_UTcGYEcpEeWR66uzhUPE3Q" elementId="org.testeditor.ui.resetTestEnv.handledmenuitem" label="Reset test execution environment" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
               </menus>
               <toolbar xmi:id="_cl21AJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.toolbar.0">
                 <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA">
@@ -175,6 +176,7 @@
   <handlers xmi:id="_GloewOeTEeSASaPeHe3Yjw" elementId="org.testeditor.ui.handlers.SearchTestCase" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.SearchTestStructureHandler" command="_6eV80OeSEeSASaPeHe3Yjw"/>
   <handlers xmi:id="_X6YUQAglEeWSk-Zraq4Niw" elementId="org.testeditor.ui.handler.clone_teststructure" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.CloneTestStructureHandler" command="_N5bzwAglEeWSk-Zraq4Niw"/>
   <handlers xmi:id="_ZkEU8EaZEeWR66uzhUPE3Q" elementId="org.testeditor.ui.handler.tearDownTestExecEnv" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.TearDownTestExecutionEnvironmentHandler" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
+  <handlers xmi:id="_77sfcEcoEeWR66uzhUPE3Q" elementId="org.testeditor.ui.handler.resetTestExecEnv" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ResetTestExecutionEnvironmentHandler" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
   <bindingTables xmi:id="_vtvnGiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" bindingContext="_vtvnICNOEeKR9Jsu4DQSAw">
     <bindings xmi:id="_vtvnGyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+Q" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
     <bindings xmi:id="_vtvnHSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+S" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
@@ -311,6 +313,7 @@
   <commands xmi:id="_6eV80OeSEeSASaPeHe3Yjw" elementId="org.testeditor.ui.command.searchTestCase" commandName="org.testeditor.ui.command.searchTestCase"/>
   <commands xmi:id="_N5bzwAglEeWSk-Zraq4Niw" elementId="org.testeditor.ui.command.clone_teststructure" commandName="org.testeditor.ui.command.clone_teststructure"/>
   <commands xmi:id="_xjqGIEaPEeWR66uzhUPE3Q" elementId="org.testeditor.ui.command.tearDownTestExecEnv" commandName="org.testeditor.ui.command.tearDownTestExecEnv"/>
+  <commands xmi:id="_2uFLEEcoEeWR66uzhUPE3Q" elementId="org.testeditor.ui.command.resetTestExecEnv" commandName="org.testeditor.ui.command.resetTestExecEnv"/>
   <addons xmi:id="_vtvnKSNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.core.commands.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_vtvnKiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.contexts.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_vtvnKyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.bindings.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
