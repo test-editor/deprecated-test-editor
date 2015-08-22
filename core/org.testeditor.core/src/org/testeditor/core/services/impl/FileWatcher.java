@@ -39,7 +39,7 @@ public class FileWatcher {
 
 	private List<String> watchFileList = Arrays.asList("AllActionGroups.xml", "TechnicalBindingTypeCollection.xml");
 
-	private TestProject testProjekt;
+	private TestProject testProject;
 
 	@Inject
 	private IEventBroker eventBroker;
@@ -49,12 +49,12 @@ public class FileWatcher {
 	/**
 	 * Default Constructor.
 	 * 
-	 * @param testProjekt
+	 * @param testProject
 	 *            {@link TestProject} for watching
 	 */
 	@Inject
-	public FileWatcher(TestProject testProjekt) {
-		this.testProjekt = testProjekt;
+	public FileWatcher(TestProject testProject) {
+		this.testProject = testProject;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class FileWatcher {
 		// The monitor will perform polling on the folder every 5 seconds
 		final long pollingInterval = 5 * 1000;
 
-		String pathToTestFiles = testProjekt.getTestProjectConfig().getProjectPath();
+		String pathToTestFiles = testProject.getTestProjectConfig().getProjectPath();
 
 		monitor = new FileAlterationMonitor(pollingInterval);
 
@@ -78,7 +78,7 @@ public class FileWatcher {
 
 				try {
 
-					LOGGER.info("Projekt: " + testProjekt.getName());
+					LOGGER.info("Projekt: " + testProject.getName());
 					LOGGER.info("File changed: " + file.getCanonicalPath());
 
 					notifyObserver();
@@ -104,7 +104,7 @@ public class FileWatcher {
 	 */
 	private void notifyObserver() {
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED, testProjekt);
+			eventBroker.post(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED, testProject);
 		}
 	}
 
