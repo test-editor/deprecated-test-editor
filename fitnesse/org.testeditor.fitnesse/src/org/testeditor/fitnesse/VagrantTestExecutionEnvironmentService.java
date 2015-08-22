@@ -219,7 +219,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		StringBuilder sb = new StringBuilder();
 		sb.append("@echo off").append("\n");
 		sb.append("c:/vagrant_bin/jre/bin/java ");
-		sb.append("  -jar c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar");
+		sb.append("  -jar c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_*.jar");
 		sb.append("  -application org.testeditor.core.headlesstestrunner -consoleLog");
 		sb.append(" -data c:/vagrant_data/  ExecuteTest=");
 		sb.append(testStructure.getFullName());
@@ -242,7 +242,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 		sb.append("export DISPLAY=:0").append("\n");
 		sb.append("sudo /usr/bin/java ");
 		sb.append(
-				" -jar /vagrant_bin/plugins/org.eclipse.equinox.launcher_1.3.0.v20140415-2008.jar -application org.testeditor.core.headlesstestrunner");
+				" -jar /vagrant_bin/plugins/org.eclipse.equinox.launcher_*.jar -application org.testeditor.core.headlesstestrunner");
 		sb.append(" -consoleLog -data /vagrant_data/  ExecuteTest=");
 		sb.append(testStructure.getFullName());
 		sb.append("\n");
