@@ -15,10 +15,12 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
 import org.testeditor.ui.constants.TestEditorConstants;
@@ -47,7 +49,7 @@ public class TearDownTestExecutionEnvironmentHandler {
 	public boolean canExecute(IEclipseContext context, TestExceutionEnvironmentService testExecService) {
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		return new CanExecuteTestExplorerHandlerRules()
+		return ContextInjectionFactory.make(CanExecuteTestExplorerHandlerRules.class, context)
 				.canExecuteOnTestStructureWithLaunchedTestExecutionEnvironment(selection);
 	}
 
@@ -68,7 +70,9 @@ public class TearDownTestExecutionEnvironmentHandler {
 		if (selection.getFirstElement() instanceof TestStructure) {
 			TestStructure ts = (TestStructure) selection.getFirstElement();
 			try {
-				testExecService.tearDownEnvironment(ts.getRootElement(), new NullProgressMonitor());
+				NullProgressMonitor monitor = new NullProgressMonitor();
+				TestProject testProject = ts.getRootElement();
+				testExecService.tearDownEnvironment(testProject, monitor);
 			} catch (IOException | InterruptedException e) {
 				LOGGER.error("Error tearDown Execution Environment.", e);
 			}

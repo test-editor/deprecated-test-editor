@@ -100,7 +100,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	public void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
 		monitor.setTaskName("Shutdown TestAgent..");
-		ProcessBuilder builder = new ProcessBuilder("vagrant", "suspend", "-f");
+		ProcessBuilder builder = new ProcessBuilder("vagrant", "suspend");
 		internalExecutionOfShutdownTestEnvironment(builder, testProject);
 	}
 

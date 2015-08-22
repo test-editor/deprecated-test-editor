@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -45,7 +46,7 @@ public class ResetTestExecutionEnvironmentHandler {
 	public boolean canExecute(IEclipseContext context, TestExceutionEnvironmentService testExecService) {
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		return new CanExecuteTestExplorerHandlerRules()
+		return ContextInjectionFactory.make(CanExecuteTestExplorerHandlerRules.class, context)
 				.canExecuteOnTestStructureWithLaunchedTestExecutionEnvironment(selection);
 	}
 

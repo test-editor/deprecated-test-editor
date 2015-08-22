@@ -128,4 +128,10 @@ public class PartServiceAdapter implements EPartService {
 	public void switchPerspective(MPerspective perspective) {
 	}
 
+	@Override
+	public boolean isPartOrPlaceholderInPerspective(String arg0, MPerspective arg1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

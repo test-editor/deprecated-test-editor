@@ -14,6 +14,9 @@ package org.testeditor.ui.parts.commons;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -28,6 +31,7 @@ import org.testeditor.core.model.teststructure.BrokenTestStructure;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
+import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
@@ -52,8 +56,30 @@ public class TestStructureTreeLabelProviderTest {
 	 */
 	@Before
 	public void setUp() {
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-				TestStructureTree.class).getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(TestStructureTree.class).getBundleContext());
+		context.set(TeamShareStatusServiceNew.class, new TeamShareStatusServiceNew() {
+
+			@Override
+			public void update(TestProject testProject) throws FileNotFoundException {
+
+			}
+
+			@Override
+			public boolean remove(TestProject testProject) {
+				return false;
+			}
+
+			@Override
+			public boolean isModified(TestStructure testStructure) {
+				return false;
+			}
+
+			@Override
+			public List<String> getModified(TestProject testProject) {
+				return null;
+			}
+		});
 		context.set(Logger.class, null);
 		labelProvider = ContextInjectionFactory.make(TestStructureTreeLabelProvider.class, context);
 	}
