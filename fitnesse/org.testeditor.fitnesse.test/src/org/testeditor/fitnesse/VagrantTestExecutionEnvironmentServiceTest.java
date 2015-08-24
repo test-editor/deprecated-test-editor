@@ -31,7 +31,7 @@ public class VagrantTestExecutionEnvironmentServiceTest {
 	public void testGetExecutionScriptForWindows() {
 		VagrantTestExecutionEnvironmentService testExecService = new VagrantTestExecutionEnvironmentService();
 		String script = testExecService.getExecutionScriptForWindows(createTestStructure());
-		assertTrue(script.contains("c:/vagrant_bin/jre/bin/java"));
+		assertTrue(script.contains("c:/vagrant_bin/eclipsec"));
 		osIndependentChecks(script);
 	}
 

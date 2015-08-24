@@ -141,7 +141,7 @@ public final class FitNesseRestClient {
 				}
 				Thread.sleep(5);
 			}
-
+			monitor.subTask("Collecting results.");
 			FitNesseResultReader reader = new FitnesseTestExecutionResultReader();
 			FileInputStream fileInputStream = new FileInputStream(resultFile);
 			TestResult result = reader.readTestResult(fileInputStream);

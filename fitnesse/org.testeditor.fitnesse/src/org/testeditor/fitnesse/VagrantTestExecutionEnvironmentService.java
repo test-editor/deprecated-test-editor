@@ -218,8 +218,9 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	protected String getExecutionScriptForWindows(TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("@echo off").append("\n");
-		sb.append("c:/vagrant_bin/jre/bin/java ");
-		sb.append("  -jar c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_*.jar");
+		sb.append("c:/vagrant_bin/eclipsec ");
+		// sb.append(" -jar
+		// c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_*.jar");
 		sb.append("  -application org.testeditor.core.headlesstestrunner -consoleLog");
 		sb.append(" -data c:/vagrant_data/  ExecuteTest=");
 		sb.append(testStructure.getFullName());
