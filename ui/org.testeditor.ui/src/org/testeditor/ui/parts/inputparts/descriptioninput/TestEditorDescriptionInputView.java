@@ -22,8 +22,8 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestComponent;
@@ -59,8 +59,8 @@ public class TestEditorDescriptionInputView extends TestEditorInputView {
 	@Override
 	public void createUI(Composite compositeContent) {
 		if (compositeContent != null) {
-			compositeContent.setLayout(new FillLayout());
-
+			compositeContent.setLayout(new GridLayout(1, false));
+			compositeContent.setLayoutData(new GridData(GridData.FILL_BOTH));
 			// Create the ScrolledComposite to scroll horizontally and
 			// vertically
 			sc = new ScrolledComposite(compositeContent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -68,6 +68,7 @@ public class TestEditorDescriptionInputView extends TestEditorInputView {
 			// Expand both horizontally and vertically
 			sc.setExpandHorizontal(true);
 			sc.setExpandVertical(true);
+			sc.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 			subContainer = new Composite(sc, SWT.NONE);
 			sc.setContent(subContainer);
@@ -176,7 +177,8 @@ public class TestEditorDescriptionInputView extends TestEditorInputView {
 	 *            position of the cursor.
 	 * 
 	 */
-	public void setDescriptonTextToChangeable(String description, int lineNumber, int releasedLine, int cursorPosInLine) {
+	public void setDescriptonTextToChangeable(String description, int lineNumber, int releasedLine,
+			int cursorPosInLine) {
 		descriptionText.setText(description);
 
 		setSelectedLine(lineNumber);

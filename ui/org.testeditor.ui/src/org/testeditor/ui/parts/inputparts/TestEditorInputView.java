@@ -52,8 +52,7 @@ public abstract class TestEditorInputView {
 
 		if (compositeContent != null) {
 			editComposite = compositeContent;
-			GridLayout gridLayout = new GridLayout();
-			gridLayout.numColumns = 1;
+			GridLayout gridLayout = new GridLayout(1, false);
 			editComposite.setLayout(gridLayout);
 			editComposite.setEnabled(false);
 		}
