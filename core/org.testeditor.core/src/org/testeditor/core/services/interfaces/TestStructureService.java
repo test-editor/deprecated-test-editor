@@ -94,6 +94,41 @@ public interface TestStructureService {
 			throws SystemException, InterruptedException;
 
 	/**
+	 * Pauses the execution of a test.
+	 * 
+	 * @param testStructure
+	 *            that is currently executed.
+	 * @throws SystemException
+	 *             is thrown if a system exception occurred (e.g. third party
+	 *             system unavailable
+	 * 
+	 */
+	void pauseTest(TestStructure testStructure) throws SystemException;
+
+	/**
+	 * Resumes the test execution. A paused test will be continoud.
+	 * 
+	 * @param testStructure
+	 *            that is currently executed and in pause state.
+	 * @throws SystemException
+	 *             is thrown if a system exception occurred (e.g. third party
+	 *             system unavailable
+	 */
+	void resumeTest(TestStructure testStructure) throws SystemException;
+
+	/**
+	 * Executes one single step in a paused execution. After that step the
+	 * execution is still in a pause state.
+	 * 
+	 * @param testStructure
+	 *            that is currently executed and in pause state.
+	 * @throws SystemException
+	 *             is thrown if a system exception occurred (e.g. third party
+	 *             system unavailable
+	 */
+	void stepwiseTest(TestStructure testStructure) throws SystemException;
+
+	/**
 	 * Returns the latest test execution log.
 	 * 
 	 * @param testStructure

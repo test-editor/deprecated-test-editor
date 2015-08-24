@@ -151,4 +151,22 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 				.lookUpTestStructureFullNameMatchedToPath(testProject, path);
 	}
 
+	@Override
+	public void pauseTest(TestStructure testStructure) throws SystemException {
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.pauseTest(testStructure);
+	}
+
+	@Override
+	public void resumeTest(TestStructure testStructure) throws SystemException {
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.resumeTest(testStructure);
+	}
+
+	@Override
+	public void stepwiseTest(TestStructure testStructure) throws SystemException {
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.stepwiseTest(testStructure);
+	}
+
 }

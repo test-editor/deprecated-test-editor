@@ -46,7 +46,6 @@ import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.fitnesse.util.FitNesseRestClient;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorFontConstants;
@@ -196,7 +195,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 	 *             by user interrupt
 	 * @return the TestResult of the Test execution.
 	 */
-	public TestResult executeTest(final TestStructure toExecute) throws InvocationTargetException, InterruptedException {
+	public TestResult executeTest(final TestStructure toExecute)
+			throws InvocationTargetException, InterruptedException {
 
 		this.toExecute = toExecute;
 		testResult = null;
@@ -206,14 +206,15 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				try {
 					logViewer.startTailOnTestLog(toExecute);
-					String executeTestName = translationService.translate("%execute.test.name", toExecute.getFullName());
+					String executeTestName = translationService.translate("%execute.test.name",
+							toExecute.getFullName());
 
 					monitor.beginTask(executeTestName, IProgressMonitor.UNKNOWN);
 					InterActionLogWatcherRunnable watcherRunnable = null;
 					if (toExecute instanceof TestSuite) {
 						watcherRunnable = new InterActionLogWatcherRunnable(monitor);
-						watcherRunnable.setTestCaseCount(((TestSuite) toExecute)
-								.getAllTestChildrensAndReferedTestcases().size());
+						watcherRunnable.setTestCaseCount(
+								((TestSuite) toExecute).getAllTestChildrensAndReferedTestcases().size());
 						new Thread(watcherRunnable).start();
 					}
 					testResult = testStructureService.executeTestStructure(toExecute, monitor);
@@ -263,7 +264,8 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 		// adding new button for closing the dialog on demand
 
 		final Button pauseButton = createButton(parent, IDialogConstants.STOP_ID, IDialogConstants.STOP_LABEL, false);
-		final Button resumeButton = createButton(parent, IDialogConstants.IGNORE_ID, IDialogConstants.STOP_LABEL, false);
+		final Button resumeButton = createButton(parent, IDialogConstants.IGNORE_ID, IDialogConstants.STOP_LABEL,
+				false);
 		final Button stepwiseButton = createButton(parent, IDialogConstants.INTERNAL_ID, IDialogConstants.STOP_LABEL,
 				false);
 
@@ -279,7 +281,7 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 				LOGGER.trace("PAUSE ..........");
 				try {
-					FitNesseRestClient.pauseTest(toExecute);
+					testStructureService.pauseTest(toExecute);
 
 					resumeButton.setEnabled(true);
 					stepwiseButton.setEnabled(true);
@@ -302,7 +304,7 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 				LOGGER.trace("RESUME ..........");
 				try {
-					FitNesseRestClient.resumeTest(toExecute);
+					testStructureService.resumeTest(toExecute);
 
 					resumeButton.setEnabled(false);
 					stepwiseButton.setEnabled(false);
@@ -324,7 +326,7 @@ public class TestExecutionProgressDialog extends ProgressMonitorDialog {
 
 				LOGGER.trace("Step forward ..........");
 				try {
-					FitNesseRestClient.stepwiseTest(toExecute);
+					testStructureService.stepwiseTest(toExecute);
 
 					resumeButton.setEnabled(true);
 					stepwiseButton.setEnabled(true);

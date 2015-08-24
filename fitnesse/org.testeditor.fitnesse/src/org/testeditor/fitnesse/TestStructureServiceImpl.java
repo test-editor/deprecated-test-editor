@@ -287,4 +287,19 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		return new FitnesseFileSystemTestStructureService().lookUpTestStructureFullNameMatchedToPath(testProject, path);
 	}
 
+	@Override
+	public void pauseTest(TestStructure testStructure) throws SystemException {
+		FitNesseRestClient.pauseTest(testStructure);
+	}
+
+	@Override
+	public void resumeTest(TestStructure testStructure) throws SystemException {
+		FitNesseRestClient.resumeTest(testStructure);
+	}
+
+	@Override
+	public void stepwiseTest(TestStructure testStructure) throws SystemException {
+		FitNesseRestClient.stepwiseTest(testStructure);
+	}
+
 }

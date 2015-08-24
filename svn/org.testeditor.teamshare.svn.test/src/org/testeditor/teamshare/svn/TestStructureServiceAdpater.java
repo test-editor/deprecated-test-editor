@@ -89,4 +89,16 @@ public class TestStructureServiceAdpater implements TestStructureService {
 		return null;
 	}
 
+	@Override
+	public void pauseTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public void resumeTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public void stepwiseTest(TestStructure testStructure) throws SystemException {
+	}
+
 }
