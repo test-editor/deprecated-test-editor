@@ -157,8 +157,6 @@ public class TestHistoryView {
 	/**
 	 * expands the columns, so that every entry is visible.
 	 * 
-	 * @param table
-	 *            the Table
 	 */
 	public void packColumns() {
 		Table table = tableViewer.getTable();
