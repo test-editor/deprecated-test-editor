@@ -23,10 +23,10 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.testresult.TestResult;
+import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.model.teststructure.TestType;
 
 /**
  * Service for save test result for running tests.
@@ -49,11 +49,9 @@ public class TestStateProtocolService implements IContextFunction {
 	 */
 	public void set(TestStructure test, TestResult testResult) {
 
-		TestType testType = TestType.valueOf(test.getPageType().toUpperCase());
-
-		if (testType == TestType.TEST) {
+		if (test instanceof TestCase) {
 			protocolMap.put(test, testResult);
-		} else if (testType == TestType.SUITE) {
+		} else if (test instanceof TestSuite) {
 
 			// suite counts
 			protocolMap.put(test, testResult);

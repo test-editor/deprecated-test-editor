@@ -15,6 +15,7 @@ package org.testeditor.core.model.teststructure;
  * Enumeration for type of test.
  * 
  */
+@Deprecated
 public enum TestType {
 
 	SUITE("suite"), TEST("test"), TESTPROJECT("testproject"), TESTSCENARIO("scenario"), SCENARIOSUITE("sceanriosuite");

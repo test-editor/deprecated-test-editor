@@ -137,7 +137,6 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 			return null;
 		}
 		TestResult testResult = testProtocolService.get(testCase);
-
 		TestProjectConfig testProjectConfig = testCase.getRootElement().getTestProjectConfig();
 		if (testProjectConfig.isTeamSharedProject()) {
 
@@ -187,9 +186,8 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 	 * @return Image
 	 */
 	private Image getTestProjectImage(TestProject testProject) {
-		if (testProject.getTestProjectConfig() == null
-				|| testProject.getTestProjectConfig().getProjectConfigVersion()
-						.equals(TestProjectService.UNSUPPORTED_CONFIG_VERSION)) {
+		if (testProject.getTestProjectConfig() == null || testProject.getTestProjectConfig().getProjectConfigVersion()
+				.equals(TestProjectService.UNSUPPORTED_CONFIG_VERSION)) {
 			return IconConstants.ICON_WARNING_SMALL;
 		}
 		TestProjectConfig testProjectConfig = testProject.getTestProjectConfig();

@@ -138,9 +138,10 @@ public abstract class FitnesseMultiResultReader {
 		if (elementsByTagName.getLength() > 0) {
 			name = elementsByTagName.item(0).getTextContent().trim();
 		}
-		elementsByTagName = fstElmnt.getElementsByTagName("relativePageName");
+		elementsByTagName = fstElmnt.getElementsByTagName("pageHistoryLink");
 		if (elementsByTagName.getLength() > 0) {
-			name = elementsByTagName.item(0).getTextContent().trim();
+			String link = elementsByTagName.item(0).getTextContent().trim();
+			name = link.substring(0, link.indexOf("?"));
 		}
 
 		return name;
