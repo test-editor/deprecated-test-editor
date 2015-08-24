@@ -37,7 +37,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
@@ -156,7 +155,7 @@ public class TestHistoryPart {
 				addHistoryToTable(testResult);
 
 			}
-			packColumns(getTestHistoryPart().getTableViewer().getTable());
+			getTestHistoryPart().packColumns();
 			getTestHistoryPart().setVisible();
 		}
 
@@ -205,8 +204,8 @@ public class TestHistoryPart {
 				EPartService partService = context.get(EPartService.class);
 				MPart part = partService.showPart("org.testeditor.ui.testresultexecutionpart", PartState.ACTIVATE);
 				TestExecutionResultViewPart trPart = (TestExecutionResultViewPart) part.getObject();
-				trPart.setTestResultURL("http://localhost:" + testProjectConfig.getPort() + "/"
-						+ testResult.getResultLink());
+				trPart.setTestResultURL(
+						"http://localhost:" + testProjectConfig.getPort() + "/" + testResult.getResultLink());
 
 			}
 		});
@@ -252,25 +251,6 @@ public class TestHistoryPart {
 		String dateFormat = translationService.translate("%DateFormatString");
 		DateFormat df = new SimpleDateFormat(dateFormat);
 		return df.format(date);
-	}
-
-	/**
-	 * expands the columns, so that every entry is visible.
-	 * 
-	 * @param table
-	 *            the Table
-	 */
-	private void packColumns(Table table) {
-
-		for (int index = 0; index < table.getColumnCount() - 1/*
-															 * only for visible
-															 * columns
-															 */; index++) {
-			table.getColumn(index).pack();
-		}
-		if (!table.isVisible()) {
-			table.setVisible(true);
-		}
 	}
 
 	/**

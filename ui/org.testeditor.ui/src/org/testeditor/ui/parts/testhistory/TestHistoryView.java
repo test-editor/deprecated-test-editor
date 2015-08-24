@@ -16,12 +16,12 @@ import javax.inject.Inject;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -38,7 +38,6 @@ public class TestHistoryView {
 	private TableViewer tableViewer;
 	private Composite mainComposite;
 	private Label nameOfTestHistory;
-	private ScrolledComposite scrolledComposite;
 
 	/**
 	 * Building the ui.
@@ -76,11 +75,8 @@ public class TestHistoryView {
 	 *            the composite of the parent
 	 */
 	private void createHistoryTable(Composite parent) {
-		scrolledComposite = new ScrolledComposite(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setExpandHorizontal(true);
-		scrolledComposite.setExpandVertical(true);
 
-		tableViewer = new TableViewer(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
 
@@ -99,7 +95,6 @@ public class TestHistoryView {
 
 		TableColumn tblclmnLink = new TableColumn(tableViewer.getTable(), SWT.NONE);
 		tblclmnLink.setText(translationService.translate("%link"));
-		scrolledComposite.setContent(tableViewer.getTable());
 
 		new TableColumn(tableViewer.getTable(), SWT.NONE); // extraColumn
 															// without contents
@@ -110,7 +105,6 @@ public class TestHistoryView {
 	 * @return the TableViewer
 	 */
 	public TableViewer getTableViewer() {
-
 		return tableViewer;
 	}
 
@@ -120,7 +114,6 @@ public class TestHistoryView {
 	public void clearTable() {
 		if (!tableViewer.getTable().isDisposed()) {
 			tableViewer.getTable().clearAll();
-			tableViewer.getTable().setItemCount(0);
 			tableViewer.getTable().removeAll();
 		}
 	}
@@ -133,8 +126,8 @@ public class TestHistoryView {
 	protected void setTitle(String name) {
 		if (!nameOfTestHistory.isDisposed()) {
 			nameOfTestHistory.setText(translationService.translate("%label.testhistory.of") + ": " + name);
-			nameOfTestHistory.getParent().layout(true, true);
 			nameOfTestHistory.setVisible(true);
+			nameOfTestHistory.getParent().layout(true, true);
 		}
 	}
 
@@ -159,7 +152,25 @@ public class TestHistoryView {
 		if (!nameOfTestHistory.isDisposed()) {
 			nameOfTestHistory.setVisible(false);
 		}
+	}
 
+	/**
+	 * expands the columns, so that every entry is visible.
+	 * 
+	 * @param table
+	 *            the Table
+	 */
+	public void packColumns() {
+		Table table = tableViewer.getTable();
+		for (int index = 0; index < table.getColumnCount()
+				- 1/*
+					 * only for visible columns
+					 */; index++) {
+			table.getColumn(index).pack();
+		}
+		if (!table.isVisible()) {
+			table.setVisible(true);
+		}
 	}
 
 }
