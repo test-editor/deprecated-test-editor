@@ -40,8 +40,8 @@
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_Q7dukGpqEeSOgPsPr_FOyw" elementId="org.testeditor.ui.handledmenuitem.revertElement" label="%popupmenu.label.revertElement" iconURI="platform:/plugin/org.testeditor.ui/icons/revert.gif" command="_pwlOAGpqEeSOgPsPr_FOyw"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_MCg_YJSrEeSBt7RsTs2qPA" elementId="org.testeditor.ui.handledmenuitem.showChanges" label="%popupmenu.label.showChanges" iconURI="platform:/plugin/org.testeditor.ui/icons/show_changes.png" command="_5P-GYJSqEeSBt7RsTs2qPA"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_JSfXUEauEeWR66uzhUPE3Q" elementId="org.testeditor.ui.tearDownTestEnv.handledmenuitem" label="Tear down test execution environment" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_UTcGYEcpEeWR66uzhUPE3Q" elementId="org.testeditor.ui.resetTestEnv.handledmenuitem" label="Reset test execution environment" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_JSfXUEauEeWR66uzhUPE3Q" elementId="org.testeditor.ui.tearDownTestEnv.handledmenuitem" label="%popupmenu.label.tearDownTestEnv" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_UTcGYEcpEeWR66uzhUPE3Q" elementId="org.testeditor.ui.resetTestEnv.handledmenuitem" label="%popupmenu.label.resetTestEnv" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
               </menus>
               <toolbar xmi:id="_cl21AJ6xEeK2Weme3hCR7g" elementId="org.testeditor.ui.toolbar.0">
                 <children xsi:type="menu:HandledToolItem" xmi:id="_x2pi0AA9EeOqq_-fy73ryQ" elementId="org.testeditor.ui.handledtoolitem.startTest2" label="%handledtoolitem.label.1" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="%handledtoolitem.run.test.tooltip" enabled="false" command="_4tsekEqgEeKVwrxWYw_qcA">
