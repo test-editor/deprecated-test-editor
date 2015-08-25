@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testExplorer.handler;
 
+import static java.lang.System.lineSeparator;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,7 +39,6 @@ import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.handlers.DeleteTestHandler;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
-import static java.lang.System.lineSeparator;
 
 /**
  * purges the test-history of the selected element.
@@ -76,8 +77,8 @@ public class PurgeTestHistoryHandler {
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
 		return !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarienSuiteRule(selection)
 				&& !canExecuteTestExplorerHandlerRules.canExecuteOnTestScenarioRule(selection)
-				&& (selection.getFirstElement() instanceof TestCase || selection.getFirstElement() instanceof TestSuite || selection
-						.getFirstElement() instanceof TestProject);
+				&& (selection.getFirstElement() instanceof TestCase || selection.getFirstElement() instanceof TestSuite
+						|| selection.getFirstElement() instanceof TestProject);
 	}
 
 	/**
@@ -114,7 +115,7 @@ public class PurgeTestHistoryHandler {
 						e.getLocalizedMessage());
 			}
 			TestProject testProject = ((TestStructure) selection.getFirstElement()).getRootElement();
-			context.get(IEventBroker.class).send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED,
+			context.get(IEventBroker.class).send(TestEditorCoreEventConstants.TESTSTRUCTURE_HISTORY_DELETED,
 					testProject.getFullName());
 		}
 	}
@@ -161,14 +162,12 @@ public class PurgeTestHistoryHandler {
 		if (Display.getCurrent() != null) {
 			boolean runningInUIThread = Display.getCurrent().getActiveShell() != null;
 			if (runningInUIThread) {
-				return MessageDialog.openConfirm(
-						Display.getCurrent().getActiveShell(),
+				return MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
 						translationService.translate("%popupmenu.label.purgeHistory1"),
-						translationService.translate("%popupmenu.label.purgeHistory1")
-								+ " "
+						translationService.translate("%popupmenu.label.purgeHistory1") + " "
 								+ getCommaListOfTestStructuresNames(selection.iterator(), translationService, 1, true)
-										.toString() + " "
-								+ translationService.translate("%popupmenu.label.purgeHistory2"));
+										.toString()
+								+ " " + translationService.translate("%popupmenu.label.purgeHistory2"));
 			}
 		}
 		return true;
@@ -213,14 +212,14 @@ public class PurgeTestHistoryHandler {
 						sb.append(lineSeparator()).append("  ");
 						sb.append(translationService.translate("%popupmenu.label.purgeHistory.itemChildren"));
 						sb.append(" ");
-						sb.append(getCommaListOfTestStructuresNames(suite.getTestChildren().iterator(), translationService,
-								childrenDepth--, false));
+						sb.append(getCommaListOfTestStructuresNames(suite.getTestChildren().iterator(),
+								translationService, childrenDepth--, false));
 					}
 				} else if (!(testStructure instanceof TestSuite)) {
 					sb.append(testStructure.getName());
 				}
 			}
-			
+
 		}
 		return sb;
 	}
