@@ -11,9 +11,14 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testhistory;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,8 +26,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
@@ -34,6 +39,9 @@ public class TestHistoryView {
 
 	@Inject
 	private TestEditorTranslationService translationService;
+
+	@Inject
+	private IEclipseContext context;
 
 	private TableViewer tableViewer;
 	private Composite mainComposite;
@@ -62,7 +70,7 @@ public class TestHistoryView {
 				CustomWidgetIdConstants.TEST_HISTORY_LABEL);
 		nameOfTestHistory.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL));
 		Composite compositeForTable = new Composite(mainComposite, SWT.NONE);
-		compositeForTable.setLayout(new FillLayout(SWT.NONE));
+		compositeForTable.setLayout(new GridLayout(1, false));
 		compositeForTable.setLayoutData(gd);
 		createHistoryTable(compositeForTable);
 		mainComposite.setVisible(false);
@@ -79,25 +87,26 @@ public class TestHistoryView {
 		tableViewer = new TableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		tableViewer.getTable().setHeaderVisible(true);
 		tableViewer.getTable().setLinesVisible(true);
+		tableViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		tableViewer.getTable().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.HISTORY_TABLE);
 
-		new TableColumn(tableViewer.getTable(), SWT.NONE);
+		tableViewer.setLabelProvider(ContextInjectionFactory.make(TestHistoryLabelProvider.class, context));
+		tableViewer.setContentProvider(new ArrayContentProvider());
+
+		TableColumn executionResultColumn = new TableColumn(tableViewer.getTable(), SWT.NONE);
+		executionResultColumn.setWidth(20);
 
 		TableColumn tblclmnDatetime = new TableColumn(tableViewer.getTable(), SWT.NONE);
 		String columnHeaderDateTime = translationService.translate("%dateTime");
 		tblclmnDatetime.setText(columnHeaderDateTime);
+		tblclmnDatetime.setWidth(300);
 
 		TableColumn tblclmnTestergebnis = new TableColumn(tableViewer.getTable(), SWT.NONE);
 		String columnHeaderTestResults = translationService.translate("%testResults");
 		tblclmnTestergebnis.setText(columnHeaderTestResults);
-
-		TableColumn tblclmnLink = new TableColumn(tableViewer.getTable(), SWT.NONE);
-		tblclmnLink.setText(translationService.translate("%link"));
-
-		new TableColumn(tableViewer.getTable(), SWT.NONE); // extraColumn
-															// without contents
+		tblclmnTestergebnis.setWidth(400);
 	}
 
 	/**
@@ -136,7 +145,9 @@ public class TestHistoryView {
 	 * filling the table.
 	 */
 	protected void setVisible() {
-		mainComposite.setVisible(true);
+		if (!mainComposite.isVisible()) {
+			mainComposite.setVisible(true);
+		}
 	}
 
 	/**
@@ -154,21 +165,8 @@ public class TestHistoryView {
 		}
 	}
 
-	/**
-	 * expands the columns, so that every entry is visible.
-	 * 
-	 */
-	public void packColumns() {
-		Table table = tableViewer.getTable();
-		for (int index = 0; index < table.getColumnCount()
-				- 1/*
-					 * only for visible columns
-					 */; index++) {
-			table.getColumn(index).pack();
-		}
-		if (!table.isVisible()) {
-			table.setVisible(true);
-		}
+	public void setTestHistory(List<TestResult> testHistory) {
+		tableViewer.setInput(testHistory.toArray());
 	}
 
 }

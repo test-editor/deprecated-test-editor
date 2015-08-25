@@ -11,10 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testhistory;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,25 +25,18 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.TableItem;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.model.teststructure.TestType;
 import org.testeditor.core.services.interfaces.TestStructureService;
-import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.constants.TestEditorUIEventConstants;
-import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * 
@@ -69,11 +58,7 @@ public class TestHistoryPart {
 	@Inject
 	private TestStructureService testStructureService;
 
-	@Inject
-	private TestEditorTranslationService translationService;
-
 	private TestHistoryView testHistoryView;
-	private ArrayList<Button> buttonArray = new ArrayList<Button>();
 
 	private TestStructure testStructure;
 
@@ -107,7 +92,6 @@ public class TestHistoryPart {
 	@Optional
 	public void showTestHistory(
 			@UIEventTopic(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED) TestStructure testStructure) {
-		getTestHistoryPart().setTitle(testStructure.getName());
 		refreshHistoryTable(testStructure);
 	}
 
@@ -124,7 +108,7 @@ public class TestHistoryPart {
 			@UIEventTopic(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED) TestStructure aTestStructure) {
 		if (aTestStructure != null) {
 			if (aTestStructure.isExecutableTestStructure() && testStructure != aTestStructure) {
-				showTestHistory(aTestStructure);
+				refreshHistoryTable(aTestStructure);
 			}
 		}
 	}
@@ -136,12 +120,11 @@ public class TestHistoryPart {
 	 *            the {@linkTestStructure}
 	 */
 	private void refreshHistoryTable(TestStructure testStructure) {
+		if (testStructure.isExecutableTestStructure()) {
+			testHistoryView.setTitle(testStructure.getName());
+			this.testStructure = testStructure;
 
-		this.testStructure = testStructure;
-		if (!testStructure.getTypeName().equalsIgnoreCase(TestType.TESTSCENARIO.getName())) {
-
-			clearButtonArray();
-			getTestHistoryPart().clearTable();
+			testHistoryView.clearTable();
 
 			testHistory = null;
 			try {
@@ -150,107 +133,26 @@ public class TestHistoryPart {
 				LOGGER.error(e);
 			}
 
-			for (TestResult testResult : testHistory) {
+			testHistoryView.setTestHistory(testHistory);
+			final TestProjectConfig testProjectConfig = testStructure.getRootElement().getTestProjectConfig();
 
-				addHistoryToTable(testResult);
+			testHistoryView.getTableViewer().addDoubleClickListener(new IDoubleClickListener() {
 
-			}
-			getTestHistoryPart().packColumns();
-			getTestHistoryPart().setVisible();
+				@Override
+				public void doubleClick(DoubleClickEvent event) {
+					TestResult testResult = (TestResult) ((IStructuredSelection) event.getViewer().getSelection())
+							.getFirstElement();
+					EPartService partService = context.get(EPartService.class);
+					MPart part = partService.showPart("org.testeditor.ui.testresultexecutionpart", PartState.ACTIVATE);
+					TestExecutionResultViewPart trPart = (TestExecutionResultViewPart) part.getObject();
+					trPart.setTestResultURL(
+							"http://localhost:" + testProjectConfig.getPort() + "/" + testResult.getResultLink());
+				}
+			});
+
+			testHistoryView.setVisible();
 		}
 
-	}
-
-	/**
-	 * dispose all {@Link Button} and clears the buttonArray.
-	 */
-	private void clearButtonArray() {
-		for (Button button : buttonArray) {
-			button.dispose();
-		}
-		buttonArray.clear();
-
-	}
-
-	/**
-	 * Add an entry in history table.
-	 * 
-	 * @param testResult
-	 *            {@link TestResult}
-	 */
-	private void addHistoryToTable(final TestResult testResult) {
-
-		TableViewer tableViewer = getTestHistoryPart().getTableViewer();
-
-		final TestProjectConfig testProjectConfig = testStructure.getRootElement().getTestProjectConfig();
-
-		TableItem item = new TableItem(tableViewer.getTable(), SWT.NONE);
-		item.setText(getResultSummaryRowFrom(testResult));
-
-		if (testResult.isSuccessfully()) {
-			item.setImage(0, IconConstants.ICON_TESTCASE_SUCCESSED);
-		} else {
-			item.setImage(0, IconConstants.ICON_TESTCASE_FAILED);
-		}
-
-		Button button = new Button(tableViewer.getTable(), SWT.NONE);
-
-		button.setText("...");
-		button.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				EPartService partService = context.get(EPartService.class);
-				MPart part = partService.showPart("org.testeditor.ui.testresultexecutionpart", PartState.ACTIVATE);
-				TestExecutionResultViewPart trPart = (TestExecutionResultViewPart) part.getObject();
-				trPart.setTestResultURL(
-						"http://localhost:" + testProjectConfig.getPort() + "/" + testResult.getResultLink());
-
-			}
-		});
-
-		buttonArray.add(button);
-
-		TableEditor editor = new TableEditor(item.getParent());
-		editor.grabVertical = true;
-		editor.horizontalAlignment = SWT.LEFT;
-		editor.minimumWidth = 30;
-		editor.setEditor(button, item, 3);
-		editor.layout();
-	}
-
-	/**
-	 * Extracts Summary String from TestResult to be used in the table.
-	 * 
-	 * @param testResult
-	 *            as data for the extraction.
-	 * @return string array used in the table.
-	 */
-	public String[] getResultSummaryRowFrom(TestResult testResult) {
-		String formatedDateString = format(testResult.getResultDate());
-
-		String right = translationService.translate("%test.history.right") + ":" + testResult.getRight();
-		String wrong = translationService.translate("%test.history.wrong") + ":" + testResult.getWrong();
-		String ignored = translationService.translate("%test.history.ignored") + ":" + testResult.getIgnored();
-		String exception = translationService.translate("%test.history.exception") + ":" + testResult.getException();
-
-		String[] row = new String[] { "", formatedDateString, right + "; " + wrong + "; " + ignored + "; " + exception,
-				"" };
-		return row;
-	}
-
-	/**
-	 * formats the date to a string with county format.
-	 * 
-	 * @param date
-	 *            Date
-	 * @return a string representing the date
-	 */
-	private String format(Date date) {
-		String dateFormat = translationService.translate("%DateFormatString");
-		DateFormat df = new SimpleDateFormat(dateFormat);
-		return df.format(date);
 	}
 
 	/**
@@ -262,14 +164,6 @@ public class TestHistoryPart {
 	@PostConstruct
 	public void createControls(Composite parent) {
 		this.testHistoryView = ContextInjectionFactory.make(TestHistoryView.class, context);
-	}
-
-	/**
-	 * 
-	 * @return the testHistoryPart
-	 */
-	private TestHistoryView getTestHistoryPart() {
-		return testHistoryView;
 	}
 
 	/**

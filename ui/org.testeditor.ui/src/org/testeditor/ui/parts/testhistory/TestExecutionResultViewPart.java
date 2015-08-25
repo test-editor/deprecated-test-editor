@@ -20,7 +20,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.testeditor.core.model.testresult.TestResult;
 
 /**
  * 
@@ -56,15 +55,6 @@ public class TestExecutionResultViewPart {
 	private void createHeadline(Composite parent) {
 		Composite cmp = new Composite(parent, SWT.NORMAL);
 		new Label(cmp, SWT.NORMAL).setText("Test Results:");
-	}
-
-	/**
-	 * 
-	 * @param result
-	 *            TestResult to display it rendered with SWT Elements.
-	 */
-	public void setTestResult(TestResult result) {
-		// browser.setText(result.getHTMLReport());
 	}
 
 	/**
