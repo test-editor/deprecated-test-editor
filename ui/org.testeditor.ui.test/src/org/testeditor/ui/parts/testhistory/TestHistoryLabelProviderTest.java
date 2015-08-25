@@ -23,6 +23,10 @@ import org.junit.Test;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
+/**
+ * Modul Tests of TestHistoryLabelProvider.
+ *
+ */
 public class TestHistoryLabelProviderTest {
 
 	/**

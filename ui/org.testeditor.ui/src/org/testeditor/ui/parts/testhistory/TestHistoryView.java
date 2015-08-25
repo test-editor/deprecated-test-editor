@@ -165,6 +165,12 @@ public class TestHistoryView {
 		}
 	}
 
+	/**
+	 * Sets the data to be used in this view.
+	 * 
+	 * @param testHistory
+	 *            list of test history entries to be shown in the history view.
+	 */
 	public void setTestHistory(List<TestResult> testHistory) {
 		tableViewer.setInput(testHistory.toArray());
 	}
