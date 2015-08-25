@@ -66,10 +66,6 @@ public class ImportProjectHandler {
 	private TestEditorTranslationService translationService;
 
 	@Inject
-	@Named(IServiceConstants.ACTIVE_SHELL)
-	private Shell shell;
-
-	@Inject
 	private IEventBroker eventBroker;
 
 	@Inject
@@ -98,7 +94,7 @@ public class ImportProjectHandler {
 	 *            the IEclipseContext
 	 */
 	@Execute
-	public void execute(final IEclipseContext context) {
+	public void execute(final IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 
 		// create temporary project, that is used as the model of the wizard.
 		// After a successful checkout, this object is filled from the
@@ -143,8 +139,8 @@ public class ImportProjectHandler {
 					dialog.run(true, true, new IRunnableWithProgress() {
 
 						@Override
-						public void run(final IProgressMonitor monitor) throws InvocationTargetException,
-								InterruptedException {
+						public void run(final IProgressMonitor monitor)
+								throws InvocationTargetException, InterruptedException {
 							monitor.beginTask(translationService.translate("%import.project.wizard.msg"),
 									IProgressMonitor.UNKNOWN);
 
@@ -170,8 +166,8 @@ public class ImportProjectHandler {
 											.getTeamShareConfig();
 									testProjectService.reloadTestProjectFromFileSystem(testProject);
 									testProject.getTestProjectConfig().setTeamShareConfig(oldTeamShareconfig);
-									ApplicationLifeCycleHandler lifeCycleHandler = ContextInjectionFactory.make(
-											ApplicationLifeCycleHandler.class, context);
+									ApplicationLifeCycleHandler lifeCycleHandler = ContextInjectionFactory
+											.make(ApplicationLifeCycleHandler.class, context);
 									lifeCycleHandler.startBackendServer(testProject);
 								}
 								ok.flag = true;

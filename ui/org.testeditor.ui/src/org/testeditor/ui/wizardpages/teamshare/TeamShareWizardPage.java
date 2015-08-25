@@ -20,7 +20,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
-import org.eclipse.e4.ui.css.core.utils.StringUtils;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -118,7 +117,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 
 		// Required to avoid an error in the system
 		setControl(parent);
-
+		parent.pack();
 		validatePageAndSetComplete();
 	}
 
@@ -234,7 +233,7 @@ public abstract class TeamShareWizardPage extends WizardPage {
 		inputWidgets.add(text);
 		text.setToolTipText(fieldDeclaration.getTranslatedToolTip(translationService));
 		String oldValue = fieldDeclaration.getStringValue(getTestProjectConfig().getTeamShareConfig());
-		if (!StringUtils.isEmpty(oldValue)) {
+		if (!(oldValue == null || oldValue.length() < 1)) {
 			text.setText(oldValue);
 		}
 		text.addModifyListener(new ModifyListener() {
@@ -304,9 +303,8 @@ public abstract class TeamShareWizardPage extends WizardPage {
 
 		for (Text text : inputWidgets) {
 
-			if (text.getData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY).equals(
-					"wizard.share.project.url")
-					&& !text.getText().isEmpty()) {
+			if (text.getData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY)
+					.equals("wizard.share.project.url") && !text.getText().isEmpty()) {
 				setPageComplete(true);
 				return;
 			}

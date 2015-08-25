@@ -24,7 +24,7 @@ import org.testeditor.ui.wizardpages.DemoWizardPage;
 
 /**
  * 
- * Wizaard to create the demo projects for the Test-Editor.
+ * Wizard to create the demo projects for the Test-Editor.
  * 
  */
 public class DemoWizard extends Wizard {

@@ -67,10 +67,6 @@ public class ShareProjectHandler {
 	@Inject
 	private EventBroker eventBroker;
 
-	@Inject
-	@Named(IServiceConstants.ACTIVE_SHELL)
-	private Shell shell;
-
 	private String errorMessage;
 
 	private TeamShareShareProjectWizardPage shareProjectPage;
@@ -105,12 +101,11 @@ public class ShareProjectHandler {
 	 *            IEclipseContext
 	 */
 	@Execute
-	public void execute(IEclipseContext context) {
+	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		final TestProject testProject = (TestProject) testExplorer.getSelection().getFirstElement();
 
-		// New Wizard
-		Wizard nwiz = new Wizard() {
+		Wizard wiz = new Wizard() {
 
 			@Override
 			public boolean performFinish() {
@@ -122,11 +117,11 @@ public class ShareProjectHandler {
 		shareProjectPage = ContextInjectionFactory.make(TeamShareShareProjectWizardPage.class, context);
 
 		shareProjectPage.setTestProject(testProject);
-		nwiz.addPage(shareProjectPage);
-		nwiz.setWindowTitle(shareProjectPage.getTitleValue());
+		wiz.addPage(shareProjectPage);
+		wiz.setWindowTitle(shareProjectPage.getTitleValue());
 
 		// Show the wizard...
-		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
+		WizardDialog wizardDialog = new WizardDialog(shell, wiz);
 
 		if (wizardDialog.open() == Window.OK) {
 			ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
@@ -134,8 +129,8 @@ public class ShareProjectHandler {
 				dialog.run(true, false, new IRunnableWithProgress() {
 
 					@Override
-					public void run(final IProgressMonitor monitor) throws InvocationTargetException,
-							InterruptedException {
+					public void run(final IProgressMonitor monitor)
+							throws InvocationTargetException, InterruptedException {
 						monitor.beginTask(translationService.translate("%share.project.progress.msg"),
 								IProgressMonitor.UNKNOWN);
 
