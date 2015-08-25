@@ -92,6 +92,10 @@ public class ImportProjectHandler {
 	 * 
 	 * @param context
 	 *            the IEclipseContext
+	 * 
+	 * @param shell
+	 *            active shell used to create the wizard
+	 * 
 	 */
 	@Execute
 	public void execute(final IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {

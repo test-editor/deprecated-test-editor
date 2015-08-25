@@ -99,6 +99,8 @@ public class ShareProjectHandler {
 	 * 
 	 * @param context
 	 *            IEclipseContext
+	 * @param shell
+	 *            active shell used to create the wizard
 	 */
 	@Execute
 	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
