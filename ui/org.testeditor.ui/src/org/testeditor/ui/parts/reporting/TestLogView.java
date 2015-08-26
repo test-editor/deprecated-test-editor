@@ -80,7 +80,8 @@ public class TestLogView {
 		testLog = new StyledText(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		testLog.setEditable(false);
 		testLog.setLayoutData(new GridData(GridData.FILL_BOTH));
-		testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY, CustomWidgetIdConstants.TESTLOG_TEXT);
+		testLog.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TESTLOG_TEXT);
 	}
 
 	/**
@@ -100,10 +101,15 @@ public class TestLogView {
 		this.testStructure = testStructure;
 		try {
 			String logData = testStructureService.getTestExecutionLog(testStructure);
-			part.setLabel("Test log: " + testStructure.getName());
-			testLog.setText(logData);
-			if (ishHighlightLogEnabled()) {
-				testLog.setStyleRanges(getStyleRanges(logData));
+			if (logData != null) {
+				part.setLabel("Test log: " + testStructure.getName());
+				testLog.setText(logData);
+				if (ishHighlightLogEnabled()) {
+					testLog.setStyleRanges(getStyleRanges(logData));
+				}
+			} else {
+				part.setLabel("No Test log for: " + testStructure.getName());
+				testLog.setText("");
 			}
 		} catch (SystemException e) {
 			LOGGER.error("Reading Testlog", e);
