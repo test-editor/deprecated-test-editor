@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -442,8 +443,9 @@ public class TestProjectServiceImplTest {
 		service.createAndConfigureDemoProjects(demoProjectsDirs);
 		assertTrue("Expecting DemoWebtests",
 				new File(Platform.getLocation().toFile() + File.separator + "DemoWebTests").exists());
-		assertTrue("Expecting DemoWebtests with config.tpr.", new File(Platform.getLocation().toFile() + File.separator
-				+ "DemoWebTests" + File.separator + "config.tpr").exists());
+		assertTrue("Expecting DemoWebtests with config.tpr.", new File(
+				Platform.getLocation().toFile() + File.separator + "DemoWebTests" + File.separator + "config.tpr")
+						.exists());
 	}
 
 	/**
@@ -528,6 +530,38 @@ public class TestProjectServiceImplTest {
 	}
 
 	/**
+	 * Tests setting a url to a loaded testproject.
+	 * 
+	 * @throws Exception
+	 *             on test failue
+	 */
+	@Test
+	public void testGetURLFromProject() throws Exception {
+		TestProjectService service = ServiceLookUpForTest.getService(TestProjectService.class);
+		createProjectInFileSystem();
+		service.reloadProjectList();
+		TestProject testProject = service.getProjects().get(0);
+		assertNotNull(testProject.getUrl());
+		assertTrue(new File(testProject.getUrl().toURI()).exists());
+	}
+
+	/**
+	 * Tests setting a url to a renamed testproject.
+	 * 
+	 * @throws Exception
+	 *             on test failue
+	 */
+	@Test
+	public void testGetURLFroRenamedProject() throws Exception {
+		TestProjectService service = ServiceLookUpForTest.getService(TestProjectService.class);
+		createProjectInFileSystem();
+		service.reloadProjectList();
+		TestProject testProject = service.getProjects().get(0);
+		service.renameTestproject(testProject, "NewPrjName");
+		assertTrue(new File(testProject.getUrl().toURI()).exists());
+	}
+
+	/**
 	 * Cleans existing projects in the Workspace.
 	 * 
 	 * @throws Exception
@@ -575,6 +609,10 @@ public class TestProjectServiceImplTest {
 			} finally {
 				stream.close();
 			}
+			File internalDir = new File(new File(prjDir, "FitNesseRoot"), "MyPrj");
+			if (!internalDir.mkdirs()) {
+				fail("Error creating demo project fitnesse directory structure for renaming tests.");
+			}
 		}
 	}
 
@@ -593,9 +631,9 @@ public class TestProjectServiceImplTest {
 			}
 
 			@Override
-			protected void renameProjectInFileSystem(String newName, String oldName) throws SystemException,
-					IOException {
-				getProject(oldName).setName(newName);
+			protected void renameProjectInFileSystem(TestProject testProject, String newName)
+					throws SystemException, IOException {
+				getProject(testProject.getName()).setName(newName);
 			}
 		};
 	}

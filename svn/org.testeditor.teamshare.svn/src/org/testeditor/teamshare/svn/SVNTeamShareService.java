@@ -13,6 +13,7 @@ package org.testeditor.teamshare.svn;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -152,30 +153,15 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 * @param testStructure
 	 *            TestStructure
 	 * @return File
+	 * @throws SystemException
+	 *             on lookup the file of the TestStructure.
 	 */
-	private File getFile(TestStructure testStructure) {
-		return new File(getFolderName(testStructure));
-	}
-
-	/**
-	 * Returns the absolute path of the fitnesse folder of the given
-	 * teststructure. If the teststructure is a project
-	 * 
-	 * @param testStructure
-	 *            TestStructure
-	 * @return File
-	 */
-	private String getFolderName(TestStructure testStructure) {
-		TestProject testProject = testStructure.getRootElement();
-		if (testStructure instanceof TestProject) {
-			// in case of project the root of project above FitNesseRoot will be
-			// checked in.
-			return testProject.getTestProjectConfig().getProjectPath();
-		} else {
-			return testProject.getTestProjectConfig().getProjectPath() + "/FitNesseRoot/"
-					+ testStructure.getFullName().replaceAll("\\.", "/");
+	private File getFile(TestStructure testStructure) throws SystemException {
+		try {
+			return new File(testStructure.getUrl().toURI());
+		} catch (URISyntaxException e) {
+			throw new SystemException(e.getMessage(), e);
 		}
-
 	}
 
 	@Override
@@ -493,14 +479,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 		List<String> changeLists = new ArrayList<String>();
 		try {
-			String localPathInProject = "";
-			if (!testStructure.equals(testStructure.getRootElement())) {
-				localPathInProject = "/FitNesseRoot/" + testStructure.getFullName().replaceAll("\\.", "/");
-			}
-			statusClient.doStatus(
-					new File(new File(testStructure.getRootElement().getTestProjectConfig().getProjectPath())
-							.getAbsoluteFile() + localPathInProject),
-					SVNRevision.HEAD, SVNDepth.FILES, true, true, true, false, statusHandler, changeLists);
+			statusClient.doStatus(getFile(testStructure), SVNRevision.HEAD, SVNDepth.FILES, true, true, true, false,
+					statusHandler, changeLists);
 
 			updateSvnstate(testStructure);
 
@@ -538,16 +518,9 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		};
 		svnStatus = new StringBuilder("LocalFile;Status");
 		List<String> changeLists = new ArrayList<String>();
-		String localPathInProject = "";
-		if (!testStructure.equals(testStructure.getRootElement())) {
-			localPathInProject = "/FitNesseRoot/" + testStructure.getFullName().replace('.', '/');
-		}
-
-		String pathInProject = new File(testStructure.getRootElement().getTestProjectConfig().getProjectPath())
-				.getAbsoluteFile() + localPathInProject;
 
 		try {
-			statusClient.doStatus(new File(pathInProject), SVNRevision.HEAD, SVNDepth.INFINITY, true, true, true, false,
+			statusClient.doStatus(getFile(testStructure), SVNRevision.HEAD, SVNDepth.INFINITY, true, true, true, false,
 					statusHandler, changeLists);
 			return svnStatus.toString();
 		} catch (SVNException e) {
@@ -589,11 +562,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 		SVNClientManager clientManager = getSVNClientManager(testStructureChild.getRootElement());
 		SVNWCClient wcClient = clientManager.getWCClient();
-		String fullNamePath = testStructureChild.getFullName().replaceAll("\\.", "/");
-
-		String projectPath = testStructureChild.getRootElement().getTestProjectConfig().getProjectPath().replace("\\",
-				"/");
-		File file = new File(projectPath + "/FitNesseRoot/" + fullNamePath);
+		File file = getFile(testStructureChild);
 		try {
 			wcClient.doAdd(file, true, false, false, SVNDepth.FILES, false, false);
 
@@ -862,7 +831,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 		SVNWCClient wcClient = getSVNClientManager(testProject).getWCClient();
 
-		File file = new File(getFolderName(testStructure) + File.separator + fileName);
+		File file = new File(getFile(testStructure), fileName);
 
 		try {
 			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(file, false);
@@ -889,7 +858,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 		SVNWCClient wcClient = getSVNClientManager(testProject).getWCClient();
 
-		File file = new File(getFolderName(testStructure) + File.separator + fileName);
+		File file = new File(getFile(testStructure), fileName);
 
 		if (!file.exists()) {
 			LOGGER.info("file " + fileName + " does not exists");

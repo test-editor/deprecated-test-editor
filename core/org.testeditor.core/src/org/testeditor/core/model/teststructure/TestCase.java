@@ -32,10 +32,10 @@ public class TestCase extends TestFlow {
 	public TestDescription getNewTestDescription() {
 		return new TestDescriptionTestCase();
 	}
-	
+
 	@Override
 	public boolean isExecutableTestStructure() {
 		return true;
 	}
-	
+
 }

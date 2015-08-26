@@ -18,6 +18,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -245,6 +246,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			throws SystemException {
 		testProject.setName(projectDirectory.getName());
 		testProject.setTestProjectConfig(getProjectConfigFor(testProject));
+		testProject.setUrl(projectDirectory);
 
 		setPortFromOldProjectObjectTo(testProject);
 		if (plugInservice != null) {
@@ -266,6 +268,11 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
+		try {
+			testProject.setUrl(projectDirectory.toURI().toURL());
+		} catch (MalformedURLException e) {
+			throw new SystemException("Unable to convert project file to url.", e);
+		}
 		fileWatchService.watch(testProject);
 		return testProject;
 	}
@@ -514,7 +521,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		}
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
 		if (properties.containsKey(TestExceutionEnvironmentService.CONFIG)) {
-			testProjectConfig.setTestEnvironmentConfiguration(properties.getProperty(TestExceutionEnvironmentService.CONFIG));
+			testProjectConfig
+					.setTestEnvironmentConfiguration(properties.getProperty(TestExceutionEnvironmentService.CONFIG));
 		}
 		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
 			fixNonVersionProperties(properties);
@@ -938,7 +946,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	public TestProject renameTestproject(TestProject testProject, String newName) throws SystemException, IOException {
 		String oldName = testProject.getName();
 		renamedProjects.put(oldName, newName);
-		renameProjectInFileSystem(newName, oldName);
+		renameProjectInFileSystem(testProject, newName);
 		testProject.setName(newName);
 		testProject.setTestProjectConfig(getProjectConfigFor(newName));
 		if (eventBroker != null) {
@@ -951,20 +959,21 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	/**
 	 * Renames the TestProject in the file system.
 	 * 
+	 * @param testProject
+	 *            the project
 	 * @param newName
 	 *            of the project
 	 * 
-	 * @param oldName
-	 *            of the project
 	 * @throws IOException
 	 *             , while file handling
 	 * @throws SystemException
 	 *             if replacing of patterns failed
 	 * 
 	 */
-	protected void renameProjectInFileSystem(String newName, String oldName) throws SystemException, IOException {
+	protected void renameProjectInFileSystem(TestProject testProject, String newName)
+			throws SystemException, IOException {
 		File wsDir = Platform.getLocation().toFile();
-		File oldRootDir = new File(wsDir.getAbsoluteFile() + File.separator + oldName);
+		File oldRootDir = new File(wsDir.getAbsoluteFile() + File.separator + testProject.getName());
 
 		File destRootDir = new File(wsDir.getAbsoluteFile() + File.separator + newName);
 
@@ -978,7 +987,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		// */<projectName>/FitNesseRoot/<projectName>
 		String fitnesseRootPartRenameDir = destRootDir.getAbsolutePath() + File.separator + "FitNesseRoot"
 				+ File.separator;
-		File renameDir = new File(fitnesseRootPartRenameDir + oldName);
+		File renameDir = new File(fitnesseRootPartRenameDir + testProject.getName());
 		if (!renameDir.renameTo(new File(fitnesseRootPartRenameDir + newName))) {
 			String message = "Rename from " + renameDir.getName() + " to " + fitnesseRootPartRenameDir + newName
 					+ " failed.";
@@ -988,11 +997,13 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 		// change the configuration of the new project
 
-		replacePathStringsInContentFiles(new File(fitnesseRootPartRenameDir), oldName, newName);
+		replacePathStringsInContentFiles(new File(fitnesseRootPartRenameDir), testProject.getName(), newName);
 
 		TestProjectConfig config = getProjectConfigFor(newName);
-		config.setProjectLibraryConfig(replacePathInXMLProperties(config.getProjectLibraryConfig(), oldName, newName));
+		config.setProjectLibraryConfig(
+				replacePathInXMLProperties(config.getProjectLibraryConfig(), testProject.getName(), newName));
 		internalStoreProjectConfig(newName, config, true);
+		testProject.setUrl(destRootDir.toURI().toURL());
 	}
 
 	/**

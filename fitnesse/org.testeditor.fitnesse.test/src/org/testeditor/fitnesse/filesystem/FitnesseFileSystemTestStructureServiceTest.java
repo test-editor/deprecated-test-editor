@@ -62,6 +62,9 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		assertTrue(file.exists());
 		TestStructure testStructure = service.createTestStructureFrom(file);
 		assertTrue(testStructure instanceof TestCase);
+		assertNotNull(testStructure.getUrl());
+		assertTrue(new File(testStructure.getUrl().toURI()).exists());
+		assertEquals(FileLocator.toFileURL(this.getClass().getResource("/history/")), testStructure.getUrl());
 	}
 
 	/**

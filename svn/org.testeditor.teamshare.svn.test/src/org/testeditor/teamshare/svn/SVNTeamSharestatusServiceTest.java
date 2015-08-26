@@ -24,16 +24,11 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
-import org.eclipse.e4.core.contexts.IContextFunction;
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
@@ -129,8 +124,11 @@ public class SVNTeamSharestatusServiceTest {
 	 * @param password
 	 *            can be empty for local share
 	 * @return test project
+	 * @throws SystemException
+	 *             on setup test.
 	 */
-	private TestProject createTestProject(String repositoryPath, String userName, String password) {
+	private TestProject createTestProject(String repositoryPath, String userName, String password)
+			throws SystemException {
 
 		TestProject testProject = new TestProject();
 		testProject.setName(PROJEKT_NAME);
@@ -138,6 +136,7 @@ public class SVNTeamSharestatusServiceTest {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 
 		testProjectConfig.setProjectPath(projectpath);
+		testProject.setUrl(new File(projectpath));
 
 		SVNTeamShareConfig svnTeamShareConfig = new SVNTeamShareConfig();
 

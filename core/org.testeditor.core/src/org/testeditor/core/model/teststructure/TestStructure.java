@@ -11,7 +11,12 @@
  *******************************************************************************/
 package org.testeditor.core.model.teststructure;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+
+import org.testeditor.core.exceptions.SystemException;
 
 /**
  * Abstract POJO for the test structure (e.g. test cases and suites).
@@ -21,6 +26,7 @@ public abstract class TestStructure {
 	private String name;
 	private TestStructure parent;
 	private String oldNameBeforeRename;
+	private URL url;
 
 	/**
 	 * Initialize the Object with an empty Name and a null Parent.
@@ -55,6 +61,46 @@ public abstract class TestStructure {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * URL to the persistence representation of the TestStructure.
+	 * 
+	 * Example: file:///path/ws/TestProject/TestSuite/TestCase.txt
+	 * 
+	 * @return the URL to the persistence representation of the TestStructure.
+	 */
+	public URL getUrl() {
+		return url;
+	}
+
+	/**
+	 * Sets the URL to the persistence representation of the TestStructure.
+	 *
+	 * Example: file:///path/ws/TestProject/TestSuite/TestCase.txt
+	 *
+	 * @param url
+	 *            to the TestStructure
+	 */
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	/**
+	 * Sets the url based on a file.
+	 * 
+	 * @param file
+	 *            used to set the url from.
+	 * @throws SystemException
+	 *             on invalid url.
+	 * 
+	 */
+	public void setUrl(File file) throws SystemException {
+		try {
+			url = file.toURI().toURL();
+		} catch (MalformedURLException e) {
+			throw new SystemException(e.getMessage(), e);
+		}
 	}
 
 	/**

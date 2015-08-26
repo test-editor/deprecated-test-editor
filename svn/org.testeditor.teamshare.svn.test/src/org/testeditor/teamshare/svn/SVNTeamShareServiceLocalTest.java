@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -144,8 +145,11 @@ public class SVNTeamShareServiceLocalTest {
 	 * @param password
 	 *            can be empty for local share
 	 * @return test project
+	 * @throws MalformedURLException
+	 *             on problems creating testdata
 	 */
-	private TestProject createTestProject(String repositoryPath, String userName, String password) {
+	private TestProject createTestProject(String repositoryPath, String userName, String password)
+			throws MalformedURLException {
 
 		TestProject testProject = new TestProject();
 		testProject.setName(PROJEKT_NAME);
@@ -153,6 +157,8 @@ public class SVNTeamShareServiceLocalTest {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 
 		testProjectConfig.setProjectPath(projectpath);
+
+		testProject.setUrl(new File(projectpath).toURI().toURL());
 
 		SVNTeamShareConfig svnTeamShareConfig = new SVNTeamShareConfig();
 
@@ -207,10 +213,12 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.share(testProject, translationService, "");
 
 		// Add new Testpage
-		SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testPageName);
+		Path createNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME,
+				testPageName);
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(createNewTestPage.toFile());
 
 		testProject.addChild(testCase);
 
@@ -285,15 +293,17 @@ public class SVNTeamShareServiceLocalTest {
 		// Add new Suite
 		Path suitePath = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, suiteName);
 		// Add new Test
-		SvnHelper.createNewTestPage(suitePath.toString(), testName.toString());
+		Path createNewTestPage = SvnHelper.createNewTestPage(suitePath.toString(), testName.toString());
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName(suiteName);
+		testSuite.setUrl(suitePath.toFile());
 		testProject.addChild(testSuite);
 		teamService.addChild(testSuite, translationService);
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testName);
+		testCase.setUrl(createNewTestPage.toFile());
 
 		testSuite.addChild(testCase);
 		teamService.addChild(testCase, translationService);
@@ -357,6 +367,7 @@ public class SVNTeamShareServiceLocalTest {
 			}
 		});
 		localDemoSuite.setChildCountInBackend(1);
+		localDemoSuite.setUrl(loginSuite.getParentFile());
 		localDemoSuite.setName("LocalDemoSuite");
 		testProject.addChild(localDemoSuite);
 
@@ -464,6 +475,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(createdNewTestPage.toFile());
 
 		testProject.addChild(testCase);
 		TestStructure parent = testCase.getParent();
@@ -508,6 +520,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName(testPageName);
+		testSuite.setUrl(createdNewSuite.toFile());
 
 		testProject.addChild(testSuite);
 		TestStructure parent = testSuite.getParent();
@@ -518,7 +531,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
-
+		testPage.setUrl(createdNewTestPage.toUri().toURL());
 		testSuite.addChild(testPage);
 
 		teamService.approve(testSuite, translationService, "");
@@ -591,6 +604,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName(testPageName);
+		testSuite.setUrl(createdNewSuite.toFile());
 
 		testProject.addChild(testSuite);
 
@@ -600,6 +614,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
+		testPage.setUrl(createdNewTestPage.toUri().toURL());
 
 		testSuite.addChild(testPage);
 
@@ -649,11 +664,11 @@ public class SVNTeamShareServiceLocalTest {
 	/**
 	 * Tests the ignore list.
 	 * 
-	 * @throws SystemException
+	 * @throws Exception
 	 *             System failure
 	 */
 	@Test
-	public void testIgnoreListPositive() throws SystemException {
+	public void testIgnoreListPositive() throws Exception {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 
@@ -674,11 +689,11 @@ public class SVNTeamShareServiceLocalTest {
 	 * Negative test for ignore list. Directory "DemoWebTests" must not be
 	 * found.
 	 * 
-	 * @throws SystemException
+	 * @throws Exception
 	 *             System failure
 	 */
 	@Test
-	public void testIgnoreListNegative() throws SystemException {
+	public void testIgnoreListNegative() throws Exception {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 
@@ -748,9 +763,12 @@ public class SVNTeamShareServiceLocalTest {
 
 	/**
 	 * Tests that a Config with an empty url is invalid.
+	 * 
+	 * @throws Exception
+	 *             System failure
 	 */
 	@Test
-	public void testConfigurationIsInValidOnEmptyURL() {
+	public void testConfigurationIsInValidOnEmptyURL() throws Exception {
 		TestProject testProject = createTestProject("moreStuff", "", "");
 		try {
 			teamService.validateConfiguration(testProject, translationService);
@@ -764,11 +782,11 @@ public class SVNTeamShareServiceLocalTest {
 	 * Tests that a Config with a not existing TestProject in the SVN Repo is
 	 * invalid.
 	 * 
-	 * @throws SVNException
+	 * @throws Exception
 	 *             on wrong test setup
 	 */
 	@Test
-	public void testConfigurationIsInValidOnNotExistingProjectName() throws SVNException {
+	public void testConfigurationIsInValidOnNotExistingProjectName() throws Exception {
 		TestProject testProject = createTestProject(SVNURL.fromFile(new File(REPOSITORY_PATH)).toDecodedString(), "",
 				"");
 		testProject.setName("Not Existing Project");
@@ -959,14 +977,17 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.share(testProject, translationService, "");
 
 		// Add new Testpage
-		SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testPageName);
+		Path testSuitePath = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, "TestSuite");
+		Path newTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/TestSuite",
+				testPageName);
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(newTestPage.toFile());
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.addChild(testCase);
-
+		testSuite.setUrl(newTestPage.toFile().getParentFile());
 		testProject.addChild(testSuite);
 
 		teamService.approve(testSuite, translationService, "");
@@ -1019,6 +1040,7 @@ public class SVNTeamShareServiceLocalTest {
 		assertTrue(testStructurePath.toFile().exists());
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testPageName).toURI().toURL());
 		testProject.addChild(testCase);
 		teamService.addChild(testCase, translationService);
 		teamService.approve(testCase, translationService, "");
@@ -1077,13 +1099,15 @@ public class SVNTeamShareServiceLocalTest {
 		String suiteName = "SuiteName";
 		testSuite.setName(suiteName);
 		testProject.addChild(testSuite);
-		SvnHelper.createNewTestPage(pathToTestFiles, suiteName);
+		Path createNewTestSuite = SvnHelper.createNewTestPage(pathToTestFiles, suiteName);
+		testSuite.setUrl(createNewTestSuite.toFile());
 		teamService.addChild(testSuite, translationService);
 
 		TestCase testCase = new TestCase();
-		SvnHelper.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar,
-				testPageName);
+		Path createNewTestPage = SvnHelper
+				.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, testPageName);
 		testCase.setName(testPageName);
+		testCase.setUrl(createNewTestPage.toFile());
 		testSuite.addChild(testCase);
 		teamService.addChild(testCase, translationService);
 
@@ -1119,10 +1143,11 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase sctestCase = new TestCase();
 		String scTestPageName = "secondTestCase";
-		SvnHelper.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar,
-				scTestPageName);
+		Path sccreateNewTestPage = SvnHelper.createNewTestPage(
+				pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, scTestPageName);
 		sctestCase.setName(scTestPageName);
 		testSuite.addChild(sctestCase);
+		sctestCase.setUrl(sccreateNewTestPage.toFile());
 		teamService.addChild(sctestCase, translationService);
 
 		String secStatus = teamService.getStatus(testProject, translationService);

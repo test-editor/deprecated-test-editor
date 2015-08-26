@@ -169,6 +169,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 
 				String testStructureName = propertyFile.getParentFile().getName();
 				result.setName(testStructureName.trim());
+				result.setUrl(propertyFile.getParentFile().toURI().toURL());
 				if (result instanceof TestCompositeStructure) {
 					initLazyLoader((TestCompositeStructure) result, propertyFile);
 				}
@@ -200,6 +201,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 			throw new SystemException("TestStructure allready exits");
 		}
 		try {
+			testStructure.setUrl(pathToTestStructure.toUri().toURL());
 			Files.createDirectories(pathToTestStructure);
 			Files.write(Paths.get(pathToTestStructure.toString() + File.separator + "content.txt"),
 					testStructure.getSourceCode().getBytes(StandardCharsets.UTF_8));
@@ -289,7 +291,9 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 		Path oldName = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
 
 		try {
-			Files.move(oldName, oldName.resolveSibling(newName));
+			Path targetPath = oldName.resolveSibling(newName);
+			Files.move(oldName, targetPath);
+			testStructure.setUrl(targetPath.toUri().toURL());
 		} catch (IOException e) {
 			String message = "Error renaming teststructrue: from= " + oldName + " to: " + newName;
 			LOGGER.error(message, e);
