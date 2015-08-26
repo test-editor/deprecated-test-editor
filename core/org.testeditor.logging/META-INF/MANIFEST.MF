@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Logging
+Bundle-SymbolicName: org.testeditor.logging
+Bundle-Version: 1.9.0.qualifier
+Bundle-Activator: org.testeditor.logging.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/slf4j-api-1.7.12.jar,
+ .
