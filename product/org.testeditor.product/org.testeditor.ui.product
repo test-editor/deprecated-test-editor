@@ -214,6 +214,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <plugin id="org.testeditor.demo"/>
       <plugin id="org.testeditor.fitnesse"/>
       <plugin id="org.testeditor.fixture.lib"/>
+      <plugin id="org.testeditor.logging"/>
       <plugin id="org.testeditor.metadata.core"/>
       <plugin id="org.testeditor.metadata.ui"/>
       <plugin id="org.testeditor.teamshare.svn"/>
