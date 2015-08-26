@@ -37,7 +37,7 @@ public class TestExceutionEnvironmentServiceAdapter implements TestExceutionEnvi
 	}
 
 	@Override
-	public void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
+	public void shutDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
 
 	}

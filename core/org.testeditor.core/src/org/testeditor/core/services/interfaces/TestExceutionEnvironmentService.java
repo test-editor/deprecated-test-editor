@@ -72,7 +72,7 @@ public interface TestExceutionEnvironmentService {
 	 * @throws InterruptedException
 	 *             on interrupting the setup.
 	 */
-	void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
+	void shutDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException;
 
 	/**

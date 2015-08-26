@@ -56,7 +56,7 @@ public class ResetOrTearDownTestExecutionEnvironmentHandlerTest {
 			};
 		};
 		context.set(TestExceutionEnvironmentService.class, serviceAdapter);
-		TearDownTestExecutionEnvironmentHandler tearDownHandler = new TearDownTestExecutionEnvironmentHandler();
+		ShutDownTestExecutionEnvironmentHandler tearDownHandler = new ShutDownTestExecutionEnvironmentHandler();
 		ResetTestExecutionEnvironmentHandler resetHandler = new ResetTestExecutionEnvironmentHandler();
 		assertFalse(tearDownHandler.canExecute(context, serviceAdapter));
 		assertFalse(resetHandler.canExecute(context, serviceAdapter));
@@ -91,13 +91,13 @@ public class ResetOrTearDownTestExecutionEnvironmentHandlerTest {
 			}
 
 			@Override
-			public void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
+			public void shutDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 					throws IOException, InterruptedException {
 				monitorSet.add("teardown");
 			}
 		};
 		context.set(TestExceutionEnvironmentService.class, serviceAdapter);
-		TearDownTestExecutionEnvironmentHandler tearDownHandler = new TearDownTestExecutionEnvironmentHandler();
+		ShutDownTestExecutionEnvironmentHandler tearDownHandler = new ShutDownTestExecutionEnvironmentHandler();
 		ResetTestExecutionEnvironmentHandler resetHandler = new ResetTestExecutionEnvironmentHandler();
 		tearDownHandler.execute(context, serviceAdapter);
 		assertTrue(monitorSet.contains("teardown"));

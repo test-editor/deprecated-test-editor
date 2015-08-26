@@ -30,7 +30,7 @@ import org.testeditor.ui.constants.TestEditorConstants;
  * state.
  *
  */
-public class TearDownTestExecutionEnvironmentHandler {
+public class ShutDownTestExecutionEnvironmentHandler {
 
 	private static final Logger LOGGER = Logger.getLogger(ResetTestExecutionEnvironmentHandler.class);
 
@@ -72,7 +72,7 @@ public class TearDownTestExecutionEnvironmentHandler {
 			try {
 				NullProgressMonitor monitor = new NullProgressMonitor();
 				TestProject testProject = ts.getRootElement();
-				testExecService.tearDownEnvironment(testProject, monitor);
+				testExecService.shutDownEnvironment(testProject, monitor);
 			} catch (IOException | InterruptedException e) {
 				LOGGER.error("Error tearDown Execution Environment.", e);
 			}

@@ -97,7 +97,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	}
 
 	@Override
-	public void tearDownEnvironment(TestProject testProject, IProgressMonitor monitor)
+	public void shutDownEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
 		monitor.setTaskName("Shutdown TestAgent..");
 		ProcessBuilder builder = new ProcessBuilder("vagrant", "suspend");
@@ -309,7 +309,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvi
 	@Override
 	public void tearDownAllEnvironments() throws IOException, InterruptedException {
 		for (TestProject testProject : runningEnvironments) {
-			tearDownEnvironment(testProject, new NullProgressMonitor());
+			shutDownEnvironment(testProject, new NullProgressMonitor());
 		}
 	}
 
