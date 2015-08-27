@@ -38,7 +38,7 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.ui.adapter.StructuredSelectionAdapter;
 import org.testeditor.ui.adapter.TestExceutionEnvironmentServiceAdapter;
@@ -143,7 +143,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	public void testCanExecuteOnUnusedScenario() throws Exception {
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(TestScenarioService.class, getTestScenarioServiceMock());
-		context.set(TestExceutionEnvironmentService.class, null);
+		context.set(TestExecutionEnvironmentService.class, null);
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
 				.make(CanExecuteTestExplorerHandlerRules.class, context);
 		assertTrue("Expecting True for Non TestScenario Objects.", rules
@@ -247,7 +247,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 		final TestProject tpWithEnv = new TestProject();
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(TestScenarioService.class, getTestScenarioServiceMock());
-		context.set(TestExceutionEnvironmentService.class, new TestExceutionEnvironmentServiceAdapter() {
+		context.set(TestExecutionEnvironmentService.class, new TestExceutionEnvironmentServiceAdapter() {
 
 			@Override
 			public boolean isTestEnvironmentLaunchedFor(TestProject testProject) {

@@ -22,7 +22,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 
 /**
@@ -37,7 +37,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	private TestScenarioService testScenarioService;
 
 	@Inject
-	private TestExceutionEnvironmentService testExecService;
+	private TestExecutionEnvironmentService testExecService;
 
 	/**
 	 * Check if this Handler is enabled on the selection. Only one Teststructure

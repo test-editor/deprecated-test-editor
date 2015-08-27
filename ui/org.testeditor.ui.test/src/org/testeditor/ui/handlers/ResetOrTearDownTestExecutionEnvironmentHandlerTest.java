@@ -23,7 +23,7 @@ import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Test;
 import org.testeditor.core.model.teststructure.TestProject;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.ui.adapter.StructuredSelectionAdapter;
 import org.testeditor.ui.adapter.TestExceutionEnvironmentServiceAdapter;
@@ -50,12 +50,12 @@ public class ResetOrTearDownTestExecutionEnvironmentHandlerTest {
 			}
 		});
 		context.set(TestScenarioService.class, null);
-		TestExceutionEnvironmentService serviceAdapter = new TestExceutionEnvironmentServiceAdapter() {
+		TestExecutionEnvironmentService serviceAdapter = new TestExceutionEnvironmentServiceAdapter() {
 			public boolean isTestEnvironmentLaunchedFor(TestProject testProject) {
 				return testProject == myTp;
 			};
 		};
-		context.set(TestExceutionEnvironmentService.class, serviceAdapter);
+		context.set(TestExecutionEnvironmentService.class, serviceAdapter);
 		ShutDownTestExecutionEnvironmentHandler tearDownHandler = new ShutDownTestExecutionEnvironmentHandler();
 		ResetTestExecutionEnvironmentHandler resetHandler = new ResetTestExecutionEnvironmentHandler();
 		assertFalse(tearDownHandler.canExecute(context, serviceAdapter));
@@ -83,7 +83,7 @@ public class ResetOrTearDownTestExecutionEnvironmentHandlerTest {
 				return new TestProject();
 			}
 		});
-		TestExceutionEnvironmentService serviceAdapter = new TestExceutionEnvironmentServiceAdapter() {
+		TestExecutionEnvironmentService serviceAdapter = new TestExceutionEnvironmentServiceAdapter() {
 			@Override
 			public void resetEnvironment(TestProject testProject, IProgressMonitor monitor)
 					throws IOException, InterruptedException {
@@ -96,7 +96,7 @@ public class ResetOrTearDownTestExecutionEnvironmentHandlerTest {
 				monitorSet.add("teardown");
 			}
 		};
-		context.set(TestExceutionEnvironmentService.class, serviceAdapter);
+		context.set(TestExecutionEnvironmentService.class, serviceAdapter);
 		ShutDownTestExecutionEnvironmentHandler tearDownHandler = new ShutDownTestExecutionEnvironmentHandler();
 		ResetTestExecutionEnvironmentHandler resetHandler = new ResetTestExecutionEnvironmentHandler();
 		tearDownHandler.execute(context, serviceAdapter);

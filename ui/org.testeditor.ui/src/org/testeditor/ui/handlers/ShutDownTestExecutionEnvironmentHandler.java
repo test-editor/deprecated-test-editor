@@ -22,7 +22,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.ui.constants.TestEditorConstants;
 
 /**
@@ -46,7 +46,7 @@ public class ShutDownTestExecutionEnvironmentHandler {
 	 *         selection.
 	 */
 	@CanExecute
-	public boolean canExecute(IEclipseContext context, TestExceutionEnvironmentService testExecService) {
+	public boolean canExecute(IEclipseContext context, TestExecutionEnvironmentService testExecService) {
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		return ContextInjectionFactory.make(CanExecuteTestExplorerHandlerRules.class, context)
@@ -64,7 +64,7 @@ public class ShutDownTestExecutionEnvironmentHandler {
 	 *            used to work with.
 	 */
 	@Execute
-	public void execute(IEclipseContext context, TestExceutionEnvironmentService testExecService) {
+	public void execute(IEclipseContext context, TestExecutionEnvironmentService testExecService) {
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		if (selection.getFirstElement() instanceof TestStructure) {

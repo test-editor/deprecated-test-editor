@@ -24,7 +24,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
  * implementations are vm ore remote systems.
  *
  */
-public interface TestExceutionEnvironmentService {
+public interface TestExecutionEnvironmentService {
 
 	String CONFIG = "test.execution.environment.config";
 

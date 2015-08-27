@@ -44,7 +44,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.FileWatchService;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -520,9 +520,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			testProjectConfig.setTestServerID(serverId);
 		}
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
-		if (properties.containsKey(TestExceutionEnvironmentService.CONFIG)) {
+		if (properties.containsKey(TestExecutionEnvironmentService.CONFIG)) {
 			testProjectConfig
-					.setTestEnvironmentConfiguration(properties.getProperty(TestExceutionEnvironmentService.CONFIG));
+					.setTestEnvironmentConfiguration(properties.getProperty(TestExecutionEnvironmentService.CONFIG));
 		}
 		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
 			fixNonVersionProperties(properties);
@@ -708,7 +708,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			properties.put("pathToTestFiles", config.getPathToTestFiles());
 		}
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
-		properties.put(TestExceutionEnvironmentService.CONFIG, config.getTestEnvironmentConfiguration());
+		properties.put(TestExecutionEnvironmentService.CONFIG, config.getTestEnvironmentConfiguration());
 		if (plugInservice != null) {
 			if (config.getProjectLibraryConfig() != null) {
 				LibraryConfigurationServicePlugIn configurationService = plugInservice

@@ -42,7 +42,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -202,7 +202,7 @@ public class ApplicationLifeCycleHandler {
 					stopBackendServers(monitor);
 				}
 			});
-			TestExceutionEnvironmentService testExecService = context.get(TestExceutionEnvironmentService.class);
+			TestExecutionEnvironmentService testExecService = context.get(TestExecutionEnvironmentService.class);
 			testExecService.tearDownAllEnvironments();
 		} catch (InvocationTargetException | InterruptedException | IOException e) {
 			LOGGER.error("Error shutdown application.", e);

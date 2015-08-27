@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.util.FileLocatorService;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemUtility;
 import org.testeditor.fitnesse.resultreader.FitNesseResultReader;
@@ -41,7 +41,7 @@ import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
  * supports unix and windows based boxed. But there are several requirements for
  * the boxes:
  */
-public class VagrantTestExecutionEnvironmentService implements TestExceutionEnvironmentService {
+public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvironmentService {
 
 	private static final Logger LOGGER = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
 	private boolean testsRunFlag;

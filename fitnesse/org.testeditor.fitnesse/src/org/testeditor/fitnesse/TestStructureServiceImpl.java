@@ -33,7 +33,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
@@ -180,7 +180,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		monitor.beginTask("Starting test execution environment...", workToDo);
 		LOGGER.info("Start test execution environment");
 		try {
-			TestExceutionEnvironmentService environmentService = context.get(TestExceutionEnvironmentService.class);
+			TestExecutionEnvironmentService environmentService = context.get(TestExecutionEnvironmentService.class);
 			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
 			monitor.worked(1);
 			TestResult result = environmentService.executeTests(testStructure, monitor);

@@ -58,6 +58,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.plugins.LibraryConfigurationServicePlugIn;
 import org.testeditor.core.services.plugins.TeamShareConfigurationServicePlugIn;
@@ -100,6 +101,9 @@ public class TestProjectEditor implements ITestStructureEditor {
 
 	@Inject
 	private EPartService partService;
+
+	@Inject
+	private TestExecutionEnvironmentService testExecutionEnvironmentService;
 
 	private TestProjectConfig newTestProjectConfig;
 
@@ -235,8 +239,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 			text.setEditable(false);
 		}
 		if (testProject.getTestProjectConfig().getTeamShareConfig() != null) {
-			String stringValue = fieldDeclaration.getStringValue(testProject.getTestProjectConfig()
-					.getTeamShareConfig());
+			String stringValue = fieldDeclaration
+					.getStringValue(testProject.getTestProjectConfig().getTeamShareConfig());
 
 			if (stringValue != null) {
 				text.setText(stringValue);
@@ -429,8 +433,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 			portText.setText(testProject.getTestProjectConfig().getPort());
 			portText.addMouseListener(new TestEditorInputPartMouseAdapter(eventBroker, testProject));
 			createLibraryTypeSpeceficComposite(testProject.getTestProjectConfig().getProjectLibraryConfig());
-			createTeamShareOptionSpecificCompositeWithValuesFrom(testProject.getTestProjectConfig()
-					.getTeamShareConfig());
+			createTeamShareOptionSpecificCompositeWithValuesFrom(
+					testProject.getTestProjectConfig().getTeamShareConfig());
 			newTestProjectConfig.setConfiguration(testProject.getTestProjectConfig());
 			mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testProject.getName());
 		}
@@ -465,8 +469,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 	@Optional
 	public void projectTeamShared(@UIEventTopic(TestEditorUIEventConstants.PROJECT_TEAM_SHARED) String data) {
 		if (data.equals(testProject.getFullName())) {
-			createTeamShareOptionSpecificCompositeWithValuesFrom(testProject.getTestProjectConfig()
-					.getTeamShareConfig());
+			createTeamShareOptionSpecificCompositeWithValuesFrom(
+					testProject.getTestProjectConfig().getTeamShareConfig());
 		}
 	}
 
@@ -478,7 +482,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 	 */
 	@Inject
 	@Optional
-	protected void refresh(@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED) String data) {
+	protected void refresh(
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED) String data) {
 		testProject = testProjectService.getProjectWithName(testProject.getName());
 		if (testProject == null) {
 			partService.hidePart(mpart, true);
@@ -536,8 +541,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 				TeamShareConfigurationServicePlugIn configurationService = plugInService
 						.getTeamShareConfigurationServiceFor(teamShareConfig.getId());
 				createTeamShareSpeceficDetailComposite(configurationService);
-				teamShareTypeLabel.setText(configurationService
-						.getTranslatedHumanReadablePlugInName(translationService));
+				teamShareTypeLabel
+						.setText(configurationService.getTranslatedHumanReadablePlugInName(translationService));
 			}
 		}
 	}

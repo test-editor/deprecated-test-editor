@@ -17,13 +17,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestExceutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 
 /**
  * Adapter to build mocks of TestExceutionEnvironmentService.
  *
  */
-public class TestExceutionEnvironmentServiceAdapter implements TestExceutionEnvironmentService {
+public class TestExceutionEnvironmentServiceAdapter implements TestExecutionEnvironmentService {
 
 	@Override
 	public void setUpEnvironment(TestProject testProject, IProgressMonitor monitor)
