@@ -334,8 +334,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			for (int i = 0; i < getTestFlowSize(); i++) {
 				TestComponent testComponentAt = getTestComponentAt(i);
 				if (testComponentAt instanceof TestScenarioParameterTable
-						&& ((TestScenarioParameterTable) testComponentAt).getInclude().endsWith(
-								((TestScenario) deletedTestStructure).getFullName())) {
+						&& ((TestScenarioParameterTable) testComponentAt).getInclude()
+								.endsWith(((TestScenario) deletedTestStructure).getFullName())) {
 					((TestScenarioParameterTable) testComponentAt).setScenarioOfProject(false);
 					getTestEditViewArea().removeStyledTextModifyListener();
 					refreshStyledText();
@@ -600,7 +600,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	@Inject
 	@Optional
-	public void objectUpdatetByTeamshare(
+	public void testStructureChanged(
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE) String testStructureFullName) {
 		if (testFlow != null) {
 			if (testFlow.getFullName().startsWith(testStructureFullName)) {
@@ -640,24 +640,22 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		LibraryReaderService libraryReaderService = context.get(LibraryReaderService.class);
 		ProjectActionGroups projectActionGroups;
 		try {
-			projectActionGroups = libraryReaderService.readBasisLibrary(testStructure.getRootElement()
-					.getTestProjectConfig().getProjectLibraryConfig());
+			projectActionGroups = libraryReaderService
+					.readBasisLibrary(testStructure.getRootElement().getTestProjectConfig().getProjectLibraryConfig());
 			projectActionGroups.setProjectName(testStructure.getRootElement().getName());
 			LOGGER.debug("ProjectGroups read for: " + projectActionGroups.getProjectName());
 			actionGroupService.addProjectActionGroups(projectActionGroups);
 		} catch (LibraryConstructionException e) {
 			String mappingErrorPartOne = translationService.translate("%editController.ErrorObjectMappingPartOne");
 			String mappingErrorPartTow = translationService.translate("%editController.ErrorObjectMappingPartTow");
-			MessageDialog.openError(
-					Display.getCurrent().getActiveShell(),
+			MessageDialog.openError(Display.getCurrent().getActiveShell(),
 					translationService.translate("%editController.LibraryNotLoaded"),
 					translationService.translate("%editController.ErrorReadingLibrary") + mappingErrorPartOne + " "
 							+ e.getMessage() + " " + mappingErrorPartTow);
 			LOGGER.error("Error reading library :: FAILED" + mappingErrorPartOne + " " + e.getMessage() + " "
 					+ mappingErrorPartTow, e);
 		} catch (SystemException e) {
-			MessageDialog.openError(
-					Display.getCurrent().getActiveShell(),
+			MessageDialog.openError(Display.getCurrent().getActiveShell(),
 					translationService.translate("%editController.LibraryNotLoaded"),
 					translationService.translate("%editController.ErrorReadingLibrary") + ": "
 							+ e.getLocalizedMessage());
@@ -674,8 +672,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	}
 
 	/** 
-         * 
-         */
+	     * 
+	     */
 	@PreDestroy
 	protected void partDestroyed() {
 		compositeForView.dispose();
@@ -902,13 +900,14 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	protected void connectDescriptionController() {
 		if (descriptionController != null) {
 			descriptionController.setTestCaseController(this);
-			TestEditorInputObject inputObjectWithDescription = cachedTestComponentInputMap.get(TestDescription.class
-					.getName());
+			TestEditorInputObject inputObjectWithDescription = cachedTestComponentInputMap
+					.get(TestDescription.class.getName());
 			if (inputObjectWithDescription != null
 					&& inputObjectWithDescription.getTestcomponent().getTexts().get(0).length() > 0) {
-				descriptionController.setDescriptonTextToChangeable(inputObjectWithDescription.getTestcomponent()
-						.getTexts().get(0), inputObjectWithDescription.getLineNumber(),
-						inputObjectWithDescription.getLineNumber(), inputObjectWithDescription.getCursorPosInLine());
+				descriptionController.setDescriptonTextToChangeable(
+						inputObjectWithDescription.getTestcomponent().getTexts().get(0),
+						inputObjectWithDescription.getLineNumber(), inputObjectWithDescription.getLineNumber(),
+						inputObjectWithDescription.getCursorPosInLine());
 			}
 		}
 	}
@@ -919,8 +918,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	protected void connectActionInputController() {
 		if (actionInputController != null) {
 			actionInputController.setTestCaseController(this);
-			TestEditorInputObject inputObjectWithAction = cachedTestComponentInputMap.get(TestActionGroup.class
-					.getName());
+			TestEditorInputObject inputObjectWithAction = cachedTestComponentInputMap
+					.get(TestActionGroup.class.getName());
 			if (inputObjectWithAction != null && inputObjectWithAction.getTestcomponent().getTexts().size() > 0
 					&& !inputObjectWithAction.getTestcomponent().getTexts().get(0).equalsIgnoreCase("|")) {
 				actionInputController.setActionToEditArea(inputObjectWithAction.getLineNumber(),
@@ -1241,8 +1240,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	protected boolean isTransferObjTestflowTransForParentProject(Object transferObject) {
 		return ((TestEditorTestDataTransferContainer) transferObject).getTestProjectName() != null
-				&& ((TestEditorTestDataTransferContainer) transferObject).getTestProjectName().equals(
-						testFlow.getRootElement().getName())
+				&& ((TestEditorTestDataTransferContainer) transferObject).getTestProjectName()
+						.equals(testFlow.getRootElement().getName())
 				&& transferObject instanceof TestEditorTestFlowTransferContainer;
 	}
 
@@ -1293,7 +1292,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		if (getTestFlowSize() == 0) {
 			testEditViewArea.setInsertBefore(false);
 		}
-		if (addMode && (getTestFlowSize() >= selectedLine) && !testEditViewArea.isInsertBefore() || selectedLine == -1) {
+		if (addMode && (getTestFlowSize() >= selectedLine) && !testEditViewArea.isInsertBefore()
+				|| selectedLine == -1) {
 			selectedLine++;
 		}
 		return selectedLine;
@@ -1586,7 +1586,8 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
-			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info(
+					"MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 	}
