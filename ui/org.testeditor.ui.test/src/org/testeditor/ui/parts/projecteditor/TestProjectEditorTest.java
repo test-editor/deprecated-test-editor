@@ -33,6 +33,7 @@ import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.ProjectLibraryConfig;
 import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.plugins.LibraryReaderServicePlugIn;
@@ -143,6 +144,7 @@ public class TestProjectEditorTest {
 				ContextInjectionFactory.make(TestEditorTranslationService.class, context));
 		context.set(TestEditorPlugInService.class, getTestEditorPluginServiceMock());
 		context.set(UISynchronize.class, getUISynchronizeMock());
+		context.set(TestExecutionEnvironmentService.class, null);
 		return context;
 	}
 

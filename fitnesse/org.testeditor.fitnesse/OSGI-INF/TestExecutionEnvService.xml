@@ -2,6 +2,6 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.testeditor.fitnesse">
    <implementation class="org.testeditor.fitnesse.VagrantTestExecutionEnvironmentService"/>
    <service>
-      <provide interface="org.testeditor.core.services.interfaces.TestExceutionEnvironmentService"/>
+      <provide interface="org.testeditor.core.services.interfaces.TestExecutionEnvironmentService"/>
    </service>
 </scr:component>
