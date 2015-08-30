@@ -23,6 +23,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.testeditor.core.constants.TestEditorGlobalConstans;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 
 /**
  * this class writes a configuration by replacing the place-holders in the
@@ -48,8 +49,8 @@ public class ConfigurationTemplateWriter {
 	 * @throws IOException
 	 *             while file-io
 	 */
-	public void writeConfiguration(FileLocatorService fileLocatorService, File configurationFile,
-			Properties properties, String templateLibConfig, String templateTeamshareConfig) throws IOException {
+	public void writeConfiguration(FileLocatorService fileLocatorService, File configurationFile, Properties properties,
+			String templateLibConfig, String templateTeamshareConfig) throws IOException {
 		String pathToTemplate = new StringBuffer(fileLocatorService.getBundleLocationFor(this.getClass()))
 				.append(File.separator).append("resources").append(File.separator).append("project.config.tmpl")
 				.toString();
@@ -156,6 +157,11 @@ public class ConfigurationTemplateWriter {
 			return appendPluginConfig(inputLine, properties, templateLibConfig);
 		} else if (variableInLine.equals("$SYNC_TYPE$")) {
 			return appendPluginConfig(inputLine, properties, templateTeamshareConfig);
+		}
+
+		if (variableInLine.equals("$TEST_EXEC_ENV$")) {
+			return "test.execution.environment.config="
+					+ properties.getProperty(TestExecutionEnvironmentService.CONFIG);
 		}
 
 		return inputLine;

@@ -448,6 +448,12 @@ public class TestProjectEditor implements ITestStructureEditor {
 					.getAvailableTestEnvironmentConfigs(testProject);
 			String[] items = availableTestEnvironmentConfigs.keySet().toArray(new String[] {});
 			testExecEnvCombo.setItems(items);
+			for (String cfgName : availableTestEnvironmentConfigs.keySet()) {
+				String cfgProbant = availableTestEnvironmentConfigs.get(cfgName);
+				if (cfgProbant.equals(testProject.getTestProjectConfig().getTestEnvironmentConfiguration())) {
+					testExecEnvCombo.setText(cfgName);
+				}
+			}
 		}
 		mpart.setDirty(false);
 		updateScrollBars();
