@@ -23,8 +23,11 @@ import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
  */
 public class FitNesseBundleServiceTest {
 
+	/**
+	 * Checks that the service is correct registered.
+	 */
 	@Test
-	public void testServiceRegistrarion() throws Exception {
+	public void testServiceRegistrarion() {
 		assertNotNull(ServiceLookUpForTest.getService(TestExecutionEnvironmentService.class));
 	}
 
