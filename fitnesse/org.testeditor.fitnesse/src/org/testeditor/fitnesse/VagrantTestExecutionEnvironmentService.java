@@ -16,15 +16,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -43,7 +48,7 @@ import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
  */
 public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvironmentService {
 
-	private static final Logger LOGGER = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
+	private static final Logger logger = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
 	private boolean testsRunFlag;
 
 	private Set<TestProject> runningEnvironments = new HashSet<TestProject>();
@@ -53,7 +58,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 			throws IOException, InterruptedException {
 		try {
 			File vagrantFileDir = getVagrantFileDirectory(testProject);
-			LOGGER.info("Vagrant path: " + vagrantFileDir);
+			logger.info("Vagrant path: " + vagrantFileDir);
 			ProcessBuilder builder = new ProcessBuilder("vagrant", "up");
 			configureBuilder(builder, vagrantFileDir);
 			Process upPrc = builder.start();
@@ -64,7 +69,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 			}
 			runningEnvironments.add(testProject);
 		} catch (Exception e) {
-			LOGGER.error("error start", e);
+			logger.error("error start", e);
 		}
 	}
 
@@ -148,7 +153,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	private void configureBuilder(ProcessBuilder builder, File vagrantFileDir) {
 		builder.directory(vagrantFileDir);
 		builder.redirectErrorStream(true);
-		LOGGER.trace("TESTEDITOR_HOME env variable: " + System.getProperty("TESTEDITOR_HOME"));
+		logger.trace("TESTEDITOR_HOME env variable: " + System.getProperty("TESTEDITOR_HOME"));
 		builder.environment().put("TESTEDITOR_HOME", System.getProperty("TESTEDITOR_HOME"));
 	}
 
@@ -291,16 +296,16 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 							testsRunFlag = false;
 						}
 						if (errorStream) {
-							LOGGER.error(message);
+							logger.error(message);
 						} else {
-							LOGGER.info(message);
+							logger.info(message);
 							if (monitor != null) {
 								monitor.subTask(message);
 							}
 						}
 					}
 				} catch (IOException e) {
-					LOGGER.debug("Error reading remote Process Stream", e);
+					logger.debug("Error reading remote Process Stream", e);
 				}
 			}
 		}).start();
@@ -316,6 +321,28 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	@Override
 	public boolean isTestEnvironmentLaunchedFor(TestProject testProject) {
 		return runningEnvironments.contains(testProject);
+	}
+
+	@Override
+	public Map<String, String> getAvailableTestEnvironmentConfigs(TestProject testProject) {
+		Map<String, String> testExecEnvs = new HashMap<String, String>();
+		testExecEnvs.put("localhost", TestEditorCoreConstants.NONE_TEST_AGENT);
+		File vagrantDir = new File(testProject.getUrl().getFile(), "vagrant");
+		if (vagrantDir.exists() && vagrantDir.isDirectory()) {
+			File[] files = vagrantDir.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					try {
+						String configPath = Paths.get(testProject.getUrl().toURI()).relativize(file.toPath())
+								.toString();
+						testExecEnvs.put(file.getName(), configPath);
+					} catch (URISyntaxException e) {
+						logger.error(e.getMessage(), e);
+					}
+				}
+			}
+		}
+		return testExecEnvs;
 	}
 
 }

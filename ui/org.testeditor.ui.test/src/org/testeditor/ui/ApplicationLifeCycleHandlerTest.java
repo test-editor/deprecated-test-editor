@@ -34,9 +34,11 @@ import org.osgi.service.prefs.PreferencesService;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.ui.adapter.TestExceutionEnvironmentServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.mocks.PreferencesServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -134,6 +136,7 @@ public class ApplicationLifeCycleHandlerTest {
 		IEclipseContext context = EclipseContextFactory
 				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
 		context.set(IServiceConstants.ACTIVE_SHELL, null);
+		context.set(TestExecutionEnvironmentService.class, new TestExceutionEnvironmentServiceAdapter());
 		ContextInjectionFactory.inject(handler, context);
 		handler.shutDownApplication();
 		assertTrue(set.contains("stop"));

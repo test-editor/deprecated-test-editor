@@ -57,34 +57,35 @@ public class FitNesseTestHistoryResultReader implements FitNesseResultReader {
 
 			// create testresult for summary of suite
 			Element finalCounts = (Element) doc.getElementsByTagName("counts").item(0);
-			String right = finalCounts.getElementsByTagName("right").item(0).getTextContent();
-			String wrong = finalCounts.getElementsByTagName("wrong").item(0).getTextContent();
-			String ignores = finalCounts.getElementsByTagName("ignores").item(0).getTextContent();
-			String exceptions = finalCounts.getElementsByTagName("exceptions").item(0).getTextContent();
-			String runTimeInMillis = doc.getElementsByTagName("runTimeInMillis").item(0).getTextContent();
+			if (finalCounts != null) {
+				String right = finalCounts.getElementsByTagName("right").item(0).getTextContent();
+				String wrong = finalCounts.getElementsByTagName("wrong").item(0).getTextContent();
+				String ignores = finalCounts.getElementsByTagName("ignores").item(0).getTextContent();
+				String exceptions = finalCounts.getElementsByTagName("exceptions").item(0).getTextContent();
+				String runTimeInMillis = doc.getElementsByTagName("runTimeInMillis").item(0).getTextContent();
 
-			String errorLog = "";
-			Node item = doc.getElementsByTagName("stdOut").item(0);
-			if (item != null) {
-				errorLog = item.getTextContent();
+				String errorLog = "";
+				Node item = doc.getElementsByTagName("stdOut").item(0);
+				if (item != null) {
+					errorLog = item.getTextContent();
+				}
+
+				if (right.isEmpty() && wrong.isEmpty() && ignores.isEmpty()) {
+					// this case will be exists if test were canceled.
+					return testResult;
+				}
+
+				testResult.setTestExecutionLog(errorLog);
+				testResult.setRight(Integer.parseInt(right));
+				testResult.setWrong(Integer.parseInt(wrong));
+				testResult.setIgnored(Integer.parseInt(ignores));
+				testResult.setException(Integer.parseInt(exceptions));
+				testResult.setRunTimeMillis(Integer.parseInt(runTimeInMillis));
+
+				testResult.setActionResultTables(createActionResultTable(doc.getElementsByTagName("tables").item(0)));
+				testResult.setInstructionResultTables(
+						createInstructionsResult(doc.getElementsByTagName("instructions").item(0)));
 			}
-
-			if (right.isEmpty() && wrong.isEmpty() && ignores.isEmpty()) {
-				// this case will be exists if test were canceled.
-				return testResult;
-			}
-
-			testResult.setTestExecutionLog(errorLog);
-			testResult.setRight(Integer.parseInt(right));
-			testResult.setWrong(Integer.parseInt(wrong));
-			testResult.setIgnored(Integer.parseInt(ignores));
-			testResult.setException(Integer.parseInt(exceptions));
-			testResult.setRunTimeMillis(Integer.parseInt(runTimeInMillis));
-
-			testResult.setActionResultTables(createActionResultTable(doc.getElementsByTagName("tables").item(0)));
-			testResult.setInstructionResultTables(createInstructionsResult(doc.getElementsByTagName("instructions")
-					.item(0)));
-
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			LOGGER.error(e.getMessage());
 		}

@@ -12,6 +12,7 @@
 package org.testeditor.ui.adapter;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.testeditor.core.model.testresult.TestResult;
@@ -55,6 +56,11 @@ public class TestExceutionEnvironmentServiceAdapter implements TestExecutionEnvi
 	@Override
 	public boolean isTestEnvironmentLaunchedFor(TestProject testProject) {
 		return false;
+	}
+
+	@Override
+	public Map<String, String> getAvailableTestEnvironmentConfigs(TestProject testProject) {
+		return null;
 	}
 
 }

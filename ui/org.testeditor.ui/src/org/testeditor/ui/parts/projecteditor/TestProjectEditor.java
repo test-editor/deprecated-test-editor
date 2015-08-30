@@ -16,9 +16,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -110,7 +110,6 @@ public class TestProjectEditor implements ITestStructureEditor {
 	private Combo libraryTypeCombo;
 
 	private HashMap<String, String> libraryPlugInNameIdMap;
-	private HashMap<Text, Text> widgetsOfGlobaleVariables = new HashMap<Text, Text>();
 
 	private ScrolledComposite sc;
 	private Composite subContainer;
@@ -126,6 +125,10 @@ public class TestProjectEditor implements ITestStructureEditor {
 	private Composite teamShareDetailComposite;
 
 	private Text teamShareTypeLabel;
+
+	private Combo testExecEnvCombo;
+
+	private Map<String, String> availableTestEnvironmentConfigs;
 
 	/**
 	 * 
@@ -365,14 +368,19 @@ public class TestProjectEditor implements ITestStructureEditor {
 		portText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		portText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.TEST_PROJECT_CONFIGURATION_PORT);
-	}
+		Label testExecSelection = new Label(serverGroup, SWT.NORMAL);
+		testExecSelection.setText(translate.translate("%testexecenv.select.label"));
+		testExecEnvCombo = new Combo(serverGroup, SWT.NORMAL);
+		testExecEnvCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		testExecEnvCombo.addModifyListener(new ModifyListener() {
 
-	/**
-	 * Cleanup UI Ressources.
-	 */
-	@PreDestroy
-	public void dispose() {
-		disposeWidgetsOfGlobaleVariables();
+			@Override
+			public void modifyText(ModifyEvent e) {
+				mpart.setDirty(true);
+				newTestProjectConfig.setTestEnvironmentConfiguration(
+						availableTestEnvironmentConfigs.get(testExecEnvCombo.getText()));
+			}
+		});
 	}
 
 	/**
@@ -431,12 +439,15 @@ public class TestProjectEditor implements ITestStructureEditor {
 		if (testProject != null && testProject.getTestProjectConfig() != null) {
 			mpart.setLabel(testProject.getName());
 			portText.setText(testProject.getTestProjectConfig().getPort());
-			portText.addMouseListener(new TestEditorInputPartMouseAdapter(eventBroker, testProject));
 			createLibraryTypeSpeceficComposite(testProject.getTestProjectConfig().getProjectLibraryConfig());
 			createTeamShareOptionSpecificCompositeWithValuesFrom(
 					testProject.getTestProjectConfig().getTeamShareConfig());
 			newTestProjectConfig.setConfiguration(testProject.getTestProjectConfig());
 			mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testProject.getName());
+			availableTestEnvironmentConfigs = testExecutionEnvironmentService
+					.getAvailableTestEnvironmentConfigs(testProject);
+			String[] items = availableTestEnvironmentConfigs.keySet().toArray(new String[] {});
+			testExecEnvCombo.setItems(items);
 		}
 		mpart.setDirty(false);
 		updateScrollBars();
@@ -508,21 +519,6 @@ public class TestProjectEditor implements ITestStructureEditor {
 				closePart();
 			}
 		}
-	}
-
-	/**
-	 * dispose the widgets for the variables.
-	 */
-	private void disposeWidgetsOfGlobaleVariables() {
-		for (Text key : widgetsOfGlobaleVariables.keySet()) {
-			Text value = widgetsOfGlobaleVariables.get(key);
-			key.dispose();
-			value.dispose();
-			key = null;
-			value = null;
-		}
-		widgetsOfGlobaleVariables.clear();
-
 	}
 
 	/**

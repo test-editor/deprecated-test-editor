@@ -12,6 +12,7 @@
 package org.testeditor.core.services.interfaces;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.testeditor.core.model.testresult.TestResult;
@@ -108,5 +109,18 @@ public interface TestExecutionEnvironmentService {
 	 *         otherwise false.
 	 */
 	boolean isTestEnvironmentLaunchedFor(TestProject testProject);
+
+	/**
+	 * Gets the Names of the available Test Environments for a test project and
+	 * the configuration. Every test project has at least the host as a test
+	 * environment.
+	 * 
+	 * @param testProject
+	 *            TestProject
+	 * 
+	 * @return map with the names of the test Test Environments as key and the
+	 *         path to the configuration as value.
+	 */
+	Map<String, String> getAvailableTestEnvironmentConfigs(TestProject testProject);
 
 }
