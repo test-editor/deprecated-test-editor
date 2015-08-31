@@ -110,6 +110,7 @@ public class VagrantTestExecutionEnvironmentServiceTest {
 	 * Tests that the implementation still works, without a properties file.
 	 * 
 	 * @throws Exception
+	 *             on test failure.
 	 */
 	@Test
 	public void testSetTestExecEnvSpeceficVariablesWithoutTEPropertyFile() throws Exception {
@@ -129,6 +130,7 @@ public class VagrantTestExecutionEnvironmentServiceTest {
 	 * Test the read and setting of the properties from file.
 	 * 
 	 * @throws Exception
+	 *             on test failure.
 	 */
 	@Test
 	public void testSetTestExecEnvSpeceficVariablesReadFromTEPropertyFile() throws Exception {
@@ -210,7 +212,7 @@ public class VagrantTestExecutionEnvironmentServiceTest {
 	/**
 	 * Delete directory if exists.
 	 * 
-	 * @param file
+	 * @param dir
 	 *            to be deleted.
 	 * @throws IOException
 	 *             on delete.
