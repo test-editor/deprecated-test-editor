@@ -292,6 +292,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
+		sb.append(" -DexecInVagrant=true");
 		return sb;
 	}
 

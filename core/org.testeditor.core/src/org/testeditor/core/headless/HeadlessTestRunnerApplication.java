@@ -59,7 +59,6 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		String[] args = null;
-		System.setProperty("headlessTE", "true");
 		if (context != null) {
 			args = (String[]) context.getArguments().get(IApplicationContext.APPLICATION_ARGS);
 		}

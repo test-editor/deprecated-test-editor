@@ -32,6 +32,7 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
@@ -145,7 +146,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			throws SystemException, InterruptedException {
 		TestResult result = new TestResult();
 		if (testStructure.getRootElement().getTestProjectConfig().usesTestAgent()
-				&& !System.getProperties().keySet().contains("headlessTE")) {
+				&& !System.getProperties().keySet().contains("execInVagrant")) {
 			result = executeInVagrant(testStructure, monitor);
 		} else {
 			result = FitNesseRestClient.execute(testStructure, monitor);
@@ -180,7 +181,8 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		monitor.beginTask("Starting test execution environment...", workToDo);
 		LOGGER.info("Start test execution environment");
 		try {
-			TestExecutionEnvironmentService environmentService = context.get(TestExecutionEnvironmentService.class);
+			TestExecutionEnvironmentService environmentService = ServiceLookUpForTest
+					.getService(TestExecutionEnvironmentService.class);
 			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
 			monitor.worked(1);
 			TestResult result = environmentService.executeTests(testStructure, monitor);
