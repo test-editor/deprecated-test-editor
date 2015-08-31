@@ -84,8 +84,9 @@ public class ConfigurationTemplateWriter {
 		PrintWriter writer = new PrintWriter(configurationFile, "UTF-8");
 		String line = null;
 		while ((line = reader.readLine()) != null) {
-			writer.println(replaceVariableInLineByValue(line, configurationProperties, keyValuesTemplate,
-					templateLibConfig, templateTeamshareConfig));
+			String replacedVariableInLineByValue = replaceVariableInLineByValue(line, configurationProperties,
+					keyValuesTemplate, templateLibConfig, templateTeamshareConfig);
+			writer.println(replacedVariableInLineByValue);
 		}
 
 		// Close the input stream and writer

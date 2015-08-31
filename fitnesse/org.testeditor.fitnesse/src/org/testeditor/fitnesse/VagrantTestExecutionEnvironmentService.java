@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -49,15 +50,18 @@ import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
 public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvironmentService {
 
 	private static final Logger logger = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
+	public static final String TE_PROPERTIES_FILENAME = "te_test_env.properties";
 	private boolean testsRunFlag;
 
 	private Set<TestProject> runningEnvironments = new HashSet<TestProject>();
+	private Properties previosProps;
 
 	@Override
 	public void setUpEnvironment(TestProject testProject, IProgressMonitor monitor)
 			throws IOException, InterruptedException {
+		File vagrantFileDir = getVagrantFileDirectory(testProject);
+		setSpecificGlobalVariables(vagrantFileDir);
 		try {
-			File vagrantFileDir = getVagrantFileDirectory(testProject);
 			logger.info("Vagrant path: " + vagrantFileDir);
 			ProcessBuilder builder = new ProcessBuilder("vagrant", "up");
 			configureBuilder(builder, vagrantFileDir);
@@ -97,8 +101,18 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		FileInputStream fileInputStream = new FileInputStream(resultFile);
 		TestResult result = reader.readTestResult(fileInputStream);
 		fileInputStream.close();
-
+		resetProperties();
 		return result;
+	}
+
+	/**
+	 * Restores the old Properties before the Test was laumched.
+	 */
+	public void resetProperties() {
+		for (String key : previosProps.stringPropertyNames()) {
+			System.setProperty(key, previosProps.getProperty(key));
+		}
+
 	}
 
 	@Override
@@ -132,7 +146,8 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	 */
 	private void internalExecutionOfShutdownTestEnvironment(ProcessBuilder builder, TestProject testProject)
 			throws IOException, InterruptedException {
-		configureBuilder(builder, getVagrantFileDirectory(testProject));
+		File vagrantFileDir = getVagrantFileDirectory(testProject);
+		configureBuilder(builder, vagrantFileDir);
 		Process destroyPrc = builder.start();
 		createAndRunLoggerOnStream(destroyPrc.getInputStream(), false, null);
 		createAndRunLoggerOnStream(destroyPrc.getErrorStream(), true, null);
@@ -223,9 +238,9 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	protected String getExecutionScriptForWindows(TestStructure testStructure) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("@echo off").append("\n");
-		sb.append("c:/vagrant_bin/eclipsec ");
-		// sb.append(" -jar
-		// c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_*.jar");
+		sb.append("c:/vagrant_bin/jre/bin/java ");
+		sb.append(getPropertiesString(testStructure));
+		sb.append(" -jar c:/vagrant_bin/plugins/org.eclipse.equinox.launcher_1.3.100.v20150511-1540.jar");
 		sb.append("  -application org.testeditor.core.headlesstestrunner -consoleLog");
 		sb.append(" -data c:/vagrant_data/  ExecuteTest=");
 		sb.append(testStructure.getFullName());
@@ -246,7 +261,8 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		sb.append("#!/bin/bash").append("\n");
 		sb.append("sudo startx &").append("\n");
 		sb.append("export DISPLAY=:0").append("\n");
-		sb.append("sudo /usr/bin/java ");
+		sb.append("sudo /usr/bin/java");
+		sb.append(getPropertiesString(testStructure));
 		sb.append(
 				" -jar /vagrant_bin/plugins/org.eclipse.equinox.launcher_*.jar -application org.testeditor.core.headlesstestrunner");
 		sb.append(" -consoleLog -data /vagrant_data/  ExecuteTest=");
@@ -259,6 +275,27 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	}
 
 	/**
+	 * Get Proeprties as -D params from the TE Proeprties Config near the
+	 * vagrant file to add this parameters to the TE headless.
+	 * 
+	 * @param testStructure
+	 *            to detect the vagrant config dir.
+	 * @return String with -d parameters.
+	 */
+	protected StringBuilder getPropertiesString(TestStructure testStructure) {
+		StringBuilder sb = new StringBuilder();
+		try {
+			Properties properties = loadTEProperties(getVagrantFileDirectory(testStructure.getRootElement()));
+			for (Object key : properties.keySet()) {
+				sb.append(" -D").append(key).append("=").append(properties.get(key));
+			}
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return sb;
+	}
+
+	/**
 	 * Looks up the directory containing the vagrant file in the testproject.
 	 * 
 	 * @param testProject
@@ -268,6 +305,48 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	protected File getVagrantFileDirectory(TestProject testProject) {
 		return new File(FitnesseFileSystemUtility.getPathToProject(testProject),
 				testProject.getTestProjectConfig().getTestEnvironmentConfiguration());
+	}
+
+	/**
+	 * Sets the configured properties in the jvm of the TE.
+	 * 
+	 * @param vagrantFileDir
+	 *            dir where the properties are expected.
+	 * @throws IOException
+	 *             on io problems.
+	 */
+	public void setSpecificGlobalVariables(File vagrantFileDir) throws IOException {
+		previosProps = new Properties();
+		Properties props = loadTEProperties(vagrantFileDir);
+		for (String key : props.stringPropertyNames()) {
+			logger.trace("Processing: " + key + ":" + props.getProperty(key));
+			String property = System.getProperty(key);
+			if (property != null) {
+				previosProps.put(key, System.getProperty(key));
+			}
+			System.setProperty(key, props.getProperty(key));
+		}
+	}
+
+	/**
+	 * Loads the TE specific properties from file system. If there is no file it
+	 * returns an empty propertie object.
+	 * 
+	 * @param vagrantFileDir
+	 *            dir where the properties are expected.
+	 * @return properties with the content of the file
+	 * @throws IOException
+	 *             on io problems.
+	 */
+	private Properties loadTEProperties(File vagrantFileDir) throws IOException {
+		Properties result = new Properties();
+		File teProperties = new File(vagrantFileDir, TE_PROPERTIES_FILENAME);
+		if (teProperties.exists()) {
+			FileInputStream fileInputStream = new FileInputStream(teProperties);
+			result.load(fileInputStream);
+			fileInputStream.close();
+		}
+		return result;
 	}
 
 	/**

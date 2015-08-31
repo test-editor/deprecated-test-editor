@@ -53,7 +53,7 @@ import org.testeditor.core.util.FileLocatorService;
  */
 public class HeadlessTestRunnerApplication implements IApplication {
 
-	private static final Logger LOGGER = Logger.getLogger(HeadlessTestRunnerApplication.class);
+	private static final Logger logger = Logger.getLogger(HeadlessTestRunnerApplication.class);
 	public static final String EXECUTE_TEST = "ExecuteTest";
 
 	@Override
@@ -105,7 +105,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 			try {
 				getService(TestStructureContentService.class).refreshTestCaseComponents(ts);
 			} catch (TestCycleDetectException e) {
-				LOGGER.warn("Cycle detected in: " + ts.getFullName());
+				logger.warn("Cycle detected in: " + ts.getFullName());
 			}
 			interActionLogWatcherRunnable
 					.setTestCaseCount(ts.getReferredTestStrcutures().size() + ts.getAllTestChildren().size());
@@ -113,7 +113,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		new Thread(interActionLogWatcherRunnable).start();
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
 		interActionLogWatcherRunnable.stopWatching();
-		LOGGER.info(getTestSummaryFrom(testResult));
+		logger.info(getTestSummaryFrom(testResult));
 		publishTestResultFile(testResult);
 		if (args != null && Arrays.asList(args).contains("-keepRunning")) {
 			while (true) {
@@ -122,7 +122,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		}
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
-		LOGGER.info("Shutdown Testengine.");
+		logger.info("Shutdown Testengine.");
 		return testResult;
 	}
 
@@ -141,7 +141,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 				+ File.separator + "logs", "latestResult.xml");
 		FileOutputStream out = new FileOutputStream(resultFile);
 		Files.copy(srcFile.toPath(), out);
-		LOGGER.info("Published latets test result. " + resultFile.getCanonicalPath());
+		logger.info("Published latets test result. " + resultFile.getCanonicalPath());
 	}
 
 	/**
@@ -233,10 +233,10 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		testEditorConfigService.exportGlobalVariablesToSystemProperties();
 		testEditorConfigService.initializeSystemProperties();
 		if (waittime != null) {
-			LOGGER.info("Restoring Wait time to" + waittime);
+			logger.info("Restoring Wait time to" + waittime);
 			System.setProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP, waittime);
 		}
-		LOGGER.info("Headless Test-Editor initialized.");
+		logger.info("Headless Test-Editor initialized.");
 	}
 
 	/**
