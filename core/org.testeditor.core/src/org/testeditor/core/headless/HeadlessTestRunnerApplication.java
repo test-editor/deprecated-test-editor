@@ -55,6 +55,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 
 	private static final Logger logger = Logger.getLogger(HeadlessTestRunnerApplication.class);
 	public static final String EXECUTE_TEST = "ExecuteTest";
+	public static final String EXECUTE_TEST_ENV = "ExecuteTestEnv";
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -211,6 +212,9 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		TestProject testProject = prjService.getProjectWithName(projectName);
 		if (testProject == null) {
 			throw new InvalidArgumentException("No Project with name: " + projectName);
+		}
+		if (parameter.containsKey(EXECUTE_TEST_ENV)) {
+			testProject.getTestProjectConfig().setTestEnvironmentConfiguration(parameter.get(EXECUTE_TEST_ENV));
 		}
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.startTestServer(testProject);
