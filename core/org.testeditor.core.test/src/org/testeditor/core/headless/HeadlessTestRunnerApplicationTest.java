@@ -12,8 +12,10 @@
 package org.testeditor.core.headless;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,6 +26,7 @@ import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.impl.TestProjectServiceImpl;
@@ -134,6 +137,7 @@ public class HeadlessTestRunnerApplicationTest {
 	@Test
 	public void testGetTestStructureToExecute() throws Exception {
 		final TestProject testProject = new TestProject();
+		testProject.setTestProjectConfig(new TestProjectConfig());
 		testProject.setName("MyProject");
 		TestSuite suite = new TestSuite();
 		suite.setName("TestSuite");
@@ -175,6 +179,11 @@ public class HeadlessTestRunnerApplicationTest {
 		TestStructure testStructure = headlessApp.getTestStructureToExecute(args);
 		assertSame(suite, testStructure);
 		assertSame(testProject, testStructure.getRootElement());
+		assertFalse(testStructure.getRootElement().getTestProjectConfig().usesTestAgent());
+		args = new String[] { HeadlessTestRunnerApplication.EXECUTE_TEST + "=MyProject.TestSuite",
+				HeadlessTestRunnerApplication.EXECUTE_TEST_ENV + "=vagrant/linux" };
+		testStructure = headlessApp.getTestStructureToExecute(args);
+		assertTrue(testStructure.getRootElement().getTestProjectConfig().usesTestAgent());
 	}
 
 }
