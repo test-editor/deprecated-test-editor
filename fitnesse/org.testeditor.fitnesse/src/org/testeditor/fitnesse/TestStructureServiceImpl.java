@@ -32,7 +32,6 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
@@ -51,6 +50,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	private IEventBroker eventBroker;
 	private Map<String, TeamShareService> teamShareServices = new HashMap<String, TeamShareService>();
 	private IEclipseContext context;
+	private TestExecutionEnvironmentService environmentService;
 
 	/**
 	 * 
@@ -70,6 +70,26 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	public void unBind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.remove(teamShareService.getId());
 		LOGGER.info("Removing TeamShareService Plug-In " + teamShareService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param environmentService
+	 *            to be bind to this service.
+	 */
+	public void bind(TestExecutionEnvironmentService environmentService) {
+		this.environmentService = environmentService;
+		LOGGER.info("Binding Plug-In " + environmentService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param environmentService
+	 *            to be removed.
+	 */
+	public void unbind(TestExecutionEnvironmentService environmentService) {
+		this.environmentService = null;
+		LOGGER.info("Removing Plug-In " + environmentService.getClass().getName());
 	}
 
 	/**
@@ -181,8 +201,6 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		monitor.beginTask("Starting test execution environment...", workToDo);
 		LOGGER.info("Start test execution environment");
 		try {
-			TestExecutionEnvironmentService environmentService = ServiceLookUpForTest
-					.getService(TestExecutionEnvironmentService.class);
 			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
 			monitor.worked(1);
 			TestResult result = environmentService.executeTests(testStructure, monitor);
