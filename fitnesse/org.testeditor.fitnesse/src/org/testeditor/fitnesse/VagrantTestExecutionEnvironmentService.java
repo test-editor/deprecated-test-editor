@@ -169,7 +169,9 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		builder.directory(vagrantFileDir);
 		builder.redirectErrorStream(true);
 		logger.trace("TESTEDITOR_HOME env variable: " + System.getProperty("TESTEDITOR_HOME"));
-		builder.environment().put("TESTEDITOR_HOME", System.getProperty("TESTEDITOR_HOME"));
+		if (System.getProperty("TESTEDITOR_HOME") != null) {
+			builder.environment().put("TESTEDITOR_HOME", System.getProperty("TESTEDITOR_HOME"));
+		}
 	}
 
 	/**
