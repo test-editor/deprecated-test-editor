@@ -52,7 +52,7 @@ public class VagrantTestExecutionEnvironmentServiceTest {
 	@Test
 	public void testGetExecutionScriptForLinux() {
 		VagrantTestExecutionEnvironmentService testExecService = new VagrantTestExecutionEnvironmentService();
-		String script = testExecService.getExecutionScriptForLinux(createTestStructure());
+		String script = testExecService.getExecutionScriptForLinux(createTestStructure(), false);
 		assertTrue(script.contains("export DISPLAY="));
 		assertTrue(script.contains("sudo /usr/bin/java"));
 		osIndependentChecks(script);

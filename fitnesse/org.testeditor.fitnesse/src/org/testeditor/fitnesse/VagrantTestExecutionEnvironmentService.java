@@ -205,10 +205,14 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		List<String> lines = Files.readAllLines(new File(vagrantFileDir, "Vagrantfile").toPath(),
 				StandardCharsets.UTF_8);
 		boolean isLinux = true;
+		boolean isXvfb = false;
 		for (String string : lines) {
 			if (!string.trim().startsWith("#")) {
 				if (string.contains("config.vm.communicator") && string.contains("winrm")) {
 					isLinux = false;
+				}
+				if (string.contains("apt-get install") && string.contains("xvfb")) {
+					isXvfb = true;
 				}
 			}
 		}
@@ -216,7 +220,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		String execCommand = null;
 		String execScript = null;
 		if (isLinux) {
-			executionScript = getExecutionScriptForLinux(testStructure);
+			executionScript = getExecutionScriptForLinux(testStructure, isXvfb);
 			execCommand = "/vagrant/executeTest.sh";
 			execScript = "executeTest.sh";
 		} else {
@@ -258,11 +262,17 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	 *            used for test execution.
 	 * @return string with the script content.
 	 */
-	protected String getExecutionScriptForLinux(TestStructure testStructure) {
+	protected String getExecutionScriptForLinux(TestStructure testStructure, boolean isXvfb) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("#!/bin/bash").append("\n");
-		sb.append("sudo startx &").append("\n");
-		sb.append("export DISPLAY=:0").append("\n");
+		if (isXvfb) {
+			sb.append("sudo Xvfb :99 -ac -screen 0 1280x1024x16 &").append("\n");
+			sb.append("export DISPLAY=:99").append("\n");
+			sb.append("firefox -CreateProfile testing").append("\n");
+		} else {
+			sb.append("sudo startx &").append("\n");
+			sb.append("export DISPLAY=:0").append("\n");
+		}
 		sb.append("sudo /usr/bin/java");
 		sb.append(getPropertiesString(testStructure));
 		sb.append(

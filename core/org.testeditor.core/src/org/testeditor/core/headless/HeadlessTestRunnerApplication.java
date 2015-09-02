@@ -97,6 +97,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 			URISyntaxException, SystemException, InterruptedException {
 		initializeSystemConfiguration();
 		TestStructure test = getTestStructureToExecute(args);
+		logger.info("Loaded teststructure for execution: " + test);
 		TestStructureService testStructureService = getService(TestStructureService.class);
 		InterActionLogWatcherRunnable interActionLogWatcherRunnable = new InterActionLogWatcherRunnable(
 				new NullProgressMonitor());
