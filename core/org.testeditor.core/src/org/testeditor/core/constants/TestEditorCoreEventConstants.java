@@ -68,6 +68,7 @@ public final class TestEditorCoreEventConstants {
 	 */
 	public static final String TESTSTRUCTURE_STATE_RESET = "TESTSTRUCTURE/STATE/RESET";
 
+	public static final String TEAMSHARE_UPDATE = "TEAMSHARE/UPDATE";
 	/**
 	 * Private Constructor.
 	 */
