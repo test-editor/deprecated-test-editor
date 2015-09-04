@@ -102,8 +102,8 @@ public class VagrantTestExecutionEnvironmentServiceTest {
 		assertTrue(configs.keySet().contains("localhost"));
 		assertTrue(configs.keySet().contains("windows"));
 		assertTrue(configs.keySet().contains("linux"));
-		assertEquals("vagrant/windows", configs.get("windows"));
-		assertEquals("vagrant/linux", configs.get("linux"));
+		assertEquals("vagrant" + File.separator + "windows", configs.get("windows"));
+		assertEquals("vagrant" + File.separator + "linux", configs.get("linux"));
 	}
 
 	/**
