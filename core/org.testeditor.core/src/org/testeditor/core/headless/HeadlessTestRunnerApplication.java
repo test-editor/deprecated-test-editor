@@ -40,6 +40,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
@@ -119,6 +120,12 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		if (args != null && Arrays.asList(args).contains("-keepRunning")) {
 			while (true) {
 				Thread.sleep(1000);
+			}
+		}
+		if (test.getRootElement().getTestProjectConfig().usesTestAgent()) {
+			TestExecutionEnvironmentService testEnvService = getService(TestExecutionEnvironmentService.class);
+			if (testEnvService != null) {
+				testEnvService.shutDownEnvironment(test.getRootElement(), new NullProgressMonitor());
 			}
 		}
 		TestServerService serverService = getService(TestServerService.class);
