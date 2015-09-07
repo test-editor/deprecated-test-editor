@@ -241,11 +241,16 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	public void initializeSystemConfiguration() throws BackingStoreException, IOException {
 		TestEditorConfigurationService testEditorConfigService = getService(TestEditorConfigurationService.class);
 		String waittime = System.getProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP);
+		String browserPath = System.getProperty(TestEditorGlobalConstans.PATH_BROWSER);
 		testEditorConfigService.exportGlobalVariablesToSystemProperties();
 		testEditorConfigService.initializeSystemProperties();
 		if (waittime != null) {
 			logger.info("Restoring Wait time to" + waittime);
 			System.setProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP, waittime);
+		}
+		if (browserPath != null) {
+			logger.info("Restoring browser path to" + browserPath);
+			System.setProperty(TestEditorGlobalConstans.PATH_BROWSER, browserPath);
 		}
 		logger.info("Headless Test-Editor initialized.");
 	}
