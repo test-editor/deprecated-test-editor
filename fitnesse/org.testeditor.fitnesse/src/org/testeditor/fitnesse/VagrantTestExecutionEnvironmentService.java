@@ -49,7 +49,7 @@ import org.testeditor.fitnesse.resultreader.FitnesseTestExecutionResultReader;
  */
 public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvironmentService {
 
-	private static final Logger logger = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
+	private static final Logger LOGGER = Logger.getLogger(VagrantTestExecutionEnvironmentService.class);
 	public static final String TE_PROPERTIES_FILENAME = "te_test_env.properties";
 	private boolean testsRunFlag;
 
@@ -62,7 +62,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		File vagrantFileDir = getVagrantFileDirectory(testProject);
 		setSpecificGlobalVariables(vagrantFileDir);
 		try {
-			logger.info("Vagrant path: " + vagrantFileDir);
+			LOGGER.info("Vagrant path: " + vagrantFileDir);
 			ProcessBuilder builder = new ProcessBuilder("vagrant", "up");
 			configureBuilder(builder, vagrantFileDir);
 			Process upPrc = builder.start();
@@ -73,7 +73,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 			}
 			runningEnvironments.add(testProject);
 		} catch (Exception e) {
-			logger.error("error start", e);
+			LOGGER.error("error start", e);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	private void configureBuilder(ProcessBuilder builder, File vagrantFileDir) {
 		builder.directory(vagrantFileDir);
 		builder.redirectErrorStream(true);
-		logger.trace("TESTEDITOR_HOME env variable: " + System.getProperty("TESTEDITOR_HOME"));
+		LOGGER.trace("TESTEDITOR_HOME env variable: " + System.getProperty("TESTEDITOR_HOME"));
 		if (System.getProperty("TESTEDITOR_HOME") != null) {
 			builder.environment().put("TESTEDITOR_HOME", System.getProperty("TESTEDITOR_HOME"));
 		}
@@ -260,6 +260,8 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 	 * 
 	 * @param testStructure
 	 *            used for test execution.
+	 * @param isXvfb
+	 *            true when virtual framebuffer X-server is used
 	 * @return string with the script content.
 	 */
 	protected String getExecutionScriptForLinux(TestStructure testStructure, boolean isXvfb) {
@@ -302,7 +304,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 				sb.append(" -D").append(key).append("=").append(properties.get(key));
 			}
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 		}
 		sb.append(" -DexecInVagrant=true");
 		return sb;
@@ -332,7 +334,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 		previosProps = new Properties();
 		Properties props = loadTEProperties(vagrantFileDir);
 		for (String key : props.stringPropertyNames()) {
-			logger.trace("Processing: " + key + ":" + props.getProperty(key));
+			LOGGER.trace("Processing: " + key + ":" + props.getProperty(key));
 			String property = System.getProperty(key);
 			if (property != null) {
 				previosProps.put(key, System.getProperty(key));
@@ -388,16 +390,16 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 							testsRunFlag = false;
 						}
 						if (errorStream) {
-							logger.error(message);
+							LOGGER.error(message);
 						} else {
-							logger.info(message);
+							LOGGER.info(message);
 							if (monitor != null) {
 								monitor.subTask(message);
 							}
 						}
 					}
 				} catch (IOException e) {
-					logger.debug("Error reading remote Process Stream", e);
+					LOGGER.debug("Error reading remote Process Stream", e);
 				}
 			}
 		}).start();
@@ -429,7 +431,7 @@ public class VagrantTestExecutionEnvironmentService implements TestExecutionEnvi
 								.toString();
 						testExecEnvs.put(file.getName(), configPath);
 					} catch (URISyntaxException e) {
-						logger.error(e.getMessage(), e);
+						LOGGER.error(e.getMessage(), e);
 					}
 				}
 			}

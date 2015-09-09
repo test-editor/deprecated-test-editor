@@ -42,6 +42,9 @@ public interface MetaDataService {
 	/**
 	 * Returns a list of all MetaData that are handled by the service.
 	 * 
+	 * @param project
+	 *            TestProject
+	 * 
 	 * @return - the list of MetaData
 	 */
 	List<MetaData> getAllMetaData(TestProject project);
