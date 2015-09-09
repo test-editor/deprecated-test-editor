@@ -13,16 +13,22 @@ package org.testeditor.ui.parts.commons;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -39,11 +45,15 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.testeditor.core.model.teststructure.BrokenTestStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.CustomWidgetIdConstants;
+import org.testeditor.ui.handlers.OpenTestStructureHandler;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * Search for a TestStructure.
@@ -62,6 +72,12 @@ public class SearchTestStructureDialog extends Dialog {
 	protected String searchString = "";
 
 	protected TestStructure selectedTestStructure;
+
+	@Inject
+	private IEclipseContext context;
+
+	@Inject
+	private TestEditorTranslationService translate;
 
 	/**
 	 * Constructor to build the Dialog.
@@ -89,13 +105,47 @@ public class SearchTestStructureDialog extends Dialog {
 				CustomWidgetIdConstants.SEARCH_DIALOG_TESTSTRUCTURE_NAME);
 		Label resultLabel = new Label(area, SWT.NORMAL);
 		resultLabel.setText("Search results:");
+
 		result = new TableViewer(area);
+
+		TableColumn column = new TableColumn(result.getTable(), SWT.NONE);
+		column.setWidth(200);
+
+		column = new TableColumn(result.getTable(), SWT.NONE);
+		column.setWidth(600);
+
+		result.addOpenListener(new IOpenListener() {
+
+			@Override
+			public void open(OpenEvent event) {
+				Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
+
+				try {
+					TestStructure selected = (TestStructure) element;
+					OpenTestStructureHandler handler = ContextInjectionFactory.make(OpenTestStructureHandler.class,
+							context);
+					handler.execute(selected, context);
+				} catch (ClassCastException e) {
+
+					if (element instanceof BrokenTestStructure) {
+						MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Info", MessageFormat
+								.format(translate.translate("%testsuiteeditor.referedtestcases.not.available"),
+										((BrokenTestStructure) element).getName()));
+
+					}
+				}
+			}
+		});
+
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.minimumHeight = 400;
 		gridData.minimumWidth = 500;
 		result.getTable().setLayoutData(gridData);
 		loadedTestsState = new Label(area, SWT.NORMAL);
+
 		result.setContentProvider(new ArrayContentProvider());
+		result.setLabelProvider(new SearchTestStructureCellLabelProvider());
+
 		result.addFilter(getSearchFilter());
 		result.addSelectionChangedListener(getResultSelectionListener());
 		result.getTable().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
@@ -194,6 +244,7 @@ public class SearchTestStructureDialog extends Dialog {
 				DecimalFormat df = new DecimalFormat("##.##");
 				df.setRoundingMode(RoundingMode.DOWN);
 				for (int i = 0; i < projects.size(); i++) {
+
 					list.addAll(projects.get(i).getAllTestChildrenWithScenarios());
 					Display.getDefault().syncExec(new Runnable() {
 
