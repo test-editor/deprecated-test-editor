@@ -28,6 +28,7 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * Tests for the SearchTestStructureDialog.
@@ -59,6 +60,7 @@ public class SearchTestStructureDialogTest {
 				return list;
 			}
 		});
+		context.set(TestEditorTranslationService.class, null);
 		SearchTestStructureDialog dialog = new SearchTestStructureDialog(shell) {
 			@Override
 			public Shell getShell() {
