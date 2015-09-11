@@ -551,13 +551,13 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	@Test
 	public void testConvertToFitNessePathWithMetaDataXml() {
 
-		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "FitNesseRoot"
-				+ File.separatorChar + "DemoWebTests" + File.separatorChar + "LocalDemoSuite" + File.separatorChar
-				+ "LoginSuite" + File.separatorChar + "metadata.xml";
-		String fitNessePage = new FitnesseFileSystemTestStructureService()
-				.lookUpTestStructureFullNameMatchedToPath(null, file);
+		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "metadata.xml";
+		TestProject tp = new TestProject();
+		tp.setName("DemoWebTests");
+		String fitNessePage = new FitnesseFileSystemTestStructureService().lookUpTestStructureFullNameMatchedToPath(tp,
+				file);
 
-		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite", fitNessePage);
+		assertEquals("DemoWebTests", fitNessePage);
 
 	}
 

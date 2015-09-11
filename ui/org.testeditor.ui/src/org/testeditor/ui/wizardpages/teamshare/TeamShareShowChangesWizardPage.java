@@ -31,8 +31,11 @@ import org.testeditor.ui.constants.IconConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
+ * Wizardpage to show the local changes. The page supports two display ways:
  * 
- * @author dkuhlmann
+ * Teststruture based: Testproject.TestSuite.Testcase Developerview with file
+ * based information:
+ * /paht_to_ws/project/some_dir/testsuite/testcase/content.txt
  *
  */
 public class TeamShareShowChangesWizardPage extends TeamShareWizardPage {

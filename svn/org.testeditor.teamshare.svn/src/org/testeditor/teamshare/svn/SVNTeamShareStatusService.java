@@ -115,7 +115,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 								boolean inIgnoreList = false;
 
 								for (int i = 0; i < SVNTeamShareService.IGNORE_LIST.length; i++) {
-									if (fullName.matches(".*FitNesseRoot.*" + SVNTeamShareService.IGNORE_LIST[i])) {
+									if (fullName.matches(".*" + SVNTeamShareService.IGNORE_LIST[i])) {
 										inIgnoreList = true;
 										break;
 									}
@@ -174,7 +174,6 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 
 				String modifiedTestStructureFullName = testStructureService.lookUpTestStructureFullNameMatchedToPath(
 						testStructure.getRootElement(), modifiedTestStructure);
-
 				if (modifiedTestStructureFullName.equals(testStructure.getFullName())) {
 					return true;
 				} else

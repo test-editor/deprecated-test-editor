@@ -462,8 +462,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
 					pointSeparatedFile.indexOf(".content.txt"));
 		} else if (pointSeparatedFile.indexOf(".metadata.xml") > 0) {
-			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
-					pointSeparatedFile.indexOf(".metadata.xml"));
+			result = testProject.getFullName();
 		} else if (pointSeparatedFile.indexOf(".properties.xml") > 0) {
 			result = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
 					pointSeparatedFile.indexOf(".properties.xml"));
