@@ -77,7 +77,7 @@ public class SVNTeamShareServiceLocalTest {
 	private static String targetWorkspacePath;
 
 	private static String projectpath;
-	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareService.class);
+	private static final Logger logger = Logger.getLogger(SVNTeamShareService.class);
 
 	private TeamShareService teamService;
 
@@ -107,7 +107,7 @@ public class SVNTeamShareServiceLocalTest {
 	@Before
 	public void setUp() throws Exception {
 
-		LOGGER.setLevel(Level.ERROR);
+		logger.setLevel(Level.ERROR);
 		System.setProperty("svn.default.comment", "xyz");
 
 		teamService = new SVNTeamShareService();
@@ -774,7 +774,7 @@ public class SVNTeamShareServiceLocalTest {
 			teamService.validateConfiguration(testProject, translationService);
 			fail("ValidateConfiguration should throw Exception on empty url.");
 		} catch (SystemException e) {
-			LOGGER.equals(e);
+			logger.equals(e);
 		}
 	}
 
@@ -794,7 +794,7 @@ public class SVNTeamShareServiceLocalTest {
 			teamService.validateConfiguration(testProject, translationService);
 			fail("ValidateConfiguration should throw Exception on not existing Project.");
 		} catch (SystemException e) {
-			LOGGER.equals(e);
+			logger.equals(e);
 		}
 	}
 

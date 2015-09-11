@@ -45,7 +45,7 @@ import org.testeditor.fitnesse.util.FitNesseRestClient;
  */
 public class TestStructureServiceImpl implements TestStructureServicePlugIn, IContextFunction {
 
-	private static final Logger LOGGER = Logger.getLogger(TestStructureServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(TestStructureServiceImpl.class);
 	private Map<String, String> renamedTestStructures = new HashMap<String, String>();
 	private IEventBroker eventBroker;
 	private Map<String, TeamShareService> teamShareServices = new HashMap<String, TeamShareService>();
@@ -59,7 +59,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 */
 	public void bind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.put(teamShareService.getId(), teamShareService);
-		LOGGER.info("Binding TeamShareService Plug-In " + teamShareService.getClass().getName());
+		logger.info("Binding TeamShareService Plug-In " + teamShareService.getClass().getName());
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 */
 	public void unBind(TeamShareServicePlugIn teamShareService) {
 		teamShareServices.remove(teamShareService.getId());
-		LOGGER.info("Removing TeamShareService Plug-In " + teamShareService.getClass().getName());
+		logger.info("Removing TeamShareService Plug-In " + teamShareService.getClass().getName());
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 */
 	public void bind(TestExecutionEnvironmentService environmentService) {
 		this.environmentService = environmentService;
-		LOGGER.info("Binding Plug-In " + environmentService.getClass().getName());
+		logger.info("Binding Plug-In " + environmentService.getClass().getName());
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 */
 	public void unbind(TestExecutionEnvironmentService environmentService) {
 		this.environmentService = null;
-		LOGGER.info("Removing Plug-In " + environmentService.getClass().getName());
+		logger.info("Removing Plug-In " + environmentService.getClass().getName());
 	}
 
 	/**
@@ -113,10 +113,10 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		}
 		if (testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
 			String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
-			LOGGER.trace("Looking up for team share service with id: " + id);
+			logger.trace("Looking up for team share service with id: " + id);
 			TeamShareService teamShareService = teamShareServices.get(id);
 			teamShareService.delete(testStructure, context.get(TranslationService.class));
-			LOGGER.trace("Used " + teamShareService);
+			logger.trace("Used " + teamShareService);
 		}
 		new FitnesseFileSystemTestStructureService().delete(testStructure);
 		clearTestHistory(testStructure);
@@ -134,7 +134,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		clearTestHistory(testStructure);
 		if (testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
 			String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
-			LOGGER.trace("Looking up for team share service with id: " + id);
+			logger.trace("Looking up for team share service with id: " + id);
 			TeamShareService teamShareService = teamShareServices.get(id);
 			teamShareService.rename(testStructure, newName, context.get(TranslationService.class));
 		} else {
@@ -199,7 +199,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			workToDo = workToDo + ((TestSuite) testStructure).getAllTestChildrensAndReferedTestcases().size();
 		}
 		monitor.beginTask("Starting test execution environment...", workToDo);
-		LOGGER.info("Start test execution environment");
+		logger.info("Start test execution environment");
 		try {
 			environmentService.setUpEnvironment(testStructure.getRootElement(), monitor);
 			monitor.worked(1);
@@ -207,7 +207,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			monitor.worked(1);
 			return result;
 		} catch (IOException e) {
-			LOGGER.error(
+			logger.error(
 					"Error executing testenvironment: "
 							+ testStructure.getRootElement().getTestProjectConfig().getTestEnvironmentConfiguration(),
 					e);
@@ -291,7 +291,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-			LOGGER.trace("EventBroker registered.");
+			logger.trace("EventBroker registered.");
 			this.context = context;
 		}
 		return this;

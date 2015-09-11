@@ -54,7 +54,7 @@ import org.testeditor.core.util.FileLocatorService;
  */
 public class HeadlessTestRunnerApplication implements IApplication {
 
-	private static final Logger LOGGER = Logger.getLogger(HeadlessTestRunnerApplication.class);
+	private static final Logger logger = Logger.getLogger(HeadlessTestRunnerApplication.class);
 	public static final String EXECUTE_TEST = "ExecuteTest";
 	public static final String EXECUTE_TEST_ENV = "ExecuteTestEnv";
 
@@ -98,7 +98,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 			URISyntaxException, SystemException, InterruptedException {
 		initializeSystemConfiguration();
 		TestStructure test = getTestStructureToExecute(args);
-		LOGGER.info("Loaded teststructure for execution: " + test);
+		logger.info("Loaded teststructure for execution: " + test);
 		TestStructureService testStructureService = getService(TestStructureService.class);
 		InterActionLogWatcherRunnable interActionLogWatcherRunnable = new InterActionLogWatcherRunnable(
 				new NullProgressMonitor());
@@ -107,7 +107,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 			try {
 				getService(TestStructureContentService.class).refreshTestCaseComponents(ts);
 			} catch (TestCycleDetectException e) {
-				LOGGER.warn("Cycle detected in: " + ts.getFullName());
+				logger.warn("Cycle detected in: " + ts.getFullName());
 			}
 			interActionLogWatcherRunnable
 					.setTestCaseCount(ts.getReferredTestStrcutures().size() + ts.getAllTestChildren().size());
@@ -115,7 +115,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		new Thread(interActionLogWatcherRunnable).start();
 		TestResult testResult = testStructureService.executeTestStructure(test, new NullProgressMonitor());
 		interActionLogWatcherRunnable.stopWatching();
-		LOGGER.info(getTestSummaryFrom(testResult));
+		logger.info(getTestSummaryFrom(testResult));
 		publishTestResultFile(testResult);
 		if (args != null && Arrays.asList(args).contains("-keepRunning")) {
 			while (true) {
@@ -130,7 +130,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		}
 		TestServerService serverService = getService(TestServerService.class);
 		serverService.stopTestServer(test.getRootElement());
-		LOGGER.info("Shutdown Testengine.");
+		logger.info("Shutdown Testengine.");
 		return testResult;
 	}
 
@@ -149,7 +149,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 				+ File.separator + "logs", "latestResult.xml");
 		FileOutputStream out = new FileOutputStream(resultFile);
 		Files.copy(srcFile.toPath(), out);
-		LOGGER.info("Published latets test result. " + resultFile.getCanonicalPath());
+		logger.info("Published latets test result. " + resultFile.getCanonicalPath());
 	}
 
 	/**
@@ -245,14 +245,14 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		testEditorConfigService.exportGlobalVariablesToSystemProperties();
 		testEditorConfigService.initializeSystemProperties();
 		if (waittime != null) {
-			LOGGER.info("Restoring Wait time to" + waittime);
+			logger.info("Restoring Wait time to" + waittime);
 			System.setProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP, waittime);
 		}
 		if (browserPath != null) {
-			LOGGER.info("Restoring browser path to" + browserPath);
+			logger.info("Restoring browser path to" + browserPath);
 			System.setProperty(TestEditorGlobalConstans.PATH_BROWSER, browserPath);
 		}
-		LOGGER.info("Headless Test-Editor initialized.");
+		logger.info("Headless Test-Editor initialized.");
 	}
 
 	/**
