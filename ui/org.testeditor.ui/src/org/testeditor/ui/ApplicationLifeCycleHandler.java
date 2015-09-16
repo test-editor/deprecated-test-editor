@@ -132,11 +132,11 @@ public class ApplicationLifeCycleHandler {
 	 * 
 	 */
 	protected void initTestEditorCronJobs() {
-//		TeamModificationCheckJob job = ContextInjectionFactory.make(TeamModificationCheckJob.class, context);
-//		Thread jobRunner = new Thread(job, "Team sever observer");
-//		jobRunner.start();
-//		jobs.add(jobRunner);
-//		LOGGER.info("Team server observer started.");
+		TeamModificationCheckJob job = ContextInjectionFactory.make(TeamModificationCheckJob.class, context);
+		Thread jobRunner = new Thread(job, "Team sever observer");
+		jobRunner.start();
+		jobs.add(jobRunner);
+		LOGGER.info("Team server observer started.");
 	}
 
 	/**
