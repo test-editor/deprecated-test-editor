@@ -2,11 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Integration Tests for Core
 Bundle-SymbolicName: org.testeditor.core.test
-<<<<<<< HEAD
 Bundle-Version: 1.8.1
-=======
-Bundle-Version: 1.8.0
->>>>>>> caac14be462a8ceb0993b966c1dfd7679bf68823
 Fragment-Host: org.testeditor.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit,
