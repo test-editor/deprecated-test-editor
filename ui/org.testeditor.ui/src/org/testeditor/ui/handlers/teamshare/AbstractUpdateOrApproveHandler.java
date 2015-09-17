@@ -131,14 +131,14 @@ public abstract class AbstractUpdateOrApproveHandler {
 
 				}
 			});
-			
-			if( !testExplorer.getSelection().isEmpty()) {
+
+			if (!testExplorer.getSelection().isEmpty()) {
 				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED,
 						((TestStructure) testExplorer.getSelection().getFirstElement()).getFullName());
 			} else {
 				LOGGER.warn("selection does not exist in testexplorer !");
 			}
-			
+
 		} catch (InvocationTargetException e) {
 			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 			LOGGER.error(e.getMessage());

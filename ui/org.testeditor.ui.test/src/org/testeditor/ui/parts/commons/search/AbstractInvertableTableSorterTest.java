@@ -16,8 +16,15 @@ import org.eclipse.swt.SWT;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Modultests for AbstractInvertableTableSorter.
+ *
+ */
 public class AbstractInvertableTableSorterTest {
 
+	/**
+	 * Test the sorter for down state.
+	 */
 	@Test
 	public void testInvertableSorter() {
 
@@ -35,6 +42,9 @@ public class AbstractInvertableTableSorterTest {
 
 	}
 
+	/**
+	 * Test the sorter.
+	 */
 	@Test
 	public void testInvertableSorter2() {
 
@@ -51,6 +61,9 @@ public class AbstractInvertableTableSorterTest {
 
 	}
 
+	/**
+	 * Test the sorter for up state.
+	 */
 	@Test
 	public void testSortDirection() {
 
