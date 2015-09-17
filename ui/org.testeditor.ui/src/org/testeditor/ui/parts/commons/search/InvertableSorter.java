@@ -16,7 +16,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 
 /**
  * This abstract class provides methods for getting the sort direction, to
- * compare entries and getting an InvertableSorter
+ * compare entries and getting an InvertableSorter.
  *
  */
 abstract class InvertableSorter extends ViewerSorter {

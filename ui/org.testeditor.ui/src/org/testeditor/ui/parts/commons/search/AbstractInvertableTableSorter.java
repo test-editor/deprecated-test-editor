@@ -21,16 +21,22 @@ import org.eclipse.swt.SWT;
  */
 public abstract class AbstractInvertableTableSorter extends InvertableSorter {
 
+	/**
+	 * Inner class for the default Sorter.
+	 */
 	private final InvertableSorter inverse = new InvertableSorter() {
 
+		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			return (-1) * AbstractInvertableTableSorter.this.compare(viewer, e1, e2);
 		}
 
+		@Override
 		InvertableSorter getInverseSorter() {
 			return AbstractInvertableTableSorter.this;
 		}
 
+		@Override
 		public int getSortDirection() {
 			return SWT.DOWN;
 		}
@@ -49,4 +55,5 @@ public abstract class AbstractInvertableTableSorter extends InvertableSorter {
 	public int getSortDirection() {
 		return SWT.UP;
 	}
+
 }
