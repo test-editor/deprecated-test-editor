@@ -137,7 +137,10 @@ public class ApplicationLifeCycleHandlerTest {
 				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
 		context.set(IServiceConstants.ACTIVE_SHELL, null);
 		context.set(TestExecutionEnvironmentService.class, new TestExceutionEnvironmentServiceAdapter());
+		context.set(TranslationService.class, getTranslationServiceMock());
+
 		ContextInjectionFactory.inject(handler, context);
+
 		handler.shutDownApplication();
 		assertTrue(set.contains("stop"));
 	}

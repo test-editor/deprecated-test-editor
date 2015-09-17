@@ -28,7 +28,6 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
-import org.testeditor.ui.parts.commons.search.SearchTestStructureDialog;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
@@ -61,13 +60,21 @@ public class SearchTestStructureDialogTest {
 				return list;
 			}
 		});
-		context.set(TestEditorTranslationService.class, null);
+
+		context.set(TestEditorTranslationService.class, new TestEditorTranslationService() {
+			@Override
+			public String translate(String key, Object... params) {
+				return key;
+			};
+		});
+
 		SearchTestStructureDialog dialog = new SearchTestStructureDialog(shell) {
 			@Override
 			public Shell getShell() {
 				return shell;
 			}
 		};
+
 		ContextInjectionFactory.inject(dialog, context);
 		assertNull(dialog.getSelectedTestStructure());
 		dialog.createDialogArea(shell);
