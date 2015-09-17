@@ -9,9 +9,10 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.parts.commons;
+package org.testeditor.ui.parts.commons.search;
 
 import java.math.RoundingMode;
+import java.text.Collator;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class SearchTestStructureDialog extends Dialog {
 	private static final Logger LOGGER = Logger.getLogger(SearchTestStructureDialog.class);
 
 	private Text searchText;
-	private TableViewer result;
+	private TableViewer searchResults;
 	private Label loadedTestsState;
 
 	@Inject
@@ -91,12 +92,12 @@ public class SearchTestStructureDialog extends Dialog {
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText("Search for a test structure.");
+		getShell().setText(translate.translate("%testexplorer.dialog.search.title"));
 		Composite cmp = (Composite) super.createDialogArea(parent);
 		Composite area = new Composite(cmp, SWT.NORMAL);
 		area.setLayout(new GridLayout(1, false));
 		Label searchFieldLabel = new Label(area, SWT.NORMAL);
-		searchFieldLabel.setText("Search test structure with name: ");
+		searchFieldLabel.setText(translate.translate("%testexplorer.dialog.search.label"));
 		searchText = new Text(area, SWT.BORDER);
 		searchText.addModifyListener(getSearchTextModifiedListener());
 		searchText.addKeyListener(getSwitchToResultViewKeyListner());
@@ -104,17 +105,23 @@ public class SearchTestStructureDialog extends Dialog {
 		searchText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.SEARCH_DIALOG_TESTSTRUCTURE_NAME);
 		Label resultLabel = new Label(area, SWT.NORMAL);
-		resultLabel.setText("Search results:");
+		resultLabel.setText(translate.translate("%testexplorer.dialog.search.results"));
 
-		result = new TableViewer(area);
+		searchResults = new TableViewer(area);
 
-		TableColumn column = new TableColumn(result.getTable(), SWT.NONE);
+		searchResults.getTable().setHeaderVisible(true);
+
+		TableColumn column = new TableColumn(searchResults.getTable(), SWT.NONE);
 		column.setWidth(200);
+		column.setText(translate.translate("%testexplorer.dialog.search.column.name"));
 
-		column = new TableColumn(result.getTable(), SWT.NONE);
+		makeColumnSortable(column);
+
+		column = new TableColumn(searchResults.getTable(), SWT.NONE);
 		column.setWidth(600);
+		column.setText(translate.translate("%testexplorer.dialog.search.column.path"));
 
-		result.addOpenListener(new IOpenListener() {
+		searchResults.addOpenListener(new IOpenListener() {
 
 			@Override
 			public void open(OpenEvent event) {
@@ -125,11 +132,14 @@ public class SearchTestStructureDialog extends Dialog {
 					OpenTestStructureHandler handler = ContextInjectionFactory.make(OpenTestStructureHandler.class,
 							context);
 					handler.execute(selected, context);
+
+					close();
 				} catch (ClassCastException e) {
 
 					if (element instanceof BrokenTestStructure) {
-						MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Info", MessageFormat
-								.format(translate.translate("%testsuiteeditor.referedtestcases.not.available"),
+						MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Info",
+								MessageFormat.format(
+										translate.translate("%testsuiteeditor.referedtestcases.not.available"),
 										((BrokenTestStructure) element).getName()));
 
 					}
@@ -140,18 +150,34 @@ public class SearchTestStructureDialog extends Dialog {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.minimumHeight = 400;
 		gridData.minimumWidth = 500;
-		result.getTable().setLayoutData(gridData);
+		searchResults.getTable().setLayoutData(gridData);
 		loadedTestsState = new Label(area, SWT.NORMAL);
 
-		result.setContentProvider(new ArrayContentProvider());
-		result.setLabelProvider(new SearchTestStructureCellLabelProvider());
+		searchResults.setContentProvider(new ArrayContentProvider());
+		searchResults.setLabelProvider(new SearchTestStructureCellLabelProvider());
 
-		result.addFilter(getSearchFilter());
-		result.addSelectionChangedListener(getResultSelectionListener());
-		result.getTable().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+		searchResults.addFilter(getSearchFilter());
+		searchResults.addSelectionChangedListener(getResultSelectionListener());
+		searchResults.getTable().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
 				CustomWidgetIdConstants.SEARCH_DIALOG_TESTSTRUCTURE_RESULT);
 		createTestStructureNamesLoader().start();
 		return cmp;
+	}
+
+	/**
+	 * Makes given column sortable.
+	 * 
+	 * @param column
+	 *            to be sortable
+	 */
+	private void makeColumnSortable(TableColumn column) {
+		new TableSortSelectionListener(searchResults, column, new AbstractInvertableTableSorter() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+				return Collator.getInstance().compare(((TestStructure) e1).getName(), ((TestStructure) e2).getName());
+			}
+
+		}, SWT.UP, true).chooseColumnForSorting();
 	}
 
 	/**
@@ -164,7 +190,7 @@ public class SearchTestStructureDialog extends Dialog {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				selectedTestStructure = (TestStructure) ((IStructuredSelection) result.getSelection())
+				selectedTestStructure = (TestStructure) ((IStructuredSelection) searchResults.getSelection())
 						.getFirstElement();
 			}
 		};
@@ -186,10 +212,10 @@ public class SearchTestStructureDialog extends Dialog {
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.ARROW_DOWN) {
 					LOGGER.trace("Key down recognized. Switching to result view.");
-					if (result.getTable().getItemCount() > 0) {
-						result.getTable().select(0);
-						result.getTable().setFocus();
-						selectedTestStructure = (TestStructure) ((IStructuredSelection) result.getSelection())
+					if (searchResults.getTable().getItemCount() > 0) {
+						searchResults.getTable().select(0);
+						searchResults.getTable().setFocus();
+						selectedTestStructure = (TestStructure) ((IStructuredSelection) searchResults.getSelection())
 								.getFirstElement();
 					}
 				}
@@ -222,7 +248,7 @@ public class SearchTestStructureDialog extends Dialog {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				searchString = searchText.getText();
-				result.refresh();
+				searchResults.refresh();
 			}
 		};
 	}
@@ -250,13 +276,13 @@ public class SearchTestStructureDialog extends Dialog {
 
 						@Override
 						public void run() {
-							if (!result.getTable().isDisposed()) {
-								result.setInput(list);
+							if (!searchResults.getTable().isDisposed()) {
+								searchResults.setInput(list);
 							}
 						}
 					});
-					updateLoadedTestsState(projects.get(i) + ": " + df.format(((float) i + 1) / projects.size() * 100)
-							+ "%");
+					updateLoadedTestsState(
+							projects.get(i) + ": " + df.format(((float) i + 1) / projects.size() * 100) + "%");
 				}
 				updateLoadedTestsState("100%");
 			};
@@ -296,7 +322,7 @@ public class SearchTestStructureDialog extends Dialog {
 	 * @return table view containing the result.
 	 */
 	protected TableViewer getResultViewer() {
-		return result;
+		return searchResults;
 	}
 
 }

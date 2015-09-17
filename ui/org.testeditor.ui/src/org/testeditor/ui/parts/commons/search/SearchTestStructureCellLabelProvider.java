@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.parts.commons;
+package org.testeditor.ui.parts.commons.search;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.CellLabelProvider;

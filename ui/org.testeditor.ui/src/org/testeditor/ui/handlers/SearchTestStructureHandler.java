@@ -19,7 +19,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
-import org.testeditor.ui.parts.commons.SearchTestStructureDialog;
+import org.testeditor.ui.parts.commons.search.SearchTestStructureDialog;
 
 /**
  * Handler to Execute a TestStructure Search.
