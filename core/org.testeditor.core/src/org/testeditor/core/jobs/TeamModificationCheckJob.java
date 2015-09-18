@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.jobs;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +65,7 @@ public class TeamModificationCheckJob implements Runnable {
 	 * The informations are reported to the TestStateProtocolService.
 	 */
 	protected void checkForModifications() {
-		List<TestProject> unmodifiableList = Collections.unmodifiableList(testProjectService.getProjects());
+		List<TestProject> unmodifiableList = new ArrayList<TestProject>(testProjectService.getProjects());
 		for (TestProject tp : unmodifiableList) {
 			if (tp.getTestProjectConfig().isTeamSharedProject()) {
 				try {

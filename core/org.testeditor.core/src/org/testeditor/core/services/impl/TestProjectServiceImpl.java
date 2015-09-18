@@ -515,10 +515,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		boolean configMigrated = false;
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 		addGlobalVariablesToProjectConfig(testProjectConfig, properties);
-		String serverId = properties.getProperty("testautomat.serverid");
-		if (serverId != null) {
-			testProjectConfig.setTestServerID(serverId);
-		}
+		setConfigValues(testProjectConfig, properties);
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
 		if (properties.containsKey(TestExecutionEnvironmentService.CONFIG)) {
 			testProjectConfig
@@ -539,6 +536,44 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			}
 
 		}
+		setupPluginConfig(testProjectConfig, properties);
+		if (configMigrated) {
+			internalStoreProjectConfig(projectName, testProjectConfig, true);
+		}
+
+		return testProjectConfig;
+	}
+
+	/**
+	 * Init values from properties or set defaults.
+	 * 
+	 * @param testProjectConfig
+	 *            to be configured.
+	 * @param properties
+	 *            used to get the values.
+	 */
+	protected void setConfigValues(TestProjectConfig testProjectConfig, Properties properties) {
+		String serverId = properties.getProperty("testautomat.serverid");
+		if (serverId != null) {
+			testProjectConfig.setTestServerID(serverId);
+		}
+		String testEnv = properties.getProperty("test.execution.environment.config");
+		if (testEnv == null) {
+			testProjectConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
+		} else {
+			testProjectConfig.setTestEnvironmentConfiguration(testEnv);
+		}
+	}
+
+	/**
+	 * Setup and if necessary migrate configuration of the plug-ins.
+	 * 
+	 * @param testProjectConfig
+	 *            to be builded.
+	 * @param properties
+	 *            wit base information to build it.
+	 */
+	private void setupPluginConfig(TestProjectConfig testProjectConfig, Properties properties) {
 		if (plugInservice != null) {
 			testProjectConfig.setProjectLibraryConfig(createProjectLibraryConfigFrom(properties));
 			if (properties.containsKey(TestEditorPlugInService.TEAMSHARE_ID)
@@ -551,11 +586,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			}
 		}
 
-		if (configMigrated) {
-			internalStoreProjectConfig(projectName, testProjectConfig, true);
-		}
-
-		return testProjectConfig;
 	}
 
 	/**
@@ -648,7 +678,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	protected TestProjectConfig getTestProjectConfigFromVersion1dot3(TestProjectConfig testProjectConfig,
 			Properties properties) {
 		testProjectConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
-		testProjectConfig.setProjectConfigVersion(VERSION1_3);
+		testProjectConfig.setProjectConfigVersion(VERSION);
 		return testProjectConfig;
 	}
 

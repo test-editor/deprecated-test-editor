@@ -315,7 +315,7 @@ public class TestProjectConfig {
 	 *         <code>TestEditorCoreConstants.NONE_TEST_AGENT</code> is set.
 	 */
 	public boolean usesTestAgent() {
-		return testEnvironmentConfiguration != TestEditorCoreConstants.NONE_TEST_AGENT;
+		return !testEnvironmentConfiguration.equals(TestEditorCoreConstants.NONE_TEST_AGENT);
 	}
 
 	/**

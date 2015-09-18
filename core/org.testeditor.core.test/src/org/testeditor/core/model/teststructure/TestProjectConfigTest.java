@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-import org.testeditor.core.constants.TestEditorCoreConstants;
 
 /**
  * 
@@ -66,16 +65,16 @@ public class TestProjectConfigTest {
 	}
 
 	/**
-	 * Test the usesTastAgent method. THis one should retrun true if an
+	 * Test the usesTastAgent method. This one should return true if an
 	 * testagent is configured, otherwise null.
 	 */
 	@Test
 	public void testUsesTestAgent() {
 		TestProjectConfig tpConfig = new TestProjectConfig();
 		assertFalse(tpConfig.usesTestAgent());
-		tpConfig.setTestEnvironmentConfiguration("");
+		tpConfig.setTestEnvironmentConfiguration("linux");
 		assertTrue(tpConfig.usesTestAgent());
-		tpConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
+		tpConfig.setTestEnvironmentConfiguration("localhost");
 		assertFalse(tpConfig.usesTestAgent());
 	}
 

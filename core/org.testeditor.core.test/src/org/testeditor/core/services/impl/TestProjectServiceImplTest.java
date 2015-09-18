@@ -562,6 +562,24 @@ public class TestProjectServiceImplTest {
 	}
 
 	/**
+	 * Tests the setting of values from properties.
+	 * 
+	 */
+	@Test
+	public void testSetValuesOnProjectConfig() {
+		TestProjectServiceImpl testProjectService = new TestProjectServiceImpl();
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+		Properties properties = new Properties();
+		properties.setProperty("testautomat.serverid", "server");
+		testProjectService.setConfigValues(testProjectConfig, properties);
+		assertEquals("server", testProjectConfig.getTestServerID());
+		assertEquals("localhost", testProjectConfig.getTestEnvironmentConfiguration());
+		properties.setProperty("test.execution.environment.config", "linux");
+		testProjectService.setConfigValues(testProjectConfig, properties);
+		assertEquals("linux", testProjectConfig.getTestEnvironmentConfiguration());
+	}
+
+	/**
 	 * Cleans existing projects in the Workspace.
 	 * 
 	 * @throws Exception
