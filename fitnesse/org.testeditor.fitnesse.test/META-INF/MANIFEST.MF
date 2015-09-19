@@ -15,3 +15,4 @@ Import-Package: org.eclipse.e4.core.di,
  org.testeditor.core.model.team,
  org.testeditor.core.services.plugins
 Eclipse-BundleShape: dir
+Export-Package: org.testeditor.fitnesse.filesystem

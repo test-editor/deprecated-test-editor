@@ -26,9 +26,9 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.apache.log4j,
  org.eclipse.core.runtime;bundle-version="3.8.0",
  org.eclipse.equinox.ds;bundle-version="1.4.100",
- org.testeditor.fixture.lib
-Export-Package: org.testeditor.fitnesse.filesystem,
- org.testeditor.fitnesse.resultreader,
+ org.testeditor.fixture.lib,
+ org.apache.commons.io;bundle-version="2.2.0"
+Export-Package: org.testeditor.fitnesse.resultreader,
  org.testeditor.fitnesse.util
 Service-Component: OSGI-INF/TestStructureServiceComponent.xml,OSGI-INF/TestCaseServiceComponent.xml,OSGI-INF/testServer.xml,OSGI-INF/TestScenarioServiceComponent.xml,OSGI-INF/FitnesseTechnicalBindingsDSLMappingServiceInt.xml,
  OSGI-INF/TestExecutionEnvService.xml

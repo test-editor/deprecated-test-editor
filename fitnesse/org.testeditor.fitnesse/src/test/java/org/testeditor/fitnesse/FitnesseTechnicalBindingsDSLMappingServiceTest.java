@@ -16,14 +16,12 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TechnicalBindingsDSLMappingService;
 
 /**
  * 
- * Integrationtests for FitnesseTechnicalBindingsDSLMappingService.
+ * Modultests for FitnesseTechnicalBindingsDSLMappingService.
  * 
- * @author karsten
  */
 public class FitnesseTechnicalBindingsDSLMappingServiceTest {
 
@@ -34,7 +32,7 @@ public class FitnesseTechnicalBindingsDSLMappingServiceTest {
 	 */
 	@Before
 	public void initOUT() {
-		technicalBindingsDSLMappingService = ServiceLookUpForTest.getService(TechnicalBindingsDSLMappingService.class);
+		technicalBindingsDSLMappingService = new FitnesseTechnicalBindingsDSLMappingService();
 	}
 
 	/**
@@ -48,8 +46,8 @@ public class FitnesseTechnicalBindingsDSLMappingServiceTest {
 		FitnesseTechnicalBindingsDSLMappingService fitnesseTecBindingService = (FitnesseTechnicalBindingsDSLMappingService) technicalBindingsDSLMappingService;
 		assertEquals("click ()", fitnesseTecBindingService.extractMethodNameFromTechnicalBinding("click ( \"hugo\")"));
 		assertEquals("click ()", fitnesseTecBindingService.extractMethodNameFromTechnicalBinding("click ( \"login\")"));
-		assertEquals("insertIntoField ()",
-				fitnesseTecBindingService.extractMethodNameFromTechnicalBinding("insertIntoField ( \"test\", \"usr\")"));
+		assertEquals("insertIntoField ()", fitnesseTecBindingService
+				.extractMethodNameFromTechnicalBinding("insertIntoField ( \"test\", \"usr\")"));
 	}
 
 	/**
@@ -107,8 +105,8 @@ public class FitnesseTechnicalBindingsDSLMappingServiceTest {
 	 */
 	@Test
 	public void testMappingForNavigate() throws Exception {
-		String mapping = technicalBindingsDSLMappingService
-				.mapTechnicalBindingToTestDSL("navigateToUrl ( \"http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html\" )");
+		String mapping = technicalBindingsDSLMappingService.mapTechnicalBindingToTestDSL(
+				"navigateToUrl ( \"http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html\" )");
 		assertEquals(
 				"|navigiere auf die Seite|http://localhost:8060/files/demo/ExampleApplication/WebApplicationDe/index.html|",
 				mapping);

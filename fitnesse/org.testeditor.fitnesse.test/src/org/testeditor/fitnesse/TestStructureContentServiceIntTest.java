@@ -11,9 +11,6 @@
  *******************************************************************************/
 package org.testeditor.fitnesse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,7 +26,7 @@ import org.testeditor.core.services.interfaces.TestStructureContentService;
 /**
  * Tests the test structure service.
  */
-public class TestStructureServiceTest {
+public class TestStructureContentServiceIntTest {
 
 	private static TestStructureContentService testStructureContentService;
 
@@ -97,22 +94,6 @@ public class TestStructureServiceTest {
 				testStructureContentService.refreshTestCaseComponents(testStructure);
 			}
 		}
-	}
-
-	/**
-	 * Tests the Storage of a old name under the new fullname as key.
-	 */
-	@Test
-	public void testStoreOldNameOnTheFullNewNameAsKey() {
-		TestStructureServiceImpl service = new TestStructureServiceImpl();
-		TestProject tp = new TestProject();
-		tp.setName("TestPrj");
-		TestSuite suite = new TestSuite();
-		suite.setName("MySuite");
-		tp.addChild(suite);
-		service.storeOldNameOnTheFullNewNameAsKey(suite, "NewSuite");
-		assertTrue(service.getRenamedTestStructures().containsKey("TestPrj.NewSuite"));
-		assertEquals("MySuite", service.getRenamedTestStructures().get("TestPrj.NewSuite"));
 	}
 
 }

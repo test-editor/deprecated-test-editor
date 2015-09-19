@@ -30,10 +30,10 @@ import org.testeditor.core.services.plugins.TestServerServicePlugIn;
 
 /**
  * 
- * Integrationtests Test for the Fitnesse Server Controller.
+ * Integrationtests for the Fitnesse Server Controller.
  * 
  */
-public class FitnesseServerControllerTest {
+public class FitnesseServerControllerIntTest {
 
 	/**
 	 * test the getPathToFitnessejar Method to find the Path to fitnesse.
@@ -97,8 +97,8 @@ public class FitnesseServerControllerTest {
 	 * @throws URISyntaxException
 	 *             URISyntaxException
 	 */
-	private TestProject createTestProjectAndStartFitNesseServerWithProjectPath(
-			FitnesseServerController serverControler, String projectPath) throws IOException, URISyntaxException {
+	private TestProject createTestProjectAndStartFitNesseServerWithProjectPath(FitnesseServerController serverControler,
+			String projectPath) throws IOException, URISyntaxException {
 
 		TestProject tp1 = new TestProject();
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
@@ -125,8 +125,8 @@ public class FitnesseServerControllerTest {
 				.getService(TestServerServicePlugIn.class);
 
 		// FitNesse Projekt 4
-		TestProject tp4 = createTestProjectAndStartFitNesseServerWithProjectPath(serverControler, Platform
-				.getLocation().toFile().getAbsolutePath());
+		TestProject tp4 = createTestProjectAndStartFitNesseServerWithProjectPath(serverControler,
+				Platform.getLocation().toFile().getAbsolutePath());
 
 		serverControler.stopFitnesse(tp4);
 		assertFalse("Server terminated", serverControler.isRunning(tp4));
@@ -150,9 +150,8 @@ public class FitnesseServerControllerTest {
 		TestProject tp1 = createTestProjectAndStartFitNesseServer(serverControler, "");
 
 		// FitNesse Projekt 2
-		TestProject tp2 = createTestProjectAndStartFitNesseServer(serverControler, Platform.getLocation().toFile()
-				.getAbsolutePath()
-				+ "3898828989828");
+		TestProject tp2 = createTestProjectAndStartFitNesseServer(serverControler,
+				Platform.getLocation().toFile().getAbsolutePath() + "3898828989828");
 
 		// FitNesse Projekt 3
 		TestProject tp3 = createTestProjectAndStartFitNesseServer(serverControler, null);
@@ -221,17 +220,6 @@ public class FitnesseServerControllerTest {
 		testProjectConfig.setPort(String.valueOf(port));
 		tp.setTestProjectConfig(testProjectConfig);
 		return tp;
-	}
-
-	/**
-	 * Tests if the returned port has a valid port number > 0.
-	 */
-	@Test
-	public void testGetFreePort() {
-		FitnesseServerController serverController = (FitnesseServerController) ServiceLookUpForTest
-				.getService(TestServerServicePlugIn.class);
-		int freePort = serverController.getFreePort();
-		assertTrue(freePort > 0);
 	}
 
 	/**

@@ -32,7 +32,7 @@ import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestFlow;
 
 /**
- * Tests the test structure service.
+ * Integration Tests the test structure service.
  */
 public class TestStructureContentServiceImplTest {
 
