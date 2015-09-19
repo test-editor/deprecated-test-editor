@@ -17,7 +17,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorReservedNamesService;
 
 /**
@@ -36,7 +35,7 @@ public class TestEditorReservedNamesServiceImplTest {
 	 */
 	@Test
 	public void testServiceIsAvailable() throws Exception {
-		TestEditorReservedNamesService service = ServiceLookUpForTest.getService(TestEditorReservedNamesService.class);
+		TestEditorReservedNamesService service = new TestEditorReservedNamesServiceImpl();
 		assertNotNull("Expecting an implementation of the TestEditorReservedNamesService", service);
 		assertTrue("Service implementation is not an instance of TestEditorReservedNamesServiceImpl",
 				service instanceof TestEditorReservedNamesServiceImpl);
@@ -50,7 +49,7 @@ public class TestEditorReservedNamesServiceImplTest {
 	 */
 	@Test
 	public void testIsValidAndInvalidNames() throws Exception {
-		TestEditorReservedNamesService service = ServiceLookUpForTest.getService(TestEditorReservedNamesService.class);
+		TestEditorReservedNamesService service = new TestEditorReservedNamesServiceImpl();
 		assertTrue("Expecting TestKomponente as a reserved name.",
 				service.isReservedName(TestEditorGlobalConstans.TEST_SCENARIO_SUITE));
 		assertFalse("Expecting TestProject as a free name.", service.isReservedName("TestProject"));

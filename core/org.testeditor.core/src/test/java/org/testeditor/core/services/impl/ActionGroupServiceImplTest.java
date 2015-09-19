@@ -50,8 +50,11 @@ import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * Test the service implementation at {@link ActionGroupServiceImpl}.
+ *
  */
 @Ignore
+// TODO Check to move this class either to ui.test for integration tests, use
+// mocks or remove it.
 public class ActionGroupServiceImplTest {
 	private static final String PATH_ACTION_GROUPS_XML = "testLibrary" + File.separatorChar + "AllActionGroups.xml";
 	private static final String PATH_TECHNICAL_BINDINGS_XML = "testLibrary" + File.separatorChar
@@ -86,8 +89,8 @@ public class ActionGroupServiceImplTest {
 		actionGroupService.bindLibraryReader(new LibraryReaderServicePlugIn() {
 
 			@Override
-			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig) throws SystemException,
-					LibraryConstructionException {
+			public ProjectActionGroups readBasisLibrary(ProjectLibraryConfig libraryConfig)
+					throws SystemException, LibraryConstructionException {
 				ProjectActionGroups actionGroups = new ProjectActionGroups();
 				ActionGroup actionGroup = new ActionGroup();
 				Action action = new Action();
@@ -115,14 +118,10 @@ public class ActionGroupServiceImplTest {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 		Properties properties = new Properties();
 		properties.put(TestEditorPlugInService.LIBRARY_ID, "org.testeditor.xmllibrary");
-		properties.put(
-				"library.xmllibrary.actiongroup",
-				new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
-						.append(PATH_ACTION_GROUPS_XML).toString());
-		properties.put(
-				"library.xmllibrary.technicalbindings",
-				new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
-						.append(PATH_TECHNICAL_BINDINGS_XML).toString());
+		properties.put("library.xmllibrary.actiongroup", new StringBuffer(new File("").getAbsolutePath())
+				.append(File.separatorChar).append(PATH_ACTION_GROUPS_XML).toString());
+		properties.put("library.xmllibrary.technicalbindings", new StringBuffer(new File("").getAbsolutePath())
+				.append(File.separatorChar).append(PATH_TECHNICAL_BINDINGS_XML).toString());
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);
 		ProjectLibraryConfig libraryConfig = new TestProjectServiceImpl().createProjectLibraryConfigFrom(properties);
 		testProjectConfig.setProjectLibraryConfig(libraryConfig);
@@ -181,8 +180,8 @@ public class ActionGroupServiceImplTest {
 				ACTION_LOGIN_LINE_INPUT_PASSWORD, arguments, false);
 
 		assertNotNull("action not found", action);
-		assertTrue("action short name is invalid: " + action.getTechnicalBindingType().getShortName(), action
-				.getTechnicalBindingType().getShortName().equals(TECHNICAL_BINDING_TYPE_INPULT_SHORT_NAME));
+		assertTrue("action short name is invalid: " + action.getTechnicalBindingType().getShortName(),
+				action.getTechnicalBindingType().getShortName().equals(TECHNICAL_BINDING_TYPE_INPULT_SHORT_NAME));
 	}
 
 	/**
@@ -205,8 +204,8 @@ public class ActionGroupServiceImplTest {
 				ACTION_LOGIN_LINE_BUTTON_LOGIN, arguments, false);
 
 		assertNotNull("action not found", action);
-		assertTrue("action short name is invalid: " + action.getTechnicalBindingType().getShortName(), action
-				.getTechnicalBindingType().getShortName().equals(TECHNICAL_BINDING_TYPE_BUTTON_SHORT_NAME));
+		assertTrue("action short name is invalid: " + action.getTechnicalBindingType().getShortName(),
+				action.getTechnicalBindingType().getShortName().equals(TECHNICAL_BINDING_TYPE_BUTTON_SHORT_NAME));
 	}
 
 	/**
@@ -232,7 +231,8 @@ public class ActionGroupServiceImplTest {
 
 		assertTrue(action.getTechnicalBindingType().getActionParts().size() == 5);
 
-		assertTrue(action.getTechnicalBindingType().getActionParts().iterator().next().getType() == ActionElementType.TEXT);
+		assertTrue(action.getTechnicalBindingType().getActionParts().iterator().next()
+				.getType() == ActionElementType.TEXT);
 
 		assertTrue(action.getTechnicalBindingType().getActionParts().iterator().next().getValue()
 				.equalsIgnoreCase("gebe in das Feld"));
@@ -246,8 +246,8 @@ public class ActionGroupServiceImplTest {
 	public void testGetTechnicalBindingTypes() {
 
 		String shortName = "Anmeldung";
-		List<TechnicalBindingType> technicalBindingTypeList = actionGroupService.getTechnicalBindingTypes(
-				testFlow.getRootElement(), shortName);
+		List<TechnicalBindingType> technicalBindingTypeList = actionGroupService
+				.getTechnicalBindingTypes(testFlow.getRootElement(), shortName);
 		assertTrue(technicalBindingTypeList.get(0).getActionParts().get(0).getType().equals(ActionElementType.TEXT));
 
 	}
@@ -328,8 +328,8 @@ public class ActionGroupServiceImplTest {
 
 		assertTrue(action.getTechnicalBindingType().getActionParts().get(0).getType() == ActionElementType.TEXT);
 
-		assertTrue(action.getTechnicalBindingType().getActionParts().get(0).getValue()
-				.equalsIgnoreCase("wähle in Feld"));
+		assertTrue(
+				action.getTechnicalBindingType().getActionParts().get(0).getValue().equalsIgnoreCase("wähle in Feld"));
 		assertEquals(action.getArguments().get(1).getValue(), "Deutschland");
 	}
 
@@ -345,8 +345,8 @@ public class ActionGroupServiceImplTest {
 
 		IAction action = actionGroupService.getActionByLine(testFlow.getRootElement(), actionGroup,
 				"|wähle den Wert|Euro|in dem Feld|Währung|aus|", arguments, false);
-		assertTrue("size: " + action.getTechnicalBindingType().getActionParts().size(), action
-				.getTechnicalBindingType().getActionParts().size() == 5);
+		assertTrue("size: " + action.getTechnicalBindingType().getActionParts().size(),
+				action.getTechnicalBindingType().getActionParts().size() == 5);
 	}
 
 	/**
@@ -362,8 +362,8 @@ public class ActionGroupServiceImplTest {
 		IAction action = actionGroupService.getActionByLine(testFlow.getRootElement(), actionGroup,
 				"|gebe in das Feld|Passwort|den Wert|Testpasswort|ein|", arguments, false);
 
-		assertTrue("size: " + action.getTechnicalBindingType().getActionParts().size(), action
-				.getTechnicalBindingType().getActionParts().size() == 5);
+		assertTrue("size: " + action.getTechnicalBindingType().getActionParts().size(),
+				action.getTechnicalBindingType().getActionParts().size() == 5);
 	}
 
 	/**
@@ -420,11 +420,11 @@ public class ActionGroupServiceImplTest {
 		inputLineParts.add("ein");
 		arguments.add(new Argument("1", argument));
 
-		TestActionGroupTestCase testActionGroupTestCase = actionGroupService.createTestActionGroupTestCase(
-				testFlow.getRootElement(), maskName, inputLineParts, arguments);
+		TestActionGroupTestCase testActionGroupTestCase = actionGroupService
+				.createTestActionGroupTestCase(testFlow.getRootElement(), maskName, inputLineParts, arguments);
 		assertEquals(maskName, testActionGroupTestCase.getActionGroupName());
 		assertEquals(partZero + " ", testActionGroupTestCase.getActionLines().get(0).getTexts().get(0));
-		assertEquals(arguments.get(0).getValue(), testActionGroupTestCase.getActionLines().get(0).getArguments().get(0)
-				.getValue());
+		assertEquals(arguments.get(0).getValue(),
+				testActionGroupTestCase.getActionLines().get(0).getArguments().get(0).getValue());
 	}
 }

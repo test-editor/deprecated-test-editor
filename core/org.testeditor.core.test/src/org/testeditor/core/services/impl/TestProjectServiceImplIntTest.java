@@ -51,7 +51,6 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.FieldMappingExtension;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -60,10 +59,10 @@ import org.testeditor.core.services.plugins.TestEditorPlugInService;
 
 /**
  * 
- * Tests for TestProjectServiceImpl.
+ * Integration tests for TestProjectServiceImpl.
  * 
  */
-public class TestProjectServiceImplTest {
+public class TestProjectServiceImplIntTest {
 
 	private static final String PROJECT_NAME = "MyProject";
 
@@ -196,235 +195,6 @@ public class TestProjectServiceImplTest {
 	}
 
 	/**
-	 * Tests the migration of the Convert from Version 1.2 of a Config.
-	 */
-	@Test
-	public void testGetTestProjectConfigFromVersion1dot2() {
-		TestProjectServiceImpl projectService = new TestProjectServiceImpl();
-		Properties properties = new Properties();
-		TestProjectConfig projectConfig = projectService.getTestProjectConfigFromVersion1dot2(new TestProjectConfig(),
-				properties);
-		assertNotNull("Project Config ", projectConfig);
-		assertEquals("fitnesse_based_1.2", projectConfig.getTestServerID());
-	}
-
-	/**
-	 * Tests reading Directories from a File and convert them to TestProjects.
-	 * 
-	 * @throws Exception
-	 *             for test
-	 */
-	@Test
-	public void testActivateService() throws Exception {
-		TestProjectServiceImpl service = getTestProjectServiceImplMock();
-		service.bind(new FileWatchServiceImpl());
-		service.activate(null);
-		assertEquals("One Project expected", 1, service.getProjects().size());
-		assertEquals("Project user acceptance test expected", "AkzeptanzTests", service.getProjects().get(0).getName());
-		assertNotNull("Project Config loaded", service.getProjects().get(0).getTestProjectConfig());
-	}
-
-	/**
-	 * Tests that the TestProjectConfig after convert to and back from
-	 * properties is equals to the initial config.
-	 * 
-	 * @throws IOException
-	 *             on reading the configuration
-	 */
-	@Test
-	public void testEqualsAfterConvertToAndFromProperties() throws IOException {
-		TestProjectConfig projectConfig = new TestProjectConfig();
-		projectConfig.setPathToTestFiles("./");
-		TestProjectServiceImpl service = new TestProjectServiceImpl();
-		Properties properties = service.getPropertiesFrom(projectConfig);
-		TestProjectConfig cfgAfterStoring = service.getTestProjectConfigFrom(properties, PROJECT_NAME);
-		assertEquals("TestProjectConfig equals the loaded one.", projectConfig, cfgAfterStoring);
-	}
-
-	/**
-	 * Test that the unsupported Version of the configuration is marked in the
-	 * configuration of the project.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testUnsupportedVersionIsMarked() throws Exception {
-		Properties properties = new Properties();
-		properties.put(TestProjectService.VERSION_TAG, "0.0");
-		TestProjectServiceImpl service = new TestProjectServiceImpl();
-		TestProjectConfig testProjectConfigFrom = service.getTestProjectConfigFrom(properties, PROJECT_NAME);
-		assertEquals(TestProjectService.UNSUPPORTED_CONFIG_VERSION, testProjectConfigFrom.getProjectConfigVersion());
-	}
-
-	/**
-	 * 
-	 * Test the Search for a TestProject by name.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testGetTestProjectByName() throws Exception {
-		TestProjectServiceImpl service = new TestProjectServiceImpl() {
-			@Override
-			public List<TestProject> getProjects() {
-				List<TestProject> list = new ArrayList<TestProject>();
-				TestProject tp = new TestProject();
-				tp.setName("Hello");
-				list.add(tp);
-				tp = new TestProject();
-				tp.setName("MyTestProject");
-				list.add(tp);
-				tp = new TestProject();
-				tp.setName("FooBar");
-				list.add(tp);
-				return list;
-			}
-		};
-		TestProject project = service.getProjectWithName("MyTestProject");
-		assertEquals("Expecting project found.", "MyTestProject", project.getName());
-	}
-
-	/**
-	 * 
-	 * Test the Search for a TestProject by name.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testGetTestProjectByNameOnNotExisitngProject() throws Exception {
-		TestProjectServiceImpl service = new TestProjectServiceImpl() {
-			@Override
-			public List<TestProject> getProjects() {
-				List<TestProject> list = new ArrayList<TestProject>();
-				TestProject tp = new TestProject();
-				tp.setName("Hello");
-				list.add(tp);
-				list.add(tp);
-				tp = new TestProject();
-				tp.setName("FooBar");
-				list.add(tp);
-				return list;
-			}
-		};
-		TestProject project = service.getProjectWithName("MyTestProjejct");
-		assertNull("Expecting project not found.", project);
-	}
-
-	/**
-	 * 
-	 * Tests the lookup for a Teststructiure by full name.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testFindTestStructureByFullName() throws Exception {
-		List<TestProject> list = new ArrayList<TestProject>();
-		TestProject tp = new TestProject();
-		tp.setName("Hello");
-		TestSuite suite = new TestSuite();
-		suite.setName("TestSuite");
-		tp.addChild(suite);
-		TestCase testCase = new TestCase();
-		testCase.setName("TestCase");
-		suite.addChild(testCase);
-		list.add(tp);
-		list.add(tp);
-		tp = new TestProject();
-		tp.setName("FooBar");
-		list.add(tp);
-		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
-
-		assertNotNull(service.findTestStructureByFullName("Hello.TestSuite.TestCase"));
-		assertNotNull(service.findTestStructureByFullName("Hello.TestSuite"));
-	}
-
-	/**
-	 * Test lookup of TestProject with old name after renaming TestProjects.
-	 * 
-	 * @throws Exception
-	 *             if renaming on file system fails
-	 */
-	@Test
-	public void testLookUpForRenamedTestProjects() throws Exception {
-		List<TestProject> list = new ArrayList<TestProject>();
-		TestProject tp = new TestProject();
-		tp.setName("FirstName");
-		TestCase testCase = new TestCase();
-		testCase.setName("TestCase");
-		tp.addChild(testCase);
-		list.add(tp);
-		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
-		assertNotNull(service.findTestStructureByFullName("FirstName.TestCase"));
-		service.renameTestproject(tp, "SecondName");
-		TestStructure firstNameTP = service.findTestStructureByFullName("FirstName.TestCase");
-		TestStructure secondNameTP = service.findTestStructureByFullName("SecondName.TestCase");
-		assertNotNull(firstNameTP);
-		assertNotNull(secondNameTP);
-		assertSame(firstNameTP, secondNameTP);
-	}
-
-	/**
-	 * Tests the check of an renamed element in the path.
-	 * 
-	 * @throws Exception
-	 *             if renaming on file system fails
-	 */
-	@Test
-	public void testContainsFullNameRenamedElements() throws Exception {
-		List<TestProject> list = new ArrayList<TestProject>();
-		TestProject tp = new TestProject();
-		list.add(tp);
-		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
-		tp.setName("FirstName");
-		service.renameTestproject(tp, "myname");
-		tp.setName("TestPrj");
-		service.renameTestproject(tp, "myname");
-		assertNull(service.containsFullNameRenamedElements("SecondProject.TestPath"));
-		assertNull(service.containsFullNameRenamedElements("myname.TestPath"));
-		assertEquals("FirstName", service.containsFullNameRenamedElements("FirstName.TestPath"));
-		assertEquals("TestPrj", service.containsFullNameRenamedElements("TestPrj.TestPath"));
-	}
-
-	/**
-	 * Tests the registration of an existing project to the list.
-	 * 
-	 * @throws Exception
-	 *             on IO Error.
-	 */
-	@Test
-	public void testReloadTestProjectWithNameOnEmptyList() throws Exception {
-		List<TestProject> list = new ArrayList<TestProject>();
-		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
-		createProjectInFileSystem();
-		TestProject tp = new TestProject();
-		tp.setName("MyPrj");
-		service.reloadTestProjectFromFileSystem(tp);
-		assertEquals(1, service.getProjects().size());
-	}
-
-	/**
-	 * Tests the replace of an existing project to the list.
-	 * 
-	 * @throws Exception
-	 *             on IO Error.
-	 */
-	@Test
-	public void testReplaceInReloadTestProjectWithNameOnExistingList() throws Exception {
-		List<TestProject> list = new ArrayList<TestProject>();
-		TestProject tp = new TestProject();
-		tp.setName("MyPrj");
-		list.add(tp);
-		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
-		createProjectInFileSystem();
-		service.reloadTestProjectFromFileSystem(tp);
-		assertEquals(1, service.getProjects().size());
-	}
-
-	/**
 	 * Tests the creation of the Demo projects.
 	 * 
 	 * @throws Exception
@@ -482,6 +252,88 @@ public class TestProjectServiceImplTest {
 	}
 
 	/**
+	 * Tests the registration of an existing project to the list.
+	 * 
+	 * @throws Exception
+	 *             on IO Error.
+	 */
+	@Test
+	public void testReloadTestProjectWithNameOnEmptyList() throws Exception {
+		List<TestProject> list = new ArrayList<TestProject>();
+		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
+		createProjectInFileSystem();
+		TestProject tp = new TestProject();
+		tp.setName("MyPrj");
+		service.reloadTestProjectFromFileSystem(tp);
+		assertEquals(1, service.getProjects().size());
+	}
+
+	/**
+	 * Tests the replace of an existing project to the list.
+	 * 
+	 * @throws Exception
+	 *             on IO Error.
+	 */
+	@Test
+	public void testReplaceInReloadTestProjectWithNameOnExistingList() throws Exception {
+		List<TestProject> list = new ArrayList<TestProject>();
+		TestProject tp = new TestProject();
+		tp.setName("MyPrj");
+		list.add(tp);
+		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
+		createProjectInFileSystem();
+		service.reloadTestProjectFromFileSystem(tp);
+		assertEquals(1, service.getProjects().size());
+	}
+
+	/**
+	 * Test lookup of TestProject with old name after renaming TestProjects.
+	 * 
+	 * @throws Exception
+	 *             if renaming on file system fails
+	 */
+	@Test
+	public void testLookUpForRenamedTestProjects() throws Exception {
+		List<TestProject> list = new ArrayList<TestProject>();
+		TestProject tp = new TestProject();
+		tp.setName("FirstName");
+		TestCase testCase = new TestCase();
+		testCase.setName("TestCase");
+		tp.addChild(testCase);
+		list.add(tp);
+		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
+		assertNotNull(service.findTestStructureByFullName("FirstName.TestCase"));
+		service.renameTestproject(tp, "SecondName");
+		TestStructure firstNameTP = service.findTestStructureByFullName("FirstName.TestCase");
+		TestStructure secondNameTP = service.findTestStructureByFullName("SecondName.TestCase");
+		assertNotNull(firstNameTP);
+		assertNotNull(secondNameTP);
+		assertSame(firstNameTP, secondNameTP);
+	}
+
+	/**
+	 * Tests the check of an renamed element in the path.
+	 * 
+	 * @throws Exception
+	 *             if renaming on file system fails
+	 */
+	@Test
+	public void testContainsFullNameRenamedElements() throws Exception {
+		List<TestProject> list = new ArrayList<TestProject>();
+		TestProject tp = new TestProject();
+		list.add(tp);
+		TestProjectServiceImpl service = getTestProjectImplMockWithProjects(list);
+		tp.setName("FirstName");
+		service.renameTestproject(tp, "myname");
+		tp.setName("TestPrj");
+		service.renameTestproject(tp, "myname");
+		assertNull(service.containsFullNameRenamedElements("SecondProject.TestPath"));
+		assertNull(service.containsFullNameRenamedElements("myname.TestPath"));
+		assertEquals("FirstName", service.containsFullNameRenamedElements("FirstName.TestPath"));
+		assertEquals("TestPrj", service.containsFullNameRenamedElements("TestPrj.TestPath"));
+	}
+
+	/**
 	 * 
 	 * @throws Exception
 	 *             on IO Error
@@ -494,20 +346,6 @@ public class TestProjectServiceImplTest {
 		assertTrue("Expecting Project in List.", service.getProjects().contains(testProject));
 		service.deleteProject(testProject);
 		assertTrue("Empty Project list expected.", service.getProjects().isEmpty());
-	}
-
-	/**
-	 * Tests if an project is in the list.
-	 */
-	@Test
-	public void testExistsProjectWithName() {
-		TestProject tp = new TestProject();
-		tp.setName("MyTp");
-		List<TestProject> tpList = new ArrayList<TestProject>();
-		tpList.add(tp);
-		TestProjectServiceImpl testProjectService = getTestProjectImplMockWithProjects(tpList);
-		assertTrue(testProjectService.existsProjectWithName("MyTp"));
-		assertFalse(testProjectService.existsProjectWithName("AnotherTp"));
 	}
 
 	/**
@@ -562,21 +400,58 @@ public class TestProjectServiceImplTest {
 	}
 
 	/**
-	 * Tests the setting of values from properties.
+	 * Tests reading Directories from a File and convert them to TestProjects.
 	 * 
+	 * @throws Exception
+	 *             for test
 	 */
 	@Test
-	public void testSetValuesOnProjectConfig() {
-		TestProjectServiceImpl testProjectService = new TestProjectServiceImpl();
-		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		Properties properties = new Properties();
-		properties.setProperty("testautomat.serverid", "server");
-		testProjectService.setConfigValues(testProjectConfig, properties);
-		assertEquals("server", testProjectConfig.getTestServerID());
-		assertEquals("localhost", testProjectConfig.getTestEnvironmentConfiguration());
-		properties.setProperty("test.execution.environment.config", "linux");
-		testProjectService.setConfigValues(testProjectConfig, properties);
-		assertEquals("linux", testProjectConfig.getTestEnvironmentConfiguration());
+	public void testActivateService() throws Exception {
+		TestProjectServiceImpl service = getTestProjectServiceImplMock();
+		service.bind(new FileWatchServiceImpl());
+		service.activate(null);
+		assertEquals("One Project expected", 1, service.getProjects().size());
+		assertEquals("Project user acceptance test expected", "AkzeptanzTests", service.getProjects().get(0).getName());
+		assertNotNull("Project Config loaded", service.getProjects().get(0).getTestProjectConfig());
+	}
+
+	/**
+	 * 
+	 * @return TestProjectServiceMock to work with a virtual FileSystem.
+	 */
+	private TestProjectServiceImpl getTestProjectServiceImplMock() {
+		return new TestProjectServiceImpl() {
+			@Override
+			protected File[] getWorkspaceDirectories() {
+				return new File[] { new File(".meta"), getTestProjectMockFile(), new File("NoTestProject") };
+			}
+
+			@Override
+			public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
+				return new TestProjectConfig();
+			}
+		};
+	}
+
+	/**
+	 * 
+	 * @return File Mock to be used as a Project Folder.
+	 */
+	protected File getTestProjectMockFile() {
+		return new File("AkzeptanzTests") {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isDirectory() {
+				return true;
+			}
+
+			@Override
+			public String[] list() {
+				return new String[] { "config.tpr" };
+			}
+		};
 	}
 
 	/**
@@ -652,45 +527,6 @@ public class TestProjectServiceImplTest {
 			protected void renameProjectInFileSystem(TestProject testProject, String newName)
 					throws SystemException, IOException {
 				getProject(testProject.getName()).setName(newName);
-			}
-		};
-	}
-
-	/**
-	 * 
-	 * @return TestProjectServiceMock to work with a virtual FileSystem.
-	 */
-	private TestProjectServiceImpl getTestProjectServiceImplMock() {
-		return new TestProjectServiceImpl() {
-			@Override
-			protected File[] getWorkspaceDirectories() {
-				return new File[] { new File(".meta"), getTestProjectMockFile(), new File("NoTestProject") };
-			}
-
-			@Override
-			public TestProjectConfig getProjectConfigFor(TestProject testProject) throws SystemException {
-				return new TestProjectConfig();
-			}
-		};
-	}
-
-	/**
-	 * 
-	 * @return File Mock to be used as a Project Folder.
-	 */
-	protected File getTestProjectMockFile() {
-		return new File("AkzeptanzTests") {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isDirectory() {
-				return true;
-			}
-
-			@Override
-			public String[] list() {
-				return new String[] { "config.tpr" };
 			}
 		};
 	}

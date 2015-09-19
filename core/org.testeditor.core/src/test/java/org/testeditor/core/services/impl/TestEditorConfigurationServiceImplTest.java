@@ -21,11 +21,10 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 
 /**
- * Module and Integration Tests for TestEditorConfigurationServiceImple.
+ * Module Tests for TestEditorConfigurationServiceImple.
  * 
  */
 public class TestEditorConfigurationServiceImplTest {
@@ -41,8 +40,7 @@ public class TestEditorConfigurationServiceImplTest {
 	public void testUpdatePair() throws Exception {
 		String key = "myTestKey";
 		System.setProperty(key, "Foo");
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
+		TestEditorConfigurationService testEditorConfigurationService = new TestEditorConfigurationServiceImpl();
 		assertEquals("Before Updtae expecting foo", "Foo", System.getProperty(key));
 		testEditorConfigurationService.updatePair(key, "Bar");
 		assertEquals("After Updtae expecting bar", "Bar", System.getProperty(key));
@@ -66,8 +64,7 @@ public class TestEditorConfigurationServiceImplTest {
 	@Test
 	public void testUpdatePairWithWhiteSpace() throws Exception {
 		String key = "myTestKey";
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
+		TestEditorConfigurationService testEditorConfigurationService = new TestEditorConfigurationServiceImpl();
 		testEditorConfigurationService.updatePair(key, "Foo Bar");
 		assertEquals("Expecting quated blank in property value", "Foo Bar", System.getProperty(key));
 		testEditorConfigurationService.updatePair(TestEditorGlobalConstans.LOG4J_PATH_VARIABLE, "Foo Bar");
@@ -83,8 +80,7 @@ public class TestEditorConfigurationServiceImplTest {
 	 */
 	@Test
 	public void testGetGlobalVariables() throws Exception {
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
+		TestEditorConfigurationService testEditorConfigurationService = new TestEditorConfigurationServiceImpl();
 		String key = addTestKeyToProperties(testEditorConfigurationService);
 		Map<String, String> variables = testEditorConfigurationService.getGlobalVariables();
 		assertNotNull("Global Variables should be not null.", variables);
@@ -104,20 +100,6 @@ public class TestEditorConfigurationServiceImplTest {
 	}
 
 	/**
-	 * Test the Loading of default Values for the global variables.
-	 * 
-	 * @throws Exception
-	 *             on Test abort.
-	 */
-	@Test
-	public void testLoadGlobalVariablesAsSystemProperties() throws Exception {
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
-		testEditorConfigurationService.exportGlobalVariablesToSystemProperties();
-		assertEquals("", System.getProperty(TestEditorGlobalConstans.PATH_BROWSER));
-	}
-
-	/**
 	 * test the removing of a key from the properties.
 	 * 
 	 * @throws Exception
@@ -125,8 +107,7 @@ public class TestEditorConfigurationServiceImplTest {
 	 */
 	@Test
 	public void testClearKey() throws Exception {
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
+		TestEditorConfigurationService testEditorConfigurationService = new TestEditorConfigurationServiceImpl();
 		String key = addTestKeyToProperties(testEditorConfigurationService);
 		Map<String, String> variables = testEditorConfigurationService.getGlobalVariables();
 		assertNotNull("Global Variables should be not null.", variables);
@@ -147,8 +128,7 @@ public class TestEditorConfigurationServiceImplTest {
 	 */
 	@Test
 	public void testClearKeyWithoutKeyInProperties() throws Exception {
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
+		TestEditorConfigurationService testEditorConfigurationService = new TestEditorConfigurationServiceImpl();
 		String key = addTestKeyToProperties(testEditorConfigurationService);
 		String secondKey = "Foo";
 		Map<String, String> variables = testEditorConfigurationService.getGlobalVariables();
@@ -170,8 +150,7 @@ public class TestEditorConfigurationServiceImplTest {
 	 */
 	@Test
 	public void testSetResetState() throws Exception {
-		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
-				.getService(TestEditorConfigurationService.class);
+		TestEditorConfigurationService testEditorConfigurationService = new TestEditorConfigurationServiceImpl();
 		assertTrue("Expecting true on new Workspace", testEditorConfigurationService.isResetApplicationState());
 		testEditorConfigurationService.setResetApplicationState(true);
 		assertTrue("Expecting true after set.", testEditorConfigurationService.isResetApplicationState());
