@@ -24,7 +24,7 @@ import org.testeditor.core.util.TestStateProtocolService;
 /**
  * Tests the activator.
  */
-public class CoreActivatorTest {
+public class CoreActivatorIntTest {
 
 	/**
 	 * Tests the Initialization of the logging system.

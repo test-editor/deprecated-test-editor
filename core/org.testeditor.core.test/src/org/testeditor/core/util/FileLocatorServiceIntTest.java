@@ -22,7 +22,7 @@ import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 /**
  * Integration Tests for the FileLocatorService.
  */
-public class FileLocatorServiceTest {
+public class FileLocatorServiceIntTest {
 
 	/**
 	 * Tests the lookup for a bundle file location.

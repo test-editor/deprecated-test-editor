@@ -35,14 +35,14 @@ import org.testeditor.core.services.plugins.TestEditorPlugInService;
  * Integrationtests for the TestEditorPlugInServiceImpl.
  * 
  */
-public class TestEditorPlugInServiceTest {
+public class TestEditorPlugInServiceIntTest {
 
 	/**
 	 * Registers a MockService.
 	 */
 	@BeforeClass
 	public static void prepareTestsystem() {
-		FrameworkUtil.getBundle(TestEditorPlugInServiceTest.class).getBundleContext()
+		FrameworkUtil.getBundle(TestEditorPlugInServiceIntTest.class).getBundleContext()
 				.registerService(LibraryConfigurationServicePlugIn.class, getLibConfigMock(), null);
 	}
 
