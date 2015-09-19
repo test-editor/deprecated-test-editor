@@ -1,19 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Signal Iduna Corporation - initial API and implementation
- * akquinet AG
- *******************************************************************************/
+* Copyright (c) 2012 - 2015 Signal Iduna Corporation and others.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+* Signal Iduna Corporation - initial API and implementation
+* akquinet AG
+*******************************************************************************/
 package org.testeditor.core.headless;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -22,7 +21,6 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 import org.osgi.service.prefs.BackingStoreException;
-import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -35,7 +33,7 @@ import org.testeditor.core.services.interfaces.TestServerService;
 
 /**
  * 
- * Tests for HeadlessTestRunnerApplication.
+ * Modul tests for HeadlessTestRunnerApplication.
  *
  */
 public class HeadlessTestRunnerApplicationTest {
@@ -59,20 +57,6 @@ public class HeadlessTestRunnerApplicationTest {
 		assertEquals(Integer.valueOf(13), headlessApp.start(null));
 		testResult.setRight(2);
 		assertEquals(Integer.valueOf(0), headlessApp.start(null));
-	}
-
-	/**
-	 * Tests the initialization of the testeditor.
-	 * 
-	 * @throws Exception
-	 *             on test failure.
-	 */
-	@Test
-	public void testInitSystem() throws Exception {
-		HeadlessTestRunnerApplication headlessApp = new HeadlessTestRunnerApplication();
-		headlessApp.initializeSystemConfiguration();
-		assertEquals("1", System.getProperty(TestEditorGlobalConstans.DEFINE_WAITS_AFTER_TEST_STEP));
-		assertNotNull(System.getProperty("APPLICATION_WORK"));
 	}
 
 	/**

@@ -20,36 +20,19 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.e4.core.contexts.EclipseContextFactory;
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.junit.Test;
 import org.osgi.service.event.Event;
-import org.osgi.service.event.EventHandler;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 
 /**
- * Integration Test for TestProtocolService.
+ * Modul Test for TestProtocolService.
  * 
  */
 public class TestStateProtocolServiceTest {
-
-	/**
-	 * Tests that the Service is registered in the Osgi context.
-	 * 
-	 * @throws Exception
-	 *             for test.
-	 */
-	@Test
-	public void testServiceIsRegistered() throws Exception {
-		assertNotNull("Service retriving from osgi is not null.",
-				ServiceLookUpForTest.getService(TestStateProtocolService.class));
-	}
 
 	/**
 	 * Test run one Test successfully.
@@ -181,57 +164,6 @@ public class TestStateProtocolServiceTest {
 		testSuite.addReferredTestStructure(testCase);
 		assertNotNull(protocolService.get(testCase));
 		protocolService.remove(testCase);
-		assertNull(protocolService.get(testCase));
-	}
-
-	/**
-	 * Tests the Registration of an Event Hanlder in the event broker of the
-	 * eclpse context.
-	 */
-	@Test
-	public void testEventBrokerEventHanlderRegistration() {
-		TestStateProtocolService protocolService = new TestStateProtocolService();
-		IEclipseContext context = EclipseContextFactory.create();
-		final Map<String, EventHandler> topics = new HashMap<String, EventHandler>();
-		context.set(IEventBroker.class, new IEventBroker() {
-
-			@Override
-			public boolean send(String topic, Object data) {
-				return false;
-			}
-
-			@Override
-			public boolean post(String topic, Object data) {
-				return false;
-			}
-
-			@Override
-			public boolean subscribe(String topic, EventHandler eventHandler) {
-				topics.put(topic, eventHandler);
-				return true;
-			}
-
-			@Override
-			public boolean subscribe(String topic, String filter, EventHandler eventHandler, boolean headless) {
-				return false;
-			}
-
-			@Override
-			public boolean unsubscribe(EventHandler eventHandler) {
-				return false;
-			}
-		});
-		protocolService.compute(context, null);
-		EventHandler handler = topics.get(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED);
-		assertNotNull("Hanlder should be registered", handler);
-		TestCase testCase = new TestCase();
-		testCase.setName("TestCase1");
-		protocolService.set(testCase, new TestResult());
-		assertNotNull(protocolService.get(testCase));
-		Map<String, String> properties = new HashMap<String, String>();
-		properties.put("org.eclipse.e4.data", testCase.getFullName());
-		Event event = new Event(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED, properties);
-		handler.handleEvent(event);
 		assertNull(protocolService.get(testCase));
 	}
 

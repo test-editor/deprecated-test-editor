@@ -28,27 +28,23 @@ import org.testeditor.core.model.teststructure.TestDataRow;
 /**
  * Tests the class @see {@link FileImporterFactory}.
  * 
- * @author orhan
  */
 public class FileImporterFactoryTest {
 
 	/**
 	 * Tests if reading of csv file works correct.
 	 * 
-	 * @throws SystemException
-	 *             SystemException
+	 * @throws Exception
+	 *             on test failure
 	 */
 	@Test
-	public void readExcelFile() throws SystemException {
+	public void readExcelFile() throws Exception {
 
-		String file = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("ressources")
-				.append(File.separatorChar).append("testdata.xls").toString();
+		File dataFile = new File(getClass().getResource("/testdata.xls").toURI());
 
-		File importFile = new File(file);
+		FileImporter importer = FileImporterFactory.getInstance(dataFile);
 
-		FileImporter importer = FileImporterFactory.getInstance(importFile);
-
-		TestData testData = importer.getTestData(importFile);
+		TestData testData = importer.getTestData(dataFile);
 
 		List<TestDataRow> rows = testData.getRows();
 
@@ -63,20 +59,17 @@ public class FileImporterFactoryTest {
 	/**
 	 * Tests if reading of csv file works correct.
 	 * 
-	 * @throws SystemException
-	 *             SystemException
+	 * @throws Exception
+	 *             on test failure
 	 */
 	@Test
-	public void readCsvFile() throws SystemException {
+	public void readCsvFile() throws Exception {
 
-		String file = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("ressources")
-				.append(File.separatorChar).append("testdata.csv").toString();
+		File dataFile = new File(getClass().getResource("/testdata.csv").toURI());
 
-		File importFile = new File(file);
+		FileImporter importer = FileImporterFactory.getInstance(dataFile);
 
-		FileImporter importer = FileImporterFactory.getInstance(importFile);
-
-		TestData testData = importer.getTestData(importFile);
+		TestData testData = importer.getTestData(dataFile);
 
 		List<TestDataRow> rows = testData.getRows();
 
@@ -92,19 +85,17 @@ public class FileImporterFactoryTest {
 	 * Reads an unknown file format.
 	 * 
 	 * @throws Exception
+	 *             on test failure
 	 */
 	@Test
-	public void readUnknownFileFormat() {
+	public void readUnknownFileFormat() throws Exception {
 
 		try {
 
-			String file = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
-					.append("ressources").append(File.separatorChar).append("unknownFileExtension.abc").toString();
+			File dataFile = new File(getClass().getResource("/unknownFileExtension.abc").toURI());
 
-			File importFile = new File(file);
-
-			FileImporterFactory.getInstance(new File(file));
-			assertFalse("File " + importFile.getName() + " has unknown extension ", true);
+			FileImporterFactory.getInstance(dataFile);
+			assertFalse("File " + dataFile.getName() + " has unknown extension ", true);
 
 		} catch (SystemException e) {
 			assertTrue(true);

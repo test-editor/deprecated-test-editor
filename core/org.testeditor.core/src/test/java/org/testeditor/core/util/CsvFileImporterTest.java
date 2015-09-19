@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.junit.Test;
@@ -25,22 +26,21 @@ import org.testeditor.core.model.teststructure.TestDataRow;
 /**
  * Tests the class @see {@link CsvFileImporter}.
  * 
- * @author orhan
  */
 public class CsvFileImporterTest {
 
 	/**
 	 * Tests if reading of csv file works correct.
+	 * 
+	 * @throws URISyntaxException
+	 *             on test failure
 	 */
 	@Test
-	public void readCsvFile() {
+	public void readCsvFile() throws URISyntaxException {
 
 		CsvFileImporter importer = new CsvFileImporter();
-
-		String csvFile = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
-				.append("ressources").append(File.separatorChar).append("testdata.csv").toString();
-
-		TestData testData = importer.getTestData(new File(csvFile));
+		File dataFile = new File(getClass().getResource("/testdata.csv").toURI());
+		TestData testData = importer.getTestData(dataFile);
 
 		List<TestDataRow> rows = testData.getRows();
 
@@ -54,16 +54,19 @@ public class CsvFileImporterTest {
 
 	/**
 	 * Tests reading of empty file.
+	 * 
+	 * @throws URISyntaxException
+	 *             on test failure
+	 * 
 	 */
 	@Test
-	public void readCsvFileWithNoData() {
+	public void readCsvFileWithNoData() throws URISyntaxException {
 
 		CsvFileImporter importer = new CsvFileImporter();
 
-		String csvFile = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
-				.append("ressources").append(File.separatorChar).append("testdataWithoutContent.csv").toString();
+		File dataFile = new File(getClass().getResource("/testdataWithoutContent.csv").toURI());
 
-		TestData testData = importer.getTestData(new File(csvFile));
+		TestData testData = importer.getTestData(dataFile);
 
 		List<TestDataRow> rows = testData.getRows();
 

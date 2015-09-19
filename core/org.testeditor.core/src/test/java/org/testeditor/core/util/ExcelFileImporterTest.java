@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.junit.Test;
@@ -34,17 +35,19 @@ public class ExcelFileImporterTest {
 
 	/**
 	 * Tests if reading of xls file works correct.
+	 * 
+	 * @throws URISyntaxException
+	 *             on test failure
 	 */
 	@Test
-	public void readExcelFileWithFullRows() {
+	public void readExcelFileWithFullRows() throws URISyntaxException {
 
 		ExcelFileImporter importer = new ExcelFileImporter();
 
-		String file = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("ressources")
-				.append(File.separatorChar).append("testdata.xls").toString();
+		File dataFile = new File(getClass().getResource("/testdata.xls").toURI());
 
 		try {
-			TestData testData = importer.getTestData(new File(file));
+			TestData testData = importer.getTestData(dataFile);
 			List<TestDataRow> rows = testData.getRows();
 			TestDataRow testDataRow = rows.get(1);
 			assertEquals("http://www.orhan-polat.de", testDataRow.getColumn(0));
@@ -59,17 +62,19 @@ public class ExcelFileImporterTest {
 
 	/**
 	 * Tests if reading of xls file works correct.
+	 * 
+	 * @throws URISyntaxException
+	 *             on test failure
 	 */
 	@Test
-	public void readExcelFileWithNotFullRows() {
+	public void readExcelFileWithNotFullRows() throws URISyntaxException {
 
 		ExcelFileImporter importer = new ExcelFileImporter();
 
-		String file = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("ressources")
-				.append(File.separatorChar).append("testdata2.xls").toString();
+		File dataFile = new File(getClass().getResource("/testdata2.xls").toURI());
 
 		try {
-			TestData testData = importer.getTestData(new File(file));
+			TestData testData = importer.getTestData(dataFile);
 			List<TestDataRow> rows = testData.getRows();
 
 			TestDataRow testDataRow = rows.get(1);
@@ -83,16 +88,18 @@ public class ExcelFileImporterTest {
 
 	/**
 	 * Tests reading of empty file.
+	 * 
+	 * @throws URISyntaxException
+	 *             on test failure
 	 */
 	@Test
-	public void readExcelFileWithNoData() {
+	public void readExcelFileWithNoData() throws URISyntaxException {
 
 		CsvFileImporter importer = new CsvFileImporter();
 
-		String csvFile = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar)
-				.append("ressources").append(File.separatorChar).append("testdataWithoutContent.csv").toString();
+		File dataFile = new File(getClass().getResource("/testdataWithoutContent.csv").toURI());
 
-		TestData testData = importer.getTestData(new File(csvFile));
+		TestData testData = importer.getTestData(dataFile);
 
 		List<TestDataRow> rows = testData.getRows();
 
@@ -102,17 +109,19 @@ public class ExcelFileImporterTest {
 
 	/**
 	 * Tests if reading of xls file works correct.
+	 * 
+	 * @throws URISyntaxException
+	 *             on test failure
 	 */
 	@Test
-	public void readExcelFileWitDifferentColumnTypes() {
+	public void readExcelFileWitDifferentColumnTypes() throws URISyntaxException {
 
 		ExcelFileImporter importer = new ExcelFileImporter();
 
-		String file = new StringBuffer(new File("").getAbsolutePath()).append(File.separatorChar).append("ressources")
-				.append(File.separatorChar).append("testdata_different_types.xls").toString();
+		File dataFile = new File(getClass().getResource("/testdata_different_types.xls").toURI());
 
 		try {
-			TestData testData = importer.getTestData(new File(file));
+			TestData testData = importer.getTestData(dataFile);
 			List<TestDataRow> rows = testData.getRows();
 			TestDataRow testDataRow = rows.get(1);
 			assertTrue(testDataRow.getColumn(5).toString().endsWith("2001"));
