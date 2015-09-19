@@ -54,7 +54,7 @@
 	</dependencies>
 
 	<build>
-		<testSourceDirectory>test</testSourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<!-- Enable Tycho -->
 			<plugin>
