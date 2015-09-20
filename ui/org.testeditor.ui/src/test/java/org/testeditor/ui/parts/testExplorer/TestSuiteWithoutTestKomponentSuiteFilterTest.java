@@ -24,7 +24,6 @@ import org.testeditor.ui.parts.commons.tree.filter.TestSuiteWithoutTestScenarioS
  * 
  * Modultest for the TestSuiteWithoutTestKomponentSuiteFilter.
  * 
- * @author karsten
  */
 public class TestSuiteWithoutTestKomponentSuiteFilterTest {
 

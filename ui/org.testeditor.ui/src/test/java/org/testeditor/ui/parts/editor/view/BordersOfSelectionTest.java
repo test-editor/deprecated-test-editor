@@ -19,7 +19,6 @@ import org.junit.Test;
  * 
  * test-class for the class BordersOfSelection.
  * 
- * @author llipinski
  */
 public class BordersOfSelectionTest {
 	/**

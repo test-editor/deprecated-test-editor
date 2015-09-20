@@ -22,7 +22,6 @@ import org.junit.Test;
  * 
  * Test for the TestEditorTestFlowDataTransferContainer class.
  * 
- * @author llipinski
  */
 public class TestEditorTestFlowDataTransferContainerTest {
 	private TestEditorTestDataTransferContainer testEditorTestFlowDataTransferContainer;

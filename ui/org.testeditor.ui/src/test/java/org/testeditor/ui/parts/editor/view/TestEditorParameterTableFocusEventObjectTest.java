@@ -21,7 +21,6 @@ import org.testeditor.core.model.teststructure.TestFlow;
  * 
  * test for the TestEditorParameterTableFocusEventObject.
  * 
- * @author llipinski
  */
 public class TestEditorParameterTableFocusEventObjectTest {
 	/**

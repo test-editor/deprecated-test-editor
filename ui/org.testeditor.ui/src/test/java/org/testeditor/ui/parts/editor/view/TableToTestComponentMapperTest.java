@@ -22,7 +22,6 @@ import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 /**
  * tests the TableToTestComponentMapper-class.
  * 
- * @author llipinski
  * 
  */
 public class TableToTestComponentMapperTest {
@@ -50,8 +49,8 @@ public class TableToTestComponentMapperTest {
 		testScenarioParameterTableFour.setTitle("four");
 		tableToTestComponentMapper.addTableToTableStore(testEditorViewTableViewerOne, testScenarioParameterTableOne);
 		tableToTestComponentMapper.addTableToTableStore(testEditorViewTableViewerTwo, testScenarioParameterTableTwo);
-		tableToTestComponentMapper
-				.addTableToTableStore(testEditorViewTableViewerThree, testScenarioParameterTableThree);
+		tableToTestComponentMapper.addTableToTableStore(testEditorViewTableViewerThree,
+				testScenarioParameterTableThree);
 		tableToTestComponentMapper.addTableToTableStore(testEditorViewTableViewerFour, testScenarioParameterTableFour);
 
 	}
@@ -61,8 +60,8 @@ public class TableToTestComponentMapperTest {
 	 */
 	@Test
 	public void testGetTestComponent() {
-		assertEquals("three",
-				tableToTestComponentMapper.getTestScenarioTableToTableViewer(testEditorViewTableViewerThree).getTitle());
+		assertEquals("three", tableToTestComponentMapper
+				.getTestScenarioTableToTableViewer(testEditorViewTableViewerThree).getTitle());
 	}
 
 	/**

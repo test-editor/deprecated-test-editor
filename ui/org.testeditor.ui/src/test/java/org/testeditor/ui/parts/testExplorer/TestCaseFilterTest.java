@@ -23,7 +23,6 @@ import org.testeditor.ui.parts.commons.tree.filter.TestCaseFilter;
  * 
  * Modultest for the TestCaseFilter.
  * 
- * @author karsten
  */
 public class TestCaseFilterTest {
 

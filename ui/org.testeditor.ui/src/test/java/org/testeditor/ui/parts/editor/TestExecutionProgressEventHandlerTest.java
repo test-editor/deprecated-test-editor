@@ -19,7 +19,6 @@ import org.junit.Test;
  * 
  * Module Tests for TestExecutionProgressEventHandler.
  * 
- * @author karsten
  */
 public class TestExecutionProgressEventHandlerTest {
 

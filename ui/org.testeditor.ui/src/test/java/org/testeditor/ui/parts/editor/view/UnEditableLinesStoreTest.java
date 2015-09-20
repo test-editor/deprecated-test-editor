@@ -20,8 +20,6 @@ import org.junit.Test;
 /**
  * this class tests the class UnEditableLinesStore.
  * 
- * @author llipinski
- * 
  */
 public class UnEditableLinesStoreTest {
 

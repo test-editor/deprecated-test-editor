@@ -20,13 +20,13 @@ import java.util.Map;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.junit.Test;
-import org.testeditor.ui.adapter.PartServiceAdapter;
-import org.testeditor.ui.mocks.TestEditorConfigurationServiceMock;
+import org.test.ui.mock.PartServiceAdapter;
+import org.test.ui.mock.TestEditorConfigurationServiceMock;
 import org.testeditor.ui.parts.systemconfiguration.handler.RestartAndResetUIHandler;
 
 /**
  * 
- * Integration Test for RestartAndResetUIHandler.
+ * Modul Test for RestartAndResetUIHandler.
  * 
  */
 public class RestartAndResetUIHandlerTest {

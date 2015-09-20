@@ -9,7 +9,7 @@
  * Signal Iduna Corporation - initial API and implementation
  * akquinet AG
  *******************************************************************************/
-package org.testeditor.ui.mocks;
+package org.test.ui.mock;
 
 import java.io.IOException;
 import java.util.Map;

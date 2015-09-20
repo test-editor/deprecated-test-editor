@@ -23,8 +23,6 @@ import org.testeditor.ui.parts.commons.tree.filter.TestScenarioRecursiveFilter;
 /**
  * test the TestScenarioRecursiveFilter.
  * 
- * @author llipinski
- * 
  */
 public class TestScenarioRecursiveFilterTest {
 	/**
