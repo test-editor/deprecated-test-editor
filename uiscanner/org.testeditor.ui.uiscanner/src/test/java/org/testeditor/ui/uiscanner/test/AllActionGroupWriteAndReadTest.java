@@ -29,8 +29,6 @@ import org.testeditor.ui.uiscanner.webscanner.UiScannerWebElement;
  * Test class for the ScannerReadAndWriter. This Class tests only the generating
  * of the AllActionGroup.
  * 
- * @author dkuhlmann
- *
  */
 public class AllActionGroupWriteAndReadTest {
 	private static ScannerReadAndWriter readAndWriter;

@@ -28,7 +28,7 @@ import org.testeditor.ui.uiscanner.webscanner.UiScannerWebElement;
 import org.testeditor.ui.uiscanner.webscanner.WebScanner;
 
 /**
- * @author dkuhlmann
+ * Module Test for Scanner.
  * 
  */
 public class ScannerTest {

@@ -25,8 +25,6 @@ import org.testeditor.ui.uiscanner.webscanner.UiScannerWebElement;
  * Test class for the ScnnerReadAndWriter. This Class tests only the generating
  * of the elementlsit.
  * 
- * @author dkuhlmann
- *
  */
 public class ElementListWriteAndReadTest {
 	private static ScannerReadAndWriter readAndWriter;

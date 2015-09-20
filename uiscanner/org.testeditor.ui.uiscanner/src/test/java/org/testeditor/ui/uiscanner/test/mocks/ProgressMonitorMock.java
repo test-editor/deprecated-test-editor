@@ -15,9 +15,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Ignore;
 
 /**
- * calss to create a ProgressMonitorMock for scanning the websites.
+ * calls to create a ProgressMonitorMock for scanning the websites.
  * 
- * @author dkuhlmann
  *
  */
 public final class ProgressMonitorMock {

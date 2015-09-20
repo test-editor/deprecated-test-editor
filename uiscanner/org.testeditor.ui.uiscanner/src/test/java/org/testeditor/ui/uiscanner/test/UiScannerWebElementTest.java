@@ -25,7 +25,6 @@ import org.testeditor.ui.uiscanner.webscanner.UiScannerWebElement;
 /**
  * Class to test the UiScannerWebElement.
  * 
- * @author dkuhlmann
  *
  */
 public class UiScannerWebElementTest {

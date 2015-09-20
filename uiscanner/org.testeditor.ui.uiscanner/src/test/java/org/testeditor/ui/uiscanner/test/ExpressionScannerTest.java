@@ -30,8 +30,7 @@ import org.testeditor.ui.uiscanner.webscanner.UiScannerWebElement;
 import org.testeditor.ui.uiscanner.webscanner.WebScanner;
 
 /**
- * 
- * @author dkuhlmann
+ * Modul test for ExpressionScanner.
  * 
  */
 public class ExpressionScannerTest {
@@ -67,13 +66,13 @@ public class ExpressionScannerTest {
 	public void scan() throws IOException, ExpressionException {
 		ExpressionReader reader = new ExpressionReader();
 		HashMap<String, Expression> exprs = reader.readCheck(new File("resources/expressions/newCheck.txt").getPath());
-		ArrayList<String> filters = new ArrayList<>();
+		ArrayList<String> filters = new ArrayList<String>();
 		filters.add(UiScannerConstants.TYP_BUTTON);
 		filters.add(UiScannerConstants.TYP_CHECKBOX);
 		filters.add(UiScannerConstants.TYP_INPUT);
 		filters.add(UiScannerConstants.TYP_RADIO);
 		filters.add(UiScannerConstants.TYP_SELECT);
-		ArrayList<UiScannerWebElement> elems = new ArrayList<>();
+		ArrayList<UiScannerWebElement> elems = new ArrayList<UiScannerWebElement>();
 		elems = webScanner.scanFilteredWithExpression(elems, exprs, filters, "");
 		assertEquals(15, elems.size());
 		assertEquals("user", elems.get(0).getTechnicalID());

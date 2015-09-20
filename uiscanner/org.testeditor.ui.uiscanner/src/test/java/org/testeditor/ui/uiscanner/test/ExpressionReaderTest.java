@@ -25,8 +25,6 @@ import org.testeditor.ui.uiscanner.expressions.ExpressionReader;
 /**
  * Test the CheckReader class which read out the Expression from a txt file.
  * 
- * @author dkuhlmann
- * 
  */
 public class ExpressionReaderTest {
 
@@ -41,8 +39,8 @@ public class ExpressionReaderTest {
 	@Test
 	public void readCheck() throws ExpressionException, IOException {
 		ExpressionReader reader = new ExpressionReader();
-		HashMap<String, Expression> exp = reader.readCheck(new File("resources/expressions/newCheck.txt").getPath()
-				.toString());
+		HashMap<String, Expression> exp = reader
+				.readCheck(new File("resources/expressions/newCheck.txt").getPath().toString());
 		assertEquals(5, exp.size());
 	}
 }
