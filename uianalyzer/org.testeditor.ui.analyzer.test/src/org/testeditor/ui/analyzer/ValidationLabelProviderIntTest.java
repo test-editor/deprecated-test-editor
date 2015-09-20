@@ -27,7 +27,7 @@ import org.testeditor.ui.analyzer.errormodel.ErrorContainer;
  * Modultest for ValidationLabelProvider.
  * 
  */
-public class ValidationLabelProviderTest {
+public class ValidationLabelProviderIntTest {
 
 	/**
 	 * Tests the GetText Method for the Labelprovider.
