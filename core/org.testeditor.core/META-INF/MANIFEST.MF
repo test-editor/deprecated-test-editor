@@ -34,7 +34,8 @@ Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
  javax.inject;bundle-version="1.0.0",
  org.eclipse.equinox.ds;bundle-version="1.4.0",
  org.apache.poi;bundle-version="3.9.0",
- org.eclipse.core.databinding;bundle-version="1.4.1"
+ org.eclipse.core.databinding;bundle-version="1.4.1",
+ org.apache.commons.io
 Service-Component: OSGI-INF/TestProjectService.xml,OSGI-INF/ActionGroupImpl.xml,OSGI-INF/TestEditorPlugInService.xml,OSGI-INF/FileLocatorService.xml,OSGI-INF/TestEditorReservedNamesService.xml,OSGI-INF/TestStateProtocolService.xml,OSGI-INF/TestEditorConfigurationService.xml,OSGI-INF/LibraryReaderServiceDispatcher.xml,OSGI-INF/TeamShareServiceDispatcher.xml,OSGI-INF/TestScenarioServiceDispatcher.xml,
  OSGI-INF/TestStructureContentServiceDispatcher.xml,OSGI-INF/TestStructureServiceDispatcher.xml,OSGI-INF/TeamShareStatusServiceDispatcher.xml,
  OSGI-INF/TestServerServiceDispatcher.xml,OSGI-INF/FileWatchService.xml

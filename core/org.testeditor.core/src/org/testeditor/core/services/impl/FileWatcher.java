@@ -78,7 +78,7 @@ public class FileWatcher {
 
 				try {
 
-					LOGGER.info("Projekt: " + testProject.getName());
+					LOGGER.info("Project: " + testProject.getName());
 					LOGGER.info("File changed: " + file.getCanonicalPath());
 
 					notifyObserver();
