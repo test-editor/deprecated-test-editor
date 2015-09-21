@@ -17,6 +17,13 @@
 			<id>jreProduct</id>
 			<modules>
 				<module>jreproduct</module>
+				<module>product</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>product</id>
+			<modules>
+				<module>product</module>
 			</modules>
 		</profile>
 	</profiles>
@@ -33,7 +40,6 @@
 		<module>metadata</module>
 		<module>uiscanner</module>
 		<module>dashboard</module>
-		<module>product</module>
 	</modules>
 
 </project>
