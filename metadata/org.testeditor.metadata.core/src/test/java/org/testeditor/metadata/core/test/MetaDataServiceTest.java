@@ -39,12 +39,18 @@ import org.testeditor.metadata.core.model.MetaDataValue;
  * Tests the metadataservice.
  * 
  */
+@Ignore
 public class MetaDataServiceTest {
 
 	private List<String> projects = new ArrayList<String>();
 
+	/**
+	 * Setup for test.
+	 * 
+	 * @throws Exception
+	 *             on test failure
+	 */
 	@Before
-	@Ignore
 	public void setup() throws Exception {
 		projects.add("testProject1");
 		projects.add("testProject2");
@@ -54,7 +60,6 @@ public class MetaDataServiceTest {
 	 * Temporary test to test the setup of the system.
 	 */
 	@Test
-	@Ignore
 	public void testTestSetup() {
 		TestProject project = createProject("testProject1");
 		assertNotNull(project);
@@ -64,7 +69,6 @@ public class MetaDataServiceTest {
 	 * Checks that the metadata are read correctly.
 	 */
 	@Test
-	@Ignore
 	public void testReadMetaDataForProject() {
 		TestProject project = createProject("testProject1");
 		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
@@ -76,8 +80,8 @@ public class MetaDataServiceTest {
 				assertTrue("MetaData1 with wrong label " + metaData.getLabel(),
 						"MetaData1Label".equals(metaData.getLabel()));
 
-				assertTrue("MetaData1 with " + metaData.getValues().size() + ". 2 was expected", metaData.getValues()
-						.size() == 2);
+				assertTrue("MetaData1 with " + metaData.getValues().size() + ". 2 was expected",
+						metaData.getValues().size() == 2);
 				for (MetaDataValue metaDataValue : metaData.getValues()) {
 					if ("MetaData1".equals(metaDataValue.getKey())) {
 						assertTrue("MetaDataValue1 with wrong label " + metaDataValue.getLabel(),
@@ -85,8 +89,8 @@ public class MetaDataServiceTest {
 					} else if ("MetaData2".equals(metaDataValue.getKey())) {
 						assertTrue("MetaDataValue2 with wrong label " + metaDataValue.getLabel(),
 								"MetaData1-2Label".equals(metaDataValue.getLabel()));
-						assertTrue("wrong globalKey " + metaDataValue.getGlobalKey()
-								+ " expected was MetaData1-MetaData2",
+						assertTrue(
+								"wrong globalKey " + metaDataValue.getGlobalKey() + " expected was MetaData1-MetaData2",
 								"MetaData1-MetaData2".equals(metaDataValue.getGlobalKey()));
 					} else {
 						assertTrue("Illegal MetadataValuekey " + metaDataValue.getKey(), false);
@@ -98,8 +102,8 @@ public class MetaDataServiceTest {
 				assertTrue("MetaData2 with wrong label " + metaData.getLabel(),
 						"MetaData2Label".equals(metaData.getLabel()));
 
-				assertTrue("MetaData1 with " + metaData.getValues().size() + ". 3 was expected", metaData.getValues()
-						.size() == 3);
+				assertTrue("MetaData1 with " + metaData.getValues().size() + ". 3 was expected",
+						metaData.getValues().size() == 3);
 			} else if ("MetaData3".equals(metaData.getKey())) {
 				assertTrue("MetaData3 with wrong label " + metaData.getLabel(),
 						"MetaData3Label".equals(metaData.getLabel()));
@@ -110,10 +114,9 @@ public class MetaDataServiceTest {
 	}
 
 	/**
-	 * Creates the reading of the metadata for an other project
+	 * Creates the reading of the metadata for an other project.
 	 */
 	@Test
-	@Ignore
 	public void testReadMetaDataForOtherProject() {
 		TestProject project = createProject("testProject2");
 		List<MetaData> metaDataList = getNewServiceObject().getAllMetaData(project);
@@ -123,10 +126,9 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Tests the start of the metaDataService if no metaData are created for the
-	 * project
+	 * project.
 	 */
 	@Test
-	@Ignore
 	public void testReadMetaDataForEmptyProject() {
 		projects.add("testProject3");
 		TestProject project = createProject("testProject3");
@@ -136,12 +138,12 @@ public class MetaDataServiceTest {
 	}
 
 	/**
-	 * Tests the storing and reading of the data of multiple testcases
+	 * Tests the storing and reading of the data of multiple testcases.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 */
 	@Test
-	@Ignore
 	public void testStoreAndReadMulitpleMetaDataList() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -156,11 +158,13 @@ public class MetaDataServiceTest {
 
 	}
 
-	/*
-	 * Tests the removing of metadata - this is used during deleting a testcase
+	/**
+	 * Tests the removing of metadata - this is used during deleting a testcase.
+	 * 
+	 * @throws SystemException
+	 *             on test failure
 	 */
 	@Test
-	@Ignore
 	public void testDeleteTestStructure() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -173,8 +177,7 @@ public class MetaDataServiceTest {
 
 		getNewServiceObject().delete(testCase);
 
-		assertTrue(
-				"Testcase not deleted. Still " + getNewServiceObject().getMetaDataTags(testCase).size() + " entries",
+		assertTrue("Testcase not deleted. Still " + getNewServiceObject().getMetaDataTags(testCase).size() + " entries",
 				getNewServiceObject().getMetaDataTags(testCase).size() == 0);
 	}
 
@@ -182,9 +185,9 @@ public class MetaDataServiceTest {
 	 * Tests that changes the name of a testcase.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 */
 	@Test
-	@Ignore
 	public void testRenameTestStructure() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -198,9 +201,8 @@ public class MetaDataServiceTest {
 		createFolderForTestCase(project.getName(), "testCase4");
 		getNewServiceObject().rename(testCase, "testCase4");
 
-		assertTrue("Testcase not renamed. Old Entry has still "
-				+ getNewServiceObject().getMetaDataTags(testCase).size() + " entries", getNewServiceObject()
-				.getMetaDataTags(testCase).size() == 0);
+		assertTrue("Testcase not renamed. Old Entry has still " + getNewServiceObject().getMetaDataTags(testCase).size()
+				+ " entries", getNewServiceObject().getMetaDataTags(testCase).size() == 0);
 
 		testCase.setName("testCase4");
 		assertTrue("Testcase not deleted. New entry has " + getNewServiceObject().getMetaDataTags(testCase).size()
@@ -208,7 +210,6 @@ public class MetaDataServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void testGetMetaDataFromMetaDataTag() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -221,14 +222,13 @@ public class MetaDataServiceTest {
 
 		for (MetaDataTag metaDataTag : metaDataTagListResult) {
 			MetaDataValue metaDataValue = getNewServiceObject().getMetaDataValue(metaDataTag, project);
-			assertTrue(metaDataTag.getGlobalKey() + " not found in MetaDataService", metaDataValue.getGlobalKey()
-					.equals(metaDataTag.getGlobalKey()));
+			assertTrue(metaDataTag.getGlobalKey() + " not found in MetaDataService",
+					metaDataValue.getGlobalKey().equals(metaDataTag.getGlobalKey()));
 		}
 
 	}
 
 	@Test
-	@Ignore
 	public void testGetTestCasesForMetaData() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -243,12 +243,12 @@ public class MetaDataServiceTest {
 	}
 
 	/**
-	 * Tests the search of testcases for a metadatavalue
+	 * Tests the search of testcases for a metadatavalue.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 */
 	@Test
-	@Ignore
 	public void testGetTestCasesForMetaDataList() throws SystemException {
 		TestProject project = createProject("testProject1");
 		setupMetaDatatestCaseStore(project);
@@ -265,12 +265,12 @@ public class MetaDataServiceTest {
 	}
 
 	/**
-	 * Tests the storing and reading of a metadatalist
+	 * Tests the storing and reading of a metadatalist.
 	 * 
 	 * @throws SystemException
+	 *             on test failure
 	 */
 	@Test
-	@Ignore
 	public void testStoreAndReadMetaDataList() throws SystemException {
 
 		TestProject project = createProject("testProject1");
@@ -284,15 +284,15 @@ public class MetaDataServiceTest {
 		assertTrue("" + metaDataTagListResult.size() + " found for Testcase. Expected was 2",
 				metaDataTagListResult.size() == 2);
 
-		assertTrue(metaDataTagList.get(0).getGlobalKey() + " not found in stored data", metaDataTagList.get(0)
-				.getGlobalKey().equals(metaDataTagListResult.get(0).getGlobalKey()));
-		assertTrue(metaDataTagList.get(1).getGlobalKey() + " not found in stored data", metaDataTagList.get(1)
-				.getGlobalKey().equals(metaDataTagListResult.get(1).getGlobalKey()));
+		assertTrue(metaDataTagList.get(0).getGlobalKey() + " not found in stored data",
+				metaDataTagList.get(0).getGlobalKey().equals(metaDataTagListResult.get(0).getGlobalKey()));
+		assertTrue(metaDataTagList.get(1).getGlobalKey() + " not found in stored data",
+				metaDataTagList.get(1).getGlobalKey().equals(metaDataTagListResult.get(1).getGlobalKey()));
 	}
 
 	/**
 	 * Creates a store containing three testcases with different metatags for
-	 * project
+	 * project.
 	 * 
 	 * @param project
 	 * @throws SystemException
@@ -323,7 +323,7 @@ public class MetaDataServiceTest {
 	}
 
 	/**
-	 * Creates a list of metatags for a testcase with count number of elements
+	 * Creates a list of metatags for a testcase with count number of elements.
 	 * 
 	 * @param testCase
 	 * @param project
@@ -335,8 +335,8 @@ public class MetaDataServiceTest {
 
 		project.addChild(testCase);
 		for (int index = 0; index < count; index++) {
-			MetaDataTag metaDataTag = new MetaDataTag(getNewServiceObject().getAllMetaData(project).get(index)
-					.getValues().get(index));
+			MetaDataTag metaDataTag = new MetaDataTag(
+					getNewServiceObject().getAllMetaData(project).get(index).getValues().get(index));
 			metaDataTagList.add(metaDataTag);
 		}
 
@@ -345,7 +345,7 @@ public class MetaDataServiceTest {
 
 	/**
 	 * Gets the path to the testprojects - the testprojects are stored in the
-	 * resources directors of the testproject
+	 * resources directors of the testproject.
 	 * 
 	 * @param projectName
 	 * @return
@@ -398,6 +398,7 @@ public class MetaDataServiceTest {
 	 * removes all Files containing testprojectdata after the test.
 	 * 
 	 * @throws IOException
+	 *             on cleanup
 	 */
 	@After
 	public void removeCreatedMetaDataFiles() throws IOException {
