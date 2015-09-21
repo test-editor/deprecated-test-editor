@@ -591,6 +591,17 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 		}
 	}
 
+	@Inject
+	@Optional
+	public void objectUpdatetByTeamshare(
+			@UIEventTopic(TestEditorCoreEventConstants.TEAMSHARE_UPDATE) String testStructureFullName) {
+		if (testFlow != null) {
+			if (testFlow.getFullName().startsWith(testStructureFullName)) {
+				getMetaDataService().refresh(testFlow.getRootElement());
+			}
+		}
+	}
+
 	/**
 	 * will be called by the eventBroker, after a TEST_STRUCTURE_UPDATED is send
 	 * by updating a teststructure with the teamsharing-operation.
@@ -604,7 +615,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE) String testStructureFullName) {
 		if (testFlow != null) {
 			if (testFlow.getFullName().startsWith(testStructureFullName)) {
-				getMetaDataService().refresh(testFlow.getRootElement());
 				setTestStructure(testFlow);
 			}
 		}
