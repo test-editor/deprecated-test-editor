@@ -120,6 +120,7 @@ public abstract class NewTestStructureHandler {
 				addChild(testStructure);
 				try {
 					createAndOpenTestStructure(testStructure, context);
+					addTestStructureLocalToRepository(testStructure, shell);
 					eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD,
 							testStructure.getFullName());
 					eventBroker.send(TestEditorUIEventConstants.ACTIVE_TESTFLOW_EDITOR_CHANGED, testStructure);
@@ -130,6 +131,24 @@ public abstract class NewTestStructureHandler {
 			}
 		}
 		return testStructure;
+	}
+
+	/**
+	 * adds a testStructure local to the teamshare. After a commit its shared in
+	 * the repository.
+	 * 
+	 * @param testStructure
+	 *            the TestStructure to add
+	 * @param shell
+	 *            active Shell.
+	 */
+	private void addTestStructureLocalToRepository(TestStructure testStructure, Shell shell) {
+		try {
+			teamService.addChild(testStructure, translationService);
+		} catch (SystemException e) {
+			LOGGER.error(e);
+			MessageDialog.openError(shell, "System-Exception", e.getMessage());
+		}
 	}
 
 	/**
@@ -158,7 +177,6 @@ public abstract class NewTestStructureHandler {
 	protected void addChild(TestStructure testStructure) {
 		((TestCompositeStructure) selectedTestStrucutureElement).addChild(testStructure);
 	}
-
 
 	/**
 	 * Sets the name of the new teststructure.

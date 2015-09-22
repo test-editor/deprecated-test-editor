@@ -199,8 +199,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			// useGlobalIgnores must be set to TRUE, otherwise ignore list will
 			// not work.
-			SVNCommitInfo doImport = clientManager.getCommitClient().doImport(new File(projectPath), svnUrl,
-					svnComment, new SVNProperties(), true, false, SVNDepth.INFINITY);
+			SVNCommitInfo doImport = clientManager.getCommitClient().doImport(new File(projectPath), svnUrl, svnComment,
+					new SVNProperties(), true, false, SVNDepth.INFINITY);
 
 			logger.trace("doImport: " + doImport);
 
@@ -209,8 +209,9 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			// checkout
 			SVNUpdateClient updateClient = clientManager.getUpdateClient();
-			long doCheckout = updateClient.doCheckout(svnUrl, new File(testProject.getTestProjectConfig()
-					.getProjectPath()), SVNRevision.HEAD, SVNRevision.HEAD, SVNDepth.INFINITY, false);
+			long doCheckout = updateClient.doCheckout(svnUrl,
+					new File(testProject.getTestProjectConfig().getProjectPath()), SVNRevision.HEAD, SVNRevision.HEAD,
+					SVNDepth.INFINITY, false);
 
 			logger.trace("doCheckout: " + doCheckout);
 
@@ -257,8 +258,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			SVNCommitClient cc = clientManager.getCommitClient();
 			cc.setEventHandler(new SVNLoggingEventHandler(listener, logger));
-			SVNCommitInfo doCommit = cc.doCommit(new File[] { checkinFile }, false, svnComment, null, null, false,
-					true, SVNDepth.INFINITY);
+			SVNCommitInfo doCommit = cc.doCommit(new File[] { checkinFile }, false, svnComment, null, null, false, true,
+					SVNDepth.INFINITY);
 			resultState = translationService.translate("%svn.state.approve",
 					"platform:/plugin/org.testeditor.teamshare.svn") + " " + doCommit.getNewRevision();
 
@@ -324,10 +325,10 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		if (eventBroker != null) {
 			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
 			eventBroker.post(eventTopic, testStructure.getFullName());
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET, testStructure.getRootElement()
-					.getFullName());
-			eventBroker.post(TestEditorCoreEventConstants.TEAMSHARE_UPDATE, testStructure.getRootElement()
-					.getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET,
+					testStructure.getRootElement().getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TEAMSHARE_UPDATE,
+					testStructure.getRootElement().getFullName());
 		}
 	}
 
@@ -368,7 +369,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 * @throws SVNException
 	 *             on operation.
 	 */
-	List<String> checkWcState(SVNStatusClient statusClient, File checkoutFile, long revisionNumber) throws SVNException {
+	List<String> checkWcState(SVNStatusClient statusClient, File checkoutFile, long revisionNumber)
+			throws SVNException {
 		final List<String> result = new ArrayList<>();
 		statusClient.doStatus(checkoutFile, SVNRevision.create(revisionNumber), SVNDepth.INFINITY, false, true, false,
 				false, new ISVNStatusHandler() {
@@ -386,8 +388,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public void checkout(TestProject testProject, TranslationService translationService) throws SystemException,
-			TeamAuthentificationException {
+	public void checkout(TestProject testProject, TranslationService translationService)
+			throws SystemException, TeamAuthentificationException {
 
 		logger.trace("call to checkout; testProject: '" + testProject.getFullName() + "'");
 
@@ -526,8 +528,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 				.getAbsoluteFile() + localPathInProject;
 
 		try {
-			statusClient.doStatus(new File(pathInProject), SVNRevision.HEAD, SVNDepth.INFINITY, true, true, true,
-					false, statusHandler, changeLists);
+			statusClient.doStatus(new File(pathInProject), SVNRevision.HEAD, SVNDepth.INFINITY, true, true, true, false,
+					statusHandler, changeLists);
 			logger.trace("call to getStatus done; testStructure: '" + testStructure.getFullName() + "'");
 			return svnStatus.toString();
 		} catch (SVNException e) {
@@ -712,10 +714,15 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 						if (eventBroker != null) {
 							String subPath = Paths.get(testStructure.getUrl().toURI())
 									.relativize(fileToDeleteLc.toPath()).toString();
-							String deletedTSFullName = testStructure.getFullName() + "."
-									+ subPath.replaceAll(File.pathSeparator, ".");
-							logger.trace("Deleted test structure in revert operation with fullname: "
-									+ deletedTSFullName);
+							if (testStructure instanceof TestProject) {
+								subPath = subPath.substring(subPath.lastIndexOf(testStructure.getName()),
+										subPath.length());
+							}
+							String deletedTSFullName = // testStructure.getFullName()
+														// + "." +
+							subPath.replaceAll(File.separator, ".");
+							logger.trace(
+									"Deleted test structure in revert operation with fullname: " + deletedTSFullName);
 							eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
 									deletedTSFullName);
 						}
