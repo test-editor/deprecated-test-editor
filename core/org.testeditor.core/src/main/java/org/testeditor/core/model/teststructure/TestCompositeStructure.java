@@ -46,6 +46,7 @@ public abstract class TestCompositeStructure extends TestStructure {
 	public List<TestStructure> getTestChildren() {
 		boolean areAllChildsOfTheBackendLoaded = childCountInBackend != testChildren.size() && lazyLoader != null;
 		if (areAllChildsOfTheBackendLoaded) {
+			childCountInBackend = 0;
 			lazyLoader.run();
 		}
 		return testChildren;
