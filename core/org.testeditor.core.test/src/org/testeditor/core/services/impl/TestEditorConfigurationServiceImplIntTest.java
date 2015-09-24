@@ -34,7 +34,7 @@ public class TestEditorConfigurationServiceImplIntTest {
 	public void testLoadGlobalVariablesAsSystemProperties() throws Exception {
 		TestEditorConfigurationService testEditorConfigurationService = ServiceLookUpForTest
 				.getService(TestEditorConfigurationService.class);
-		testEditorConfigurationService.exportGlobalVariablesToSystemProperties();
+		testEditorConfigurationService.exportGlobalVariablesToSystemProperties(true);
 		assertEquals("", System.getProperty(TestEditorGlobalConstans.PATH_BROWSER));
 	}
 

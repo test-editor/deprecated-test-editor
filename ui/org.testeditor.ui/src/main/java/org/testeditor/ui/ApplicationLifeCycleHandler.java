@@ -97,7 +97,7 @@ public class ApplicationLifeCycleHandler {
 		initTestEditorCronJobs();
 		initTeamStatusInformation();
 		try {
-			testEditorConfigService.exportGlobalVariablesToSystemProperties();
+			testEditorConfigService.exportGlobalVariablesToSystemProperties(true);
 			testEditorConfigService.initializeSystemProperties();
 		} catch (BackingStoreException e) {
 			LOGGER.error("Error setting SystemVariables", e);
