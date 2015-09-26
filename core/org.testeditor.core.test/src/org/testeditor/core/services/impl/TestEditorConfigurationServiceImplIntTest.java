@@ -13,6 +13,8 @@ package org.testeditor.core.services.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.junit.Test;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
@@ -38,4 +40,15 @@ public class TestEditorConfigurationServiceImplIntTest {
 		assertEquals("", System.getProperty(TestEditorGlobalConstans.PATH_BROWSER));
 	}
 
+	/**
+	 * Clears all existing properties about the preferences for the te node.
+	 * 
+	 * @throws Exception
+	 *             on failure preparing for test.
+	 * 
+	 */
+	public void setUp() throws Exception {
+		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(TestEditorConfigurationServiceImpl.ID_TE_PROPERTIES);
+		prefs.clear();
+	}
 }

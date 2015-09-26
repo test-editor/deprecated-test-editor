@@ -36,7 +36,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 
 	private static final String RESET_APP_PROPERTY = "resetApp";
 	private static final Logger LOGGER = Logger.getLogger(TestEditorConfigurationServiceImpl.class);
-	private static final String ID_TE_PROPERTIES = "org.testeditor.config.service";
+	public static final String ID_TE_PROPERTIES = "org.testeditor.config.service";
 	private static final String ID_CONFIGURATION = "org.testeditor.config.service.configinternal";
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
