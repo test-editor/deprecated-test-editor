@@ -25,7 +25,7 @@ import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 public class TestEditorConfigurationServiceMock implements TestEditorConfigurationService {
 
 	@Override
-	public void exportGlobalVariablesToSystemProperties() throws BackingStoreException {
+	public void exportGlobalVariablesToSystemProperties(boolean overRide) throws BackingStoreException {
 	}
 
 	@Override

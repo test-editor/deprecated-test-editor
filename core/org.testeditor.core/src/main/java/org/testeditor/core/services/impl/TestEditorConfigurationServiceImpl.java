@@ -36,7 +36,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 
 	private static final String RESET_APP_PROPERTY = "resetApp";
 	private static final Logger LOGGER = Logger.getLogger(TestEditorConfigurationServiceImpl.class);
-	private static final String ID_TE_PROPERTIES = "org.testeditor.config.service";
+	public static final String ID_TE_PROPERTIES = "org.testeditor.config.service";
 	private static final String ID_CONFIGURATION = "org.testeditor.config.service.configinternal";
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
@@ -64,12 +64,18 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	}
 
 	@Override
-	public void exportGlobalVariablesToSystemProperties() throws BackingStoreException {
+	public void exportGlobalVariablesToSystemProperties(boolean override) throws BackingStoreException {
 		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(ID_TE_PROPERTIES);
 		setDefaultVariablesIfNotset();
 		String[] keysOfSystemPreferences = prefs.keys();
 		for (String key : keysOfSystemPreferences) {
-			updatePair(key, prefs.get(key, ""));
+			if (override) {
+				updatePair(key, prefs.get(key, ""));
+			} else {
+				if (System.getProperty(key) == null) {
+					updatePair(key, prefs.get(key, ""));
+				}
+			}
 		}
 
 		System.setProperty(SLIM_CMD_PREFIX + TestEditorGlobalConstans.LOG4J_PATH_VARIABLE,
