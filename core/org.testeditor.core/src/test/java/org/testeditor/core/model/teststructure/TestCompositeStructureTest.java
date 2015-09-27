@@ -17,6 +17,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +162,28 @@ public class TestCompositeStructureTest {
 		out.removeChild(testCase);
 		assertEquals("Don't remove Object that is not in list", 3, out.getTestChildren().size());
 		assertFalse("Lazy Loader is not a second time executed.", Boolean.parseBoolean(monitor.get("seen")));
+	}
+
+	/**
+	 * Tests the lazy loading conditions on -1 init.
+	 */
+	@Test
+	public void testLoadChildrenLazy() {
+		TestCompositeStructure compositeStructure = getOUT();
+		final ArrayList<Date> lazyCounter = new ArrayList<Date>();
+		compositeStructure.setChildCountInBackend(-1);
+		compositeStructure.setLazyLoader(new Runnable() {
+
+			@Override
+			public void run() {
+				lazyCounter.add(new Date());
+			}
+		});
+		assertEquals(0, lazyCounter.size());
+		compositeStructure.loadChildrenLazy();
+		assertEquals(1, lazyCounter.size());
+		assertTrue(compositeStructure.getTestChildren().isEmpty());
+		assertEquals(1, lazyCounter.size());
 	}
 
 	/**
