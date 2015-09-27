@@ -34,11 +34,16 @@ public interface TestEditorConfigurationService {
 	 * If there are no global variables in the workspace default values are
 	 * created and stored to the preference store.
 	 * 
+	 * @param override
+	 *            indicates that the service should override or not existing
+	 *            system properties. if set to true, it overrides existing
+	 *            system properties.
+	 * 
 	 * @throws BackingStoreException
 	 *             on problems accessing the preference store
 	 * 
 	 */
-	void exportGlobalVariablesToSystemProperties() throws BackingStoreException;
+	void exportGlobalVariablesToSystemProperties(boolean override) throws BackingStoreException;
 
 	/**
 	 * 

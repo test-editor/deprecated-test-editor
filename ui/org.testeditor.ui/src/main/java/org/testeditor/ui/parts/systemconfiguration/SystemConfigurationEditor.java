@@ -243,7 +243,7 @@ public class SystemConfigurationEditor {
 						testEditorConfigService.clearKey(oldKey);
 					}
 					oldKeys.clear();
-					testEditorConfigService.exportGlobalVariablesToSystemProperties();
+					testEditorConfigService.exportGlobalVariablesToSystemProperties(true);
 				}
 
 			} catch (BackingStoreException e) {

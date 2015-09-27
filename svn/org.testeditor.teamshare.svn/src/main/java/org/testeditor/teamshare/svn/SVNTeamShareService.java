@@ -718,9 +718,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 								subPath = subPath.substring(subPath.lastIndexOf(testStructure.getName()),
 										subPath.length());
 							}
-							String deletedTSFullName = // testStructure.getFullName()
-														// + "." +
-							subPath.replaceAll(File.separator, ".");
+							String deletedTSFullName = subPath.replaceAll(File.separator, ".");
 							logger.trace(
 									"Deleted test structure in revert operation with fullname: " + deletedTSFullName);
 							eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
