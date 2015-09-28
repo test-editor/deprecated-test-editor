@@ -44,11 +44,24 @@ public abstract class TestCompositeStructure extends TestStructure {
 	 * @return test children
 	 */
 	public List<TestStructure> getTestChildren() {
-		boolean areAllChildsOfTheBackendLoaded = childCountInBackend != testChildren.size() && lazyLoader != null;
-		if (areAllChildsOfTheBackendLoaded) {
-			lazyLoader.run();
+		boolean areNotAllChildsOfTheBackendLoaded = childCountInBackend != testChildren.size();
+		if (areNotAllChildsOfTheBackendLoaded) {
+			loadChildrenLazy();
 		}
 		return testChildren;
+	}
+
+	/**
+	 * Loads children lazy. It removes all existing references and loads it
+	 * clean with the lazy loader.
+	 */
+	protected void loadChildrenLazy() {
+		if (lazyLoader == null) {
+			throw new RuntimeException("No Lazy Loader set for: " + toString());
+		}
+		testChildren.clear();
+		childCountInBackend = testChildren.size();
+		lazyLoader.run();
 	}
 
 	/**
