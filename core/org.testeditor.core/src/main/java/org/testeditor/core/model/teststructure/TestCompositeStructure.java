@@ -44,7 +44,7 @@ public abstract class TestCompositeStructure extends TestStructure {
 	 * @return test children
 	 */
 	public List<TestStructure> getTestChildren() {
-		boolean areNotAllChildsOfTheBackendLoaded = childCountInBackend != testChildren.size() && lazyLoader != null;
+		boolean areNotAllChildsOfTheBackendLoaded = childCountInBackend != testChildren.size();
 		if (areNotAllChildsOfTheBackendLoaded) {
 			loadChildrenLazy();
 		}
@@ -56,7 +56,10 @@ public abstract class TestCompositeStructure extends TestStructure {
 	 * clean with the lazy loader.
 	 */
 	protected void loadChildrenLazy() {
-		testChildren = new ArrayList<TestStructure>();
+		if (lazyLoader == null) {
+			throw new RuntimeException("No Lazy Loader set for: " + toString());
+		}
+		testChildren.clear();
 		childCountInBackend = testChildren.size();
 		lazyLoader.run();
 	}
