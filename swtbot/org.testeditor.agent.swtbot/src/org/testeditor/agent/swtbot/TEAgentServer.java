@@ -265,8 +265,12 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 * @return "true"
 	 */
 	public String deleteAllProjects() {
-		while (bot.tree().getAllItems().length > 0) {
-			SWTBotTreeItem[] allItems = bot.tree().getAllItems();
+		SWTBotTree tree = getTestExplorer();
+		if (tree == null) {
+			return Boolean.toString(false);
+		}
+		while (tree.getAllItems().length > 0) {
+			SWTBotTreeItem[] allItems = tree.getAllItems();
 			String[] itemsToExpand = new String[1];
 			itemsToExpand[0] = allItems[0].getText();
 			expandTreeItems(itemsToExpand);
@@ -280,6 +284,29 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	}
 
 	/**
+	 * Searches for the TEstexplorer tree by ID with one retry. After the retry,
+	 * it will report all visible widgets to the log file.
+	 * 
+	 * @return testExplorer tree object.
+	 */
+	public SWTBotTree getTestExplorer() {
+		SWTBotTree tree = null;
+		try {
+			try {
+				tree = bot.treeWithId("testexplorer.tree");
+			} catch (Exception e) {
+				// Try again.
+				Thread.sleep(100);
+				tree = bot.treeWithId("testexplorer.tree");
+			}
+		} catch (Exception e) {
+			LOGGER.error("can't count widgets ", e);
+			analyzeWidgets();
+		}
+		return tree;
+	}
+
+	/**
 	 * compares the count of project with the expectedCount.
 	 * 
 	 * @param expectedCount
@@ -288,28 +315,18 @@ public class TEAgentServer extends Thread implements ITestHarness {
 	 *         an ERROR
 	 */
 	public String countProjectsEquals(String expectedCount) {
-		try {
-			SWTBotTree tree = null;
-			try {
-				tree = bot.treeWithId("testexplorer.tree");
-			} catch (Exception e) {
-				// Try again.
-				Thread.sleep(100);
-				tree = bot.treeWithId("testexplorer.tree");
-			}
-			SWTBotTreeItem[] allItems = tree.getAllItems();
-			if (allItems.length != Integer.parseInt(expectedCount)) {
-				String message = "Inspected count of projects was: " + expectedCount + " but there are "
-						+ allItems.length + " projects";
-				LOGGER.error(message);
-				return message;
-			}
-			return Boolean.toString(true);
-		} catch (Exception e) {
-			LOGGER.error("can't count widgets ", e);
-			analyzeWidgets();
+		SWTBotTree tree = getTestExplorer();
+		if (tree == null) {
 			return Boolean.toString(false);
 		}
+		SWTBotTreeItem[] allItems = tree.getAllItems();
+		if (allItems.length != Integer.parseInt(expectedCount)) {
+			String message = "Inspected count of projects was: " + expectedCount + " but there are " + allItems.length
+					+ " projects";
+			LOGGER.error(message);
+			return message;
+		}
+		return Boolean.toString(true);
 	}
 
 	/**
@@ -405,18 +422,13 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (nodes[0].startsWith("ID")) {
 				String treeId = nodes[0].split(":")[1];
 				LOGGER.trace("selecting tree with id: " + treeId);
-				SWTBotTreeItem expandNode = bot.treeWithId(treeId).expandNode(
-						Arrays.copyOfRange(nodes, 1, nodes.length));
+				SWTBotTreeItem expandNode = bot.treeWithId(treeId)
+						.expandNode(Arrays.copyOfRange(nodes, 1, nodes.length));
 				expandNode.select();
 			} else {
-				SWTBotTree tree = null;
-				try {
-					tree = bot.tree();
-				} catch (Exception e) {
-					// Try again.
-					Thread.sleep(300);
-					analyzeWidgets();
-					tree = bot.tree();
+				SWTBotTree tree = getTestExplorer();
+				if (tree == null) {
+					return Boolean.toString(false);
 				}
 				SWTBotTreeItem expandNode = tree.expandNode(nodes);
 				expandNode.select();
