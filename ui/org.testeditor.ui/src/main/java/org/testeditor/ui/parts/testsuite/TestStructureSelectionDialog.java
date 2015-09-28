@@ -79,6 +79,8 @@ public class TestStructureSelectionDialog extends Dialog {
 		testStructureTree.createUI(parent, testProjectService);
 		testStructureTree.getTreeViewer().getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
 		testStructureTree.getTreeViewer().getTree().addSelectionListener(getTreeSelectionListener());
+		testStructureTree.getTreeViewer().getTree().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEST_EXPLORER_TREE);
 		for (ViewerFilter filter : filters) {
 			testStructureTree.getTreeViewer().addFilter(filter);
 		}

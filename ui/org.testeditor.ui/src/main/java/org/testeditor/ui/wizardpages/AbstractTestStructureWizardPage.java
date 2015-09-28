@@ -350,10 +350,12 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		treeLabel.setLayoutData(gdLabel);
 		testStructureTree = ContextInjectionFactory.make(TestStructureTree.class, context);
 		testStructureTree.createUI(getWidgetContainer(), testProjectService);
+		testStructureTree.getTreeViewer().getTree().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEST_EXPLORER_TREE);
 		// testStructureTree.showOnlyParentStructures();
 		GridData gdTree = new GridData(GridData.FILL_BOTH);
 		testStructureTree.getTreeViewer().setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-				CustomWidgetIdConstants.NEW_TEST_STRUCTUR_TREE);
+				CustomWidgetIdConstants.TEST_EXPLORER_TREE);
 		testStructureTree.getTreeViewer().getTree().setLayoutData(gdTree);
 		testStructureTree.selectTestStructure(selectedTS);
 		testStructureTree.getTreeViewer().addSelectionChangedListener(new ISelectionChangedListener() {
