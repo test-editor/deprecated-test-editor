@@ -372,6 +372,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 		testExecSelection.setText(translate.translate("%testexecenv.select.label"));
 		testExecEnvCombo = new Combo(serverGroup, SWT.NORMAL);
 		testExecEnvCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		testExecEnvCombo.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEST_PROJECT_TESTEXECUTION_ENVIRONMENT_SELECTION);
 		testExecEnvCombo.addModifyListener(new ModifyListener() {
 
 			@Override
