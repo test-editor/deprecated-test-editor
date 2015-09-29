@@ -23,7 +23,7 @@
 	<!-- alle Logs aus dem TestEditor werden geloggt -->
 	<appender class="org.apache.log4j.RollingFileAppender" name="testeditor">
 		<param name="file"
-			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/testeditor.log" />
+			value="target/.testeditor/.metadata/logs/testeditor.log" />
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<param name="MaxFileSize" value="5000KB" />
