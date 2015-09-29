@@ -239,4 +239,27 @@ public interface TeamShareService {
 	 */
 	int availableUpdatesCount(TestProject testProject) throws SystemException;
 
+	/**
+	 * Checks whether there is a global lock on the SVN-directory. If a write
+	 * process in SVN is killed, the SVN directory will be corrupted by a global
+	 * lock.
+	 * 
+	 * @param testProject
+	 *            - a testProject
+	 * @return true if a global lock exists
+	 * @throws SystemException
+	 *             - if there is a problem accessing the local repository.
+	 */
+	boolean hasGlobalLock(TestProject testProject) throws SystemException;
+
+	/**
+	 * Executes a cleanup for the local repository containing the project.
+	 * 
+	 * @param testProject
+	 *            - a testProject
+	 * @throws SystemException
+	 *             - if there is a problem during cleanup.
+	 */
+	void cleanUp(TestProject testProject) throws SystemException;
+
 }

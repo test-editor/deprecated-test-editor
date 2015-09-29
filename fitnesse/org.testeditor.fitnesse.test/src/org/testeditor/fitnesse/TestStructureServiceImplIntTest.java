@@ -202,6 +202,15 @@ public class TestStructureServiceImplIntTest {
 			@Override
 			public void removeAdditonalFile(TestStructure testStructure, String fileName) throws SystemException {
 			}
+
+			@Override
+			public boolean hasGlobalLock(TestProject testProject) throws SystemException {
+				return false;
+			}
+
+			@Override
+			public void cleanUp(TestProject testProject) throws SystemException {
+			}
 		};
 	}
 
