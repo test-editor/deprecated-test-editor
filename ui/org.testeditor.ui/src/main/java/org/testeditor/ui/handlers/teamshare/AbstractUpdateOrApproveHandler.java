@@ -120,7 +120,14 @@ public abstract class AbstractUpdateOrApproveHandler {
 									noError = false;
 								}
 								if (noError) {
-									showCompletedMessage();
+									getDisplay().syncExec(new Runnable() {
+
+										@Override
+										public void run() {
+											showCompletedMessage();
+										}
+									});
+
 								}
 							}
 						}
