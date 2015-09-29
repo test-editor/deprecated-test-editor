@@ -523,8 +523,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 				testProjectService.reloadTestProjectFromFileSystem(getTestProject());
 				setTestProject(getTestProject());
 			} catch (SystemException e) {
-				logger.error(e.getMessage());
-				closePart();
+				logger.error(e.getMessage(), e);
+				MessageDialog.openError(getDisplay().getActiveShell(), "Error", e.getLocalizedMessage());
 			}
 		}
 	}
