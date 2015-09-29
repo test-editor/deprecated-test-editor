@@ -125,8 +125,8 @@ public abstract class AbstractUpdateOrApproveHandler {
 							}
 						}
 					} catch (Exception e) {
+						LOGGER.error(e.getMessage(), e);
 						MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
-						LOGGER.error(e, e);
 					}
 					monitor.done();
 				}
@@ -140,11 +140,11 @@ public abstract class AbstractUpdateOrApproveHandler {
 			}
 
 		} catch (InvocationTargetException e) {
-			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 			LOGGER.error(e.getMessage());
+			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 		} catch (InterruptedException e) {
-			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 			LOGGER.error(e.getMessage());
+			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 		}
 	}
 

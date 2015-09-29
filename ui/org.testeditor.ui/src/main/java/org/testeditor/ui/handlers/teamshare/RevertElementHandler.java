@@ -114,7 +114,14 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 
 	@Override
 	void showCompletedMessage() {
-		MessageDialog.openInformation(getDisplay().getActiveShell(), translationService.translate("%info"),
-				translationService.translate("%revert.completed"));
+		getDisplay().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				MessageDialog.openInformation(getDisplay().getActiveShell(), translationService.translate("%info"),
+						translationService.translate("%revert.completed"));
+			}
+		});
 	}
+
 }
