@@ -77,7 +77,7 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
  */
 public class TestProjectEditor implements ITestStructureEditor {
 
-	private static final Logger LOGGER = Logger.getLogger(TestProjectEditor.class);
+	private static final Logger logger = Logger.getLogger(TestProjectEditor.class);
 
 	public static final String ID = "org.testeditor.ui.partdescriptor.testProjectEditor";
 
@@ -372,6 +372,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 		testExecSelection.setText(translate.translate("%testexecenv.select.label"));
 		testExecEnvCombo = new Combo(serverGroup, SWT.NORMAL);
 		testExecEnvCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		testExecEnvCombo.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+				CustomWidgetIdConstants.TEST_PROJECT_TESTEXECUTION_ENVIRONMENT_SELECTION);
 		testExecEnvCombo.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -401,7 +403,7 @@ public class TestProjectEditor implements ITestStructureEditor {
 
 			mpart.setDirty(false);
 		} catch (SystemException e) {
-			LOGGER.error("Error saving Config", e);
+			logger.error("Error saving Config", e);
 			errorMessage = e.getCause().getMessage();
 			getDisplay().syncExec(new Runnable() {
 				@Override
@@ -521,8 +523,8 @@ public class TestProjectEditor implements ITestStructureEditor {
 				testProjectService.reloadTestProjectFromFileSystem(getTestProject());
 				setTestProject(getTestProject());
 			} catch (SystemException e) {
-				LOGGER.error(e.getMessage());
-				closePart();
+				logger.error(e.getMessage(), e);
+				MessageDialog.openError(getDisplay().getActiveShell(), "Error", e.getLocalizedMessage());
 			}
 		}
 	}
