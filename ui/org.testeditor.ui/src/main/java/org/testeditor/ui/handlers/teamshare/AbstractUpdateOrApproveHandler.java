@@ -90,7 +90,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 		final Shell activeShell = Display.getCurrent().getActiveShell();
 		final ProgressMonitorDialog dialog = new ProgressMonitorDialog(activeShell);
 		try {
-			dialog.run(false, false, new IRunnableWithProgress() {
+			dialog.run(true, false, new IRunnableWithProgress() {
 
 				@Override
 				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -128,7 +128,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 						MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 						LOGGER.error(e, e);
 					}
-
+					monitor.done();
 				}
 			});
 
