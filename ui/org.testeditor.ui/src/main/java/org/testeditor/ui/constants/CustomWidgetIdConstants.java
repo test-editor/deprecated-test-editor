@@ -71,7 +71,8 @@ public final class CustomWidgetIdConstants {
 	public static final String TESTLOG_TEXT = "testlogview.text";
 
 	public static final String SEARCH_DIALOG_TESTSTRUCTURE_NAME = "dialog.search.teststructure.teststructurename";
-	public static final Object SEARCH_DIALOG_TESTSTRUCTURE_RESULT = "dialog.search.teststructure.resulttable";
-	public static final Object TEST_EXPLORER_TREE = "testexplorer.tree";
+	public static final String SEARCH_DIALOG_TESTSTRUCTURE_RESULT = "dialog.search.teststructure.resulttable";
+	public static final String TEST_EXPLORER_TREE = "testexplorer.tree";
+	public static final String TEST_PROJECT_TESTEXECUTION_ENVIRONMENT_SELECTION = "view.project.testexecenv";
 
 }
