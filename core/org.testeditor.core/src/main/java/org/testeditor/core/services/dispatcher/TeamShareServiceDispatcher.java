@@ -219,4 +219,21 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 		}
 	}
 
+	@Override
+	public boolean hasGlobalLock(TestProject testProject) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject.getRootElement());
+		if (teamShareService != null) {
+			return teamShareService.hasGlobalLock(testProject);
+		}
+		return false;
+	}
+
+	@Override
+	public void cleanUp(TestProject testProject) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject.getRootElement());
+		if (teamShareService != null) {
+			teamShareService.cleanUp(testProject);
+		}
+	}
+
 }

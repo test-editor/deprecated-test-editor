@@ -44,6 +44,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.FileWatchService;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
@@ -63,7 +64,7 @@ import org.testeditor.core.util.FileUtils;
  */
 public class TestProjectServiceImpl implements TestProjectService, IContextFunction {
 
-	private static final Logger LOGGER = Logger.getLogger(TestProjectServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(TestProjectServiceImpl.class);
 	private TestEditorPlugInService plugInservice;
 	private FileLocatorService fileLocatorService;
 	private String preferncesFileName;
@@ -74,6 +75,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private List<TestProject> oldTestProjects = new ArrayList<TestProject>();
 	private TestServerService testServerService;
 	private TestStructureService testStructureService;
+	private TeamShareService teamShareService;
 
 	private FileWatchService fileWatchService;
 
@@ -85,7 +87,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void bind(TestStructureService testStructureService) {
 		this.testStructureService = testStructureService;
-		LOGGER.info("Bind testStructureService");
+		logger.info("Bind testStructureService");
 	}
 
 	/**
@@ -95,7 +97,28 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void unBind(TestStructureService testStructureService) {
 		this.testStructureService = null;
-		LOGGER.info("Unbind testStructureService");
+		logger.info("Unbind testStructureService");
+	}
+
+	/**
+	 * 
+	 * @param teamShareService
+	 *            used in this service
+	 * 
+	 */
+	public void bind(TeamShareService teamShareService) {
+		this.teamShareService = teamShareService;
+		logger.info("Bind teamShareService");
+	}
+
+	/**
+	 * 
+	 * @param teamShareService
+	 *            removed from system
+	 */
+	public void unBind(TeamShareService teamShareService) {
+		this.teamShareService = null;
+		logger.info("Unbind teamShareService");
 	}
 
 	/**
@@ -106,7 +129,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void bind(TestEditorPlugInService plugInservice) {
 		this.plugInservice = plugInservice;
-		LOGGER.info("Bind TestEditorPlugInService");
+		logger.info("Bind TestEditorPlugInService");
 	}
 
 	/**
@@ -116,7 +139,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void unBind(TestEditorPlugInService plugInservice) {
 		this.plugInservice = null;
-		LOGGER.info("Unbind TestEditorPlugInService");
+		logger.info("Unbind TestEditorPlugInService");
 	}
 
 	/**
@@ -127,7 +150,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void bind(FileLocatorService fileLocatorService) {
 		this.fileLocatorService = fileLocatorService;
-		LOGGER.info("Bind FileLocatorService");
+		logger.info("Bind FileLocatorService");
 	}
 
 	/**
@@ -138,7 +161,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void bind(FileWatchService fileWatchService) {
 		this.fileWatchService = fileWatchService;
-		LOGGER.info("Bind FileWatchService");
+		logger.info("Bind FileWatchService");
 	}
 
 	/**
@@ -149,7 +172,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void unBind(FileWatchService fileWatchService) {
 		this.fileWatchService = null;
-		LOGGER.info("Unbind FileWatchService");
+		logger.info("Unbind FileWatchService");
 	}
 
 	/**
@@ -159,7 +182,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void unBind(FileLocatorService fileLocatorService) {
 		this.fileLocatorService = null;
-		LOGGER.info("Unbind FileLocatorService");
+		logger.info("Unbind FileLocatorService");
 	}
 
 	/**
@@ -170,7 +193,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void bind(TestServerService testServerService) {
 		this.testServerService = testServerService;
-		LOGGER.info("Bind TestServerService");
+		logger.info("Bind TestServerService");
 	}
 
 	/**
@@ -180,7 +203,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	public void unBind(TestServerService testServerService) {
 		this.testServerService = null;
-		LOGGER.info("Unbind TestServerService");
+		logger.info("Unbind TestServerService");
 	}
 
 	@Override
@@ -199,10 +222,19 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private void loadProjectListFromFileSystem() throws SystemException {
 		testProjects = new ArrayList<TestProject>();
 		File[] files = getWorkspaceDirectories();
-		LOGGER.info("Scanning for Projects in: " + Platform.getLocation().toOSString());
+		logger.info("Scanning for Projects in: " + Platform.getLocation().toOSString());
 		for (File file : files) {
 			if (isTestProjectDirectory(file)) {
 				TestProject testProject = createProjectFrom(file);
+				try {
+					if (teamShareService.hasGlobalLock(testProject)) {
+						teamShareService.cleanUp(testProject);
+					}
+				} catch (SystemException e) {
+					logger.error("Error during lockcheck in the local subversion database. Message " + e.getMessage(),
+							e);
+				}
+
 				testProjects.add(testProject);
 
 				if (eventBroker != null) {
@@ -242,8 +274,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 * @throws SystemException
 	 *             exception on loading project.
 	 */
-	private void loadProjectConfigFromFileSystem(TestProject testProject, File projectDirectory)
-			throws SystemException {
+	private void loadProjectConfigFromFileSystem(TestProject testProject, File projectDirectory) throws SystemException {
 		testProject.setName(projectDirectory.getName());
 		testProject.setTestProjectConfig(getProjectConfigFor(testProject));
 		testProject.setUrl(projectDirectory);
@@ -253,7 +284,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			testProject.setChildCountInBackend(-1);
 			testProject.setLazyLoader(testStructureService.getTestProjectLazyLoader(testProject));
 		}
-		LOGGER.trace("Building Project " + testProject.getName());
+		logger.trace("Building Project " + testProject.getName());
 	}
 
 	/**
@@ -326,11 +357,11 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 *             on file-operations
 	 */
 	private File getDirectoryOfDemoProjects(String dir) throws IOException {
-		LOGGER.info("Searching for " + dir);
-		LOGGER.debug("Find Bundle File: " + findBundleFile("org.testeditor.demo"));
+		logger.info("Searching for " + dir);
+		logger.debug("Find Bundle File: " + findBundleFile("org.testeditor.demo"));
 		String pathToDemo = findBundleFile("org.testeditor.demo");
 		if (pathToDemo == null) {
-			LOGGER.error("The path for the demoprojects does not exist");
+			logger.error("The path for the demoprojects does not exist");
 			return null;
 		}
 		return new File(pathToDemo + File.separator + dir);
@@ -348,8 +379,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 * @throws SystemException
 	 *             on io error while file access.
 	 */
-	private List<TestProject> createDemoProject(List<File> demoProjectsToBeBuildDirs)
-			throws IOException, SystemException {
+	private List<TestProject> createDemoProject(List<File> demoProjectsToBeBuildDirs) throws IOException,
+			SystemException {
 		List<TestProject> result = new ArrayList<TestProject>();
 		if (demoProjectsToBeBuildDirs != null) {
 			File wsDir = Platform.getLocation().toFile();
@@ -367,8 +398,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 						TestProjectConfig config = getProjectConfigFor(demoProjectName);
 						internalStoreProjectConfig(demoProjectName, config, true);
 					}
-					TestProject project = createProjectFrom(
-							new File(wsDir.getAbsolutePath() + File.separator + demoProjectDir.getName()));
+					TestProject project = createProjectFrom(new File(wsDir.getAbsolutePath() + File.separator
+							+ demoProjectDir.getName()));
 					if (project != null) {
 						result.add(project);
 					}
@@ -391,7 +422,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		});
 
 		if (demoProjectsDirs == null) {
-			LOGGER.error("No demoprojects found in directory " + demoDir.getAbsolutePath());
+			logger.error("No demoprojects found in directory " + demoDir.getAbsolutePath());
 		}
 		return demoProjectsDirs;
 	}
@@ -426,7 +457,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			FileUtils.copyFolder(demoProjectDir, destFile);
 			copyWebDemoAUT(demoProjectDir, wsDir, destFile);
 		} catch (IOException e) {
-			LOGGER.trace("Error while copy the Project " + demoProjectDir.getName(), e);
+			logger.trace("Error while copy the Project " + demoProjectDir.getName(), e);
 		}
 	}
 
@@ -450,7 +481,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		if (destFile.isDirectory()) {
 			String projectPath = wsDir.getAbsolutePath() + File.separator + demoProjectDir.getName() + File.separator
 					+ "FitNesseRoot" + File.separator + "files";
-			LOGGER.info("Creating Projectfiles in " + projectPath);
+			logger.info("Creating Projectfiles in " + projectPath);
 
 			FileUtils.copyFolder(fitNesseFilesDir, new File(projectPath));
 		}
@@ -469,7 +500,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		try {
 			return getProjectConfigFor(projectName);
 		} catch (IOException e) {
-			LOGGER.trace("Error reading config", e);
+			logger.trace("Error reading config", e);
 			throw new SystemException("Error Reading config", e);
 		}
 	}
@@ -518,8 +549,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		setConfigValues(testProjectConfig, properties);
 		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
 		if (properties.containsKey(TestExecutionEnvironmentService.CONFIG)) {
-			testProjectConfig
-					.setTestEnvironmentConfiguration(properties.getProperty(TestExecutionEnvironmentService.CONFIG));
+			testProjectConfig.setTestEnvironmentConfiguration(properties
+					.getProperty(TestExecutionEnvironmentService.CONFIG));
 		}
 		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
 			fixNonVersionProperties(properties);
@@ -578,8 +609,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			testProjectConfig.setProjectLibraryConfig(createProjectLibraryConfigFrom(properties));
 			if (properties.containsKey(TestEditorPlugInService.TEAMSHARE_ID)
 					&& !properties.getProperty(TestEditorPlugInService.TEAMSHARE_ID).isEmpty()) {
-				TeamShareConfigurationServicePlugIn teamCfgService = plugInservice.getTeamShareConfigurationServiceFor(
-						properties.getProperty(TestEditorPlugInService.TEAMSHARE_ID));
+				TeamShareConfigurationServicePlugIn teamCfgService = plugInservice
+						.getTeamShareConfigurationServiceFor(properties
+								.getProperty(TestEditorPlugInService.TEAMSHARE_ID));
 				if (teamCfgService != null) {
 					testProjectConfig.setTeamShareConfig(teamCfgService.createTeamShareConfigFrom(properties));
 				}
@@ -768,8 +800,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private void addPopertiesForGlobalVariables(TestProjectConfig config, Properties properties) {
 
 		for (String key : config.getGlobalProjectVariables().keySet()) {
-			properties.put(TestEditorGlobalConstans.VARIABLE_PRAEFIX + "." + key,
-					config.getGlobalProjectVariables().get(key));
+			properties.put(TestEditorGlobalConstans.VARIABLE_PRAEFIX + "." + key, config.getGlobalProjectVariables()
+					.get(key));
 		}
 
 	}
@@ -780,7 +812,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		try {
 			internalStoreProjectConfig(testProjectName, config, true);
 		} catch (IOException e) {
-			LOGGER.trace("Error writing config", e);
+			logger.trace("Error writing config", e);
 			throw new SystemException("Error writing config", e);
 		}
 	}
@@ -805,8 +837,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		for (File file : directories) {
 			Properties props = getPropertiesFrom(config);
 			File configFile = new File(file.getAbsolutePath() + File.separator + "config.tpr");
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("Storing Configuration for " + testProjectName + " in " + configFile.getAbsolutePath());
+			if (logger.isInfoEnabled()) {
+				logger.info("Storing Configuration for " + testProjectName + " in " + configFile.getAbsolutePath());
 			}
 			TeamShareConfig teamShareConfig = config.getTeamShareConfig();
 			String templateForTeamshareConfiguration = "";
@@ -821,10 +853,9 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			if (storeConfigTpr) {
 				ConfigurationTemplateWriter configurationTemplateWriter = new ConfigurationTemplateWriter();
 				if (config.getProjectLibraryConfig() != null) {
-					configurationTemplateWriter.writeConfiguration(fileLocatorService, configFile, props,
-							plugInservice.getLibraryConfigurationServiceFor(config.getProjectLibraryConfig().getId())
-									.getTemplateForConfiguration(),
-							templateForTeamshareConfiguration);
+					configurationTemplateWriter.writeConfiguration(fileLocatorService, configFile, props, plugInservice
+							.getLibraryConfigurationServiceFor(config.getProjectLibraryConfig().getId())
+							.getTemplateForConfiguration(), templateForTeamshareConfiguration);
 				}
 			}
 		}
@@ -859,7 +890,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			File sourceFile = new File(directoryOfDemoProjects + File.separator + nameDemoProject);
 
 			if (!sourceFile.exists()) {
-				LOGGER.error("sourceFiles in " + directoryOfDemoProjects.getAbsolutePath() + " doesn't exist.");
+				logger.error("sourceFiles in " + directoryOfDemoProjects.getAbsolutePath() + " doesn't exist.");
 				return null;
 			}
 			File wsDir = Platform.getLocation().toFile();
@@ -875,15 +906,15 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			if (!renameDir.renameTo(new File(rootPartRenameDir + nameNewProject))) {
 				String message = "Rename failed from " + renameDir.getName() + " to " + rootPartRenameDir
 						+ nameNewProject;
-				LOGGER.error(message);
+				logger.error(message);
 				throw new SystemException(message);
 			}
 
 			// change the configuration of the new project
 
 			TestProjectConfig config = getProjectConfigFor(nameNewProject);
-			config.setProjectLibraryConfig(
-					replacePathInXMLProperties(config.getProjectLibraryConfig(), nameDemoProject, nameNewProject));
+			config.setProjectLibraryConfig(replacePathInXMLProperties(config.getProjectLibraryConfig(),
+					nameDemoProject, nameNewProject));
 			internalStoreProjectConfig(nameNewProject, config, true);
 			File configFile = new File(rootPartRenameDir + nameNewProject + File.separator + "content.txt");
 			changePathOfTheElementListe(nameDemoProject, nameNewProject, configFile);
@@ -964,10 +995,10 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		reader.close();
 		writer.close();
 		if (configFile.exists() && !configFile.delete()) {
-			LOGGER.error("Delete failed for " + configFile);
+			logger.error("Delete failed for " + configFile);
 		}
 		if (!outFile.renameTo(configFile)) {
-			LOGGER.error("Rename failed from " + outFile.getName() + " to " + configFile.getName());
+			logger.error("Rename failed from " + outFile.getName() + " to " + configFile.getName());
 		}
 
 	}
@@ -1000,8 +1031,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 *             if replacing of patterns failed
 	 * 
 	 */
-	protected void renameProjectInFileSystem(TestProject testProject, String newName)
-			throws SystemException, IOException {
+	protected void renameProjectInFileSystem(TestProject testProject, String newName) throws SystemException,
+			IOException {
 		File wsDir = Platform.getLocation().toFile();
 		File oldRootDir = new File(wsDir.getAbsoluteFile() + File.separator + testProject.getName());
 
@@ -1009,7 +1040,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 
 		if (!oldRootDir.renameTo(destRootDir)) {
 			String message = "Rename from " + oldRootDir.getName() + " to " + destRootDir + " failed.";
-			LOGGER.error(message);
+			logger.error(message);
 			throw new SystemException(message);
 		}
 
@@ -1021,7 +1052,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		if (!renameDir.renameTo(new File(fitnesseRootPartRenameDir + newName))) {
 			String message = "Rename from " + renameDir.getName() + " to " + fitnesseRootPartRenameDir + newName
 					+ " failed.";
-			LOGGER.error(message);
+			logger.error(message);
 			throw new SystemException(message);
 		}
 
@@ -1030,8 +1061,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		replacePathStringsInContentFiles(new File(fitnesseRootPartRenameDir), testProject.getName(), newName);
 
 		TestProjectConfig config = getProjectConfigFor(newName);
-		config.setProjectLibraryConfig(
-				replacePathInXMLProperties(config.getProjectLibraryConfig(), testProject.getName(), newName));
+		config.setProjectLibraryConfig(replacePathInXMLProperties(config.getProjectLibraryConfig(),
+				testProject.getName(), newName));
 		internalStoreProjectConfig(newName, config, true);
 		testProject.setUrl(destRootDir.toURI().toURL());
 	}
@@ -1061,7 +1092,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 				boolean replaced = replacePathStringsInContentFiles(file, oldName, newName);
 				if (!replaced) {
 					String message = "Replace old pattern " + oldName + " with new pattern " + newName + " failed.";
-					LOGGER.error(message);
+					logger.error(message);
 					throw new SystemException(message);
 				}
 			} else {
@@ -1069,12 +1100,12 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 				if (!file.getAbsolutePath().equalsIgnoreCase(preferncesFileName)) {
 					replace(oldName, newName, file, outFile);
 					if (file.exists() && !file.delete()) {
-						LOGGER.error("Delete failed form " + file);
+						logger.error("Delete failed form " + file);
 					}
 					if (!outFile.renameTo(file)) {
 						String message = "Rename from " + outFile.getName() + " to " + file.getAbsoluteFile()
 								+ " failed.";
-						LOGGER.error(message);
+						logger.error(message);
 						throw new SystemException(message);
 					}
 				}
@@ -1273,7 +1304,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 		try {
 			loadProjectListFromFileSystem();
 		} catch (SystemException e) {
-			LOGGER.error("Error loadin projects on startup.", e);
+			logger.error("Error loadin projects on startup.", e);
 			throw new RuntimeException(e);
 		}
 	}

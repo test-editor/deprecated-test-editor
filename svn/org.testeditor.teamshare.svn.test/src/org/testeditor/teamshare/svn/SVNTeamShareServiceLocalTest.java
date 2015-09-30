@@ -71,6 +71,7 @@ public class SVNTeamShareServiceLocalTest {
 
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
+	private static final String CORRUPT_SVN_DB = "./corrupt_db/wc.db";
 
 	private static final String PROJEKT_NAME = "DemoWebTests";
 
@@ -137,8 +138,7 @@ public class SVNTeamShareServiceLocalTest {
 	 * This method creates a new Testproject.
 	 * 
 	 * @param repositoryPath
-	 *            can be local (on file system usage: "file:///c:/tmp/testrepo")
-	 *            <br>
+	 *            can be local (on file system usage: "file:///c:/tmp/testrepo") <br>
 	 *            or remote (on a remote svn system)
 	 * @param userName
 	 *            can be empty for local share
@@ -444,8 +444,8 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.checkout(testProject, translationService);
 
 		// checkout was successfull
-		assertTrue(FileUtils.directoryContains(new File(targetWorkspacePath),
-				new File(targetWorkspacePath + "/" + PROJEKT_NAME)));
+		assertTrue(FileUtils.directoryContains(new File(targetWorkspacePath), new File(targetWorkspacePath + "/"
+				+ PROJEKT_NAME)));
 
 	}
 
@@ -526,8 +526,8 @@ public class SVNTeamShareServiceLocalTest {
 		TestStructure parent = testSuite.getParent();
 
 		String testCaseName = "MyFirstTestCase";
-		Path createdNewTestPage = SvnHelper
-				.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testPageName, testCaseName);
+		Path createdNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/"
+				+ testPageName, testCaseName);
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
@@ -609,8 +609,8 @@ public class SVNTeamShareServiceLocalTest {
 		testProject.addChild(testSuite);
 
 		String testCaseName = "MyFirstTestCase";
-		Path createdNewTestPage = SvnHelper
-				.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testPageName, testCaseName);
+		Path createdNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/"
+				+ testPageName, testCaseName);
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
@@ -818,8 +818,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE175005Test() {
-		SVNException exception = new SVNException(
-				SVNErrorMessage.create(SVNErrorCode.RA_DAV_ALREADY_EXISTS, "Path 'myLocation/myFile' already exists"));
+		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.RA_DAV_ALREADY_EXISTS,
+				"Path 'myLocation/myFile' already exists"));
 
 		assertTrue(substitudeSVNException(exception, translationService).startsWith("translated key %svnE175005"));
 	}
@@ -831,8 +831,8 @@ public class SVNTeamShareServiceLocalTest {
 	public void substitudeSVNExceptionE170001Test() {
 		String message = "Authentication required for '<http://localhost:80> Subversion Repo'";
 		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.RA_NOT_AUTHORIZED, message));
-		assertTrue(substitudeSVNException(exception, translationService)
-				.startsWith("translated key %svnE170001 " + message.split("'")[1]));
+		assertTrue(substitudeSVNException(exception, translationService).startsWith(
+				"translated key %svnE170001 " + message.split("'")[1]));
 	}
 
 	/**
@@ -863,8 +863,10 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE160024Test() {
-		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.FS_CONFLICT,
-				"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
+		SVNException exception = new SVNException(
+				SVNErrorMessage
+						.create(SVNErrorCode.FS_CONFLICT,
+								"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
 
 		assertTrue(substitudeSVNException(exception, translationService).contains("E160024"));
 	}
@@ -874,8 +876,10 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE155015Test() {
-		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.WC_FOUND_CONFLICT,
-				"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
+		SVNException exception = new SVNException(
+				SVNErrorMessage
+						.create(SVNErrorCode.WC_FOUND_CONFLICT,
+								"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
 
 		assertTrue(substitudeSVNException(exception, translationService).contains("E155015"));
 	}
@@ -957,8 +961,8 @@ public class SVNTeamShareServiceLocalTest {
 	}
 
 	/**
-	 * Test for
-	 * {@link SVNTeamShareServiceRevert(org.testeditor.core.model.teststructure.
+	 * Test for {@link
+	 * SVNTeamShareServiceRevert(org.testeditor.core.model.teststructure.
 	 * TestStructure)} Method.
 	 * 
 	 * @throws IOException
@@ -1104,8 +1108,8 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.addChild(testSuite, translationService);
 
 		TestCase testCase = new TestCase();
-		Path createNewTestPage = SvnHelper
-				.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, testPageName);
+		Path createNewTestPage = SvnHelper.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName
+				+ File.separatorChar, testPageName);
 		testCase.setName(testPageName);
 		testCase.setUrl(createNewTestPage.toFile());
 		testSuite.addChild(testCase);
@@ -1130,8 +1134,8 @@ public class SVNTeamShareServiceLocalTest {
 
 		status = teamService.getStatus(testProject, translationService);
 
-		File updateFile = new File(
-				testProject.getTestProjectConfig().getProjectPath() + "/TechnicalBindingTypeCollection.xml");
+		File updateFile = new File(testProject.getTestProjectConfig().getProjectPath()
+				+ "/TechnicalBindingTypeCollection.xml");
 		String appendedString = "This is a SVN-reverting Test";
 		SvnHelper.updateFile(updateFile, appendedString);
 
@@ -1143,8 +1147,8 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase sctestCase = new TestCase();
 		String scTestPageName = "secondTestCase";
-		Path sccreateNewTestPage = SvnHelper.createNewTestPage(
-				pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, scTestPageName);
+		Path sccreateNewTestPage = SvnHelper.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName
+				+ File.separatorChar, scTestPageName);
 		sctestCase.setName(scTestPageName);
 		testSuite.addChild(sctestCase);
 		sctestCase.setUrl(sccreateNewTestPage.toFile());
@@ -1158,8 +1162,8 @@ public class SVNTeamShareServiceLocalTest {
 		String newstatus = teamService.getStatus(testProject, translationService);
 		Assert.assertTrue(newstatus.contains("TechnicalBindingTypeCollection.xml;normal 1"));
 
-		Assert.assertFalse(SvnHelper
-				.existsTestCase(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, scTestPageName));
+		Assert.assertFalse(SvnHelper.existsTestCase(pathToTestFiles + File.separatorChar + suiteName
+				+ File.separatorChar, scTestPageName));
 
 		readFileToString = FileUtils.readFileToString(updateFile);
 		Assert.assertFalse(readFileToString.contains(appendedString));
@@ -1198,8 +1202,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void testDisconnectProject() throws Exception {
-		TestProject testProject = createTestProject(
-				System.getProperty("java.io.tmpdir") + File.separator + "disconnectPrj", "", "");
+		TestProject testProject = createTestProject(System.getProperty("java.io.tmpdir") + File.separator
+				+ "disconnectPrj", "", "");
 		TestSuite testSuite = new TestSuite();
 		testProject.addChild(testSuite);
 		TestCase testCase = new TestCase();
@@ -1211,4 +1215,30 @@ public class SVNTeamShareServiceLocalTest {
 		assertNull("Expecting test project is removed from statsus service.", statusPlugin.getModified(testProject));
 	}
 
+	/**
+	 * Tests the handling of broken svn-db.
+	 * <ol>
+	 * <li>Setup create a new local repository and replace the ws.db with a
+	 * broken instance.
+	 * <li>Check that the svnService will detect the error in the db.
+	 * <li>Fix the error with a cleanup
+	 * <li>Tests that the svnService will not detect any error any more.
+	 * </ol>
+	 * 
+	 * @throws Exception
+	 *             on svn error
+	 */
+	@Test
+	public void testReleaseLockedSVNDir() throws Exception {
+		TestProject testProject = createTestProject(SVNURL.fromFile(new File(REPOSITORY_PATH)).toDecodedString(), "",
+				"");
+
+		teamService.share(testProject, translationService, "");
+
+		FileUtils.copyFile(new File(CORRUPT_SVN_DB), new File(projectpath + "\\.svn\\wc.db"));
+
+		assertTrue(teamService.hasGlobalLock(testProject));
+		teamService.cleanUp(testProject);
+		assertFalse(teamService.hasGlobalLock(testProject));
+	}
 }
