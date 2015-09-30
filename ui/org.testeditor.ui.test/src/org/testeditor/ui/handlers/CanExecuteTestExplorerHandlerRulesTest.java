@@ -38,7 +38,10 @@ import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
+import org.testeditor.ui.adapter.StructuredSelectionAdapter;
+import org.testeditor.ui.adapter.TestExceutionEnvironmentServiceAdapter;
 import org.testeditor.ui.mocks.TestScenarioServiceMock;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
 
@@ -60,12 +63,12 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnlyOneElementRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockEmptyMock()
-				.getSelection()));
-		assertTrue(rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockOneSelectionMock()
-				.getSelection()));
-		assertFalse(rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockManySelectionMock()
-				.getSelection()));
+		assertFalse(
+				rules.canExecuteOnlyOneElementRule((IStructuredSelection) getTreeViewerMockEmptyMock().getSelection()));
+		assertTrue(rules.canExecuteOnlyOneElementRule(
+				(IStructuredSelection) getTreeViewerMockOneSelectionMock().getSelection()));
+		assertFalse(rules.canExecuteOnlyOneElementRule(
+				(IStructuredSelection) getTreeViewerMockManySelectionMock().getSelection()));
 	}
 
 	/**
@@ -77,12 +80,12 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnOneOrManyElementRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockEmptyMock()
-				.getSelection()));
-		assertTrue(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockOneSelectionMock()
-				.getSelection()));
-		assertTrue(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockManySelectionMock()
-				.getSelection()));
+		assertFalse(rules
+				.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockEmptyMock().getSelection()));
+		assertTrue(rules.canExecuteOnOneOrManyElementRule(
+				(IStructuredSelection) getTreeViewerMockOneSelectionMock().getSelection()));
+		assertTrue(rules.canExecuteOnOneOrManyElementRule(
+				(IStructuredSelection) getTreeViewerMockManySelectionMock().getSelection()));
 	}
 
 	/**
@@ -95,8 +98,8 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	public void testCanExecuteOnNoneRootRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
 		assertFalse(rules.canExecuteOnNoneRootRule((IStructuredSelection) getTreeViewerMockRoot().getSelection()));
-		assertTrue(rules.canExecuteOnTestSuiteRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
-				.getSelection()));
+		assertTrue(rules
+				.canExecuteOnTestSuiteRule((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
 	}
 
 	/**
@@ -108,8 +111,8 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnTestSuiteRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertTrue(rules.canExecuteOnTestSuiteRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
-				.getSelection()));
+		assertTrue(rules
+				.canExecuteOnTestSuiteRule((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
 	}
 
 	/**
@@ -121,8 +124,8 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteOnTestProjectRule() throws Exception {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnTestProjectRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
-				.getSelection()));
+		assertFalse(rules
+				.canExecuteOnTestProjectRule((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
 		assertTrue(rules.canExecuteOnTestProjectRule((IStructuredSelection) getTreeViewerMockRoot().getSelection()));
 	}
 
@@ -140,30 +143,26 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	public void testCanExecuteOnUnusedScenario() throws Exception {
 		IEclipseContext context = EclipseContextFactory.create();
 		context.set(TestScenarioService.class, getTestScenarioServiceMock());
-		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
-				CanExecuteTestExplorerHandlerRules.class, context);
-		assertTrue(
-				"Expecting True for Non TestScenario Objects.",
-				rules.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
-		assertTrue(
-				"Expecting true for unused TestScenario Objects.",
-				rules.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestScenrarioMock(
-						new TestScenario() {
-							@Override
-							public String getName() {
+		context.set(TestExecutionEnvironmentService.class, null);
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
+		assertTrue("Expecting True for Non TestScenario Objects.", rules
+				.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
+		assertTrue("Expecting true for unused TestScenario Objects.", rules.canExecuteOnUnusedScenario(
+				(IStructuredSelection) getTreeViewerMockWithTestScenrarioMock(new TestScenario() {
+					@Override
+					public String getName() {
 
-								return "notInUses";
-							}
-						}).getSelection()));
-		assertFalse(
-				"Expecting False for used TestScenario Objects.",
-				rules.canExecuteOnUnusedScenario((IStructuredSelection) getTreeViewerMockWithTestScenrarioMock(
-						new TestScenario() {
-							@Override
-							public String getName() {
-								return "used";
-							}
-						}).getSelection()));
+						return "notInUses";
+					}
+				}).getSelection()));
+		assertFalse("Expecting False for used TestScenario Objects.", rules.canExecuteOnUnusedScenario(
+				(IStructuredSelection) getTreeViewerMockWithTestScenrarioMock(new TestScenario() {
+					@Override
+					public String getName() {
+						return "used";
+					}
+				}).getSelection()));
 	}
 
 	/**
@@ -173,14 +172,14 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 	@Test
 	public void testCanExecuteTeamShareApproveOrUpdate() {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
-		assertFalse(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
-				.getSelection())
-				&& rules.canExecuteTeamShareApproveOrUpdate((IStructuredSelection) getTreeViewerMockWithTestSuite()
-						.getSelection()));
-		assertTrue(rules.canExecuteOnOneOrManyElementRule((IStructuredSelection) getTreeViewerMockWithFilledIterator()
-				.getSelection())
-				&& rules.canExecuteTeamShareApproveOrUpdate((IStructuredSelection) getTreeViewerMockWithFilledIterator()
-						.getSelection()));
+		assertFalse(rules.canExecuteOnOneOrManyElementRule(
+				(IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection())
+				&& rules.canExecuteTeamShareApproveOrUpdate(
+						(IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
+		assertTrue(rules.canExecuteOnOneOrManyElementRule(
+				(IStructuredSelection) getTreeViewerMockWithFilledIterator().getSelection())
+				&& rules.canExecuteTeamShareApproveOrUpdate(
+						(IStructuredSelection) getTreeViewerMockWithFilledIterator().getSelection()));
 
 	}
 
@@ -220,8 +219,8 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
 		assertTrue(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockEmptyMock().getSelection()));
 		assertFalse(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockRoot().getSelection()));
-		assertFalse(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockWithTestSuite()
-				.getSelection()));
+		assertFalse(
+				rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
 		assertTrue(rules.canExecuteOnTestFlowRule((IStructuredSelection) getTreeViewerMockScenario().getSelection()));
 	}
 
@@ -234,9 +233,50 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
 		TestExplorer explorerMockSC = getTestExplorerMock(getTreeViewerMockScenario());
 		assertTrue(rules.canExecuteOnTestScenarioRule(explorerMockSC.getSelection()));
-		TestExplorer explorerMockNoSC = getTestExplorerMock(getTreeViewerMockWithFilledIteratorTestProjectUnderAndNotUnderSVN());
+		TestExplorer explorerMockNoSC = getTestExplorerMock(
+				getTreeViewerMockWithFilledIteratorTestProjectUnderAndNotUnderSVN());
 		assertFalse(rules.canExecuteOnTestScenarioRule(explorerMockNoSC.getSelection()));
 
+	}
+
+	/**
+	 * Tests the CanExecuteOnTestStructureWithLaunchedTestExecutionEnvironment.
+	 */
+	@Test
+	public void testCanExecuteOnTestStructureWithLaunchedTestExecutionEnvironment() {
+		final TestProject tpWithEnv = new TestProject();
+		IEclipseContext context = EclipseContextFactory.create();
+		context.set(TestScenarioService.class, getTestScenarioServiceMock());
+		context.set(TestExecutionEnvironmentService.class, new TestExceutionEnvironmentServiceAdapter() {
+
+			@Override
+			public boolean isTestEnvironmentLaunchedFor(TestProject testProject) {
+				return tpWithEnv == testProject;
+			}
+		});
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
+		assertFalse(rules.canExecuteOnTestStructureWithLaunchedTestExecutionEnvironment(
+				getStructureSelectionMock(new TestProject())));
+		assertTrue(rules
+				.canExecuteOnTestStructureWithLaunchedTestExecutionEnvironment(getStructureSelectionMock(tpWithEnv)));
+	}
+
+	/**
+	 * Creates a mock.
+	 * 
+	 * @param ts
+	 *            used in the mock
+	 * @return selection mock object
+	 */
+	private IStructuredSelection getStructureSelectionMock(final TestStructure ts) {
+		return new StructuredSelectionAdapter() {
+
+			@Override
+			public Object getFirstElement() {
+				return ts;
+			}
+		};
 	}
 
 	/**

@@ -11,12 +11,9 @@
  *******************************************************************************/
 package org.testeditor.ui.parts.testhistory;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -85,25 +82,6 @@ public class TestHistoryPartTest {
 		ContextInjectionFactory.inject(historyPart, context);
 		historyPart.showTestHistory(testCase);
 		assertTrue(historyPart.containsTestHistory());
-	}
-
-	/**
-	 * Test the extraction of a String represantation of the TestResult in the
-	 * History table.
-	 * 
-	 * @throws ParseException
-	 *             on test error.
-	 */
-	@Test
-	public void testExtractTestResultString() throws ParseException {
-		TestResult testResult = new TestResult();
-		testResult.setException(0);
-		testResult.setRight(3);
-		testResult.setWrong(1);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
-		testResult.setResultDate(sdf.parse("12.10.1970"));
-		String[] resultSummaryRowFrom = historyPart.getResultSummaryRowFrom(testResult);
-		assertEquals(":3; :1; :-1; :0", resultSummaryRowFrom[2]);
 	}
 
 	/**

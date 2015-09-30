@@ -99,4 +99,21 @@ public class TestStructureServiceAdapter implements TestStructureService {
 		return false;
 	}
 
+	@Override
+	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+		return null;
+	}
+
+	@Override
+	public void pauseTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public void resumeTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public void stepwiseTest(TestStructure testStructure) throws SystemException {
+	}
+
 }

@@ -12,7 +12,7 @@
 	<!-- alle Fixture Methodenaufrufe werden zentral geloggt -->
 	<appender class="org.apache.log4j.FileAppender" name="interaction">
 		<param name="file"
-			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/interaction.log" />
+			value="target/interaction.log" />
 		<param name="encoding" value="UTF-8" />
 		<param name="append" value="false" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -23,7 +23,7 @@
 	<!-- alle Logs aus dem TestEditor werden geloggt -->
 	<appender class="org.apache.log4j.RollingFileAppender" name="testeditor">
 		<param name="file"
-			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/testeditor.log" />
+			value="target/.testeditor/.metadata/logs/testeditor.log" />
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<param name="MaxFileSize" value="5000KB" />
@@ -37,7 +37,7 @@
 	<!-- alle Logs die aus dem Testprojekt heraus geloggt werden (FitNesse) -->
 	<appender class="org.apache.log4j.RollingFileAppender" name="projectname">
 		<param name="file"
-			value="D:/Development/TestEditor/TestEditor_26092013/.testeditor/.metadata/logs/projectname.log" />
+			value="target/projectname.log" />
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<param name="MaxFileSize" value="5000KB" />
@@ -52,7 +52,7 @@
 	<!-- every Logs from the swtbot-agent-package -->
 	<appender class="org.apache.log4j.RollingFileAppender" name="swtbot">
 		<param name="file"
-			value="C:/Users/llipinski/.testeditor_aut/.metadata/logs/projectname.log" />
+			value="target/projectname.log" />
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<param name="MaxFileSize" value="5000KB" />
@@ -66,7 +66,7 @@
 	</appender>
 
 		<appender class="org.apache.log4j.RollingFileAppender" name="svn">
-		<param name="file" value="C:/Dokumente und Einstellungen/xxxx/.testeditor/.metadata/logs/svn.log"/>
+		<param name="file" value="target/svn.log"/>
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<param name="MaxFileSize" value="5000KB" />

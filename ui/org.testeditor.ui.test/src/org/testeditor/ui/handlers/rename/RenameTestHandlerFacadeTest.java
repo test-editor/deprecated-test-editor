@@ -28,6 +28,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
@@ -89,6 +90,7 @@ public class RenameTestHandlerFacadeTest {
 
 		context.set(TestScenarioService.class, getTestScenarioServiceMock());
 		context.set(TestProjectService.class, null);
+		context.set(TestExecutionEnvironmentService.class, null);
 		context.set(TestStructureService.class, null);
 		context.set(EPartService.class, null);
 		context.set(TestStructureContentService.class, null);

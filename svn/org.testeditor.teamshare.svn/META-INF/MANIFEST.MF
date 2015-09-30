@@ -10,15 +10,15 @@ Require-Bundle: org.testeditor.core;bundle-version="1.5.0",
  org.apache.commons.codec;bundle-version="1.4.0",
  org.tmatesoft.svnkit;bundle-version="1.8.5",
  org.eclipse.e4.core.services,
- javax.inject
+ javax.inject,
+ org.apache.commons.io;bundle-version="2.2.0"
 Import-Package: org.apache.commons.io;version="2.2.0",
  org.eclipse.core.runtime;version="3.4.0",
  org.eclipse.core.runtime.preferences;version="3.3.0",
  org.eclipse.e4.core.contexts,
  org.eclipse.e4.core.services.translation,
  org.osgi.framework;version="1.7.0",
- org.osgi.service.prefs;version="1.1.1",
- org.testeditor.fitnesse.util
+ org.osgi.service.prefs;version="1.1.1"
 Service-Component: OSGI-INF/SVNTeamShareConfigurationService.xml,
  OSGI-INF/SVNTeamShareService.xml,
  OSGI-INF/SVNTeamShareStatusService.xml

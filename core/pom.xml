@@ -13,6 +13,7 @@
 	<name>Core Component</name>
 	
 	<modules>
+		<module>org.testeditor.logging</module>
 		<module>org.testeditor.core</module>
 		<module>org.testeditor.core.test</module>
 		<module>org.testeditor.demo</module>

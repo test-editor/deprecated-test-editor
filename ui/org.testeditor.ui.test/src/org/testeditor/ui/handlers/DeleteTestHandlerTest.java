@@ -36,6 +36,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureService;
@@ -189,8 +190,7 @@ public class DeleteTestHandlerTest {
 		TestSuite suite = new TestSuite();
 		suite.setName("Suite");
 		list.add(suite);
-		assertEquals(
-				System.getProperty("line.separator") + "Suite",
+		assertEquals(System.getProperty("line.separator") + "Suite",
 				testHandler.getCommaListOfTestStructuresNames(list.iterator(), getTranslationServiceMock(), 1,
 						context.get(TestScenarioService.class)).toString());
 	}
@@ -207,10 +207,8 @@ public class DeleteTestHandlerTest {
 		TestCase testCase = new TestCase();
 		testCase.setName("Foo");
 		list.add(testCase);
-		assertEquals(
-				"Foo",
-				testHandler.getCommaListOfTestStructuresNames(list.iterator(), getTranslationServiceMock(), 1,
-						getTestScenrioServiceMock()).toString());
+		assertEquals("Foo", testHandler.getCommaListOfTestStructuresNames(list.iterator(), getTranslationServiceMock(),
+				1, getTestScenrioServiceMock()).toString());
 	}
 
 	/**
@@ -234,10 +232,8 @@ public class DeleteTestHandlerTest {
 		testCase = new TestCase();
 		testCase.setName("World");
 		list.add(testCase);
-		assertEquals(
-				"Foo, Bar, Hello, World",
-				testHandler.getCommaListOfTestStructuresNames(list.iterator(), getTranslationServiceMock(), 1,
-						getTestScenrioServiceMock()).toString());
+		assertEquals("Foo, Bar, Hello, World", testHandler.getCommaListOfTestStructuresNames(list.iterator(),
+				getTranslationServiceMock(), 1, getTestScenrioServiceMock()).toString());
 	}
 
 	/**
@@ -434,6 +430,7 @@ public class DeleteTestHandlerTest {
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(TestScenarioService.class, getTestScenrioServiceMock());
 		context.set(MetaDataService.class, null);
+		context.set(TestExecutionEnvironmentService.class, null);
 		return ContextInjectionFactory.make(DeleteTestHandler.class, context);
 	}
 

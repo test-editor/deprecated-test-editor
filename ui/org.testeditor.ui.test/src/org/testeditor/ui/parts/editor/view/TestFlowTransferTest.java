@@ -22,7 +22,6 @@ import org.junit.Test;
  * 
  * This class tests the TestFlowTransfer-Class.
  * 
- * @author llipinski
  */
 public class TestFlowTransferTest {
 
@@ -47,10 +46,6 @@ public class TestFlowTransferTest {
 		assertTrue(TestEditorTestFlowTransfer.getInstance() != null);
 	}
 
-	// @Test
-	// public void getTypeIds() {
-	// assertEquals(MYTYPEID, TestFlowTransfer.getInstance().getTypeIds());
-	// }
 	/**
 	 * test the getTypeNames-method.
 	 */
@@ -113,81 +108,5 @@ public class TestFlowTransferTest {
 		testEditorTestFlowDataTransferContainer.setStoredTestComponents("");
 		assertFalse(instance.validate(testEditorTestFlowDataTransferContainer));
 	}
-
-	/**
-	 * This implementation of <code>javaToNative</code> converts
-	 * TestEditorTestFlowDataTransferContainer represented by a java
-	 * <code>TestEditorTestFlowDataTransferContainer</code> to a platform
-	 * specific representation.
-	 * 
-	 * @param object
-	 *            a java <code>TestEditorTestFlowDataTransferContainer</code>
-	 *            containing TestEditorTestFlowDataTransferContainer
-	 * @param transferData
-	 *            an empty <code>TransferData</code> object that will be filled
-	 *            in on return with the platform specific format of the data
-	 * 
-	 * @see Transfer#nativeToJava
-	 */
-
-	// public void javaToNative(Object object, TransferData transferData) {
-	// if (object == null || !(object instanceof
-	// TestEditorTestFlowDataTransferContainer)) {
-	// return;
-	// }
-	//
-	// if (isSupportedType(transferData)) {
-	// TestEditorTestFlowDataTransferContainer myTypes =
-	// (TestEditorTestFlowDataTransferContainer) object;
-	// try {
-	// ByteArrayOutputStream out = new ByteArrayOutputStream();
-	// ObjectOutputStream o = new ObjectOutputStream(out);
-	// o.writeObject(myTypes);
-	// byte[] buffer = out.toByteArray();
-	// o.close();
-	// super.javaToNative(buffer, transferData);
-	// } catch (IOException e) {
-	// }
-	// }
-	// }
-
-	/**
-	 * This implementation of <code>nativeToJava</code> converts a platform
-	 * specific representation of the
-	 * {@link TestEditorTestFlowDataTransferContainer} to a java
-	 * <code>String</code>.
-	 * 
-	 * @param transferData
-	 *            the platform specific representation of the data to be
-	 *            converted
-	 * @return a java <code>TestEditorTestFlowDataTransferContainer</code>
-	 *         containing TestEditorTestFlowDataTransferContainer if the
-	 *         conversion was successful; otherwise null
-	 * 
-	 * @see Transfer#javaToNative
-	 */
-
-	// public Object nativeToJava(TransferData transferData) {
-	//
-	// if (isSupportedType(transferData)) {
-	//
-	// byte[] buffer = (byte[]) super.nativeToJava(transferData);
-	// if (buffer == null) {
-	// return null;
-	// }
-	//
-	// try {
-	// ByteArrayInputStream b = new ByteArrayInputStream(buffer);
-	// ObjectInputStream o = new ObjectInputStream(b);
-	// return o.readObject();
-	// } catch (IOException ex) {
-	// LOG.error("Error nativeToJava", ex);
-	// return null;
-	// } catch (ClassNotFoundException e) {
-	// LOG.error("Error nativeToJava", e);
-	// }
-	// }
-	// return null;
-	// }
 
 }
