@@ -120,13 +120,20 @@ public abstract class AbstractUpdateOrApproveHandler {
 									noError = false;
 								}
 								if (noError) {
-									showCompletedMessage();
+									getDisplay().syncExec(new Runnable() {
+
+										@Override
+										public void run() {
+											showCompletedMessage();
+										}
+									});
+
 								}
 							}
 						}
 					} catch (Exception e) {
+						LOGGER.error(e.getMessage(), e);
 						MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
-						LOGGER.error(e, e);
 					}
 					monitor.done();
 				}
@@ -139,12 +146,9 @@ public abstract class AbstractUpdateOrApproveHandler {
 				LOGGER.warn("selection does not exist in testexplorer !");
 			}
 
-		} catch (InvocationTargetException e) {
-			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
+		} catch (InvocationTargetException | InterruptedException e) {
 			LOGGER.error(e.getMessage());
-		} catch (InterruptedException e) {
 			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
-			LOGGER.error(e.getMessage());
 		}
 	}
 
