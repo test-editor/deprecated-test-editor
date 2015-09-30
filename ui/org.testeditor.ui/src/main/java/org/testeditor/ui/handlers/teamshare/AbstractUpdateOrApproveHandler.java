@@ -146,10 +146,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 				LOGGER.warn("selection does not exist in testexplorer !");
 			}
 
-		} catch (InvocationTargetException e) {
-			LOGGER.error(e.getMessage());
-			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
-		} catch (InterruptedException e) {
+		} catch (InvocationTargetException | InterruptedException e) {
 			LOGGER.error(e.getMessage());
 			MessageDialog.openError(activeShell, translationService.translate("%error"), e.getMessage());
 		}
