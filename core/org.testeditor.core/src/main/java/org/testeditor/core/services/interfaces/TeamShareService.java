@@ -250,7 +250,7 @@ public interface TeamShareService {
 	 * @throws SystemException
 	 *             - if there is a problem accessing the local repository.
 	 */
-	boolean hasGlobalLock(TestProject testProject) throws SystemException;
+	boolean isCleanupNeeded(TestProject testProject) throws SystemException;
 
 	/**
 	 * Executes a cleanup for the local repository containing the project.
@@ -260,6 +260,6 @@ public interface TeamShareService {
 	 * @throws SystemException
 	 *             - if there is a problem during cleanup.
 	 */
-	void cleanUp(TestProject testProject) throws SystemException;
+	void cleanup(TestProject testProject) throws SystemException;
 
 }

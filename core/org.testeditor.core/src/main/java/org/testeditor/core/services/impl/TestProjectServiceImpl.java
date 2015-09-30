@@ -227,8 +227,8 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			if (isTestProjectDirectory(file)) {
 				TestProject testProject = createProjectFrom(file);
 				try {
-					if (teamShareService.hasGlobalLock(testProject)) {
-						teamShareService.cleanUp(testProject);
+					if (teamShareService != null && teamShareService.isCleanupNeeded(testProject)) {
+						teamShareService.cleanup(testProject);
 					}
 				} catch (SystemException e) {
 					logger.error("Error during lockcheck in the local subversion database. Message " + e.getMessage(),

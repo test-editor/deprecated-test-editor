@@ -898,7 +898,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public boolean hasGlobalLock(TestProject testProject) throws SystemException {
+	public boolean isCleanupNeeded(TestProject testProject) throws SystemException {
 
 		logger.trace("start hasGlobalLock");
 		SVNWCDb db = new SVNWCDb();
@@ -919,7 +919,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public void cleanUp(TestProject testProject) throws SystemException {
+	public void cleanup(TestProject testProject) throws SystemException {
 
 		logger.trace("start cleanUp");
 

@@ -1237,8 +1237,8 @@ public class SVNTeamShareServiceLocalTest {
 
 		FileUtils.copyFile(new File(CORRUPT_SVN_DB), new File(projectpath + "\\.svn\\wc.db"));
 
-		assertTrue(teamService.hasGlobalLock(testProject));
-		teamService.cleanUp(testProject);
-		assertFalse(teamService.hasGlobalLock(testProject));
+		assertTrue(teamService.isCleanupNeeded(testProject));
+		teamService.cleanup(testProject);
+		assertFalse(teamService.isCleanupNeeded(testProject));
 	}
 }
