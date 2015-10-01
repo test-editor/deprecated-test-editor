@@ -204,12 +204,12 @@ public class TestStructureServiceImplIntTest {
 			}
 
 			@Override
-			public boolean hasGlobalLock(TestProject testProject) throws SystemException {
+			public boolean isCleanupNeeded(TestProject testProject) throws SystemException {
 				return false;
 			}
 
 			@Override
-			public void cleanUp(TestProject testProject) throws SystemException {
+			public void cleanup(TestProject testProject) throws SystemException {
 			}
 		};
 	}
