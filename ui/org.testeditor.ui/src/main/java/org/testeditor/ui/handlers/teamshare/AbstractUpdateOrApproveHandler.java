@@ -70,7 +70,7 @@ public abstract class AbstractUpdateOrApproveHandler {
 		IStructuredSelection selection = testExplorer.getSelection();
 		CanExecuteTestExplorerHandlerRules canExecuteTestExplorerHandlerRules = new CanExecuteTestExplorerHandlerRules();
 		return canExecuteTestExplorerHandlerRules.canExecuteOnOneOrManyElementRule(selection)
-				&& canExecuteTestExplorerHandlerRules.canExecuteTeamShareApproveOrUpdate(selection);
+				&& canExecuteTestExplorerHandlerRules.canExecuteOnTeamShareProject(selection);
 	}
 
 	/**

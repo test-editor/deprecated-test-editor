@@ -236,7 +236,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * @return true, if every TestProject of the selected TestStructures are
 	 *         under version-control.
 	 */
-	public boolean canExecuteTeamShareApproveOrUpdate(IStructuredSelection selection) {
+	public boolean canExecuteOnTeamShareProject(IStructuredSelection selection) {
 		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			TestStructure ts = (TestStructure) iter.next();

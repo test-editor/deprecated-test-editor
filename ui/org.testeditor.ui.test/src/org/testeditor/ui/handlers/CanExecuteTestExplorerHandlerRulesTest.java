@@ -174,11 +174,11 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 		CanExecuteTestExplorerHandlerRules rules = new CanExecuteTestExplorerHandlerRules();
 		assertFalse(rules.canExecuteOnOneOrManyElementRule(
 				(IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection())
-				&& rules.canExecuteTeamShareApproveOrUpdate(
+				&& rules.canExecuteOnTeamShareProject(
 						(IStructuredSelection) getTreeViewerMockWithTestSuite().getSelection()));
 		assertTrue(rules.canExecuteOnOneOrManyElementRule(
 				(IStructuredSelection) getTreeViewerMockWithFilledIterator().getSelection())
-				&& rules.canExecuteTeamShareApproveOrUpdate(
+				&& rules.canExecuteOnTeamShareProject(
 						(IStructuredSelection) getTreeViewerMockWithFilledIterator().getSelection()));
 
 	}
@@ -194,7 +194,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 				.getSelection();
 		assertTrue(rules.canExecuteOnOneOrManyElementRule(selectionMock));
 		assertFalse(rules.canExecuteOnOneOrManyElementRule(selectionMock)
-				&& rules.canExecuteTeamShareApproveOrUpdate(selectionMock));
+				&& rules.canExecuteOnTeamShareProject(selectionMock));
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class CanExecuteTestExplorerHandlerRulesTest {
 				.getSelection();
 		assertTrue(rules.canExecuteOnOneOrManyElementRule(selectionMock));
 		assertFalse(rules.canExecuteOnOneOrManyElementRule(selectionMock)
-				&& rules.canExecuteTeamShareApproveOrUpdate(selectionMock));
+				&& rules.canExecuteOnTeamShareProject(selectionMock));
 	}
 
 	/**
