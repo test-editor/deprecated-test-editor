@@ -230,6 +230,7 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 					LOGGER.error("could not find metaData for " + metaDataTag.getGlobalKey());
 				}
 			}
+			metaDataTagsTable.getParent().pack();
 		}
 	}
 

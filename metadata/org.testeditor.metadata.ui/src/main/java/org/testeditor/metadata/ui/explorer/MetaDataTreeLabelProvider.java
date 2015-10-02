@@ -49,7 +49,15 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 			return ((TestProject) element).getName();
 		}
 		if (element instanceof MetaData) {
-			return ((MetaData) element).getLabel();
+			MetaData metaData = (MetaData) element;
+			String label = metaData.getLabel();
+
+			int count = 0;
+			for (MetaDataValue metaDataValue : metaData.getValues()) {
+				count += metaDataValue.getTestCases().size();
+			}
+			label += " (" + Integer.toString(count) + "/)";
+			return label;
 		}
 		if (element instanceof MetaDataValue) {
 			MetaDataValue metaDataValue = (MetaDataValue) element;
