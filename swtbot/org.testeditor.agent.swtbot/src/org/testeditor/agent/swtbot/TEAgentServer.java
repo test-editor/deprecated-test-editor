@@ -422,8 +422,8 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			if (nodes[0].startsWith("ID")) {
 				String treeId = nodes[0].split(":")[1];
 				LOGGER.trace("selecting tree with id: " + treeId);
-				SWTBotTreeItem expandNode = bot.treeWithId(treeId)
-						.expandNode(Arrays.copyOfRange(nodes, 1, nodes.length));
+				SWTBotTreeItem expandNode = bot.treeWithId(treeId).expandNode(
+						Arrays.copyOfRange(nodes, 1, nodes.length));
 				expandNode.select();
 			} else {
 				SWTBotTree tree = getTestExplorer();
@@ -1625,6 +1625,18 @@ public class TEAgentServer extends Thread implements ITestHarness {
 										Method method = getClass().getMethod(methodName, String.class, String.class);
 										out.println(method.invoke(this, splitCommand[1], splitCommand[2]));
 									}
+									if (splitCommand.length == 4) {
+										Method method = getClass().getMethod(methodName, String.class, String.class,
+												String.class);
+										out.println(method.invoke(this, splitCommand[1], splitCommand[2],
+												splitCommand[3]));
+									}
+									if (splitCommand.length == 5) {
+										Method method = getClass().getMethod(methodName, String.class, String.class,
+												String.class, String.class);
+										out.println(method.invoke(this, splitCommand[1], splitCommand[2],
+												splitCommand[3], splitCommand[4]));
+									}
 								} catch (NoSuchMethodException e) {
 									LOGGER.error("Method not found in fixture", e);
 								} catch (SecurityException e) {
@@ -1836,6 +1848,122 @@ public class TEAgentServer extends Thread implements ITestHarness {
 			analyzeWidgets();
 			return "ERROR " + e.getMessage();
 		}
+	}
+
+	/**
+	 * <pre>
+	 * This method checks in a given table and column the searched string in every row.
+	 * 
+	 * Example: searched string = login and column in which to be searched = Name
+	 * 
+	 *  Result Table
+	 * 
+	 *  |        Name          |        Path          |
+	 *  |______________________|______________________|
+	 *  |      abcd.login.ab   |  Demo.abcd.login.ab  |
+	 *  |______________________|______________________|
+	 *  |      efg.login.fg    |  Demo.efg.login.fg   |
+	 *  |______________________|______________________|
+	 *  |      loginAbc        |  Demo.loginAbc       |
+	 *  |______________________|______________________|
+	 *  |      klm.login       |  Demo.klm.login      |
+	 * 
+	 * 
+	 * </pre>
+	 * 
+	 * the result of this method is true when in all rows in given column the
+	 * searched string is found
+	 * 
+	 * 
+	 * 
+	 * @param locator
+	 *            unique id of table
+	 * @param column
+	 *            of table
+	 * @param value
+	 *            searched value in each row
+	 * @return true if all entries in table in given column contains given value
+	 */
+	public boolean checkTableIfInColumnContainsInAllRows(String locator, String column, String value) {
+		LOGGER.info("Method checkTableIfInColumnContainsInAllRows invoked");
+
+		SWTBotTable table = bot.tableWithId(locator);
+
+		if (table != null) {
+
+			for (int row = 0; row < table.rowCount(); row++) {
+
+				String cellContent = table.cell(row, Integer.parseInt(column));
+
+				if (!cellContent.contains(value)) {
+					return false;
+				}
+			}
+		} else {
+			String message = "Table with locator: " + locator + " not found !";
+			LOGGER.error(message);
+			throw new IllegalArgumentException(message);
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * <pre>
+	 * This method checks in a given table and column,row the searched string is found.
+	 * 
+	 * Example: searched string = login and column in which to be searched = Name
+	 * 
+	 *  Result Table
+	 * 
+	 *  |        Name          |        Path          |
+	 *  |______________________|______________________|
+	 *  |      abcd.login.ab   |  Demo.abcd.login.ab  |
+	 *  |______________________|______________________|
+	 *  |      efg.login.fg    |  Demo.efg.login.fg   |
+	 *  |______________________|______________________|
+	 *  |      loginAbc        |  Demo.loginAbc       |
+	 *  |______________________|______________________|
+	 *  |      klm.login       |  Demo.klm.login      |
+	 * 
+	 * 
+	 * </pre>
+	 * 
+	 * the result of this method is true when in all rows in given column the
+	 * searched string is found
+	 * 
+	 * 
+	 * 
+	 * @param locator
+	 *            unique id of table
+	 * @param column
+	 *            of table
+	 * 
+	 * @param row
+	 *            searched value in special row
+	 * @param value
+	 *            searched value
+	 * @return true if all entries in table in given column contains given value
+	 */
+	public boolean checkTableIfInColumnAndRowContains(String locator, String column, String row, String value) {
+		LOGGER.info("Method checkTableIfInColumnAndRowContains invoked");
+
+		SWTBotTable table = bot.tableWithId(locator);
+
+		if (table != null) {
+
+			String cellContent = table.cell(Integer.parseInt(row), Integer.parseInt(column));
+			if (cellContent.equals(value)) {
+				return true;
+			}
+		} else {
+			String message = "Table with locator: " + locator + " not found !";
+			LOGGER.error(message);
+			throw new IllegalArgumentException(message);
+		}
+
+		return false;
 	}
 
 	/**
