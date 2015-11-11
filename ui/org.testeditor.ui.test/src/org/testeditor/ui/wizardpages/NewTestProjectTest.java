@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -47,6 +48,17 @@ public class NewTestProjectTest {
 
 	private Shell shell;
 	private Composite composite;
+
+	/**
+	 * Setup for all tests.
+	 * 
+	 * @throws Exception
+	 *             for test
+	 */
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		ServiceLookUpForTest.getService(TestProjectService.class).reloadProjectList();
+	}
 
 	/**
 	 * Creating UI Elements to be used in the Tests.

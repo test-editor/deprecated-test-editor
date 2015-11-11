@@ -65,6 +65,7 @@ public class NewTestPageTest {
 	public static void beforeClass() throws Exception {
 		TestServerService service = ServiceLookUpForTest.getService(TestServerService.class);
 		service.startTestServer(getTestProject());
+		ServiceLookUpForTest.getService(TestProjectService.class).reloadProjectList();
 	}
 
 	/**
@@ -298,8 +299,8 @@ public class NewTestPageTest {
 	 * @return the IEclipseContext for the test.
 	 */
 	private IEclipseContext getContext() {
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
-				.getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
 		context.set(Shell.class, null);
 		context.set(TestStructureService.class, ServiceLookUpForTest.getService(TestStructureService.class));
 		context.set(TestEditorTranslationService.class, getTranslationServiceMock());

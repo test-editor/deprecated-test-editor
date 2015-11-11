@@ -132,6 +132,9 @@ public class HeadlessTestRunnerApplicationTest {
 			protected <S> S getService(Class<S> clazz) {
 				if (clazz == TestProjectService.class) {
 					return (S) new TestProjectServiceImpl() {
+						public void reloadProjectList() throws SystemException {
+						};
+
 						@Override
 						public TestProject getProjectWithName(String testProjectName) {
 							return testProject;
