@@ -13,15 +13,20 @@ package org.testeditor.ui.handlers.teamshare;
 
 import javax.inject.Named;
 
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
+import org.testeditor.ui.wizardpages.teamshare.TeamShareBranchSelectionWizardPage;
 
 /**
  * Handler to open a dialog to select a branch to work with.
@@ -38,9 +43,20 @@ public class SelectBranchHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
-		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		IStructuredSelection selection = testExplorer.getSelection();
+		IStructuredSelection selection = getSelection(context);
 		return new CanExecuteTestExplorerHandlerRules().canExecuteOnTeamShareProject(selection);
+	}
+
+	/**
+	 * Get the current selection of the TestExplorer.
+	 * 
+	 * @param context
+	 *            used to look up the TestExplorer.
+	 * @return the actual selection in the TestExplorer
+	 */
+	private IStructuredSelection getSelection(IEclipseContext context) {
+		TestExplorer testExplorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		return testExplorer.getSelection();
 	}
 
 	/**
@@ -50,7 +66,23 @@ public class SelectBranchHandler {
 	 */
 	@Execute
 	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
+		Object firstElement = getSelection(context).getFirstElement();
+		if (firstElement instanceof TestProject) {
+			TestProject project = (TestProject) firstElement;
+			Wizard newWizard = new Wizard() {
 
+				@Override
+				public boolean performFinish() {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			};
+			TeamShareBranchSelectionWizardPage page = ContextInjectionFactory
+					.make(TeamShareBranchSelectionWizardPage.class, context);
+			page.setProject(project);
+			newWizard.addPage(page);
+			new WizardDialog(shell, newWizard);
+		}
 	}
 
 }

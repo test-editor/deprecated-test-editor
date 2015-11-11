@@ -28,7 +28,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareRevertWizardPage;
 
 /**
@@ -38,9 +37,6 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareRevertWizardPage;
  */
 public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 
-	@Inject
-	private IEventBroker eventBroker;
-
 	private static final Logger LOGGER = Logger.getLogger(RevertElementHandler.class);
 
 	@Inject
@@ -49,9 +45,6 @@ public class RevertElementHandler extends AbstractUpdateOrApproveHandler {
 	@Inject
 	@Named(IServiceConstants.ACTIVE_SHELL)
 	private Shell shell;
-
-	@Inject
-	private TeamShareStatusServiceNew teamShareStatusService;
 
 	/**
 	 * executes the event for the selected-elements.
