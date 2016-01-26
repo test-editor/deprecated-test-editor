@@ -22,7 +22,10 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
@@ -65,10 +68,11 @@ public class SelectBranchHandler {
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
+	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell,
+			TeamShareService teamShareService) {
 		Object firstElement = getSelection(context).getFirstElement();
-		if (firstElement instanceof TestProject) {
-			TestProject project = (TestProject) firstElement;
+		if (firstElement instanceof TestStructure) {
+			TestProject project = ((TestStructure) firstElement).getRootElement();
 			Wizard newWizard = new Wizard() {
 
 				@Override
@@ -79,9 +83,15 @@ public class SelectBranchHandler {
 			};
 			TeamShareBranchSelectionWizardPage page = ContextInjectionFactory
 					.make(TeamShareBranchSelectionWizardPage.class, context);
-			page.setProject(project);
+			try {
+				page.setAvailableReleaseNames(teamShareService.getAvailableReleaseNames(project));
+			} catch (SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			newWizard.addPage(page);
-			new WizardDialog(shell, newWizard);
+			WizardDialog dialog = new WizardDialog(shell, newWizard);
+			dialog.open();
 		}
 	}
 

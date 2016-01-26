@@ -11,9 +11,16 @@
 *******************************************************************************/
 package org.testeditor.ui.wizardpages.teamshare;
 
+import java.util.List;
+
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.testeditor.core.model.teststructure.TestProject;
 
 /**
  * Wizard Page to show available branches of the team provider and select one of
@@ -22,7 +29,9 @@ import org.testeditor.core.model.teststructure.TestProject;
  */
 public class TeamShareBranchSelectionWizardPage extends WizardPage {
 
-	private TestProject project;
+	private TableViewer releaseViewer;
+	private List<String> availableReleaseNames;
+	protected String selectedReleaseName;
 
 	/**
 	 * Default constructor.
@@ -42,17 +51,32 @@ public class TeamShareBranchSelectionWizardPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
+		setControl(parent);
+		releaseViewer = new TableViewer(parent);
+		releaseViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+		releaseViewer.setContentProvider(new ArrayContentProvider());
+		if (availableReleaseNames != null) {
+			releaseViewer.setInput(availableReleaseNames);
+		}
+		setPageComplete(!releaseViewer.getSelection().isEmpty());
+		releaseViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (!releaseViewer.getSelection().isEmpty()) {
+					setPageComplete(true);
+					IStructuredSelection sec = (IStructuredSelection) releaseViewer.getSelection();
+					selectedReleaseName = (String) sec.getFirstElement();
+				}
+			}
+		});
 	}
 
-	/**
-	 * sets the project to work on.
-	 * 
-	 * @param project
-	 *            to select the branches from.
-	 */
-	public void setProject(TestProject project) {
-		this.project = project;
+	public void setAvailableReleaseNames(List<String> availableReleaseNames) {
+		this.availableReleaseNames = availableReleaseNames;
+		if (releaseViewer != null) {
+			releaseViewer.setInput(availableReleaseNames);
+		}
 	}
 
 }

@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
+import java.util.List;
+
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
@@ -105,8 +107,8 @@ public interface TeamShareService {
 	 * @throws TeamAuthentificationException
 	 *             will be thrown when authentification failed
 	 */
-	void checkout(TestProject testProject, TranslationService translationService) throws SystemException,
-			TeamAuthentificationException;
+	void checkout(TestProject testProject, TranslationService translationService)
+			throws SystemException, TeamAuthentificationException;
 
 	/**
 	 * deletes the {@link TestStructure} given by the parameter.
@@ -214,7 +216,8 @@ public interface TeamShareService {
 	void addAdditonalFile(TestStructure testStructure, String fileName) throws SystemException;
 
 	/**
-	 * This method is used to remove a file from a testcase. @SeeaddAdditonalFile
+	 * This method is used to remove a file from a
+	 * testcase. @SeeaddAdditonalFile
 	 * 
 	 * @param testStructure
 	 *            where the data belongs to
@@ -261,5 +264,16 @@ public interface TeamShareService {
 	 *             - if there is a problem during cleanup.
 	 */
 	void cleanup(TestProject testProject) throws SystemException;
+
+	/**
+	 * Extracts the available release names of the given project.
+	 * 
+	 * @param testProject
+	 *            used to lookup the names of the actual available releases.
+	 * @return a list with release names.
+	 * @throws SystemException
+	 *             - if there is a problem accessing the remote repository.
+	 */
+	List<String> getAvailableReleaseNames(TestProject testProject) throws SystemException;
 
 }

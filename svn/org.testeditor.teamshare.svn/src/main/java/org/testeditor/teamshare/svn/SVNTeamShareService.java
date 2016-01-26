@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -39,6 +40,7 @@ import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNNodeKind;
@@ -136,6 +138,20 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 		logger.trace("start getSVNClientManager");
 
+		ISVNAuthenticationManager authManager = getAuthManager(testProject);
+		SVNClientManager clientManger = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), authManager);
+		logger.trace("done getSVNClientManager: " + clientManger);
+		return clientManger;
+	}
+
+	/**
+	 * Creates an Authentication manager for the test project.
+	 * 
+	 * @param testProject
+	 *            with svn configuration.
+	 * @return ISVNAuthenticationManager to access the svn repository.
+	 */
+	private ISVNAuthenticationManager getAuthManager(TestProject testProject) {
 		String username = ((SVNTeamShareConfig) (testProject.getTestProjectConfig().getTeamShareConfig()))
 				.getUserName();
 		String password = ((SVNTeamShareConfig) (testProject.getTestProjectConfig().getTeamShareConfig()))
@@ -147,9 +163,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		} else {
 			authManager = SVNWCUtil.createDefaultAuthenticationManager(username, password);
 		}
-		SVNClientManager clientManger = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), authManager);
-		logger.trace("done getSVNClientManager: " + clientManger);
-		return clientManger;
+		return authManager;
 	}
 
 	/**
@@ -200,8 +214,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			// useGlobalIgnores must be set to TRUE, otherwise ignore list will
 			// not work.
-			SVNCommitInfo doImport = clientManager.getCommitClient().doImport(new File(projectPath), svnUrl,
-					svnComment, new SVNProperties(), true, false, SVNDepth.INFINITY);
+			SVNCommitInfo doImport = clientManager.getCommitClient().doImport(new File(projectPath), svnUrl, svnComment,
+					new SVNProperties(), true, false, SVNDepth.INFINITY);
 
 			logger.trace("doImport: " + doImport);
 
@@ -210,8 +224,9 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			// checkout
 			SVNUpdateClient updateClient = clientManager.getUpdateClient();
-			long doCheckout = updateClient.doCheckout(svnUrl, new File(testProject.getTestProjectConfig()
-					.getProjectPath()), SVNRevision.HEAD, SVNRevision.HEAD, SVNDepth.INFINITY, false);
+			long doCheckout = updateClient.doCheckout(svnUrl,
+					new File(testProject.getTestProjectConfig().getProjectPath()), SVNRevision.HEAD, SVNRevision.HEAD,
+					SVNDepth.INFINITY, false);
 
 			logger.trace("doCheckout: " + doCheckout);
 
@@ -258,8 +273,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			SVNCommitClient cc = clientManager.getCommitClient();
 			cc.setEventHandler(new SVNLoggingEventHandler(listener, logger));
-			SVNCommitInfo doCommit = cc.doCommit(new File[] { checkinFile }, false, svnComment, null, null, false,
-					true, SVNDepth.INFINITY);
+			SVNCommitInfo doCommit = cc.doCommit(new File[] { checkinFile }, false, svnComment, null, null, false, true,
+					SVNDepth.INFINITY);
 			resultState = translationService.translate("%svn.state.approve",
 					"platform:/plugin/org.testeditor.teamshare.svn") + " " + doCommit.getNewRevision();
 
@@ -325,10 +340,10 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		if (eventBroker != null) {
 			String eventTopic = TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY;
 			eventBroker.post(eventTopic, testStructure.getFullName());
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET, testStructure.getRootElement()
-					.getFullName());
-			eventBroker.post(TestEditorCoreEventConstants.TEAMSHARE_UPDATE, testStructure.getRootElement()
-					.getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_RESET,
+					testStructure.getRootElement().getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TEAMSHARE_UPDATE,
+					testStructure.getRootElement().getFullName());
 		}
 	}
 
@@ -369,7 +384,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 * @throws SVNException
 	 *             on operation.
 	 */
-	List<String> checkWcState(SVNStatusClient statusClient, File checkoutFile, long revisionNumber) throws SVNException {
+	List<String> checkWcState(SVNStatusClient statusClient, File checkoutFile, long revisionNumber)
+			throws SVNException {
 		final List<String> result = new ArrayList<>();
 		statusClient.doStatus(checkoutFile, SVNRevision.create(revisionNumber), SVNDepth.INFINITY, false, true, false,
 				false, new ISVNStatusHandler() {
@@ -387,8 +403,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public void checkout(TestProject testProject, TranslationService translationService) throws SystemException,
-			TeamAuthentificationException {
+	public void checkout(TestProject testProject, TranslationService translationService)
+			throws SystemException, TeamAuthentificationException {
 
 		logger.trace("call to checkout; testProject: '" + testProject.getFullName() + "'");
 
@@ -527,8 +543,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 				.getAbsoluteFile() + localPathInProject;
 
 		try {
-			statusClient.doStatus(new File(pathInProject), SVNRevision.HEAD, SVNDepth.INFINITY, true, true, true,
-					false, statusHandler, changeLists);
+			statusClient.doStatus(new File(pathInProject), SVNRevision.HEAD, SVNDepth.INFINITY, true, true, true, false,
+					statusHandler, changeLists);
 			logger.trace("call to getStatus done; testStructure: '" + testStructure.getFullName() + "'");
 			return svnStatus.toString();
 		} catch (SVNException e) {
@@ -718,8 +734,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 										subPath.length());
 							}
 							String deletedTSFullName = subPath.replaceAll(File.separator, ".");
-							logger.trace("Deleted test structure in revert operation with fullname: "
-									+ deletedTSFullName);
+							logger.trace(
+									"Deleted test structure in revert operation with fullname: " + deletedTSFullName);
 							eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
 									deletedTSFullName);
 						}
@@ -934,5 +950,50 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 		logger.trace("done cleanUp");
 
+	}
+
+	@Override
+	public List<String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
+		List<String> result = new ArrayList<String>();
+		SVNTeamShareConfig teamShareConfig = (SVNTeamShareConfig) testProject.getTestProjectConfig()
+				.getTeamShareConfig();
+		try {
+			String projectUrl = getProjectURL(teamShareConfig.getUrl());
+			SVNRepository repo = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(projectUrl));
+			repo.setAuthenticationManager(getAuthManager(testProject));
+			String repositoryRoot = repo.getRepositoryRoot(true).toString();
+			Collection<SVNDirEntry> dir = repo.getDir(
+					projectUrl.substring(repositoryRoot.length(), projectUrl.length()), -1, null,
+					(Collection<SVNDirEntry>) null);
+			for (SVNDirEntry svnFolder : dir) {
+				if (svnFolder.getName().equals("trunk")) {
+					result.add("trunk");
+				}
+				if (svnFolder.getName().equals("branches")) {
+					Collection<SVNDirEntry> branches = repo.getDir(svnFolder.getRelativePath(), -1, null,
+							(Collection<SVNDirEntry>) null);
+					for (SVNDirEntry branch : branches) {
+						result.add(branch.getName());
+					}
+				}
+			}
+
+		} catch (SVNException e) {
+			throw new SystemException(e.getMessage(), e);
+		}
+		return result;
+	}
+
+	protected String getProjectURL(String url) {
+		if (url.lastIndexOf("trunk") > -1) {
+			return url.substring(0, url.lastIndexOf("trunk"));
+		}
+		if (url.lastIndexOf("tags") > -1) {
+			return url.substring(0, url.lastIndexOf("tags"));
+		}
+		if (url.lastIndexOf("branches") > -1) {
+			return url.substring(0, url.lastIndexOf("branches"));
+		}
+		return url;
 	}
 }

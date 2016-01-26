@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -210,6 +211,12 @@ public class TestStructureServiceImplIntTest {
 
 			@Override
 			public void cleanup(TestProject testProject) throws SystemException {
+			}
+
+			@Override
+			public List<String> getAvailableReleaseNames(TestProject testProject) {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}
