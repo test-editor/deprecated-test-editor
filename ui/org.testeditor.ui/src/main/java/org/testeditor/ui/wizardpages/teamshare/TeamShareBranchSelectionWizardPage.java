@@ -13,6 +13,8 @@ package org.testeditor.ui.wizardpages.teamshare;
 
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -21,6 +23,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 
 /**
  * Wizard Page to show available branches of the team provider and select one of
@@ -28,6 +31,9 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public class TeamShareBranchSelectionWizardPage extends WizardPage {
+
+	@Inject
+	private TestEditorTranslationService translationService;
 
 	private TableViewer releaseViewer;
 	private Set<String> availableReleaseNames;
@@ -70,6 +76,8 @@ public class TeamShareBranchSelectionWizardPage extends WizardPage {
 				}
 			}
 		});
+		setTitle(translationService.translate("%wizard.branch.select.title"));
+		setDescription(translationService.translate("%wizard.branch.select.description"));
 	}
 
 	public void setAvailableReleaseNames(Set<String> availableReleaseNames) {

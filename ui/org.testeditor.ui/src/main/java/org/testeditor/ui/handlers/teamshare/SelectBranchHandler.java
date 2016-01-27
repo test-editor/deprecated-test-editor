@@ -11,14 +11,19 @@
 *******************************************************************************/
 package org.testeditor.ui.handlers.teamshare;
 
+import java.util.Map;
+
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -30,6 +35,7 @@ import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
+import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.teamshare.TeamShareBranchSelectionWizardPage;
 
 /**
@@ -37,6 +43,11 @@ import org.testeditor.ui.wizardpages.teamshare.TeamShareBranchSelectionWizardPag
  *
  */
 public class SelectBranchHandler {
+
+	private static final Logger LOGGER = Logger.getLogger(SelectBranchHandler.class);
+
+	@Inject
+	private TestEditorTranslationService translationService;
 
 	/**
 	 * is it possible to execute the handler.
@@ -84,15 +95,17 @@ public class SelectBranchHandler {
 			TeamShareBranchSelectionWizardPage page = ContextInjectionFactory
 					.make(TeamShareBranchSelectionWizardPage.class, context);
 			try {
-				page.setAvailableReleaseNames(teamShareService.getAvailableReleaseNames(project).keySet());
+				Map<String, String> availableReleases = teamShareService.getAvailableReleases(project);
+				page.setAvailableReleaseNames(availableReleases.keySet());
+				newWizard.addPage(page);
+				WizardDialog dialog = new WizardDialog(shell, newWizard);
+				if (dialog.open() == Dialog.OK) {
+					System.err.println(page.getSelectedRelease());
+				}
 			} catch (SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			newWizard.addPage(page);
-			WizardDialog dialog = new WizardDialog(shell, newWizard);
-			if (dialog.open() == Dialog.OK) {
-				System.err.println(page.getSelectedRelease());
+				LOGGER.error(e.getMessage());
+				MessageDialog.openError(shell, translationService.translate("%error"),
+						translationService.translate("%select.branch.dialog.error"));
 			}
 		}
 	}

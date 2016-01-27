@@ -958,7 +958,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public Map<String, String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
+	public Map<String, String> getAvailableReleases(TestProject testProject) throws SystemException {
 		Map<String, String> result = new HashMap<String, String>();
 		SVNTeamShareConfig teamShareConfig = (SVNTeamShareConfig) testProject.getTestProjectConfig()
 				.getTeamShareConfig();

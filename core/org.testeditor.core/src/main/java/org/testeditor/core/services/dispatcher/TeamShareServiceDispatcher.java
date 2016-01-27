@@ -237,10 +237,10 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public Map<String, String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
+	public Map<String, String> getAvailableReleases(TestProject testProject) throws SystemException {
 		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
-			return teamShareService.getAvailableReleaseNames(testProject);
+			return teamShareService.getAvailableReleases(testProject);
 		}
 		return null;
 	}

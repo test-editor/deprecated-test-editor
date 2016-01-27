@@ -266,7 +266,7 @@ public interface TeamShareService {
 	void cleanup(TestProject testProject) throws SystemException;
 
 	/**
-	 * Extracts the available release names of the given project.
+	 * Extracts the available release of the given project.
 	 * 
 	 * @param testProject
 	 *            used to lookup the names of the actual available releases.
@@ -274,6 +274,6 @@ public interface TeamShareService {
 	 * @throws SystemException
 	 *             - if there is a problem accessing the remote repository.
 	 */
-	Map<String, String> getAvailableReleaseNames(TestProject testProject) throws SystemException;
+	Map<String, String> getAvailableReleases(TestProject testProject) throws SystemException;
 
 }

@@ -214,7 +214,7 @@ public class TestStructureServiceImplIntTest {
 			}
 
 			@Override
-			public Map<String, String> getAvailableReleaseNames(TestProject testProject) {
+			public Map<String, String> getAvailableReleases(TestProject testProject) {
 				return null;
 			}
 		};

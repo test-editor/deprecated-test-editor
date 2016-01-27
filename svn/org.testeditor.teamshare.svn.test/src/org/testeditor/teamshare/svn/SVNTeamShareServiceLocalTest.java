@@ -1310,11 +1310,11 @@ public class SVNTeamShareServiceLocalTest {
 		aTeamShareConfig.setUrl("file://" + repoWithReleases.getAbsolutePath() + "/trunk");
 		testProjectConfig.setTeamShareConfig(aTeamShareConfig);
 		testProject.setTestProjectConfig(testProjectConfig);
-		validateReleaseNamesOnLegalPath(teamService.getAvailableReleaseNames(testProject).keySet());
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleases(testProject).keySet());
 		aTeamShareConfig.setUrl("file://" + repoWithReleases.getAbsolutePath() + "/branches/v1.1");
-		validateReleaseNamesOnLegalPath(teamService.getAvailableReleaseNames(testProject).keySet());
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleases(testProject).keySet());
 		aTeamShareConfig.setUrl("file://" + repoWithReleases.getAbsolutePath() + "/otherStuff");
-		assertTrue(teamService.getAvailableReleaseNames(testProject).isEmpty());
+		assertTrue(teamService.getAvailableReleases(testProject).isEmpty());
 	}
 
 	/**
