@@ -13,7 +13,6 @@ package org.testeditor.core.services.dispatcher;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -238,7 +237,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public List<String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
+	public Map<String, String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
 		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			return teamShareService.getAvailableReleaseNames(testProject);

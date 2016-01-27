@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.testeditor.core.services.interfaces;
 
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.e4.core.services.translation.TranslationService;
 import org.testeditor.core.exceptions.SystemException;
@@ -270,10 +270,10 @@ public interface TeamShareService {
 	 * 
 	 * @param testProject
 	 *            used to lookup the names of the actual available releases.
-	 * @return a list with release names.
+	 * @return a map with release names as key and the url as value.
 	 * @throws SystemException
 	 *             - if there is a problem accessing the remote repository.
 	 */
-	List<String> getAvailableReleaseNames(TestProject testProject) throws SystemException;
+	Map<String, String> getAvailableReleaseNames(TestProject testProject) throws SystemException;
 
 }

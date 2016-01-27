@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -1309,9 +1310,9 @@ public class SVNTeamShareServiceLocalTest {
 		aTeamShareConfig.setUrl("file://" + repoWithReleases.getAbsolutePath() + "/trunk");
 		testProjectConfig.setTeamShareConfig(aTeamShareConfig);
 		testProject.setTestProjectConfig(testProjectConfig);
-		validateReleaseNamesOnLegalPath(teamService.getAvailableReleaseNames(testProject));
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleaseNames(testProject).keySet());
 		aTeamShareConfig.setUrl("file://" + repoWithReleases.getAbsolutePath() + "/branches/v1.1");
-		validateReleaseNamesOnLegalPath(teamService.getAvailableReleaseNames(testProject));
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleaseNames(testProject).keySet());
 		aTeamShareConfig.setUrl("file://" + repoWithReleases.getAbsolutePath() + "/otherStuff");
 		assertTrue(teamService.getAvailableReleaseNames(testProject).isEmpty());
 	}
@@ -1322,7 +1323,7 @@ public class SVNTeamShareServiceLocalTest {
 	 * @param names
 	 *            to be verified.
 	 */
-	private void validateReleaseNamesOnLegalPath(List<String> names) {
+	private void validateReleaseNamesOnLegalPath(Set<String> names) {
 		assertTrue(names.size() == 3);
 		assertTrue(names.contains("trunk"));
 		assertTrue(names.contains("v1.1"));

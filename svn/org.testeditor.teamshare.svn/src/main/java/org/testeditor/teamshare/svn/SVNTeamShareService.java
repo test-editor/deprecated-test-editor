@@ -18,7 +18,9 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -884,7 +886,10 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			log.setSingleTarget(SvnTarget.fromURL(SVNURL.parseURIEncoded(cfg.getUrl() + "/" + testProject.getName())));
 			SVNLogEntry run = log.run();
 			logger.trace("call to availableUpdatesCount done; testProject: '" + testProject.getFullName() + "'");
-			return (int) (run.getRevision() - localRevision.getNumber());
+			if (run != null) {
+				return (int) (run.getRevision() - localRevision.getNumber());
+			}
+			return 0;
 		} catch (SVNException e) {
 			logger.error(e.getMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);
@@ -953,8 +958,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public List<String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
-		List<String> result = new ArrayList<String>();
+	public Map<String, String> getAvailableReleaseNames(TestProject testProject) throws SystemException {
+		Map<String, String> result = new HashMap<String, String>();
 		SVNTeamShareConfig teamShareConfig = (SVNTeamShareConfig) testProject.getTestProjectConfig()
 				.getTeamShareConfig();
 		try {
@@ -967,13 +972,13 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					(Collection<SVNDirEntry>) null);
 			for (SVNDirEntry svnFolder : dir) {
 				if (svnFolder.getName().equals("trunk")) {
-					result.add("trunk");
+					result.put(svnFolder.getName(), svnFolder.getURL().toString());
 				}
 				if (svnFolder.getName().equals("branches")) {
 					Collection<SVNDirEntry> branches = repo.getDir(svnFolder.getRelativePath(), -1, null,
 							(Collection<SVNDirEntry>) null);
 					for (SVNDirEntry branch : branches) {
-						result.add(branch.getName());
+						result.put(branch.getName(), branch.getURL().toString());
 					}
 				}
 			}

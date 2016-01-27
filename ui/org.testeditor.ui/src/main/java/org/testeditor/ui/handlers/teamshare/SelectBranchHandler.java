@@ -18,6 +18,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -77,21 +78,22 @@ public class SelectBranchHandler {
 
 				@Override
 				public boolean performFinish() {
-					// TODO Auto-generated method stub
-					return false;
+					return true;
 				}
 			};
 			TeamShareBranchSelectionWizardPage page = ContextInjectionFactory
 					.make(TeamShareBranchSelectionWizardPage.class, context);
 			try {
-				page.setAvailableReleaseNames(teamShareService.getAvailableReleaseNames(project));
+				page.setAvailableReleaseNames(teamShareService.getAvailableReleaseNames(project).keySet());
 			} catch (SystemException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			newWizard.addPage(page);
 			WizardDialog dialog = new WizardDialog(shell, newWizard);
-			dialog.open();
+			if (dialog.open() == Dialog.OK) {
+				System.err.println(page.getSelectedRelease());
+			}
 		}
 	}
 

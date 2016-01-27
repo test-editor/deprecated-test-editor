@@ -11,7 +11,7 @@
 *******************************************************************************/
 package org.testeditor.ui.wizardpages.teamshare;
 
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 public class TeamShareBranchSelectionWizardPage extends WizardPage {
 
 	private TableViewer releaseViewer;
-	private List<String> availableReleaseNames;
+	private Set<String> availableReleaseNames;
 	protected String selectedReleaseName;
 
 	/**
@@ -72,11 +72,15 @@ public class TeamShareBranchSelectionWizardPage extends WizardPage {
 		});
 	}
 
-	public void setAvailableReleaseNames(List<String> availableReleaseNames) {
+	public void setAvailableReleaseNames(Set<String> availableReleaseNames) {
 		this.availableReleaseNames = availableReleaseNames;
 		if (releaseViewer != null) {
 			releaseViewer.setInput(availableReleaseNames);
 		}
+	}
+
+	public String getSelectedRelease() {
+		return selectedReleaseName;
 	}
 
 }
