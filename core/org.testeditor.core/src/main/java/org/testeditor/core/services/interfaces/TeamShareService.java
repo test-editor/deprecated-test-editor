@@ -276,4 +276,18 @@ public interface TeamShareService {
 	 */
 	Map<String, String> getAvailableReleases(TestProject testProject) throws SystemException;
 
+	/**
+	 * 
+	 * Switches the Testproject to another branch of the team provider.
+	 * 
+	 * @param testProject
+	 *            used to lookup the names of the actual available releases and
+	 *            switch to it.
+	 * @param url
+	 *            of the brancht to swith to.
+	 * @throws SystemException
+	 *             on Error switching to another release.
+	 */
+	void swithToBranch(TestProject testProject, String url) throws SystemException;
+
 }

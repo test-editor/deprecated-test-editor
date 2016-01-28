@@ -11,12 +11,14 @@
 *******************************************************************************/
 package org.testeditor.ui.handlers.teamshare;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
@@ -24,6 +26,8 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -31,7 +35,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
@@ -75,16 +81,18 @@ public class SelectBranchHandler {
 	}
 
 	/**
+	 * Executes the selection dalog of another test release. When the user
+	 * selects another branch the project is switched to it.
 	 * 
 	 * @param context
 	 * @param shell
 	 */
 	@Execute
-	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell,
-			TeamShareService teamShareService) {
+	public void execute(final IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) final Shell shell,
+			final TeamShareService teamShareService) {
 		Object firstElement = getSelection(context).getFirstElement();
 		if (firstElement instanceof TestStructure) {
-			TestProject project = ((TestStructure) firstElement).getRootElement();
+			final TestProject project = ((TestStructure) firstElement).getRootElement();
 			Wizard newWizard = new Wizard() {
 
 				@Override
@@ -92,20 +100,51 @@ public class SelectBranchHandler {
 					return true;
 				}
 			};
-			TeamShareBranchSelectionWizardPage page = ContextInjectionFactory
+			final TeamShareBranchSelectionWizardPage page = ContextInjectionFactory
 					.make(TeamShareBranchSelectionWizardPage.class, context);
 			try {
-				Map<String, String> availableReleases = teamShareService.getAvailableReleases(project);
+				final Map<String, String> availableReleases = teamShareService.getAvailableReleases(project);
 				page.setAvailableReleaseNames(availableReleases.keySet());
 				newWizard.addPage(page);
 				WizardDialog dialog = new WizardDialog(shell, newWizard);
 				if (dialog.open() == Dialog.OK) {
-					System.err.println(page.getSelectedRelease());
+					new ProgressMonitorDialog(shell).run(true, false, new IRunnableWithProgress() {
+
+						@Override
+						public void run(final IProgressMonitor monitor)
+								throws InvocationTargetException, InterruptedException {
+							teamShareService.addProgressListener(project, new ProgressListener() {
+
+								@Override
+								public void log(String progressInfo) {
+									monitor.subTask(progressInfo);
+								}
+
+								@Override
+								public boolean isCanceled() {
+									return false;
+								}
+							});
+							monitor.beginTask("update", IProgressMonitor.UNKNOWN);
+							try {
+								teamShareService.swithToBranch(project,
+										availableReleases.get(page.getSelectedRelease()));
+								context.get(TestProjectService.class).reloadProjectList();
+							} catch (SystemException e) {
+								LOGGER.error(e.getMessage());
+								MessageDialog.openError(shell, translationService.translate("%error"),
+										translationService.translate("%update.branch.dialog.error"));
+							}
+							monitor.done();
+						}
+					});
 				}
-			} catch (SystemException e) {
-				LOGGER.error(e.getMessage());
+			} catch (SystemException | InvocationTargetException e) {
+				LOGGER.error(e.getMessage(), e);
 				MessageDialog.openError(shell, translationService.translate("%error"),
 						translationService.translate("%select.branch.dialog.error"));
+			} catch (InterruptedException e) {
+				LOGGER.error(e.getMessage());
 			}
 		}
 	}

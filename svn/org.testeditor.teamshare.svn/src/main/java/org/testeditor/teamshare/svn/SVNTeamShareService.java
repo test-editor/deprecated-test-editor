@@ -137,12 +137,9 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 * @return client to access the svn.
 	 */
 	private SVNClientManager getSVNClientManager(TestProject testProject) {
-
-		logger.trace("start getSVNClientManager");
-
+		logger.trace("Creating SVNClientManager for: " + testProject);
 		ISVNAuthenticationManager authManager = getAuthManager(testProject);
 		SVNClientManager clientManger = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), authManager);
-		logger.trace("done getSVNClientManager: " + clientManger);
 		return clientManger;
 	}
 
@@ -966,18 +963,18 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			String projectUrl = getProjectURL(teamShareConfig.getUrl());
 			SVNRepository repo = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(projectUrl));
 			repo.setAuthenticationManager(getAuthManager(testProject));
-			String repositoryRoot = repo.getRepositoryRoot(true).toString();
-			Collection<SVNDirEntry> dir = repo.getDir(
-					projectUrl.substring(repositoryRoot.length(), projectUrl.length()), -1, null,
-					(Collection<SVNDirEntry>) null);
+			Collection<SVNDirEntry> dir = repo.getDir("", -1, null, (Collection<SVNDirEntry>) null);
 			for (SVNDirEntry svnFolder : dir) {
+				System.out.println(svnFolder.getURL());
 				if (svnFolder.getName().equals("trunk")) {
 					result.put(svnFolder.getName(), svnFolder.getURL().toString());
 				}
 				if (svnFolder.getName().equals("branches")) {
+					System.out.println(svnFolder.getRelativePath());
 					Collection<SVNDirEntry> branches = repo.getDir(svnFolder.getRelativePath(), -1, null,
 							(Collection<SVNDirEntry>) null);
 					for (SVNDirEntry branch : branches) {
+						System.out.println(branch.getURL());
 						result.put(branch.getName(), branch.getURL().toString());
 					}
 				}
@@ -1000,5 +997,28 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			return url.substring(0, url.lastIndexOf("branches"));
 		}
 		return url;
+	}
+
+	@Override
+	public void swithToBranch(TestProject testProject, String url) throws SystemException {
+		SVNUpdateClient updateClient = getSVNClientManager(testProject).getUpdateClient();
+		try {
+			updateClient.setEventHandler(new SVNLoggingEventHandler(listener, logger));
+			SVNURL targetUrl = getTargetUrl(url, testProject);
+			logger.info("Switch project " + testProject.getName() + " to " + targetUrl);
+			updateClient.doSwitch(getFile(testProject), targetUrl, SVNRevision.HEAD, SVNRevision.HEAD,
+					SVNDepth.INFINITY, true, true);
+			fireEvents(testProject);
+			if (eventBroker != null) {
+				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED, testProject);
+			}
+		} catch (SVNException e) {
+			logger.error(e.getErrorMessage(), e);
+			throw new SystemException(e.getLocalizedMessage(), e);
+		}
+	}
+
+	protected SVNURL getTargetUrl(String url, TestProject testProject) throws SVNException {
+		return SVNURL.parseURIEncoded(url + "/" + testProject.getName());
 	}
 }

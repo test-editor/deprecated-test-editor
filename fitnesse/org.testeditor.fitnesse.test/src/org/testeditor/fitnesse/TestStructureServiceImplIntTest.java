@@ -217,6 +217,10 @@ public class TestStructureServiceImplIntTest {
 			public Map<String, String> getAvailableReleases(TestProject testProject) {
 				return null;
 			}
+
+			@Override
+			public void swithToBranch(TestProject testproject, String url) throws SystemException {
+			}
 		};
 	}
 

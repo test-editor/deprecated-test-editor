@@ -14,6 +14,7 @@ package org.testeditor.teamshare.svn;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.testeditor.core.model.teststructure.TestProject;
 
 /**
  * Modultests for SVNTeamShareService.
@@ -25,7 +26,7 @@ public class SVNTeamShareServiceTest {
 	 * Tests the extraction of the project url from an url of svn structure.
 	 * 
 	 * @throws Exception
-	 *             on Test failure
+	 *             on test failure
 	 */
 	@Test
 	public void testGetProjectURL() throws Exception {
@@ -38,6 +39,21 @@ public class SVNTeamShareServiceTest {
 				service.getProjectURL("http://srv/repo/prj/branches/v1.1"));
 		assertEquals("Extract from no svn layout", "http://srv/repo/prj/no/svn/layout",
 				service.getProjectURL("http://srv/repo/prj/no/svn/layout"));
+	}
+
+	/**
+	 * Tests the build of an svn url for the project.
+	 * 
+	 * @throws Exception
+	 *             on test failure
+	 */
+	@Test
+	public void testgetTargetUrl() throws Exception {
+		SVNTeamShareService service = new SVNTeamShareService();
+		TestProject testProject = new TestProject();
+		testProject.setName("Prj");
+		assertEquals("http://host/repo/prj/trunk/Prj",
+				service.getTargetUrl("http://host/repo/prj/trunk", testProject).toString());
 	}
 
 }
