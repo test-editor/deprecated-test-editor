@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.osgi.service.component.ComponentContext;
 import org.testeditor.core.constants.TestEditorCoreConstants;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.constants.TestEditorGlobalConstans;
@@ -1291,6 +1292,22 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			getProjects().remove(testProject);
 		}
 		getProjects().add(testProject);
+	}
+
+	/**
+	 * Activates the Service after the osgi system has created it. This method
+	 * loads the Projects in the Workspace.
+	 * 
+	 * @param componentContext
+	 *            of the osgi framework.
+	 */
+	public void activate(ComponentContext componentContext) {
+		try {
+			loadProjectListFromFileSystem();
+		} catch (SystemException e) {
+			logger.error("Error loadin projects on startup.", e);
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

@@ -219,7 +219,7 @@ public class TestStructureServiceImplIntTest {
 			}
 
 			@Override
-			public void swithToBranch(TestProject testproject, String url) throws SystemException {
+			public void switchToBranch(TestProject testproject, String url) throws SystemException {
 			}
 		};
 	}

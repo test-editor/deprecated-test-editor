@@ -284,10 +284,10 @@ public interface TeamShareService {
 	 *            used to lookup the names of the actual available releases and
 	 *            switch to it.
 	 * @param url
-	 *            of the brancht to swith to.
+	 *            of the branch to switch to.
 	 * @throws SystemException
 	 *             on Error switching to another release.
 	 */
-	void swithToBranch(TestProject testProject, String url) throws SystemException;
+	void switchToBranch(TestProject testProject, String url) throws SystemException;
 
 }

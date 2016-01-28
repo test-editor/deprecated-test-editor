@@ -127,7 +127,7 @@ public class SelectBranchHandler {
 							});
 							monitor.beginTask("update", IProgressMonitor.UNKNOWN);
 							try {
-								teamShareService.swithToBranch(project,
+								teamShareService.switchToBranch(project,
 										availableReleases.get(page.getSelectedRelease()));
 								context.get(TestProjectService.class).reloadProjectList();
 							} catch (SystemException e) {

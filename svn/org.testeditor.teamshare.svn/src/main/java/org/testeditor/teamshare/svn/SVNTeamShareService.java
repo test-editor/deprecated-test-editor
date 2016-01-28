@@ -1000,7 +1000,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public void swithToBranch(TestProject testProject, String url) throws SystemException {
+	public void switchToBranch(TestProject testProject, String url) throws SystemException {
 		SVNUpdateClient updateClient = getSVNClientManager(testProject).getUpdateClient();
 		try {
 			updateClient.setEventHandler(new SVNLoggingEventHandler(listener, logger));
@@ -1018,7 +1018,19 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 	}
 
+	/**
+	 * Builds the target url for a switch operation.
+	 * 
+	 * @param url
+	 *            of the target branch
+	 * @param testProject
+	 *            used to determine the name
+	 * @return svn url
+	 * @throws SVNException
+	 *             on problems building the url.
+	 */
 	protected SVNURL getTargetUrl(String url, TestProject testProject) throws SVNException {
 		return SVNURL.parseURIEncoded(url + "/" + testProject.getName());
 	}
+
 }

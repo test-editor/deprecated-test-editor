@@ -246,10 +246,10 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public void swithToBranch(TestProject testProject, String url) throws SystemException {
+	public void switchToBranch(TestProject testProject, String url) throws SystemException {
 		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
-			teamShareService.swithToBranch(testProject, url);
+			teamShareService.switchToBranch(testProject, url);
 		}
 	}
 
