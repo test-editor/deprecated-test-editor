@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
+import java.util.Map;
 
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
@@ -210,6 +211,15 @@ public class TestStructureServiceImplIntTest {
 
 			@Override
 			public void cleanup(TestProject testProject) throws SystemException {
+			}
+
+			@Override
+			public Map<String, String> getAvailableReleases(TestProject testProject) {
+				return null;
+			}
+
+			@Override
+			public void switchToBranch(TestProject testproject, String url) throws SystemException {
 			}
 		};
 	}

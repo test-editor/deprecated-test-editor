@@ -93,8 +93,8 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	}
 
 	@Override
-	public void checkout(TestProject testProject, TranslationService translationService) throws SystemException,
-			TeamAuthentificationException {
+	public void checkout(TestProject testProject, TranslationService translationService)
+			throws SystemException, TeamAuthentificationException {
 		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			teamShareService.checkout(testProject, translationService);
@@ -145,8 +145,8 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 	 */
 	private TeamShareServicePlugIn getTeamShare(TestProject testProject) {
 		if (testProject.getTestProjectConfig().getTeamShareConfig() != null) {
-			TeamShareServicePlugIn servicePlugIn = teamShareServices.get(testProject.getTestProjectConfig()
-					.getTeamShareConfig().getId());
+			TeamShareServicePlugIn servicePlugIn = teamShareServices
+					.get(testProject.getTestProjectConfig().getTeamShareConfig().getId());
 			if (servicePlugIn == null) {
 				LOGGER.error("No Service found for: " + testProject);
 			}
@@ -221,7 +221,7 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public boolean isCleanupNeeded(TestProject testProject) throws SystemException {
-		TeamShareServicePlugIn teamShareService = getTeamShare(testProject.getRootElement());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			return teamShareService.isCleanupNeeded(testProject);
 		}
@@ -230,9 +230,26 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 
 	@Override
 	public void cleanup(TestProject testProject) throws SystemException {
-		TeamShareServicePlugIn teamShareService = getTeamShare(testProject.getRootElement());
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
 		if (teamShareService != null) {
 			teamShareService.cleanup(testProject);
+		}
+	}
+
+	@Override
+	public Map<String, String> getAvailableReleases(TestProject testProject) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
+		if (teamShareService != null) {
+			return teamShareService.getAvailableReleases(testProject);
+		}
+		return null;
+	}
+
+	@Override
+	public void switchToBranch(TestProject testProject, String url) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
+		if (teamShareService != null) {
+			teamShareService.switchToBranch(testProject, url);
 		}
 	}
 

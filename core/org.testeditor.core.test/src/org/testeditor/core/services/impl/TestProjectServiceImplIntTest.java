@@ -400,22 +400,6 @@ public class TestProjectServiceImplIntTest {
 	}
 
 	/**
-	 * Tests reading Directories from a File and convert them to TestProjects.
-	 * 
-	 * @throws Exception
-	 *             for test
-	 */
-	@Test
-	public void testActivateService() throws Exception {
-		TestProjectServiceImpl service = getTestProjectServiceImplMock();
-		service.bind(new FileWatchServiceImpl());
-		service.activate(null);
-		assertEquals("One Project expected", 1, service.getProjects().size());
-		assertEquals("Project user acceptance test expected", "AkzeptanzTests", service.getProjects().get(0).getName());
-		assertNotNull("Project Config loaded", service.getProjects().get(0).getTestProjectConfig());
-	}
-
-	/**
 	 * 
 	 * @return TestProjectServiceMock to work with a virtual FileSystem.
 	 */

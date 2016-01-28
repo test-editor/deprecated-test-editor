@@ -39,6 +39,7 @@
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_l6Lh4I24EeODe-OipwitGA" elementId="org.testeditor.ui.handledmenuitem.approveElement" label="%popupmenu.label.approveElement" iconURI="platform:/plugin/org.testeditor.ui/icons/team_shareing.gif" command="_m0j0kI26EeODe-OipwitGA"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_Q7dukGpqEeSOgPsPr_FOyw" elementId="org.testeditor.ui.handledmenuitem.revertElement" label="%popupmenu.label.revertElement" iconURI="platform:/plugin/org.testeditor.ui/icons/revert.gif" command="_pwlOAGpqEeSOgPsPr_FOyw"/>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_MCg_YJSrEeSBt7RsTs2qPA" elementId="org.testeditor.ui.handledmenuitem.showChanges" label="%popupmenu.label.showChanges" iconURI="platform:/plugin/org.testeditor.ui/icons/show_changes.png" command="_5P-GYJSqEeSBt7RsTs2qPA"/>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_v1ncsGjNEeWIf_Sh73jsFQ" elementId="org.testeditor.ui.handledmenuitem.selectbranch" label="%popupmenu.label.selectBracnh" command="_rT3IwGjNEeWIf_Sh73jsFQ"/>
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_JSfXUEauEeWR66uzhUPE3Q" elementId="org.testeditor.ui.tearDownTestEnv.handledmenuitem" label="%popupmenu.label.shutdownTestEnv" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_UTcGYEcpEeWR66uzhUPE3Q" elementId="org.testeditor.ui.resetTestEnv.handledmenuitem" label="%popupmenu.label.resetTestEnv" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
@@ -154,7 +155,6 @@
   <handlers xmi:id="_IOLXcNM5EeKXiZqlHm_U4g" elementId="org.testeditor.ui.handler.openLogData" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenTestLogHandler" command="_hPrA0KdZEeKIcI0tdcqdJg"/>
   <handlers xmi:id="_pFIKwNcoEeKeqebfDEIM4g" elementId="org.testeditor.ui.newtestscenario.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewScenarioHandler" command="_lZqloNcoEeKeqebfDEIM4g"/>
   <handlers xmi:id="_RGuA8PRgEeKhvJHgD3On6A" elementId="org.testeditor.ui.showScenarioUsage.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.TestScenarioUsageHandler" command="_TcLccPRgEeKhvJHgD3On6A"/>
-  <handlers xmi:id="_VWX5IPhOEeK3HvD7VxkhpA" elementId="org.testeditor.ui.reloadLibrary.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ReloadLibraryHandler"/>
   <handlers xmi:id="_e11XADflEeOL5qr8nwU3qA" elementId="org.testeditor.ui.createDemoProjects.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.CreateDemoProjectsHandler" command="_sN6LYDflEeOL5qr8nwU3qA"/>
   <handlers xmi:id="_A5LAwDvcEeO9FbJw7O3mmA" elementId="org.testeditor.ui.newproject.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.NewProjectHandler" command="_4IcyADvbEeO9FbJw7O3mmA"/>
   <handlers xmi:id="_AFyFUFszEeOeLIc7pxHLHA" elementId="org.testeditor.ui.openTestHistory.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.OpenTestHistoryHandler" command="_EXfLEFszEeOeLIc7pxHLHA"/>
@@ -177,6 +177,7 @@
   <handlers xmi:id="_X6YUQAglEeWSk-Zraq4Niw" elementId="org.testeditor.ui.handler.clone_teststructure" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.CloneTestStructureHandler" command="_N5bzwAglEeWSk-Zraq4Niw"/>
   <handlers xmi:id="_ZkEU8EaZEeWR66uzhUPE3Q" elementId="org.testeditor.ui.handler.tearDownTestExecEnv" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ShutDownTestExecutionEnvironmentHandler" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
   <handlers xmi:id="_77sfcEcoEeWR66uzhUPE3Q" elementId="org.testeditor.ui.handler.resetTestExecEnv" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ResetTestExecutionEnvironmentHandler" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
+  <handlers xmi:id="_3IL18GjOEeWIf_Sh73jsFQ" elementId="org.testeditor.ui.selectBranch.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.SelectBranchHandler" command="_rT3IwGjNEeWIf_Sh73jsFQ"/>
   <bindingTables xmi:id="_vtvnGiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" bindingContext="_vtvnICNOEeKR9Jsu4DQSAw">
     <bindings xmi:id="_vtvnGyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+Q" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
     <bindings xmi:id="_vtvnHSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+S" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
@@ -314,6 +315,7 @@
   <commands xmi:id="_N5bzwAglEeWSk-Zraq4Niw" elementId="org.testeditor.ui.command.clone_teststructure" commandName="org.testeditor.ui.command.clone_teststructure"/>
   <commands xmi:id="_xjqGIEaPEeWR66uzhUPE3Q" elementId="org.testeditor.ui.command.tearDownTestExecEnv" commandName="org.testeditor.ui.command.tearDownTestExecEnv"/>
   <commands xmi:id="_2uFLEEcoEeWR66uzhUPE3Q" elementId="org.testeditor.ui.command.resetTestExecEnv" commandName="org.testeditor.ui.command.resetTestExecEnv"/>
+  <commands xmi:id="_rT3IwGjNEeWIf_Sh73jsFQ" elementId="org.testeditor.ui.selectBranch.command" commandName="org.testeditor.ui.selectBranch.command"/>
   <addons xmi:id="_vtvnKSNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.core.commands.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_vtvnKiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.contexts.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_vtvnKyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.bindings.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
