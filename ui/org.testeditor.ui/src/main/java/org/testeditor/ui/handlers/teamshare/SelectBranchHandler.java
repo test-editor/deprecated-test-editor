@@ -133,7 +133,7 @@ public class SelectBranchHandler {
 							} catch (SystemException e) {
 								LOGGER.error(e.getMessage());
 								MessageDialog.openError(shell, translationService.translate("%error"),
-										translationService.translate("%update.branch.dialog.error"));
+										translationService.translate("%switch.branch.dialog.error"));
 							}
 							monitor.done();
 						}
