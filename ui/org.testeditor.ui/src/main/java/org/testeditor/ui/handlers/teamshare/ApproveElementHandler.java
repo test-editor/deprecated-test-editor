@@ -111,7 +111,7 @@ public class ApproveElementHandler extends AbstractUpdateOrApproveHandler {
 	@Override
 	void showCompletedMessage() {
 		MessageDialog.openInformation(getDisplay().getActiveShell(), translationService.translate("%info"),
-				translationService.translate("%approve.completed") + "\n" + teamChangeState);
+				"\n" + teamChangeState);
 
 	}
 
