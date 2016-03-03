@@ -256,6 +256,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			File checkinFile = getFile(testStructure);
 
+			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(checkinFile, false);
+			System.out.println(info);
 			boolean isDir = false;
 			if (checkinFile.isDirectory()) {
 				isDir = true;
@@ -965,16 +967,13 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			repo.setAuthenticationManager(getAuthManager(testProject));
 			Collection<SVNDirEntry> dir = repo.getDir("", -1, null, (Collection<SVNDirEntry>) null);
 			for (SVNDirEntry svnFolder : dir) {
-				System.out.println(svnFolder.getURL());
 				if (svnFolder.getName().equals("trunk")) {
 					result.put(svnFolder.getName(), svnFolder.getURL().toString());
 				}
 				if (svnFolder.getName().equals("branches")) {
-					System.out.println(svnFolder.getRelativePath());
 					Collection<SVNDirEntry> branches = repo.getDir(svnFolder.getRelativePath(), -1, null,
 							(Collection<SVNDirEntry>) null);
 					for (SVNDirEntry branch : branches) {
-						System.out.println(branch.getURL());
 						result.put(branch.getName(), branch.getURL().toString());
 					}
 				}
@@ -1012,6 +1011,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			if (eventBroker != null) {
 				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED, testProject);
 			}
+			((SVNTeamShareConfig) testProject.getTestProjectConfig().getTeamShareConfig()).setUrl(url);
+
 		} catch (SVNException e) {
 			logger.error(e.getErrorMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);
@@ -1031,6 +1032,19 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 */
 	protected SVNURL getTargetUrl(String url, TestProject testProject) throws SVNException {
 		return SVNURL.parseURIEncoded(url + "/" + testProject.getName());
+	}
+
+	@Override
+	public String getCurrentBranch(TestProject testProject) {
+		String branch = null;
+
+		if (testProject.getTestProjectConfig().getTeamShareConfig() != null) {
+			String url = ((SVNTeamShareConfig) (testProject.getTestProjectConfig().getTeamShareConfig())).getUrl();
+			if (url != null && url.indexOf("branches") != -1) {
+				return url.substring(url.indexOf("branches") + "branches".length() + 1);
+			}
+		}
+		return branch;
 	}
 
 }

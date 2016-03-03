@@ -253,4 +253,13 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 		}
 	}
 
+	@Override
+	public String getCurrentBranch(TestProject testProject) {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
+		if (teamShareService != null) {
+			return teamShareService.getCurrentBranch(testProject);
+		}
+		return null;
+	}
+
 }

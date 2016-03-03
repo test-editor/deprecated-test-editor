@@ -89,7 +89,7 @@ public class SelectBranchHandler {
 	 */
 	@Execute
 	public void execute(final IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) final Shell shell,
-			final TeamShareService teamShareService) {
+			final TeamShareService teamShareService, final TestProjectService testProjectService) {
 		Object firstElement = getSelection(context).getFirstElement();
 		if (firstElement instanceof TestStructure) {
 			final TestProject project = ((TestStructure) firstElement).getRootElement();
@@ -129,6 +129,8 @@ public class SelectBranchHandler {
 							try {
 								teamShareService.switchToBranch(project,
 										availableReleases.get(page.getSelectedRelease()));
+								testProjectService.storeProjectConfig(project, project.getTestProjectConfig());
+
 								context.get(TestProjectService.class).reloadProjectList();
 							} catch (SystemException e) {
 								LOGGER.error(e.getMessage());

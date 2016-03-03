@@ -300,6 +300,14 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	private TestProject createProjectFrom(File projectDirectory) throws SystemException {
 		TestProject testProject = new TestProject();
 		loadProjectConfigFromFileSystem(testProject, projectDirectory);
+
+		if (testProject.getTestProjectConfig().getTeamShareConfig() != null) {
+			String currentBranch = teamShareService.getCurrentBranch(testProject);
+			if (currentBranch != null) {
+				testProject.setLabel(testProject.getName() + " [" + currentBranch + "]");
+			}
+		}
+
 		try {
 			testProject.setUrl(projectDirectory.toURI().toURL());
 		} catch (MalformedURLException e) {

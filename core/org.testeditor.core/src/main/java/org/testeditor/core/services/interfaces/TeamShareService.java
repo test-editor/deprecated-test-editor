@@ -290,4 +290,15 @@ public interface TeamShareService {
 	 */
 	void switchToBranch(TestProject testProject, String url) throws SystemException;
 
+	/**
+	 * Returns the name of the current where the user is workig on. If the
+	 * project is on the trunk, a null is returned.
+	 * 
+	 * @param testProject
+	 *            the testProject
+	 * @return the name of the branch or null if the user is working on the
+	 *         trunk.
+	 */
+	String getCurrentBranch(TestProject testProject);
+
 }

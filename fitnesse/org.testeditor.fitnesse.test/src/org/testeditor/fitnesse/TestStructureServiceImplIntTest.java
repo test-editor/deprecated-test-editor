@@ -221,6 +221,11 @@ public class TestStructureServiceImplIntTest {
 			@Override
 			public void switchToBranch(TestProject testproject, String url) throws SystemException {
 			}
+
+			@Override
+			public String getCurrentBranch(TestProject testProject) {
+				return null;
+			}
 		};
 	}
 
