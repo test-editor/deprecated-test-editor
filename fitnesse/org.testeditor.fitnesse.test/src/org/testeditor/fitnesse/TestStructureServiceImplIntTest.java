@@ -226,6 +226,11 @@ public class TestStructureServiceImplIntTest {
 			public String getCurrentBranch(TestProject testProject) {
 				return null;
 			}
+
+			@Override
+			public boolean isDirty(TestProject project) {
+				return false;
+			}
 		};
 	}
 

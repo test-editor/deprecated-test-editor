@@ -65,6 +65,7 @@ import org.tmatesoft.svn.core.wc.SVNMoveClient;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNStatusClient;
+import org.tmatesoft.svn.core.wc.SVNStatusType;
 import org.tmatesoft.svn.core.wc.SVNUpdateClient;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
@@ -256,8 +257,6 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			File checkinFile = getFile(testStructure);
 
-			final SVNStatus info = getSVNClientManager(testProject).getStatusClient().doStatus(checkinFile, false);
-			System.out.println(info);
 			boolean isDir = false;
 			if (checkinFile.isDirectory()) {
 				isDir = true;
@@ -306,10 +305,18 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			SVNUpdateClient updateClient = clientManager.getUpdateClient();
 			File checkoutFile = getFile(testStructure);
 
+			SvnGetInfo info = clientManager.getWCClient().getOperationsFactory().createGetInfo();
+
 			long revisionNumber = updateClient.doUpdate(checkoutFile, SVNRevision.HEAD, SVNDepth.INFINITY, true, true);
-			resultState = translationService.translate("%svn.state.update",
-					"platform:/plugin/org.testeditor.teamshare.svn") + " " + revisionNumber;
-			logger.info("revisionNumber: " + revisionNumber);
+
+			if (info.getRevision().getID() < revisionNumber) {
+				resultState = translationService.translate("%svn.state.update",
+						"platform:/plugin/org.testeditor.teamshare.svn") + " " + revisionNumber;
+				logger.info("revisionNumber: " + revisionNumber);
+			} else {
+				resultState = translationService.translate("%svn.state.update",
+						"platform:/plugin/org.testeditor.teamshare.svn") + " " + revisionNumber;
+			}
 
 			revertMemoryModel(testStructure);
 
@@ -734,7 +741,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 								subPath = subPath.substring(subPath.lastIndexOf(testStructure.getName()),
 										subPath.length());
 							}
-							String deletedTSFullName = subPath.replaceAll(File.separator, ".");
+							String deletedTSFullName = subPath.replaceAll("\\" + File.separator, ".");
 							logger.trace(
 									"Deleted test structure in revert operation with fullname: " + deletedTSFullName);
 							eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_DELETED,
@@ -1047,4 +1054,27 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		return branch;
 	}
 
+	@Override
+	public boolean isDirty(TestProject testProject) throws SystemException {
+		final List<File> fileList = new ArrayList<File>();
+		try {
+			SVNClientManager svnClientManager = SVNClientManager.newInstance();
+			File rootFile = getFile(testProject);
+
+			svnClientManager.getStatusClient().doStatus(rootFile, SVNRevision.HEAD, SVNDepth.INFINITY, false, false,
+					false, false, new ISVNStatusHandler() {
+						@Override
+						public void handleStatus(SVNStatus status) throws SVNException {
+							SVNStatusType statusType = status.getContentsStatus();
+							if (statusType != SVNStatusType.STATUS_IGNORED) {
+								fileList.add(status.getFile());
+							}
+						}
+					}, null);
+		} catch (SVNException e) {
+			logger.error(e.getMessage(), e);
+			throw new SystemException(e.getMessage(), e);
+		}
+		return fileList.size() > 0;
+	}
 }

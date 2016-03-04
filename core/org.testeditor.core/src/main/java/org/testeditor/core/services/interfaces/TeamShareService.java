@@ -301,4 +301,15 @@ public interface TeamShareService {
 	 */
 	String getCurrentBranch(TestProject testProject);
 
+	/**
+	 * Tests wheter thare are not commited changes in a project.
+	 * 
+	 * @param project
+	 *            - the project
+	 * @return true if there is a commit or revert needed
+	 * @throws SystemException
+	 *             - if there is a problem accessing the remote repository.
+	 */
+	boolean isDirty(TestProject project) throws SystemException;
+
 }

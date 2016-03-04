@@ -86,13 +86,21 @@ public class SelectBranchHandler {
 	 * 
 	 * @param context
 	 * @param shell
+	 * @throws SystemException
 	 */
 	@Execute
 	public void execute(final IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) final Shell shell,
-			final TeamShareService teamShareService, final TestProjectService testProjectService) {
+			final TeamShareService teamShareService, final TestProjectService testProjectService)
+					throws SystemException {
 		Object firstElement = getSelection(context).getFirstElement();
 		if (firstElement instanceof TestStructure) {
 			final TestProject project = ((TestStructure) firstElement).getRootElement();
+			if (teamShareService.isDirty(project)) {
+				MessageDialog.openError(shell, translationService.translate("%error"),
+						translationService.translate("%switch.branch.dialog.notPossible.error"));
+				return;
+			}
+
 			Wizard newWizard = new Wizard() {
 
 				@Override

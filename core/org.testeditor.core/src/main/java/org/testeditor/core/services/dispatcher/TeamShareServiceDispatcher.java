@@ -262,4 +262,13 @@ public class TeamShareServiceDispatcher implements TeamShareService, IContextFun
 		return null;
 	}
 
+	@Override
+	public boolean isDirty(TestProject testProject) throws SystemException {
+		TeamShareServicePlugIn teamShareService = getTeamShare(testProject);
+		if (teamShareService != null) {
+			return teamShareService.isDirty(testProject);
+		}
+		return false;
+	}
+
 }
