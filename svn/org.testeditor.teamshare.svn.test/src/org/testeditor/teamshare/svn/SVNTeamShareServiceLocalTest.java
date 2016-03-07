@@ -684,9 +684,11 @@ public class SVNTeamShareServiceLocalTest {
 				TrueFileFilter.INSTANCE);
 
 		for (File file : listFiles) {
-			for (String ignoreItem : ignoreList) {
-				assertNotEquals("File/Directory: " + file.getName() + " must not be shared !", file.getName(),
-						ignoreItem);
+			if (!file.getAbsolutePath().contains(".svn")) {
+				for (String ignoreItem : ignoreList) {
+					assertNotEquals("File/Directory: " + file.getName() + " must not be shared !", file.getName(),
+							ignoreItem);
+				}
 			}
 		}
 	}

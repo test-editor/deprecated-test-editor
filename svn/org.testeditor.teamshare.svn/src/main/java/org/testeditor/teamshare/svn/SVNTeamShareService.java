@@ -91,7 +91,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 	// all files/directories in list will be ignored during import to SVN
 	public static final String[] IGNORE_LIST = { "ErrorLogs", "testProgress", "RecentChanges", "testResults",
-			".DS_Store" };
+			".DS_Store", ".svn" };
 
 	private static final Logger logger = Logger.getLogger(SVNTeamShareService.class);
 
@@ -257,26 +257,19 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 
 			File checkinFile = getFile(testStructure);
 
-			boolean isDir = false;
-			if (checkinFile.isDirectory()) {
-				isDir = true;
-			}
-
-			try {
-				wcClient.doAdd(checkinFile, false, isDir, true, SVNDepth.INFINITY, true, true);
-			} catch (Exception e) {
-				// TODO should be analyzed
-				// org.tmatesoft.svn.core.SVNException: svn: E150002: 'file' is
-				// already under version control
-				logger.warn(e.getMessage(), e);
-			}
+			doAdd(clientManager, wcClient, checkinFile);
 
 			SVNCommitClient cc = clientManager.getCommitClient();
 			cc.setEventHandler(new SVNLoggingEventHandler(listener, logger));
 			SVNCommitInfo doCommit = cc.doCommit(new File[] { checkinFile }, false, svnComment, null, null, false, true,
 					SVNDepth.INFINITY);
-			resultState = translationService.translate("%svn.state.approve",
-					"platform:/plugin/org.testeditor.teamshare.svn") + " " + doCommit.getNewRevision();
+			if (doCommit.getNewRevision() < 0) {
+				resultState = translationService.translate("%svn.state.nochanges",
+						"platform:/plugin/org.testeditor.teamshare.svn");
+			} else {
+				resultState = translationService.translate("%svn.state.approve",
+						"platform:/plugin/org.testeditor.teamshare.svn") + " " + doCommit.getNewRevision();
+			}
 
 			updateSvnstate(testStructure);
 
@@ -290,6 +283,33 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		}
 		logger.trace("call to approve done; testStructure: '" + testStructure.getFullName() + "'");
 		return resultState;
+	}
+
+	public void doAdd(SVNClientManager clientManager, SVNWCClient wcClient, File checkinFile) {
+
+		String fullName = checkinFile.getAbsolutePath();
+
+		try {
+			if (!checkinFile.isDirectory()) {
+				throw new IllegalArgumentException(checkinFile.getAbsolutePath() + " is not a directory.");
+			}
+			for (int i = 0; i < SVNTeamShareService.IGNORE_LIST.length; i++) {
+				if (fullName.matches(".*" + SVNTeamShareService.IGNORE_LIST[i])) {
+					return;
+				}
+			}
+			final SVNStatus info = clientManager.getStatusClient().doStatus(checkinFile, false);
+			if (!info.isVersioned()) {
+				wcClient.doAdd(checkinFile, false, true, true, SVNDepth.INFINITY, false, true);
+			}
+			for (File file : checkinFile.listFiles()) {
+				if (file.isDirectory()) {
+					doAdd(clientManager, wcClient, file);
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Error during adding file to subversion. Message: " + e.getMessage(), e);
+		}
 	}
 
 	@Override

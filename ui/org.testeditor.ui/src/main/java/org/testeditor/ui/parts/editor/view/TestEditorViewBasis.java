@@ -573,8 +573,8 @@ public abstract class TestEditorViewBasis {
 	protected int getSelectionEndInTestCase() {
 		if (!focusInSubComponent) {
 			int[] selection = getStyledText().getSelectionRanges();
-			return getCodeLineMapper().getContentOfOffsetViewToTestListAt(
-					getStyledText().getLineAtOffset(selection[0] + selection[1]));
+			return getCodeLineMapper()
+					.getContentOfOffsetViewToTestListAt(getStyledText().getLineAtOffset(selection[0] + selection[1]));
 		}
 		return -1;
 	}
@@ -612,7 +612,8 @@ public abstract class TestEditorViewBasis {
 							}
 						}
 						moveRow(lineFromLowerBorder, lineFromUpperBorder, targetLine, beginOrEnd);
-					} else if (e.keyCode == SWT.ARROW_DOWN && lineFromLowerBorder < getStyledText().getLineCount() - 1) {
+					} else if (e.keyCode == SWT.ARROW_DOWN
+							&& lineFromLowerBorder < getStyledText().getLineCount() - 1) {
 						beginOrEnd = false;
 
 						moveRow(lineFromLowerBorder, lineFromUpperBorder, lineFromLowerBorder + 1, beginOrEnd);
