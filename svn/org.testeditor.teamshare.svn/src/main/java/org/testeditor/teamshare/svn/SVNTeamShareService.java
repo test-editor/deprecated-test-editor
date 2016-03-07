@@ -70,9 +70,6 @@ import org.tmatesoft.svn.core.wc.SVNUpdateClient;
 import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 import org.tmatesoft.svn.core.wc2.SvnGetInfo;
-import org.tmatesoft.svn.core.wc2.SvnLog;
-import org.tmatesoft.svn.core.wc2.SvnRevisionRange;
-import org.tmatesoft.svn.core.wc2.SvnTarget;
 
 /**
  * 
@@ -901,19 +898,27 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		logger.trace("call to availableUpdatesCount; testProject: '" + testProject.getFullName() + "'");
 		SVNClientManager clientManager = getSVNClientManager(testProject);
 		try {
-			SvnGetInfo info = clientManager.getWCClient().getOperationsFactory().createGetInfo();
-			info.setSingleTarget(SvnTarget.fromFile(getFile(testProject)));
+			File rootDir = new File(testProject.getTestProjectConfig().getProjectPath() + "\\config.tpr");
+			SVNRevision localRevision = clientManager.getStatusClient().doStatus(rootDir, false).getRevision();
 
-			SVNRevision localRevision = SVNRevision.create(info.run().getLastChangedRevision());
-			SvnLog log = clientManager.getWCClient().getOperationsFactory().createLog();
-
-			log.addRange(SvnRevisionRange.create(SVNRevision.HEAD, SVNRevision.HEAD));
-			SVNTeamShareConfig cfg = (SVNTeamShareConfig) testProject.getTestProjectConfig().getTeamShareConfig();
-			log.setSingleTarget(SvnTarget.fromURL(SVNURL.parseURIEncoded(cfg.getUrl() + "/" + testProject.getName())));
-			SVNLogEntry run = log.run();
-			logger.trace("call to availableUpdatesCount done; testProject: '" + testProject.getFullName() + "'");
-			if (run != null) {
-				return (int) (run.getRevision() - localRevision.getNumber());
+			SVNTeamShareConfig teamShareConfig = (SVNTeamShareConfig) testProject.getTestProjectConfig()
+					.getTeamShareConfig();
+			String url = teamShareConfig.getUrl();
+			SVNRepository repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(url));
+			ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager();
+			repository.setAuthenticationManager(authManager);
+			repository.getRepositoryUUID(true);
+			Collection<SVNLogEntry> logEntries = repository.log(new String[] { "" }, null, localRevision.getNumber(),
+					SVNRevision.HEAD.getNumber(), true, true);
+			String currentUser = System.getProperty("user.name");
+			if (logEntries != null) {
+				int changes = 0;
+				for (SVNLogEntry logEntry : logEntries) {
+					if (!logEntry.getAuthor().equals(currentUser)) {
+						changes++;
+					}
+				}
+				return changes;
 			}
 			return 0;
 		} catch (SVNException e) {
