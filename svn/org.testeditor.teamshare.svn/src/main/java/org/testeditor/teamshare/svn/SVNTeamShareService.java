@@ -898,7 +898,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 		logger.trace("call to availableUpdatesCount; testProject: '" + testProject.getFullName() + "'");
 		SVNClientManager clientManager = getSVNClientManager(testProject);
 		try {
-			File rootDir = new File(testProject.getTestProjectConfig().getProjectPath() + "\\config.tpr");
+			File rootDir = new File(testProject.getTestProjectConfig().getProjectPath());
 			SVNRevision localRevision = clientManager.getStatusClient().doStatus(rootDir, false).getRevision();
 
 			SVNTeamShareConfig teamShareConfig = (SVNTeamShareConfig) testProject.getTestProjectConfig()
