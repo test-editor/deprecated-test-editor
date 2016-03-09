@@ -914,7 +914,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			if (logEntries != null) {
 				int changes = 0;
 				for (SVNLogEntry logEntry : logEntries) {
-					if (!logEntry.getAuthor().equals(currentUser)) {
+					if (!logEntry.getAuthor().equals(currentUser)
+							&& logEntry.getRevision() != localRevision.getNumber()) {
 						changes++;
 					}
 				}
