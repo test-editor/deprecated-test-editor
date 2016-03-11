@@ -28,7 +28,7 @@ import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.TestProjectService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 
 /**
  * 
@@ -37,19 +37,6 @@ import org.testeditor.core.services.interfaces.TestProjectService;
  */
 public class TestProjectServiceImplTest {
 	private static final String PROJECT_NAME = "MyProject";
-
-	/**
-	 * Tests the migration of the Convert from Version 1.2 of a Config.
-	 */
-	@Test
-	public void testGetTestProjectConfigFromVersion1dot2() {
-		TestProjectServiceImpl projectService = new TestProjectServiceImpl();
-		Properties properties = new Properties();
-		TestProjectConfig projectConfig = projectService.getTestProjectConfigFromVersion1dot2(new TestProjectConfig(),
-				properties);
-		assertNotNull("Project Config ", projectConfig);
-		assertEquals("fitnesse_based_1.2", projectConfig.getTestServerID());
-	}
 
 	/**
 	 * Tests that the TestProjectConfig after convert to and back from
@@ -66,22 +53,6 @@ public class TestProjectServiceImplTest {
 		Properties properties = service.getPropertiesFrom(projectConfig);
 		TestProjectConfig cfgAfterStoring = service.getTestProjectConfigFrom(properties, PROJECT_NAME);
 		assertEquals("TestProjectConfig equals the loaded one.", projectConfig, cfgAfterStoring);
-	}
-
-	/**
-	 * Test that the unsupported Version of the configuration is marked in the
-	 * configuration of the project.
-	 * 
-	 * @throws Exception
-	 *             for Test
-	 */
-	@Test
-	public void testUnsupportedVersionIsMarked() throws Exception {
-		Properties properties = new Properties();
-		properties.put(TestProjectService.VERSION_TAG, "0.0");
-		TestProjectServiceImpl service = new TestProjectServiceImpl();
-		TestProjectConfig testProjectConfigFrom = service.getTestProjectConfigFrom(properties, PROJECT_NAME);
-		assertEquals(TestProjectService.UNSUPPORTED_CONFIG_VERSION, testProjectConfigFrom.getProjectConfigVersion());
 	}
 
 	/**
@@ -186,18 +157,24 @@ public class TestProjectServiceImplTest {
 	/**
 	 * Tests the setting of values from properties.
 	 * 
+	 * @throws IOException
+	 *             - Exception during properties access.
+	 * 
 	 */
 	@Test
-	public void testSetValuesOnProjectConfig() {
+	public void testSetValuesOnProjectConfig() throws IOException {
 		TestProjectServiceImpl testProjectService = new TestProjectServiceImpl();
-		TestProjectConfig testProjectConfig = new TestProjectConfig();
 		Properties properties = new Properties();
-		properties.setProperty("testautomat.serverid", "server");
-		testProjectService.setConfigValues(testProjectConfig, properties);
-		assertEquals("server", testProjectConfig.getTestServerID());
+		TestProjectConfig testProjectConfig = testProjectService.getTestProjectConfigFrom(properties, "test");
 		assertEquals("localhost", testProjectConfig.getTestEnvironmentConfiguration());
-		properties.setProperty("test.execution.environment.config", "linux");
-		testProjectService.setConfigValues(testProjectConfig, properties);
+		assertEquals("fitnesse_based_1.2", testProjectConfig.getTestServerID());
+
+		properties.setProperty("testautomat.serverid", "server");
+		testProjectConfig = testProjectService.getTestProjectConfigFrom(properties, "test");
+		assertEquals("server", testProjectConfig.getTestServerID());
+
+		properties.setProperty(TestExecutionEnvironmentService.CONFIG, "linux");
+		testProjectConfig = testProjectService.getTestProjectConfigFrom(properties, "test");
 		assertEquals("linux", testProjectConfig.getTestEnvironmentConfiguration());
 	}
 

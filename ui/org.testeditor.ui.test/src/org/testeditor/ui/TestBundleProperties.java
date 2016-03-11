@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.junit.Before;
@@ -35,6 +36,8 @@ import org.osgi.framework.FrameworkUtil;
  * 
  */
 public class TestBundleProperties {
+	private static Logger logger = Logger.getLogger(TestBundleProperties.class.getName());
+
 	private Properties messagePropertiesDe = new Properties();
 	private Properties messagePropertiesDefault = new Properties();
 
@@ -61,6 +64,16 @@ public class TestBundleProperties {
 	 */
 	@Test
 	public void testBundlePropertiesEqual() {
+		for (Object key : messagePropertiesDefault.keySet()) {
+			if (!messagePropertiesDe.containsKey(key)) {
+				logger.info("key '" + key + "' not found in german Properties");
+			}
+		}
+		for (Object key : messagePropertiesDe.keySet()) {
+			if (!messagePropertiesDefault.containsKey(key)) {
+				logger.info("key '" + key + "' not found in default Properties");
+			}
+		}
 
 		assertEquals(messagePropertiesDefault.size(), messagePropertiesDe.size());
 
@@ -97,7 +110,8 @@ public class TestBundleProperties {
 	 *            as a string
 	 * @return true, if all keys are in the value-properties included.
 	 */
-	private boolean writeDifferent(Properties messagePropertiesKey, Properties messagePropertiesValue, String language) {
+	private boolean writeDifferent(Properties messagePropertiesKey, Properties messagePropertiesValue,
+			String language) {
 		boolean allKeysInValueProperties = true;
 		Enumeration<Object> keys = messagePropertiesKey.keys();
 

@@ -42,9 +42,10 @@ public class LibraryConfigurationServiceImpl implements LibraryConfigurationServ
 	public ProjectLibraryConfig createProjectLibraryConfigFrom(Properties properties) {
 		// TODO Refactor this method to comunicate the migrate stratagy
 		String version = properties.getProperty(TestProjectService.VERSION_TAG);
-		if (TestProjectService.VERSION1_1.equals(version) | !TestProjectService.SUPPORTED_VERSIONS.contains(version)) {
+		if (TestProjectService.VERSION1_1.equals(version)) {
 			return migrateConfigVersion(properties);
 		}
+
 		XMLProjectLibraryConfig xmlProjectLibraryConfig = new XMLProjectLibraryConfig();
 		xmlProjectLibraryConfig.setPathToActionGroupXml(properties.getProperty(PATH_XML_ACTIONGROUP));
 		xmlProjectLibraryConfig.setPathToXmlTechnicalBindings(properties.getProperty(PATH_XML_TECHNICALBINDINGS));
@@ -63,8 +64,8 @@ public class LibraryConfigurationServiceImpl implements LibraryConfigurationServ
 		XMLProjectLibraryConfig xmlProjectLibraryConfig = new XMLProjectLibraryConfig();
 		if (properties.getProperty(TestProjectService.VERSION_TAG).equals(TestProjectService.VERSION1_1)) {
 			xmlProjectLibraryConfig.setPathToActionGroupXml(properties.getProperty(PATH_XML_ACTIONGROUP1DOT1));
-			xmlProjectLibraryConfig.setPathToXmlTechnicalBindings(properties
-					.getProperty(PATH_XML_TECHNICALBINDINGS1DOT1));
+			xmlProjectLibraryConfig
+					.setPathToXmlTechnicalBindings(properties.getProperty(PATH_XML_TECHNICALBINDINGS1DOT1));
 		}
 		return xmlProjectLibraryConfig;
 	}

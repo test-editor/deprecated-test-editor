@@ -34,10 +34,11 @@ public interface TestProjectService extends TestStructureTreeModel {
 
 	String VERSION1_1 = "1.1";
 	String VERSION1_2 = "1.2";
-	String VERSION1_3 = "1.3";
-	String VERSION = "1.4";
+	String VERSION = "1.3";
 
-	Set<String> SUPPORTED_VERSIONS = new HashSet<String>(Arrays.asList(VERSION, VERSION1_2, VERSION1_3));
+	String SERVER_ID = "testautomat.serverid";
+
+	Set<String> SUPPORTED_VERSIONS = new HashSet<String>(Arrays.asList(VERSION, VERSION1_2));
 	String UNSUPPORTED_CONFIG_VERSION = "unsupported";
 
 	/**

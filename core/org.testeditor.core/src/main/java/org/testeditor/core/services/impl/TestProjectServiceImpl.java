@@ -544,56 +544,47 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 *             on storing config.
 	 */
 	protected TestProjectConfig getTestProjectConfigFrom(Properties properties, String projectName) throws IOException {
-		boolean configMigrated = false;
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		addGlobalVariablesToProjectConfig(testProjectConfig, properties);
-		setConfigValues(testProjectConfig, properties);
-		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
-		if (properties.containsKey(TestExecutionEnvironmentService.CONFIG)) {
-			testProjectConfig
-					.setTestEnvironmentConfiguration(properties.getProperty(TestExecutionEnvironmentService.CONFIG));
-		}
-		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
-			fixNonVersionProperties(properties);
-		} else {
-			String cfgVersion = properties.getProperty(TestProjectService.VERSION_TAG);
-			testProjectConfig.setProjectConfigVersion(cfgVersion);
-			if (!cfgVersion.equals(TestProjectService.VERSION)) {
-				if (isConfigVersionSupported(cfgVersion)) {
-					testProjectConfig = getFixedTestProjectConfigVersion(testProjectConfig, properties);
-					configMigrated = true;
-				} else {
-					testProjectConfig.setProjectConfigVersion(TestProjectService.UNSUPPORTED_CONFIG_VERSION);
-				}
-			}
 
+		if (!properties.containsKey(TestProjectService.VERSION_TAG)) {
+			properties.put(TestEditorPlugInService.LIBRARY_ID, "org.testeditor.xmllibrary");
+			properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
 		}
+
+		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
+
+		testProjectConfig
+				.setTestServerID(getPropertyValue(properties, TestProjectService.SERVER_ID, "fitnesse_based_1.2"));
+
+		testProjectConfig.setTestEnvironmentConfiguration(getPropertyValue(properties,
+				TestExecutionEnvironmentService.CONFIG, TestEditorCoreConstants.NONE_TEST_AGENT));
+
 		setupPluginConfig(testProjectConfig, properties);
-		if (configMigrated) {
-			internalStoreProjectConfig(projectName, testProjectConfig, true);
-		}
+
+		internalStoreProjectConfig(projectName, testProjectConfig, true);
+
+		addGlobalVariablesToProjectConfig(testProjectConfig, properties);
 
 		return testProjectConfig;
 	}
 
 	/**
-	 * Init values from properties or set defaults.
+	 * reads a property value from properties - if the value is not stored in
+	 * the properties, a default value will be returned.
 	 * 
-	 * @param testProjectConfig
-	 *            to be configured.
 	 * @param properties
-	 *            used to get the values.
+	 *            - the properties
+	 * @param key
+	 *            - the key of the property
+	 * @param defaultValue
+	 *            - the default value for the property
+	 * @return - the return value
 	 */
-	protected void setConfigValues(TestProjectConfig testProjectConfig, Properties properties) {
-		String serverId = properties.getProperty("testautomat.serverid");
-		if (serverId != null) {
-			testProjectConfig.setTestServerID(serverId);
-		}
-		String testEnv = properties.getProperty("test.execution.environment.config");
-		if (testEnv == null) {
-			testProjectConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
+	private String getPropertyValue(Properties properties, String key, String defaultValue) {
+		if (properties.containsKey(key)) {
+			return properties.getProperty(key);
 		} else {
-			testProjectConfig.setTestEnvironmentConfiguration(testEnv);
+			return defaultValue;
 		}
 	}
 
@@ -659,105 +650,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	}
 
 	/**
-	 * Fixing the ProjectConfig for the current TestEditor instance.
-	 * 
-	 * @param testProjectConfig
-	 *            to be fixed
-	 * @param properties
-	 *            base for the config.
-	 * @return the fixes Project config.
-	 */
-	protected TestProjectConfig getFixedTestProjectConfigVersion(TestProjectConfig testProjectConfig,
-			Properties properties) {
-		return migrateProjectConfigVersion(testProjectConfig, properties);
-	}
-
-	/**
-	 * gets the config-properties from older versions.
-	 * 
-	 * @param testProjectConfig
-	 *            actual created Config.
-	 * 
-	 * @param properties
-	 *            base for the config.
-	 * 
-	 * @return the fixes Project config
-	 */
-	private TestProjectConfig migrateProjectConfigVersion(TestProjectConfig testProjectConfig, Properties properties) {
-		if (properties.getProperty(TestProjectService.VERSION_TAG).equals(TestProjectService.VERSION1_1)) {
-			return getTestProjectConfigFromVersion1dot1(properties);
-		}
-		if (properties.getProperty(TestProjectService.VERSION_TAG).equals(TestProjectService.VERSION1_2)) {
-			return getTestProjectConfigFromVersion1dot2(testProjectConfig, properties);
-		}
-		if (properties.getProperty(TestProjectService.VERSION_TAG).equals(TestProjectService.VERSION1_3)) {
-			return getTestProjectConfigFromVersion1dot3(testProjectConfig, properties);
-		}
-		return new TestProjectConfig();
-	}
-
-	/**
-	 * gets the config-properties from the version 1.3 and initializes with new
-	 * .
-	 * 
-	 * @param testProjectConfig
-	 *            actual created configuration.
-	 * 
-	 * @param properties
-	 *            with BeanInformations for the configuration.
-	 * @return TestProjectConfig
-	 */
-	protected TestProjectConfig getTestProjectConfigFromVersion1dot3(TestProjectConfig testProjectConfig,
-			Properties properties) {
-		testProjectConfig.setTestEnvironmentConfiguration(TestEditorCoreConstants.NONE_TEST_AGENT);
-		testProjectConfig.setProjectConfigVersion(VERSION);
-		return testProjectConfig;
-	}
-
-	/**
-	 * gets the config-properties from the version 1.2 and initializes with new
-	 * .
-	 * 
-	 * @param testProjectConfig
-	 *            actual created Config.
-	 * 
-	 * @param properties
-	 *            with BeanInformations for the Config.
-	 * @return TestProjectConfig
-	 */
-	protected TestProjectConfig getTestProjectConfigFromVersion1dot2(TestProjectConfig testProjectConfig,
-			Properties properties) {
-		testProjectConfig.setTestServerID("fitnesse_based_1.2");
-		testProjectConfig.setProjectConfigVersion(VERSION1_2);
-		return testProjectConfig;
-	}
-
-	/**
-	 * gets the config-properties from the version 1.1.
-	 * 
-	 * @param properties
-	 *            with BeanInformations for the Config.
-	 * @return TestProjectConfig
-	 */
-	private TestProjectConfig getTestProjectConfigFromVersion1dot1(Properties properties) {
-		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
-		testProjectConfig.setFixtureClass(properties.getProperty("classFixtures"));
-		testProjectConfig.setProjectConfigVersion(VERSION1_1);
-		return testProjectConfig;
-	}
-
-	/**
-	 * Updates Configurations from the 1.0 release.
-	 * 
-	 * @param properties
-	 *            to be upgraded.
-	 */
-	private void fixNonVersionProperties(Properties properties) {
-		properties.put(TestEditorPlugInService.LIBRARY_ID, "org.testeditor.xmllibrary");
-	}
-
-	/**
 	 * 
 	 * @param config
 	 *            TestProjectConfig
@@ -765,7 +657,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	 */
 	protected Properties getPropertiesFrom(TestProjectConfig config) {
 		Properties properties = new Properties();
-		properties.put("testautomat.serverid", config.getTestServerID());
+		properties.put(TestProjectService.SERVER_ID, config.getTestServerID());
 		if (config.getPathToTestFiles() != null) {
 			properties.put("pathToTestFiles", config.getPathToTestFiles());
 		}
@@ -1249,16 +1141,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 				fileWatchService.watch(testProject);
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param cfgVersion
-	 *            the config version as a string
-	 * @return true, if config version is supported, else false
-	 */
-	private boolean isConfigVersionSupported(String cfgVersion) {
-		return TestProjectService.SUPPORTED_VERSIONS.contains(cfgVersion);
 	}
 
 	@Override
