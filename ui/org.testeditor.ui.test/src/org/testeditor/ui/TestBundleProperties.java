@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,8 @@ import org.osgi.framework.FrameworkUtil;
  * 
  */
 public class TestBundleProperties {
+	private static Logger logger = Logger.getLogger(TestBundleProperties.class);
+
 	private Properties messagePropertiesDe = new Properties();
 	private Properties messagePropertiesDefault = new Properties();
 
@@ -97,13 +100,15 @@ public class TestBundleProperties {
 	 *            as a string
 	 * @return true, if all keys are in the value-properties included.
 	 */
-	private boolean writeDifferent(Properties messagePropertiesKey, Properties messagePropertiesValue, String language) {
+	private boolean writeDifferent(Properties messagePropertiesKey, Properties messagePropertiesValue,
+			String language) {
 		boolean allKeysInValueProperties = true;
 		Enumeration<Object> keys = messagePropertiesKey.keys();
 
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement().toString();
 			if (messagePropertiesValue.getProperty(key) == null) {
+				logger.error("Key '" + key + "' not found in " + language);
 				allKeysInValueProperties = false;
 			}
 		}
