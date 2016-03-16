@@ -200,9 +200,11 @@ public class HeadlessTestRunnerApplication implements IApplication {
 	 *             launching fitnesse server.
 	 * @throws IOException
 	 *             on reading project.
+	 * @throws SystemException
+	 *             on reading projects.
 	 */
 	public TestStructure getTestStructureToExecute(String[] args)
-			throws InvalidArgumentException, IOException, URISyntaxException {
+			throws InvalidArgumentException, IOException, URISyntaxException, SystemException {
 		Map<String, String> parameter = new HashMap<String, String>();
 		for (String string : args) {
 			if (string.contains("=")) {
@@ -215,6 +217,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 		}
 		String testStructureName = parameter.get(EXECUTE_TEST);
 		TestProjectService prjService = getService(TestProjectService.class);
+		prjService.reloadProjectList();
 		String projectName = testStructureName.substring(0, testStructureName.indexOf("."));
 		TestProject testProject = prjService.getProjectWithName(projectName);
 		if (testProject == null) {

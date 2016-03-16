@@ -16,14 +16,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.junit.Test;
 import org.testeditor.core.model.team.TeamShareConfig;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.ui.constants.TestEditorConstants;
-import org.testeditor.ui.parts.testExplorer.TestExplorer;
 
 /**
  * 
@@ -44,8 +41,10 @@ public class ShareProjectHandlerTest {
 		IEclipseContext context = EclipseContextFactory.create();
 		TestProject testProject = new TestProject();
 		testProject.setTestProjectConfig(new TestProjectConfig());
-		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, getTestExplorerWith(testProject));
-		assertTrue("Expect can execute handler on config without share config", shareProjectHandler.canExecute(context));
+		context.set(TestEditorConstants.TEST_EXPLORER_VIEW,
+				new TeamShareHandlerMockFactory().getTestExplorerWith(testProject));
+		assertTrue("Expect can execute handler on config without share config",
+				shareProjectHandler.canExecute(context));
 		testProject.getTestProjectConfig().setTeamShareConfig(new TeamShareConfig() {
 
 			@Override
@@ -54,38 +53,6 @@ public class ShareProjectHandlerTest {
 			}
 		});
 		assertFalse("Expect can not execute with a share config.", shareProjectHandler.canExecute(context));
-	}
-
-	/**
-	 * 
-	 * @param testProject
-	 *            used in this Mock to be returned in the selection.
-	 * @return StructuredSelection with the testProject.
-	 */
-	private TestExplorer getTestExplorerWith(final TestProject testProject) {
-		return new TestExplorer(null) {
-
-			@Override
-			public IStructuredSelection getSelection() {
-				return new StructuredSelection() {
-					@Override
-					public Object getFirstElement() {
-						return testProject;
-					}
-
-					@Override
-					public int size() {
-						return 1;
-					}
-
-					@Override
-					public boolean isEmpty() {
-						return false;
-					}
-				};
-			}
-
-		};
 	}
 
 }

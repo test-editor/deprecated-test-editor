@@ -211,10 +211,12 @@ public class TestStructureTreeLabelProvider extends LabelProvider implements ILa
 		}
 		if (element instanceof TestProject) {
 			TestProject tp = (TestProject) element;
+			String text = tp.getLabel();
 			int updates = testProtocolService.getAvailableUpdatesFor(tp);
 			if (updates > 0) {
-				return tp.toString() + " ↓ " + updates;
+				text += " ↓ " + updates;
 			}
+			return text;
 		}
 		return super.getText(element);
 	}
