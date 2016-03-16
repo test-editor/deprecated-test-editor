@@ -31,7 +31,6 @@ import org.testeditor.core.model.team.TeamShareConfig;
 public class TestProjectConfig {
 
 	private String port = "";
-	private String pathToTestFiles = "";
 	private ProjectLibraryConfig projectLibraryConfig;
 	private String projectPath = "";
 	private TeamShareConfig teamShareConfig;
@@ -47,23 +46,6 @@ public class TestProjectConfig {
 	 */
 	public void setProjectPath(String projectPath) {
 		this.projectPath = projectPath;
-	}
-
-	/**
-	 * 
-	 * @return the Path to the Test files.
-	 */
-	public String getPathToTestFiles() {
-		return pathToTestFiles;
-	}
-
-	/**
-	 * 
-	 * @param pathToTestFiles
-	 *            to the TestFiles
-	 */
-	public void setPathToTestFiles(String pathToTestFiles) {
-		this.pathToTestFiles = pathToTestFiles;
 	}
 
 	/**
@@ -107,7 +89,6 @@ public class TestProjectConfig {
 		StringBuilder sb = new StringBuilder();
 		sb.append("test project config ");
 		sb.append("port: ").append(port);
-		sb.append(" path to TestFiles: ").append(pathToTestFiles);
 		sb.append(" ProjectActionGroup: ").append(projectLibraryConfig);
 		sb.append(" projectpath: ").append(projectPath);
 		sb.append(" testServerId: ").append(testServerID);
@@ -147,7 +128,6 @@ public class TestProjectConfig {
 	 *            ProjectConfiguration
 	 */
 	public void setConfiguration(TestProjectConfig testProjectConfig) {
-		this.setPathToTestFiles(testProjectConfig.getPathToTestFiles());
 		this.setProjectLibraryConfig(testProjectConfig.getProjectLibraryConfig());
 		this.setProjectPath(testProjectConfig.getProjectPath());
 		this.setGlobalProjectVariables(testProjectConfig.getGlobalProjectVariables());

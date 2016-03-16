@@ -178,7 +178,9 @@ public class TestLogViewer {
 				StringBuilder sb = new StringBuilder();
 				try {
 					while (br.ready()) {
-						sb.append(br.readLine()).append("\n");
+						String line = br.readLine();
+						line = line.replace("<br></br>", "\n");
+						sb.append(line).append("\n");
 					}
 				} catch (IOException e) {
 					LOGGER.error("IO Error", e);

@@ -551,8 +551,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 			properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
 		}
 
-		testProjectConfig.setPathToTestFiles(properties.getProperty("pathToTestFiles"));
-
 		testProjectConfig
 				.setTestServerID(getPropertyValue(properties, TestProjectService.SERVER_ID, "fitnesse_based_1.2"));
 
@@ -658,9 +656,6 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 	protected Properties getPropertiesFrom(TestProjectConfig config) {
 		Properties properties = new Properties();
 		properties.put(TestProjectService.SERVER_ID, config.getTestServerID());
-		if (config.getPathToTestFiles() != null) {
-			properties.put("pathToTestFiles", config.getPathToTestFiles());
-		}
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION);
 		properties.put(TestExecutionEnvironmentService.CONFIG, config.getTestEnvironmentConfiguration());
 		if (plugInservice != null) {

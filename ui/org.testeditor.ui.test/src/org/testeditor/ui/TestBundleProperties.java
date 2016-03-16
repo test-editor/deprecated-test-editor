@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
@@ -65,17 +64,11 @@ public class TestBundleProperties {
 	@Test
 	public void testBundlePropertiesEqual() {
 		for (Object key : messagePropertiesDefault.keySet()) {
-			if (!messagePropertiesDe.containsKey(key)) {
-				logger.info("key '" + key + "' not found in german Properties");
-			}
+			assertTrue("key '" + key + "' not found in german Properties", messagePropertiesDe.containsKey(key));
 		}
 		for (Object key : messagePropertiesDe.keySet()) {
-			if (!messagePropertiesDefault.containsKey(key)) {
-				logger.info("key '" + key + "' not found in default Properties");
-			}
+			assertTrue("key '" + key + "' not found in default Properties", messagePropertiesDefault.containsKey(key));
 		}
-
-		assertEquals(messagePropertiesDefault.size(), messagePropertiesDe.size());
 
 	}
 

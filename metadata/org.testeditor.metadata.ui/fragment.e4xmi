@@ -17,6 +17,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_SrfLoDUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.handledmenuitem.popupmenulabelshow_testhistoryitem" label="%popupmenu.label.show_testhistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/history_view.gif" command="_yM15kDUWEeWm-oFBtj17Ug"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_THKbADUWEeWm-oFBtj17Ug" elementId="org.testeditor.metadata.ui.handledmenuitem.popupmenulabelshow_cleartesthistoryitem" label="%popupmenu.label.show_cleartesthistory.item" iconURI="platform:/plugin/org.testeditor.ui/icons/clear_co.gif" command="_5caeoDUWEeWm-oFBtj17Ug"/>
       </menus>
+      <toolbar xmi:id="_oAk9QOUHEeWkrrmnpqkSHQ" elementId="org.testeditor.metadata.ui.toolbar.0"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>

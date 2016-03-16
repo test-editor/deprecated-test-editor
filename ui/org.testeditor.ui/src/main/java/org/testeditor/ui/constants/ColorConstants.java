@@ -32,6 +32,7 @@ public final class ColorConstants {
 	public static final Color COLOR_WHITE = getColor(SWT.COLOR_WHITE);
 	public static final Color COLOR_YELLOW = getColor(SWT.COLOR_YELLOW);
 	public static final Color COLOR_RED = getColor(SWT.COLOR_RED);
+	public static final Color COLOR_LIGHT_RED = getColor(255, 127, 127);
 
 	/**
 	 * Don't create objects of this constants class.

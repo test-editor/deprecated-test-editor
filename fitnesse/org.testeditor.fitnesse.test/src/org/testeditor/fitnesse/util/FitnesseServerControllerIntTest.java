@@ -70,11 +70,6 @@ public class FitnesseServerControllerIntTest {
 
 		TestProject tp1 = new TestProject();
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
-		if (pathToTestFile != null) {
-			testProjectConfig.setPathToTestFiles(pathToTestFile);
-		} else {
-			testProjectConfig.setPathToTestFiles(Platform.getLocation().toFile().getAbsolutePath());
-		}
 		tp1.setTestProjectConfig(testProjectConfig);
 
 		serverControler.startFitnesse(tp1);

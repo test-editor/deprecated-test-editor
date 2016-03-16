@@ -46,7 +46,8 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 	@Override
 	public String getText(Object element) {
 		if (element instanceof TestProject) {
-			return ((TestProject) element).getName();
+			TestProject testProject = (TestProject) element;
+			return testProject.getName();
 		}
 		if (element instanceof MetaData) {
 			MetaData metaData = (MetaData) element;
@@ -56,7 +57,7 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 			for (MetaDataValue metaDataValue : metaData.getValues()) {
 				count += metaDataValue.getTestCases().size();
 			}
-			label += " (" + Integer.toString(count) + "/)";
+			label += " (" + Integer.toString(count) + ")";
 			return label;
 		}
 		if (element instanceof MetaDataValue) {

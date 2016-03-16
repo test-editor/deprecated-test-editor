@@ -48,7 +48,6 @@ public class TestProjectServiceImplTest {
 	@Test
 	public void testEqualsAfterConvertToAndFromProperties() throws IOException {
 		TestProjectConfig projectConfig = new TestProjectConfig();
-		projectConfig.setPathToTestFiles("./");
 		TestProjectServiceImpl service = new TestProjectServiceImpl();
 		Properties properties = service.getPropertiesFrom(projectConfig);
 		TestProjectConfig cfgAfterStoring = service.getTestProjectConfigFrom(properties, PROJECT_NAME);

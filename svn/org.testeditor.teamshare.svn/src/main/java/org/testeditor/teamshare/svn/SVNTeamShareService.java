@@ -890,7 +890,11 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			log.setSingleTarget(SvnTarget.fromURL(SVNURL.parseURIEncoded(cfg.getUrl() + "/" + testProject.getName())));
 			SVNLogEntry run = log.run();
 			logger.trace("call to availableUpdatesCount done; testProject: '" + testProject.getFullName() + "'");
-			return (int) (run.getRevision() - localRevision.getNumber());
+			if (run != null) {
+				return (int) (run.getRevision() - localRevision.getNumber());
+			} else {
+				return 0;
+			}
 		} catch (SVNException e) {
 			logger.error(e.getMessage(), e);
 			throw new SystemException(e.getLocalizedMessage(), e);

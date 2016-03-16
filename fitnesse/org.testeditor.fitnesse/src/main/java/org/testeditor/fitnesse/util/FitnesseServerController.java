@@ -12,7 +12,6 @@
 package org.testeditor.fitnesse.util;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
@@ -26,7 +25,6 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.services.plugins.TestServerServicePlugIn;
 import org.testeditor.core.util.FileLocatorService;
 
-import fitnesse.ContextConfigurator;
 import fitnesseMain.Arguments;
 import fitnesseMain.FitNesseMain;
 
@@ -56,8 +54,8 @@ public class FitnesseServerController implements TestServerServicePlugIn {
 			// Port is not in use
 			return false;
 		} catch (SocketTimeoutException ste) {
-			LOGGER.info("FitNesse Server under Port " + testProject.getTestProjectConfig().getPort()
-					+ " is not running !");
+			LOGGER.info(
+					"FitNesse Server under Port " + testProject.getTestProjectConfig().getPort() + " is not running !");
 			return false;
 		} catch (Exception exp) {
 			LOGGER.error(exp);
@@ -97,26 +95,25 @@ public class FitnesseServerController implements TestServerServicePlugIn {
 		long start = System.currentTimeMillis();
 
 		String fitnessePath = getTestFilePath(testProject);
-		
 
-		
-		//Arguments arguments = FitNesseMain.parseCommandLine(new String[] { "-e", "0" });
-		//arguments.setRootPath(fitnessePath);
-		//arguments.setOmitUpdates(true);
+		// Arguments arguments = FitNesseMain.parseCommandLine(new String[] {
+		// "-e", "0" });
+		// arguments.setRootPath(fitnessePath);
+		// arguments.setOmitUpdates(true);
 
 		// set the dynamic port
 		testProject.getTestProjectConfig().setPort(String.valueOf(getFreePort()));
 
-		//arguments.setPort(testProject.getTestProjectConfig().getPort());
-		
-		Arguments arguments = new Arguments(new String[] { "-e", "0", "-d",  fitnessePath, "-o", "-p", testProject.getTestProjectConfig().getPort()});
+		// arguments.setPort(testProject.getTestProjectConfig().getPort());
+
+		Arguments arguments = new Arguments(new String[] { "-e", "0", "-d", fitnessePath, "-o", "-p",
+				testProject.getTestProjectConfig().getPort() });
 
 		try {
 
 			FitNesseMain fm = new FitNesseMain();
 			fm.launchFitNesse(arguments);
 
-			
 			if (LOGGER.isTraceEnabled()) {
 				LOGGER.trace("Dauer: " + String.valueOf(System.currentTimeMillis() - start) + " mSek.");
 			}
@@ -138,14 +135,8 @@ public class FitnesseServerController implements TestServerServicePlugIn {
 	 *             accessing bundle path
 	 */
 	private String getTestFilePath(TestProject testProject) throws IOException {
-		boolean useDefaultLocation = testProject.getTestProjectConfig().getPathToTestFiles() == null
-				|| testProject.getTestProjectConfig().getPathToTestFiles().isEmpty();
-		if (useDefaultLocation) {
-			if (!testProject.getTestProjectConfig().getProjectPath().isEmpty()) {
-				return testProject.getTestProjectConfig().getProjectPath();
-			}
-		} else if (new File(testProject.getTestProjectConfig().getPathToTestFiles()).exists()) {
-			return testProject.getTestProjectConfig().getPathToTestFiles();
+		if (!testProject.getTestProjectConfig().getProjectPath().isEmpty()) {
+			return testProject.getTestProjectConfig().getProjectPath();
 		}
 		return getPathToFitnesseJar();
 	}

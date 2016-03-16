@@ -39,7 +39,7 @@ public class MetaDataTag {
 	 *            - the key.
 	 */
 	public void setKey(String key) {
-		this.key = key;
+		this.key = key.replaceAll("\\s+", "");
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class MetaDataTag {
 	 *            - the parent key.
 	 */
 	public void setParentKey(String parentKey) {
-		this.parentKey = parentKey;
+		this.parentKey = parentKey.replaceAll("\\s+", "");
 	}
 
 	private String key;

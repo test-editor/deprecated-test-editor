@@ -49,7 +49,7 @@ public class TestEditorTestLogAddErrorStyle {
 				if (containsErrorString(nextToken)) {
 					// add an error-style
 					StyleRange actStyle = new StyleRange();
-					actStyle.background = ColorConstants.COLOR_RED;
+					actStyle.background = ColorConstants.COLOR_LIGHT_RED;
 					actStyle.start = actOffset;
 					actStyle.length = nextToken.length() + 1;
 					glStyleRanges = addNewStyleRange(actStyle, glStyleRanges);
