@@ -269,7 +269,7 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	protected void loadAndRerender() {
 		if (getTestStructure() != null) {
 			TestFlow foundTestStructure = findTestStructureByFullName(getTestStructure().getFullName());
-			if (getMetaDataService() != null) {
+			if (foundTestStructure != null && getMetaDataService() != null) {
 				getMetaDataService().refresh(foundTestStructure.getRootElement());
 			}
 			if (foundTestStructure == null) {

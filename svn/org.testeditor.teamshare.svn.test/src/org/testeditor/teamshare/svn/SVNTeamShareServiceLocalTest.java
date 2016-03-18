@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -58,9 +59,12 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNStatusClient;
+import org.tmatesoft.svn.core.wc.SVNUpdateClient;
+import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 /**
@@ -72,6 +76,7 @@ public class SVNTeamShareServiceLocalTest {
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
 	private static final String CORRUPT_SVN_DB = "./corrupt_db/wc.db";
+	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
 	private static final String PROJEKT_NAME = "DemoWebTests";
 
@@ -90,9 +95,9 @@ public class SVNTeamShareServiceLocalTest {
 	@BeforeClass
 	public static void initialize() {
 		if (!System.getProperty("java.io.tmpdir").endsWith(File.separator)) {
-			targetWorkspacePath = System.getProperty("java.io.tmpdir") + File.separator + "testProjectJUnit";
+			targetWorkspacePath = TEMP_DIR + File.separator + "testProjectJUnit";
 		} else {
-			targetWorkspacePath = System.getProperty("java.io.tmpdir") + "testProjectJUnit";
+			targetWorkspacePath = TEMP_DIR + "testProjectJUnit";
 		}
 		projectpath = targetWorkspacePath + File.separator + PROJEKT_NAME;
 
@@ -1240,4 +1245,97 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.cleanup(testProject);
 		assertFalse(teamService.isCleanupNeeded(testProject));
 	}
+
+	/**
+	 * Deletes a directory used in tests if it exists.
+	 * 
+	 * @param dir
+	 *            checked to be deleted.
+	 * @throws IOException
+	 *             on io problems.
+	 */
+	private void cleanUpTestDir(File dir) throws IOException {
+		if (dir.exists()) {
+			FileUtils.deleteDirectory(dir);
+		}
+	}
+
+	/**
+	 * Creates a new directory in the working copy and adds it to version
+	 * control.
+	 * 
+	 * @param parent
+	 *            directory in the working copy
+	 * @param name
+	 *            of the new directory
+	 * @param svnwcClient
+	 *            used to add the new created directory.
+	 * @return a file representing the new created directory
+	 * @throws SVNException
+	 *             on svn problems.
+	 */
+	private File createDirectoryInWC(File parent, String name, SVNWCClient svnwcClient) throws SVNException {
+		File result = new File(parent, name);
+		assertTrue(result.mkdir());
+		svnwcClient.doAdd(result, true, true, true, SVNDepth.INFINITY, true, true);
+		return result;
+	}
+
+	/**
+	 * Tests the extraction of release names from an svn structure.
+	 * 
+	 * @throws Exception
+	 *             on test failure
+	 */
+	@Test
+	public void testGetAvailableReleases() throws Exception {
+		File repoWithReleases = new File(TEMP_DIR, "repo_releases");
+		cleanUpTestDir(repoWithReleases);
+		SVNURL localRepository = SVNRepositoryFactory.createLocalRepository(repoWithReleases, true, false);
+		SVNClientManager clientManager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(false), "", "");
+		SVNUpdateClient updateClient = clientManager.getUpdateClient();
+		File wc = new File(TEMP_DIR, "wc_releases");
+		cleanUpTestDir(wc);
+		updateClient.doCheckout(localRepository, wc, SVNRevision.HEAD, SVNRevision.HEAD, SVNDepth.INFINITY, true);
+		File trunk = createDirectoryInWC(wc, "trunk", clientManager.getWCClient());
+		File tags = createDirectoryInWC(wc, "tags", clientManager.getWCClient());
+		File branches = createDirectoryInWC(wc, "branches", clientManager.getWCClient());
+		File noReleaselayout = createDirectoryInWC(wc, "otherStuff", clientManager.getWCClient());
+		createDirectoryInWC(tags, "v1.0", clientManager.getWCClient());
+		createDirectoryInWC(branches, "v1.1", clientManager.getWCClient());
+		createDirectoryInWC(branches, "v1.2", clientManager.getWCClient());
+		clientManager.getCommitClient().doCommit(new File[] { trunk, tags, branches, noReleaselayout }, false, "", null,
+				null, false, true, SVNDepth.INFINITY);
+		TestProject testProject = new TestProject();
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+		SVNTeamShareConfig aTeamShareConfig = new SVNTeamShareConfig();
+		SVNURL trunkURL = SVNURL.fromFile(new File(repoWithReleases.getAbsolutePath() + File.separator + "trunk"));
+		SVNURL branchURL = SVNURL
+				.fromFile(new File(repoWithReleases.getAbsolutePath() + File.separator + "/branches/v1.1"));
+		SVNURL otherStuff = SVNURL
+				.fromFile(new File(repoWithReleases.getAbsolutePath() + File.separator + "/otherStuff"));
+		aTeamShareConfig.setUrl(trunkURL.toString());
+		testProjectConfig.setTeamShareConfig(aTeamShareConfig);
+		testProject.setTestProjectConfig(testProjectConfig);
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleases(testProject).keySet());
+		aTeamShareConfig.setUrl(branchURL.toString());
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleases(testProject).keySet());
+		aTeamShareConfig.setUrl(otherStuff.toString());
+		assertTrue(teamService.getAvailableReleases(testProject).isEmpty());
+	}
+
+	/**
+	 * Verifies the test result for testGetAvailableReleases.
+	 * 
+	 * @param names
+	 *            to be verified.
+	 */
+	private void validateReleaseNamesOnLegalPath(Set<String> names) {
+		assertTrue(names.size() == 3);
+		assertTrue(names.contains("trunk"));
+		assertTrue(names.contains("v1.1"));
+		assertTrue(names.contains("v1.2"));
+		assertFalse(names.contains("v1.0"));
+	}
+
 }

@@ -111,6 +111,7 @@ public class TestBundleProperties {
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement().toString();
 			if (messagePropertiesValue.getProperty(key) == null) {
+				logger.warning("Key '" + key + "' not found in " + language);
 				allKeysInValueProperties = false;
 			}
 		}
