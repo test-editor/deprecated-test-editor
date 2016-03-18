@@ -910,7 +910,11 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 			repository.getRepositoryUUID(true);
 			Collection<SVNLogEntry> logEntries = repository.log(new String[] { "" }, null, localRevision.getNumber(),
 					SVNRevision.HEAD.getNumber(), true, true);
-			String currentUser = System.getProperty("user.name");
+			String currentUser = ((SVNTeamShareConfig) (testProject.getTestProjectConfig().getTeamShareConfig()))
+					.getUserName();
+			if (currentUser == null) {
+				currentUser = System.getProperty("user.name");
+			}
 			if (logEntries != null) {
 				int changes = 0;
 				for (SVNLogEntry logEntry : logEntries) {

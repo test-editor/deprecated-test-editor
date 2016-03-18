@@ -62,6 +62,9 @@ public class SVNTeamShareConfigurationService implements TeamShareConfigurationS
 		HashMap<String, String> result = new HashMap<String, String>();
 		SVNTeamShareConfig svnCfg = (SVNTeamShareConfig) teamShareConfig;
 		result.put(URL_PROPERTY, svnCfg.getUrl());
+		if (svnCfg.getUserName() != null) {
+			result.put(USERNAME_PROPERTY, svnCfg.getUserName());
+		}
 		return result;
 	}
 
@@ -69,6 +72,7 @@ public class SVNTeamShareConfigurationService implements TeamShareConfigurationS
 	public TeamShareConfig createTeamShareConfigFrom(Properties properties) {
 		SVNTeamShareConfig config = new SVNTeamShareConfig();
 		config.setUrl(properties.getProperty(URL_PROPERTY));
+		config.setUserName(properties.getProperty(USERNAME_PROPERTY));
 		return config;
 	}
 
@@ -77,6 +81,7 @@ public class SVNTeamShareConfigurationService implements TeamShareConfigurationS
 		StringBuilder sb = new StringBuilder();
 		String lf = "\n";
 		sb.append("teamshare.svn.url=$SVN_URL$").append(lf);
+		sb.append("teamshare.svn.username=$SVN_USERNAME$").append(lf);
 		return sb.toString();
 	}
 }
