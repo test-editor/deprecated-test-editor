@@ -37,6 +37,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.jobs.TeamModificationCheckJob;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
@@ -72,6 +73,9 @@ public class ApplicationLifeCycleHandler {
 	@Inject
 	private TranslationService translationService;
 
+	@Inject
+	private TestProjectService testProjectService;
+
 	private Collection<Thread> jobs = new ArrayList<Thread>();
 
 	/**
@@ -91,6 +95,11 @@ public class ApplicationLifeCycleHandler {
 			} catch (BackingStoreException e) {
 				LOGGER.error("Error stroring restart state", e);
 			}
+		}
+		try {
+			testProjectService.reloadProjectList();
+		} catch (SystemException e1) {
+			LOGGER.error("Error loading projects", e1);
 		}
 		context.set(TestEditorTranslationService.class,
 				ContextInjectionFactory.make(TestEditorTranslationService.class, context));

@@ -22,6 +22,7 @@ import java.util.List;
 public class TestProject extends TestCompositeStructure {
 
 	private TestProjectConfig testProjectConfig;
+	private String label;
 
 	@Override
 	protected void setParent(TestStructure parent) {
@@ -80,6 +81,28 @@ public class TestProject extends TestCompositeStructure {
 	}
 
 	/**
+	 * Get the label of the testProject.
+	 * 
+	 * @return the label of the testproject
+	 */
+	public String getLabel() {
+		if (label != null && label.trim().length() > 0) {
+			return label;
+		}
+		return getName();
+	}
+
+	/**
+	 * Sets the label of the testproject.
+	 * 
+	 * @param label
+	 *            the lable of the testproject.
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
 	 * @return the Root of all TestScenarios.
 	 */
 	public ScenarioSuite getScenarioRoot() {
@@ -118,7 +141,8 @@ public class TestProject extends TestCompositeStructure {
 				return testStructure;
 			}
 			if (split.length > pathIndex) {
-				if (testStructure.getName().equals(split[pathIndex]) && testStructure instanceof TestCompositeStructure) {
+				if (testStructure.getName().equals(split[pathIndex])
+						&& testStructure instanceof TestCompositeStructure) {
 					TestStructure probant = subSearch(((TestCompositeStructure) testStructure).getTestChildren(),
 							pathIndex + 1, split, fullName);
 					if (probant != null) {

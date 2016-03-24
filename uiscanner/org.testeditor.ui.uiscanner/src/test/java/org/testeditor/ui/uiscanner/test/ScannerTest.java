@@ -33,7 +33,7 @@ import org.testeditor.ui.uiscanner.webscanner.WebScanner;
  */
 public class ScannerTest {
 
-	private static WebScanner webScanner;
+	private WebScanner webScanner;
 	private ArrayList<UiScannerWebElement> elements;
 	private ProgressMonitorMock progressMonitor = new ProgressMonitorMock();
 	private static final URI WEB_INDEX_PAGE = new File("resources/web/index.html").toURI();
