@@ -133,8 +133,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 						}
 
 						if (eventBroker != null) {
-							eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
-									testProject.getName());
+							eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
 						}
 
 					} catch (Exception e) {

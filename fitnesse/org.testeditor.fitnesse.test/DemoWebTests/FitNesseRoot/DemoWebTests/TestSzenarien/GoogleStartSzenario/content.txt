@@ -1,0 +1,5 @@
+!|scenario |GoogleStartSzenario _||
+|note|Description: Dieses Szenario öffnet den Browser und ruft die URL der Google-Suche auf. Für die Ausführung ist demnach eine Internet-Verbindung notwendig. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.|
+|note| Maske: Allgemein Browser|
+|starte Browser|Firefox|
+|navigiere auf die Seite|http://www.google.de|

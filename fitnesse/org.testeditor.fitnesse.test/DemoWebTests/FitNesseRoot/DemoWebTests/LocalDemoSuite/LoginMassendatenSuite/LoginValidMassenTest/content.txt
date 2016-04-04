@@ -1,0 +1,19 @@
+Dieser Testdfall ist für Massentest gedacht und führt mehrere Login-Versuche mit unterschiedlichen Test-Daten durch.
+!include <DemoWebTests.TestSzenarien.ApplikationStartSzenario
+!|script|
+|Applikation Start Szenario|
+#
+!include <DemoWebTests.TestSzenarien.LoginValidationSzenario
+!|Login Validation Szenario|
+|Name|Passwort|Land|TextVorhanden|TextNichtVorhanden|
+|Max Mustermann|maxi|USA|erfolgreich|Login|
+|Hans Mller|mllerman|Australien|erfolgreich|Name|
+|Hans Mller|Siemens|Australien||erfolgreich|
+|Moxen|chicago|USA|USA|Login|
+|Hilde|swiz|Schweden|erfolgreich|Deutschland|
+|Jan|admin|Deutschland||erfolgreich|
+#
+!include <DemoWebTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

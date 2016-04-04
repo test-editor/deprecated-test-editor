@@ -11,7 +11,6 @@
 *******************************************************************************/
 package org.testeditor.fitnesse;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -23,7 +22,6 @@ import org.testeditor.core.model.teststructure.ScenarioSuite;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
-import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestStructureService;
 
 /**
@@ -71,22 +69,6 @@ public class TestStructureServiceImplTest {
 		assertFalse(monitor.contains("seen"));
 		project.getTestChildren();
 		assertTrue(monitor.contains("seen"));
-	}
-
-	/**
-	 * Tests the Storage of a old name under the new fullname as key.
-	 */
-	@Test
-	public void testStoreOldNameOnTheFullNewNameAsKey() {
-		TestStructureServiceImpl service = new TestStructureServiceImpl();
-		TestProject tp = new TestProject();
-		tp.setName("TestPrj");
-		TestSuite suite = new TestSuite();
-		suite.setName("MySuite");
-		tp.addChild(suite);
-		service.storeOldNameOnTheFullNewNameAsKey(suite, "NewSuite");
-		assertTrue(service.getRenamedTestStructures().containsKey("TestPrj.NewSuite"));
-		assertEquals("MySuite", service.getRenamedTestStructures().get("TestPrj.NewSuite"));
 	}
 
 	/**

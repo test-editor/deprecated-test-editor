@@ -1,0 +1,16 @@
+Dieser Testfall führt eine Suche nach "Signal Iduna" über www.google.de aus, anschließend wird überprüft ob bestimmte Ergebnisse angezeigt bzw. nicht angezeigt werden.
+!include <DemoWebTests.TestSzenarien.GoogleStartSzenario
+!|script|
+|Google Start Szenario|
+#
+# Maske: Google Suche
+-!|script|
+|gebe in das Feld|searchInput|den Wert|Signal Iduna|ein|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|www.signal-iduna.de|vorhanden ist|
+|überprüfe ob der Text|www.akquinet.de|nicht vorhanden ist|
+!include <DemoWebTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#
