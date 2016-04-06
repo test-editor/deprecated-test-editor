@@ -15,29 +15,40 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.e4.core.contexts.ContextInjectionFactory;
+import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.core.services.translation.TranslationService;
+import org.osgi.framework.FrameworkUtil;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.testresult.TestResult;
+import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestCompositeStructure;
+import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestScenario;
+import org.testeditor.core.model.teststructure.TestScenarioParameterTable;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
+import org.testeditor.core.services.interfaces.TestScenarioService;
+import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.plugins.TeamShareServicePlugIn;
 import org.testeditor.core.services.plugins.TestStructureServicePlugIn;
 import org.testeditor.fitnesse.filesystem.FitnesseFileSystemTestStructureService;
 import org.testeditor.fitnesse.util.FitNesseRestClient;
+import org.testeditor.fitnesse.util.FitNesseWikiParser;
 
 /**
  * FitNesse implementation of CRUD operation referring to the internal test
@@ -46,11 +57,52 @@ import org.testeditor.fitnesse.util.FitNesseRestClient;
 public class TestStructureServiceImpl implements TestStructureServicePlugIn, IContextFunction {
 
 	private static final Logger logger = Logger.getLogger(TestStructureServiceImpl.class);
-	private Map<String, String> renamedTestStructures = new HashMap<String, String>();
 	private IEventBroker eventBroker;
 	private Map<String, TeamShareService> teamShareServices = new HashMap<String, TeamShareService>();
 	private IEclipseContext context;
 	private TestExecutionEnvironmentService environmentService;
+	private TestStructureContentService testStructureContentService;
+	private TestScenarioService testScenarioService;
+
+	/**
+	 * 
+	 * @param testStructureContentService
+	 *            to be bind to this service.
+	 */
+	public void bind(TestStructureContentService testStructureContentService) {
+		this.testStructureContentService = testStructureContentService;
+		logger.info("binding testStructureContentService " + testStructureContentService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param testStructureContentService
+	 *            to be unbind to this service.
+	 */
+	public void unbind(TestStructureContentService testStructureContentService) {
+		this.testStructureContentService = null;
+		logger.info("unbinding testStructureContentService " + testStructureContentService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param testScenarioService
+	 *            to be bind to this service.
+	 */
+	public void bind(TestScenarioService testScenarioService) {
+		this.testScenarioService = testScenarioService;
+		logger.info("binding testScenarioService " + testScenarioService.getClass().getName());
+	}
+
+	/**
+	 * 
+	 * @param testScenarioService
+	 *            to be unbind to this service.
+	 */
+	public void unbind(TestScenarioService testScenarioService) {
+		this.testScenarioService = null;
+		logger.info("unbinding testScenarioService " + testScenarioService.getClass().getName());
+	}
 
 	/**
 	 * 
@@ -130,8 +182,106 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 */
 	@Override
 	public void rename(TestStructure testStructure, String newName) throws SystemException {
-		storeOldNameOnTheFullNewNameAsKey(testStructure, newName);
+
+		if (testStructure instanceof TestScenario) {
+			renameScenario((TestScenario) testStructure, newName);
+		} else {
+			renameTestCase(testStructure, newName);
+		}
+
+		if (eventBroker != null) {
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+					testStructure.getFullName());
+		}
+	}
+
+	/**
+	 * Renames a testcase. This is just a change of filenames.
+	 * 
+	 * @param testStructure
+	 *            - the testStructure to be renamed
+	 * @param newName
+	 *            - the newName of the tescase
+	 * @throws SystemException
+	 *             - any excpetion during renaming
+	 */
+	private void renameTestCase(TestStructure testStructure, String newName) throws SystemException {
 		clearTestHistory(testStructure);
+		renameFiles(testStructure, newName);
+		testStructure.setName(newName);
+	}
+
+	/**
+	 * Renames a scenario: Changes the name of the scenario and changes all
+	 * testcases and scenarios that calls the scenario.
+	 * 
+	 * @param scenario
+	 *            - the test scenario
+	 * @param newName
+	 *            - the new name of the scenario
+	 * @throws SystemException
+	 *             - any exception during renaming
+	 */
+	private void renameScenario(TestScenario scenario, String newName) throws SystemException {
+		List<TestFlow> changedFlows = new ArrayList<TestFlow>();
+
+		TestProject testProject = scenario.getRootElement();
+
+		scenario = testScenarioService.getScenarioByFullName(testProject, scenario.getFullName());
+		List<String> usages = testScenarioService.getUsedOfTestSceneario(scenario);
+
+		// Search and update all calls to the scenario to be renamed.
+		for (String usage : usages) {
+			TestFlow testFlow = (TestFlow) testProject.getTestChildByFullName(usage);
+			FitNesseWikiParser fitNesseWikiParser = createNewWikiParser();
+
+			String usageCode = testStructureContentService.getTestStructureAsSourceText(testFlow);
+			LinkedList<TestComponent> testComponents = fitNesseWikiParser.parse((TestFlow) testFlow, usageCode);
+			String include = "!include <" + scenario.getFullName();
+			String newInclude = "!include <" + scenario.getParent().getFullName() + "." + newName;
+			for (TestComponent testComponent : testComponents) {
+				if (testComponent instanceof TestScenarioParameterTable) {
+					TestScenarioParameterTable paramCall = (TestScenarioParameterTable) testComponent;
+					if (paramCall.getInclude().equals(include)) {
+						paramCall.setInclude(newInclude);
+						paramCall.setTitle(TestScenarioParameterTable.splitOnCapitalsWithWhiteSpaces(newName, 1));
+					}
+				}
+			}
+			testFlow.setTestComponents(testComponents);
+			changedFlows.add(testFlow);
+		}
+		// execute the rename of the scenario itself.
+		renameFiles(scenario, newName);
+
+		// Store the changed testFlows
+		testStructureContentService.saveTestStructureData(scenario);
+		for (TestFlow testFlow : changedFlows) {
+			testStructureContentService.saveTestStructureData(testFlow);
+			if (eventBroker != null) {
+				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+						testFlow.getFullName());
+			}
+
+		}
+	}
+
+	/**
+	 * Rename the files of the of the teststructure. This has to be done in two
+	 * steps.
+	 * <ol>
+	 * <li/>Change the name of the files.
+	 * <li/>Change the name of the teststructure.
+	 * </ol>
+	 * 
+	 * @param testStructure
+	 *            - the teststructure to be renamed.
+	 * @param newName
+	 *            - the new name of the teststructure
+	 * @throws SystemException
+	 *             - any exception during renaming.
+	 */
+	private void renameFiles(TestStructure testStructure, String newName) throws SystemException {
 		if (testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
 			String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
 			logger.trace("Looking up for team share service with id: " + id);
@@ -140,25 +290,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		} else {
 			new FitnesseFileSystemTestStructureService().rename(testStructure, newName);
 		}
-		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
-					testStructure.getFullName());
-		}
-	}
-
-	/**
-	 * Stores the old name of the TestStructure under the key of the new
-	 * fullname.
-	 * 
-	 * @param testStructure
-	 *            that should be renamed.
-	 * @param newName
-	 *            the new name.
-	 */
-	protected void storeOldNameOnTheFullNewNameAsKey(TestStructure testStructure, String newName) {
-		String oldName = testStructure.getName();
-		String path = testStructure.getFullName().substring(0, testStructure.getFullName().lastIndexOf(".") + 1);
-		renamedTestStructures.put(path + newName, oldName);
+		testStructure.setName(newName);
 	}
 
 	@Override
@@ -278,15 +410,6 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		return "fitnesse_based_1.2";
 	}
 
-	/**
-	 * For Test purpose only.
-	 * 
-	 * @return renamedTestStructures.
-	 */
-	Map<String, String> getRenamedTestStructures() {
-		return renamedTestStructures;
-	}
-
 	@Override
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
@@ -320,6 +443,18 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	@Override
 	public void stepwiseTest(TestStructure testStructure) throws SystemException {
 		FitNesseRestClient.stepwiseTest(testStructure);
+	}
+
+	/**
+	 * creates a wikiParser with the EclipseContextFactory.
+	 * 
+	 * @return a FitNesseWikiParser
+	 */
+	private FitNesseWikiParser createNewWikiParser() {
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
+		FitNesseWikiParser fitNesseWikiParser = ContextInjectionFactory.make(FitNesseWikiParser.class, context);
+		return fitNesseWikiParser;
 	}
 
 }

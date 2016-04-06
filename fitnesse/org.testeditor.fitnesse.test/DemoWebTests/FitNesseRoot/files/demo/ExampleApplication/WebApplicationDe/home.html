@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+						<SCRIPT type="text/javascript">
+						<!--
+						function getParam(name)
+						{
+							name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+							
+							var regexS = "[\\?&]"+name+"=([^&#]*)";
+							var regex = new RegExp( regexS );
+							var results = regex.exec( window.name );
+							if ( results == null )
+								return "";
+							else
+								return results[1];
+						}
+						</SCRIPT>
+<html>
+
+  <head>
+    <title>Demo TestEditor</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="format.css">   
+  </head>
+  <body>  
+    <div id="button-box">
+       <div id="headline" class="capital"><h2 >Eine Beispiel Web-Applikation</h2></div>
+   	      <form class="form-container" name="loginForm" action="home.html" method="get" style="position: relative; top: 30px; left: 200px;">
+       	    <div class="form-title">
+       	        <h2>
+					<p id="login_successful">Anmeldung aus <SCRIPT type="text/javascript">document.writeln (getParam('land'));</SCRIPT> war erfolgreich</p>
+					
+       	        </h2>
+       	    </div>  </br> </br>
+          </form>
+ 	</div>
+  </body>
+</html>

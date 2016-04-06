@@ -176,7 +176,7 @@ public class TestScenarioParameterTable implements TestComponent {
 	 *            as int
 	 * @return the splited name started at the fromPos
 	 */
-	private String splitOnCapitalsWithWhiteSpaces(String name, int fromPos) {
+	public static String splitOnCapitalsWithWhiteSpaces(String name, int fromPos) {
 		StringBuilder title = new StringBuilder();
 		String[] titleStrings = splitOnCapitals(name);
 		int i = titleStrings.length;
@@ -197,7 +197,7 @@ public class TestScenarioParameterTable implements TestComponent {
 	 *            the input
 	 * @return String[] the separated words
 	 */
-	String[] splitOnCapitals(String str) {
+	private static String[] splitOnCapitals(String str) {
 		ArrayList<String> array = new ArrayList<String>();
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < str.length(); i++) {

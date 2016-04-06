@@ -1,0 +1,4 @@
+!|scenario |ApplikationStopSzenario _||
+|note|Description: Dieses Szenario beendet den Test, der Browser wird geschlossen.|
+|note| Maske: Allgemein Browser|
+|beende Browser|

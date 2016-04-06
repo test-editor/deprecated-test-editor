@@ -94,7 +94,8 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 				throw new SystemException("Unable to scan directory", e);
 			}
 		} else {
-			LOGGER.trace("Path " + path.toAbsolutePath() + " does not exists");
+			LOGGER.error("Unable to scan directory " + path + "'");
+			throw new SystemException("Unable to scan directory" + path + "'");
 		}
 	}
 

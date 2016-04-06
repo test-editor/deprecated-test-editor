@@ -12,7 +12,6 @@
 package org.testeditor.fitnesse;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -80,12 +79,11 @@ public class TestScenarioServiceImpl implements TestScenarioServicePlugIn {
 		String contentAsHtml;
 		try {
 			contentAsHtml = FitNesseRestClient.getUsedWhere(testScenario);
-			return new FitNesseUsedByReaderImpl().readWhereUsedResult(contentAsHtml, testScenario.getRootElement()
-					.getName());
 		} catch (SystemException e) {
-			LOGGER.error(e);
+			throw new RuntimeException("Can not access fitnesse. Reason: " + e.getMessage(), e);
 		}
-		return new ArrayList<String>();
+		return new FitNesseUsedByReaderImpl().readWhereUsedResult(contentAsHtml,
+				testScenario.getRootElement().getName());
 	}
 
 	@Override
@@ -94,10 +92,12 @@ public class TestScenarioServiceImpl implements TestScenarioServicePlugIn {
 	}
 
 	@Override
-	public TestScenario getScenarioByFullName(TestProject testProject, String includeOfScenario) throws SystemException {
+	public TestScenario getScenarioByFullName(TestProject testProject, String includeOfScenario)
+			throws SystemException {
 
 		String[] includeOfScenarioStrings = includeOfScenario.split("\\.");
-		if (includeOfScenarioStrings.length >= 0 && testProject.getName().equalsIgnoreCase(includeOfScenarioStrings[0])) {
+		if (includeOfScenarioStrings.length >= 0
+				&& testProject.getName().equalsIgnoreCase(includeOfScenarioStrings[0])) {
 			return findTestStructureInOffspringOfProject(includeOfScenario, testProject);
 		}
 		return null;

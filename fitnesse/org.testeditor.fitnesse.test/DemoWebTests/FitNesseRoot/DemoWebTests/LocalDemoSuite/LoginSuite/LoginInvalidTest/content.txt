@@ -1,0 +1,19 @@
+Dieser Testfall überprüft, dass ein ungültiger Benutzers sich nicht anmelden kann.
+!include <DemoWebTests.TestSzenarien.ApplikationStartSzenario
+!|script|
+|Applikation Start Szenario|
+#
+# Maske: Lokale Anmeldung
+-!|script|
+|gebe in das Feld|user|den Wert|Peter Mustermann|ein|
+|gebe in das Feld|password|den Wert|test|ein|
+|wähle aus der Combobox|land|den Wert|Schweden|aus|
+|klicke auf|login|
+# Maske: Allgemein Browser
+-!|script|
+|überprüfe ob der Text|war erfolgreich|nicht vorhanden ist|
+|überprüfe ob der Text|Login|vorhanden ist|
+!include <DemoWebTests.TestSzenarien.ApplikationStopSzenario
+!|script|
+|Applikation Stop Szenario|
+#

@@ -92,49 +92,50 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 
 						clientManager.getStatusClient().doStatus(file, true, false, false, false,
 
-						new ISVNStatusHandler() {
-							@Override
-							public void handleStatus(SVNStatus status) throws SVNException {
+								new ISVNStatusHandler() {
+									@Override
+									public void handleStatus(SVNStatus status) throws SVNException {
 
-								String fullName = status.getFile().getAbsolutePath();
+										String fullName = status.getFile().getAbsolutePath();
 
-								if (!testStructures.contains(fullName) && !isInIgnoreList(fullName)) {
-									LOGGER.info(fullName);
-									testStructures.add(fullName);
-								}
-							}
-
-							/**
-							 * 
-							 * @param fullName
-							 * @return Returns true if given string is in ignore
-							 *         list.
-							 */
-							private boolean isInIgnoreList(String fullName) {
-
-								boolean inIgnoreList = false;
-
-								for (int i = 0; i < SVNTeamShareService.IGNORE_LIST.length; i++) {
-									if (fullName.matches(".*" + SVNTeamShareService.IGNORE_LIST[i])) {
-										inIgnoreList = true;
-										break;
+										if (!testStructures.contains(fullName) && !isInIgnoreList(fullName)) {
+											LOGGER.info(fullName);
+											testStructures.add(fullName);
+										}
 									}
-								}
 
-								return inIgnoreList;
-							}
+									/**
+									 * 
+									 * @param fullName
+									 * @return Returns true if given string is
+									 *         in ignore list.
+									 */
+									private boolean isInIgnoreList(String fullName) {
 
-						});
+										boolean inIgnoreList = false;
+
+										for (int i = 0; i < SVNTeamShareService.IGNORE_LIST.length; i++) {
+											if (fullName.matches(".*" + SVNTeamShareService.IGNORE_LIST[i])) {
+												inIgnoreList = true;
+												break;
+											}
+										}
+
+										return inIgnoreList;
+									}
+
+								});
 
 						if (testStructures.size() > 0) {
+							if (eventBroker != null) {
+								for (String testStructure : testStructures) {
+									eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
+											testStructure);
+								}
+							}
 							projects.put(testProject, testStructures);
 						} else {
 							projects.put(testProject, new ArrayList<String>());
-						}
-
-						if (eventBroker != null) {
-							eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
-									testProject.getName());
 						}
 
 					} catch (Exception e) {

@@ -362,7 +362,8 @@ public class MetaDataServiceTest {
 	 * Creates an object of type TestProject whith the given name.
 	 * 
 	 * @param projectName
-	 * @return
+	 *            - the name of the project
+	 * @return the created project
 	 */
 	private TestProject createProject(String projectName) {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();

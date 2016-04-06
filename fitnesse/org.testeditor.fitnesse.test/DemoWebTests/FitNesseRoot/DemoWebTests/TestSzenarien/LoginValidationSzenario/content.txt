@@ -1,0 +1,12 @@
+!|scenario |LoginValidationSzenario _|Name, Passwort, Land, TextVorhanden, TextNichtVorhanden|
+|note|Description: ﻿Dieses Szenario überprüft den Login auf der Starseite.|
+|note| Maske: Allgemein Browser|
+|navigiere auf die Seite|http://localhost:${FITNESSE_PORT}/files/demo/ExampleApplication/WebApplicationDe/index.html|
+|note| Maske: Lokale Anmeldung|
+|gebe in das Feld|user|den Wert|@Name|ein|
+|gebe in das Feld|password|den Wert|@Passwort|ein|
+|wähle aus der Combobox|land|den Wert|@Land|aus|
+|klicke auf|login|
+|note| Maske: Allgemein Browser|
+|überprüfe ob der Text|@TextVorhanden|vorhanden ist|
+|überprüfe ob der Text|@TextNichtVorhanden|nicht vorhanden ist|

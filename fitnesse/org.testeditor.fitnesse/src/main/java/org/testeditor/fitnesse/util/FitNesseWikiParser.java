@@ -76,8 +76,8 @@ public class FitNesseWikiParser {
 		LinkedList<TestComponent> testComponents = new LinkedList<TestComponent>();
 		StringTokenizer stringTokenizer = new StringTokenizer(content, "\n");
 		Boolean firstRow = true;
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
-				.getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
 
 		while (stringTokenizer.hasMoreTokens()) {
 			String line = stringTokenizer.nextToken();
@@ -227,8 +227,9 @@ public class FitNesseWikiParser {
 
 				} else {
 					scenarioStringBuider.append("!|script|\n|");
-					scenarioStringBuider.append(
-							scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1)).append("|\n");
+					scenarioStringBuider
+							.append(scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1))
+							.append("|\n");
 				}
 
 				StringTokenizer inputTokenizer = new StringTokenizer(scenarioStringBuider.toString(), "\n");
@@ -348,7 +349,8 @@ public class FitNesseWikiParser {
 					if (parameterTable.getDataTable().getRowCounts() == 1) {
 						checkIsParamtableCorrect(testFlow, parameterTable, includeLine);
 					}
-				} else if (nextLineIsEndOfParameterTable(testFlow, testComponents, nextLine, parameterTable.getTitle())) {
+				} else if (nextLineIsEndOfParameterTable(testFlow, testComponents, nextLine,
+						parameterTable.getTitle())) {
 					return;
 				}
 			}
@@ -457,8 +459,8 @@ public class FitNesseWikiParser {
 			}
 
 			scenarioParameters.setTexts(parameterArrayList);
-			testComponents.add(scenarioParameters);
 		}
+		testComponents.add(scenarioParameters);
 
 	}
 
@@ -583,8 +585,7 @@ public class FitNesseWikiParser {
 	 * @return true, if the line a descriptionLine
 	 */
 	private boolean isADescriptionLine(String line) {
-		if ((line.startsWith("'''") && line.endsWith("''' --------|"))
-				|| (line.startsWith("|note|Description: ") && line.endsWith("|"))) {
+		if (line.startsWith("|note|Description: ") && line.endsWith("|")) {
 			return true;
 		}
 		return false;

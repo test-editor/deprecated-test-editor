@@ -7,4 +7,6 @@
    </service>
    <reference bind="bind" cardinality="0..n" interface="org.testeditor.core.services.plugins.TeamShareServicePlugIn" name="TeamShareService" policy="dynamic" unbind="unBind"/>
    <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.interfaces.TestExecutionEnvironmentService" name="TestExecutionEnvironmentService" policy="dynamic" unbind="unbind"/>
+   <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.interfaces.TestStructureContentService" name="TestStructureContentService" policy="dynamic" unbind="unbind"/>
+   <reference bind="bind" cardinality="0..1" interface="org.testeditor.core.services.interfaces.TestScenarioService" name="TestScenarioService" policy="dynamic" unbind="unbind"/>
 </scr:component>

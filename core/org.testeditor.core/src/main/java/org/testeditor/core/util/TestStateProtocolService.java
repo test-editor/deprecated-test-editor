@@ -225,7 +225,7 @@ public class TestStateProtocolService implements IContextFunction {
 	 */
 	private void fireUpdateCountSateCHangeEvent(TestProject testProject) {
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject.getFullName());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
 		}
 	}
 
