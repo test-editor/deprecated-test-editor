@@ -44,8 +44,8 @@ import org.testeditor.ui.parts.inputparts.AbstractTestEditorInputPartController;
  * this class is the controller for the edit view part.
  * 
  */
-public class TestEditorScenarioSelectionController extends AbstractTestEditorInputPartController implements
-		ITestScenarioSelectionController {
+public class TestEditorScenarioSelectionController extends AbstractTestEditorInputPartController
+		implements ITestScenarioSelectionController {
 
 	public static final String ID = "org.testeditor.ui.partdescriptor.testStructureEditor.ScenarioSelection";
 
@@ -98,19 +98,18 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 		this.testEditorController = testEditorController;
 		if (!editArea.isNewTestEditorController(testEditorController)) {
 			if (testScenarioTreeInput == null
-					|| (testScenarioTreeInput != null && testScenarioTreeInput.getTestProject() == null || (testScenarioTreeInput
-							.getTestProject() != null && !testScenarioTreeInput.getTestProject().equals(
-							testEditorController.getTestFlow().getRootElement())))) {
+					|| (testScenarioTreeInput != null && testScenarioTreeInput.getTestProject() == null
+							|| (testScenarioTreeInput.getTestProject() != null && !testScenarioTreeInput
+									.getTestProject().equals(testEditorController.getTestFlow().getRootElement())))) {
 
-				testScenarioTreeInput = new TestScenarioTreeInput(
-						testProjectService.getProjectWithName(testEditorController.getTestFlow().getRootElement()
-								.getName()));
+				testScenarioTreeInput = new TestScenarioTreeInput(testProjectService
+						.getProjectWithName(testEditorController.getTestFlow().getRootElement().getName()));
 
 				editArea.changeTreeInput(testScenarioTreeInput);
 				editArea.removeTreeFilter();
 				if (testEditorController.getTestFlow() instanceof TestScenario) {
-					editArea.setRecursiveFilter(new TestScenarioRecursiveFilter((TestScenario) testEditorController
-							.getTestFlow()));
+					editArea.setRecursiveFilter(
+							new TestScenarioRecursiveFilter((TestScenario) testEditorController.getTestFlow()));
 				}
 			}
 			editArea.createUI(parent);
@@ -136,8 +135,8 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	 */
 	public void putTextToInputArea(String includeOfScenario, int selectedLine) throws SystemException {
 		if (includeOfScenario.length() > 10) {
-			TestScenario scenarioByFullName = scenarioService.getScenarioByFullName(testEditorController.getTestFlow()
-					.getRootElement(), includeOfScenario.substring(10));
+			TestScenario scenarioByFullName = scenarioService.getScenarioByFullName(
+					testEditorController.getTestFlow().getRootElement(), includeOfScenario.substring(10));
 			editArea.setScenarioSelectionToChangeable(scenarioByFullName, selectedLine);
 			editArea.setScenarioSelectionActive();
 			setAddMode(false);
@@ -242,7 +241,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	@Inject
 	@Optional
 	public void refreshSceanriosInTreeBySvnLoaded(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) TestStructure testStructure) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTSTRUCTURE) TestStructure testStructure) {
 		refreshSceanriosInTree("");
 	}
 
@@ -262,15 +261,14 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 			Object[] expandedElements = editArea.getVisibleExpandedTreeElements();
 			TestStructure selectedElement = editArea.getSelectedTreeElement();
 
-			testScenarioTreeInput = new TestScenarioTreeInput(
-					testProjectService
-							.getProjectWithName(testEditorController.getTestFlow().getRootElement().getName()));
+			testScenarioTreeInput = new TestScenarioTreeInput(testProjectService
+					.getProjectWithName(testEditorController.getTestFlow().getRootElement().getName()));
 
 			editArea.changeTreeInput(testScenarioTreeInput);
 			editArea.removeTreeFilter();
 			if (testEditorController.getTestFlow() instanceof TestScenario) {
-				editArea.setRecursiveFilter(new TestScenarioRecursiveFilter((TestScenario) testEditorController
-						.getTestFlow()));
+				editArea.setRecursiveFilter(
+						new TestScenarioRecursiveFilter((TestScenario) testEditorController.getTestFlow()));
 			}
 			editArea.expandTreeElements(expandedElements);
 			editArea.selectTreeElement(selectedElement);
@@ -290,8 +288,7 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 	public void refreshFilterForScenarioTree(
 			@UIEventTopic(TestEditorEventConstants.REFRESH_FILTER_FOR_SCENARIOS_IN_TREE) String param) {
 		if (testEditorController != null && testEditorController.getTestFlow() != null) {
-			if (testScenarioTreeInput != null
-					&& testScenarioTreeInput.getTestProject() != null
+			if (testScenarioTreeInput != null && testScenarioTreeInput.getTestProject() != null
 					&& !testScenarioTreeInput.getTestProject().getFullName()
 							.equalsIgnoreCase(testEditorController.getTestFlow().getRootElement().getFullName())) {
 				refreshSceanriosInTree("");
@@ -303,8 +300,8 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 				TestStructure selectedElement = editArea.getSelectedTreeElement();
 				editArea.removeTreeFilter();
 				if (testEditorController.getTestFlow() instanceof TestScenario) {
-					editArea.setRecursiveFilter(new TestScenarioRecursiveFilter((TestScenario) testEditorController
-							.getTestFlow()));
+					editArea.setRecursiveFilter(
+							new TestScenarioRecursiveFilter((TestScenario) testEditorController.getTestFlow()));
 				}
 				if (expandedElements != null) {
 					editArea.expandTreeElements(expandedElements);
@@ -326,8 +323,8 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 			// entfernen.
 			testScenarioParameterTable.setInclude(scenario.getFullName());
 			try {
-				testScenarioParameterTable.setScenarioOfProject(scenarioService.isLinkToScenario(testEditorController
-						.getTestFlow().getRootElement(), scenario.getFullName()));
+				testScenarioParameterTable.setScenarioOfProject(scenarioService
+						.isLinkToScenario(testEditorController.getTestFlow().getRootElement(), scenario.getFullName()));
 				if (scenario.getTestComponents().isEmpty()) {
 
 					scenario = scenarioService.getScenarioByFullName(scenario.getRootElement(), scenario.getFullName());
@@ -348,8 +345,8 @@ public class TestEditorScenarioSelectionController extends AbstractTestEditorInp
 				} else {
 					testScenarioParameterTable.setSimpleScriptStatement(true);
 				}
-				testEditorController
-						.setTestScenarioParameterTable(testScenarioParameterTable, lineInTestCase, !addMode);
+				testEditorController.setTestScenarioParameterTable(testScenarioParameterTable, lineInTestCase,
+						!addMode);
 			} catch (SystemException e) {
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), "System-Exception",
 						e.getLocalizedMessage());

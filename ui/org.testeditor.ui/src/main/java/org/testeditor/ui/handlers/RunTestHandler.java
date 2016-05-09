@@ -107,8 +107,8 @@ public class RunTestHandler {
 				eventBroker.send(TestEditorUIEventConstants.TESTSTRUCTURE_EXECUTED, selectedTestStructure);
 			}
 		} catch (InvocationTargetException e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(), "System-Exception", e.getTargetException()
-					.getLocalizedMessage());
+			MessageDialog.openError(Display.getCurrent().getActiveShell(), "System-Exception",
+					e.getTargetException().getLocalizedMessage());
 		} catch (InterruptedException e) {
 			MessageDialog.openInformation(Display.getCurrent().getActiveShell(),
 					translationService.translate("%TestInterruptedByUserTitle"),
@@ -132,7 +132,8 @@ public class RunTestHandler {
 				refreshTestStructureInTree(ts, eventBroker);
 			}
 		}
-		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testStructure.getFullName());
+		eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTNAME,
+				testStructure.getFullName());
 	}
 
 }

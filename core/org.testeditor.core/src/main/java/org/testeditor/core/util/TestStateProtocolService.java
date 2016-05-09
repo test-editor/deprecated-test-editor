@@ -153,7 +153,7 @@ public class TestStateProtocolService implements IContextFunction {
 				}
 				if (toBeRemoved != null) {
 					updateProjectMap.remove(toBeRemoved);
-					eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
+					eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTNAME,
 							toBeRemoved.getFullName());
 				}
 			}
@@ -225,7 +225,8 @@ public class TestStateProtocolService implements IContextFunction {
 	 */
 	private void fireUpdateCountSateCHangeEvent(TestProject testProject) {
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_TEAMSHARESTATUS,
+					testProject.getName());
 		}
 	}
 

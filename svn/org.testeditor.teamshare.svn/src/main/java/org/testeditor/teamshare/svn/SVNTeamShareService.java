@@ -636,7 +636,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	 */
 	private void updateSvnstate(TestStructure testStructure) {
 		if (eventBroker != null) {
-			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testStructure.getRootElement());
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_PROJECT,
+					testStructure.getRootElement());
 		}
 	}
 
@@ -1042,7 +1043,7 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 					SVNDepth.INFINITY, true, true);
 			fireEvents(testProject);
 			if (eventBroker != null) {
-				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED, testProject);
+				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_REFRESH, testProject);
 			}
 			((SVNTeamShareConfig) testProject.getTestProjectConfig().getTeamShareConfig()).setUrl(url);
 

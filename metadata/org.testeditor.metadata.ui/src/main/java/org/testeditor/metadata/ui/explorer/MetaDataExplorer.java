@@ -106,8 +106,8 @@ public class MetaDataExplorer {
 		treeViewer.addOpenListener(new IOpenListener() {
 			@Override
 			public void open(OpenEvent arg0) {
-				OpenTestStructureHandler handler = ContextInjectionFactory
-						.make(OpenTestStructureHandler.class, context);
+				OpenTestStructureHandler handler = ContextInjectionFactory.make(OpenTestStructureHandler.class,
+						context);
 				handler.execute(context);
 			}
 		});
@@ -116,8 +116,8 @@ public class MetaDataExplorer {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				context.get(MApplication.class).getContext()
-						.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, getSelection());
+				context.get(MApplication.class).getContext().set(TestEditorConstants.SELECTED_TEST_COMPONENTS,
+						getSelection());
 				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 			}
 		});
@@ -228,7 +228,7 @@ public class MetaDataExplorer {
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) TestStructure testStructure) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTSTRUCTURE) TestStructure testStructure) {
 		refreshTreeViewerOnTestStrucutre(testStructure);
 	}
 
