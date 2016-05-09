@@ -36,10 +36,8 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
-import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TeamShareService;
 import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
-import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
@@ -287,14 +285,6 @@ public class SVNTeamSharestatusServiceTest {
 		TestStructure testStructure = createTestStructure(
 				new String[] { "DemoWebTests", "LocalDemoSuite", "LoginSuite", "LoginValidTest" });
 
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
-			}
-		});
-
 		assertTrue(statusService.isModified(testStructure));
 
 	}
@@ -331,14 +321,6 @@ public class SVNTeamSharestatusServiceTest {
 		teamService.share(testProject, translationService, "");
 		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\LoginValidTest\\content.txt");
 		update("\\FitNesseRoot\\DemoWebTests\\LocalDemoSuite\\LoginSuite\\content.txt");
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTestNotExists";
-			}
-		});
-		svnStatusService.bind(ServiceLookUpForTest.getService(TestProjectService.class));
 
 		// when
 		statusService.update(testProject);
@@ -465,15 +447,6 @@ public class SVNTeamSharestatusServiceTest {
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
 
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
-
 		// when
 		statusService.update(testProject);
 		// because update method runs in a thread, waits here until thread has
@@ -518,14 +491,6 @@ public class SVNTeamSharestatusServiceTest {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
@@ -568,15 +533,6 @@ public class SVNTeamSharestatusServiceTest {
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/DemoWebTests/LocalDemoSuite/LoginSuite/LoginValidTest/content.txt");
 
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "DemoWebTests.LocalDemoSuite.LoginSuite.LoginValidTest";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
-
 		// when
 		statusService.update(testProject);
 		// because update method runs in a thread, waits here until thread has
@@ -615,15 +571,6 @@ public class SVNTeamSharestatusServiceTest {
 		teamService.share(testProject, translationService, "");
 		update("/AllActionGroups.xml");
 
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "AllActionGroups.xml";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
-
 		// when
 		statusService.update(testProject);
 		// because update method runs in a thread, waits here until thread has
@@ -652,15 +599,6 @@ public class SVNTeamSharestatusServiceTest {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/noteststructure.xml");
-
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "/noteststructure.xml";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
@@ -702,14 +640,6 @@ public class SVNTeamSharestatusServiceTest {
 
 		// then
 		TestStructure testStructure = createTestStructure(new String[] { "DemoWebTests", "GoogleSucheSuite" });
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "AllActionGroups.xml";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
 		assertFalse(statusService.isModified(testStructure));
 	}
 
@@ -731,15 +661,6 @@ public class SVNTeamSharestatusServiceTest {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 		update("/FitNesseRoot/files/testProgress/LoginInvalidTest.txt");
-
-		SVNTeamShareStatusService svnStatusService = (SVNTeamShareStatusService) statusService;
-		svnStatusService.bind(new TestStructureServiceAdpater() {
-			@Override
-			public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
-				return "/LoginInvalidTest.txt";
-			}
-		});
-		svnStatusService.bind(new TestProjectServiceAdapter());
 
 		// when
 		statusService.update(testProject);
