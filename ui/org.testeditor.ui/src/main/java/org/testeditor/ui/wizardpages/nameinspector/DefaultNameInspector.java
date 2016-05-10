@@ -26,7 +26,7 @@ public class DefaultNameInspector implements INameInspector {
 	@Inject
 	private TestEditorTranslationService translationService;
 
-	private Pattern nameVerifier = Pattern.compile("(?:[<>^.])?(?:\\b[A-Z](?:[a-z0-9A-Z]*)+[.]?)+\\b");
+	private Pattern nameVerifier = Pattern.compile("([A-Z]+[a-z\\d]*)+");
 
 	private String nameInvalidMessage;
 

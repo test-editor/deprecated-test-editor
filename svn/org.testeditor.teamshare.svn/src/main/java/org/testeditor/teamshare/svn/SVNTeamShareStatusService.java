@@ -16,19 +16,18 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
-import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
-import org.testeditor.core.services.interfaces.TestProjectService;
-import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
@@ -39,7 +38,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, IContextFunction {
 
-	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareStatusService.class);
+	private static final Logger logger = Logger.getLogger(SVNTeamShareStatusService.class);
 
 	private IEventBroker eventBroker;
 
@@ -47,12 +46,10 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	 * list of modificated teststructures.
 	 */
 	private Map<TestProject, List<String>> projects = new HashMap<TestProject, List<String>>();
+	private Map<String, Set<String>> changedTestStructresPerProject = new HashMap<String, Set<String>>();
 
 	private List<String> whiteListForNonTestStructures = Arrays.asList("AllActionGroups.xml", "config.tpr",
 			"ElementList.conf", "TechnicalBindingTypeCollection.xml", "MetaData.properties");
-
-	private TestStructureService testStructureService;
-	private TestProjectService testProjectService;
 
 	@Override
 	public List<String> getModified(TestProject testProject) {
@@ -61,7 +58,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 			return projects.get(testProject);
 		}
 
-		LOGGER.info("No Project found !");
+		logger.info("No Project found !");
 
 		return null;
 	}
@@ -70,12 +67,11 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	@Override
 	public void update(final TestProject testProject) throws FileNotFoundException {
 
-		LOGGER.trace("testProject" + testProject);
-
 		// clean project instance for update with newest data
 		projects.put(testProject, new ArrayList<String>());
 
 		final ArrayList<String> testStructures = new ArrayList<String>();
+		final Set<String> changedTestStructres = new HashSet<String>();
 
 		// init with new data
 		final File file = new File(testProject.getTestProjectConfig().getProjectPath());
@@ -87,7 +83,10 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 
 				@Override
 				public void run() {
-
+					int changedTestStructresSize = 0;
+					if (projects.containsKey(testProject.getName())) {
+						changedTestStructresSize = projects.get(testProject.getName()).size();
+					}
 					try {
 
 						clientManager.getStatusClient().doStatus(file, true, false, false, false,
@@ -99,8 +98,12 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 										String fullName = status.getFile().getAbsolutePath();
 
 										if (!testStructures.contains(fullName) && !isInIgnoreList(fullName)) {
-											LOGGER.info(fullName);
 											testStructures.add(fullName);
+											List<String> changedStructures = lookUpTestStructuresByPath(
+													testProject.getRootElement(), fullName);
+											if (changedStructures != null) {
+												changedTestStructres.addAll(changedStructures);
+											}
 										}
 									}
 
@@ -129,7 +132,8 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 						if (testStructures.size() > 0) {
 							if (eventBroker != null) {
 								for (String testStructure : testStructures) {
-									eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED,
+									eventBroker.post(
+											TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTSTRUCTURE,
 											testStructure);
 								}
 							}
@@ -137,17 +141,23 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 						} else {
 							projects.put(testProject, new ArrayList<String>());
 						}
+						changedTestStructresPerProject.put(testProject.getName(), changedTestStructres);
 
 					} catch (Exception e) {
-						LOGGER.error("Could not read the SVNStatus from Project: " + testProject.getName()
+						logger.error("Could not read the SVNStatus from Project: " + testProject.getName()
 								+ "\n error: " + e.getMessage(), e);
+					}
+					if (changedTestStructresSize != changedTestStructres.size()) {
+						eventBroker.send(
+								TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_TEAMSHARESTATUS,
+								testProject.getName());
 					}
 				}
 
 			}, "threadStatusService").start();
 
 		} else {
-			LOGGER.warn("Given project " + file + " does not exist");
+			logger.warn("Given project " + file + " does not exist");
 			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 	}
@@ -159,7 +169,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	 */
 	private SVNClientManager getSVNClientManager() {
 
-		LOGGER.trace("getSVNClientManager");
+		logger.trace("getSVNClientManager");
 
 		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager();
 		return SVNClientManager.newInstance(null, authManager);
@@ -168,52 +178,12 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	@Override
 	public boolean isModified(TestStructure testStructure) {
 
-		List<String> listOfModifiedTestStructures = projects.get(testStructure.getRootElement());
-
-		if (listOfModifiedTestStructures != null) {
-			for (String modifiedTestStructure : listOfModifiedTestStructures) {
-
-				String modifiedTestStructureFullName = testStructureService.lookUpTestStructureFullNameMatchedToPath(
-						testStructure.getRootElement(), modifiedTestStructure);
-				if (modifiedTestStructureFullName.equals(testStructure.getFullName())) {
-					return true;
-				} else
-					try {
-						TestStructure parent = testProjectService
-								.findTestStructureByFullName(modifiedTestStructureFullName);
-						if (parent != null && parent.isInParentHirachieOfChildTestStructure(testStructure)) {
-							return true;
-						} else if (whiteListForNonTestStructures.contains(modifiedTestStructureFullName)
-								&& (testStructure instanceof TestProject)) {
-							// only if given teststructure is not a project
-							return true;
-						}
-					} catch (SystemException e) {
-						LOGGER.warn("Error looking up teststructure by name.", e);
-					}
-			}
-
+		if (changedTestStructresPerProject.containsKey(testStructure.getRootElement().getName())) {
+			return changedTestStructresPerProject.get(testStructure.getRootElement().getName())
+					.contains(testStructure.getFullName());
+		} else {
+			return false;
 		}
-
-		return false;
-	}
-
-	/**
-	 * 
-	 * @param testStructureService
-	 *            used by this service.
-	 */
-	public void bind(TestStructureService testStructureService) {
-		this.testStructureService = testStructureService;
-	}
-
-	/**
-	 * 
-	 * @param testProjectService
-	 *            used by this service.
-	 */
-	public void bind(TestProjectService testProjectService) {
-		this.testProjectService = testProjectService;
 	}
 
 	@Override
@@ -224,7 +194,7 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 			return true;
 		}
 
-		LOGGER.debug("project " + testProject + " does not exists for removing");
+		logger.debug("project " + testProject + " does not exists for removing");
 		return false;
 
 	}
@@ -233,8 +203,6 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	public Object compute(IEclipseContext context, String contextKey) {
 		if (eventBroker == null) {
 			eventBroker = context.get(IEventBroker.class);
-			bind(context.get(TestStructureService.class));
-			bind(context.get(TestProjectService.class));
 		}
 		return this;
 	}
@@ -242,6 +210,38 @@ public class SVNTeamShareStatusService implements TeamShareStatusServicePlugIn, 
 	@Override
 	public String getId() {
 		return SVNTeamShareConfig.SVN_TEAM_SHARE_PLUGIN_ID;
+	}
+
+	private List<String> lookUpTestStructuresByPath(TestProject testProject, String path) {
+		String pointSeparatedFile = path.replace(File.separatorChar, '.');
+
+		List<String> result = new ArrayList<String>();
+		String testStructure = "";
+		if (pointSeparatedFile.indexOf(".content.txt") > 0) {
+			testStructure = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.indexOf(".content.txt"));
+		} else if (pointSeparatedFile.indexOf(".metadata.xml") > 0) {
+			testStructure = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.indexOf(".metadata.xml"));
+		} else if (pointSeparatedFile.indexOf(".properties.xml") > 0) {
+			testStructure = pointSeparatedFile.substring(pointSeparatedFile.indexOf("FitNesseRoot") + 13,
+					pointSeparatedFile.indexOf(".properties.xml"));
+		} else {
+			pointSeparatedFile = pointSeparatedFile.substring(0, pointSeparatedFile.lastIndexOf('.'));
+			String filename = path.substring(path.lastIndexOf(File.separator) + 1);
+			if (whiteListForNonTestStructures.contains(filename)) {
+				result.add(testProject.getName());
+				return result;
+			}
+			return null;
+		}
+		result.add(testStructure);
+		while (testStructure.indexOf('.') != -1) {
+			testStructure = testStructure.substring(0, testStructure.lastIndexOf('.'));
+			result.add(testStructure);
+		}
+
+		return result;
 	}
 
 }

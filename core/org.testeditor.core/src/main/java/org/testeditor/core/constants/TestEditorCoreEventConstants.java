@@ -33,12 +33,16 @@ public final class TestEditorCoreEventConstants {
 	 */
 	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE = TESTSTRUCTURE_MODEL_CHANGED_PREFIX + "/UPDATE/*";
 
+	public static final String TESTSTRUCTURE_MODEL_REFRESH = TESTSTRUCTURE_MODEL_CHANGED_PREFIX + "/UPDATE/REFRESH";
+
 	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_ADD = TESTSTRUCTURE_MODEL_CHANGED_PREFIX
 			+ "/UPDATE/ADD";
 
 	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY = TESTSTRUCTURE_MODEL_CHANGED_PREFIX
 			+ "/UPDATE/SAVE";
 
+	public static final String TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_TEAMSHARESTATUS = TESTSTRUCTURE_MODEL_CHANGED_PREFIX
+			+ "/TEAMSHARESTATUS";
 	/**
 	 * List of TestProjects is dropped and fresh loaded from the backend.
 	 */
@@ -54,7 +58,9 @@ public final class TestEditorCoreEventConstants {
 	 * the SVN state and set them in the child`s. It is Asynchrony because it
 	 * will be throw from a Thread and the User should not be Interrupted.
 	 */
-	public static final String TESTSTRUCTURE_STATE_UPDATED = "TESTSTRUCTURE/STATE/CHNAGED";
+	public static final String TESTSTRUCTURE_STATE_UPDATED_BY_TESTNAME = "TESTSTRUCTURE/STATE/CHANGED/TEST_NAME";
+	public static final String TESTSTRUCTURE_STATE_UPDATED_BY_PROJECT = "TESTSTRUCTURE/STATE/CHANGED/PROJECT";
+	public static final String TESTSTRUCTURE_STATE_UPDATED_BY_TESTSTRUCTURE = "TESTSTRUCTURE/STATE/CHANGED/TEST_STRUCTURE";
 
 	public static final String TESTSTRUCTURE_HISTORY_DELETED = "TESTHISTORY/DELETED";
 

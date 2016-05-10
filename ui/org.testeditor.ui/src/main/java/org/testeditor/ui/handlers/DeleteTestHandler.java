@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.ScenarioSuite;
 import org.testeditor.core.model.teststructure.TestProject;
+import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TestProjectService;
@@ -78,6 +79,30 @@ public class DeleteTestHandler {
 			final TestStructureService testStructureService) {
 		final IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
+
+		if (selection.getFirstElement() instanceof TestScenario) {
+			List<String> usages = testScenarioService
+					.getUsedOfTestSceneario((TestScenario) selection.getFirstElement());
+			if (usages.size() > 0) {
+
+				StringBuffer allUsages = new StringBuffer();
+				for (String usage : usages) {
+					if (allUsages.length() > 0) {
+						allUsages.append("\n");
+					}
+					allUsages.append(usage);
+				}
+				StringBuffer message = new StringBuffer();
+				message.append(translationService.translate("%popupmenu.label.show_scenario_usage1")).append(" ")
+						.append(translationService.translate("%popupmenu.label.show_scenario_usage2")).append(allUsages)
+						.append("\n").append(translationService.translate("%popupmenu.label.show_scenario_usage3"))
+						.append("\n");
+				MessageDialog.openInformation(Display.getCurrent().getActiveShell(),
+						translationService.translate("%popupmenu.label.show_scenario_usage.item"), message.toString());
+				return;
+			}
+		}
+
 		boolean userConfirms = checkUserConfirmation(translationService, selection, testScenarioService);
 		final TestStructure newSelection = ((TestStructure) selection.getFirstElement()).getParent();
 		if (userConfirms) {
@@ -174,14 +199,12 @@ public class DeleteTestHandler {
 		if (Display.getCurrent() != null) {
 			boolean runningInUIThread = Display.getCurrent().getActiveShell() != null;
 			if (runningInUIThread) {
-				return MessageDialog.openConfirm(
-						Display.getCurrent().getActiveShell(),
+				return MessageDialog.openConfirm(Display.getCurrent().getActiveShell(),
 						translationService.translate("%popupmenu.label.delete.item"),
-						translationService.translate("%popupmenu.label.delete.item1")
-								+ " "
+						translationService.translate("%popupmenu.label.delete.item1") + " "
 								+ getCommaListOfTestStructuresNames(selection.iterator(), translationService, 1,
-										testScenarioService).toString() + " "
-								+ translationService.translate("%popupmenu.label.delete.item2"));
+										testScenarioService).toString()
+								+ " " + translationService.translate("%popupmenu.label.delete.item2"));
 			}
 		}
 		return true;
@@ -203,7 +226,8 @@ public class DeleteTestHandler {
 	 *         names.
 	 */
 	protected StringBuilder getCommaListOfTestStructuresNames(Iterator<TestStructure> iterator,
-			TestEditorTranslationService translationService, int childrenDepth, TestScenarioService testScenarioService) {
+			TestEditorTranslationService translationService, int childrenDepth,
+			TestScenarioService testScenarioService) {
 
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -217,7 +241,8 @@ public class DeleteTestHandler {
 			if (!(testStructure instanceof TestSuite)) {
 				sb.append(testStructure.getName());
 			} else {
-				if (!(testStructure instanceof ScenarioSuite && testScenarioService.isSuiteForScenarios(testStructure))) {
+				if (!(testStructure instanceof ScenarioSuite
+						&& testScenarioService.isSuiteForScenarios(testStructure))) {
 					if (!first) {
 						sb.append(System.getProperty("line.separator"));
 					}
@@ -246,11 +271,11 @@ public class DeleteTestHandler {
 	public boolean canExecute(IEclipseContext context) {
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
-				CanExecuteTestExplorerHandlerRules.class, context);
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
 		return rules.canExecuteOnOneOrManyElementRule(selection)
-				&& !rules.canExecuteOnProjectMainScenarioSuite(selection)
-				&& rules.canExecuteOnUnusedScenario(selection) && rules.canExecuteOnNonScenarioSuiteParents(selection);
+				&& !rules.canExecuteOnProjectMainScenarioSuite(selection) && rules.canExecuteOnUnusedScenario(selection)
+				&& rules.canExecuteOnNonScenarioSuiteParents(selection);
 	}
 
 	/**
@@ -262,7 +287,8 @@ public class DeleteTestHandler {
 	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
-			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info(
+					"MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 

@@ -43,7 +43,7 @@ public class TestLogViewer {
 
 	private StyledText testLogText;
 	private String absolutelogFileName;
-	private long refreshTime = 300;
+	private long refreshTime = 1000;
 	private Thread watchingLogFileThread;
 	private boolean watchingLogFile;
 	private TestStructure executingTestStructure;
@@ -182,6 +182,7 @@ public class TestLogViewer {
 						line = line.replace("<br></br>", "\n");
 						sb.append(line).append("\n");
 					}
+					LOGGER.info("append text: " + sb.toString());
 				} catch (IOException e) {
 					LOGGER.error("IO Error", e);
 				}

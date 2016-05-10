@@ -53,7 +53,8 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 	 * 
 	 */
 	@Override
-	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException, TestCycleDetectException {
+	public void refreshTestCaseComponents(TestStructure testStructure)
+			throws SystemException, TestCycleDetectException {
 		seenflows = new ArrayList<TestFlow>();
 		cycleFound = false;
 		new FitnesseFileSystemTestStructureContentService().refreshTestCaseComponents(testStructure);
@@ -75,7 +76,8 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getFullName());
-			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testStructure.getFullName());
+			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTNAME,
+					testStructure.getFullName());
 		}
 	}
 
@@ -105,8 +107,8 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 	 * @return a FitNesseWikiParser
 	 */
 	protected FitNesseWikiParser createNewWikiParser() {
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(getClass())
-				.getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
 		FitNesseWikiParser fitNesseWikiParser = ContextInjectionFactory.make(FitNesseWikiParser.class, context);
 		return fitNesseWikiParser;
 	}

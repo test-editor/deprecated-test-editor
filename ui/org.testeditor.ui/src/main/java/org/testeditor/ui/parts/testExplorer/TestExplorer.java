@@ -138,8 +138,8 @@ public class TestExplorer {
 		treeViewer.addOpenListener(new IOpenListener() {
 			@Override
 			public void open(OpenEvent arg0) {
-				OpenTestStructureHandler handler = ContextInjectionFactory
-						.make(OpenTestStructureHandler.class, context);
+				OpenTestStructureHandler handler = ContextInjectionFactory.make(OpenTestStructureHandler.class,
+						context);
 				handler.execute(context);
 			}
 		});
@@ -148,8 +148,8 @@ public class TestExplorer {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				context.get(MApplication.class).getContext()
-						.set(TestEditorConstants.SELECTED_TEST_COMPONENTS, getSelection());
+				context.get(MApplication.class).getContext().set(TestEditorConstants.SELECTED_TEST_COMPONENTS,
+						getSelection());
 				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 			}
 		});
@@ -221,9 +221,9 @@ public class TestExplorer {
 		for (MPart p : parts) {
 			if ((p.getElementId().equals(TestEditorTestCaseController.ID)
 					|| p.getElementId().equals(TestProjectEditor.ID)
-					|| p.getElementId().equals(TestEditorTestScenarioController.ID) || p.getElementId().equals(
-					TestSuiteEditor.ID))
-					&& (p.getObject() != null) && (((ITestStructureEditor) p.getObject()).getTestStructure()) != null) {
+					|| p.getElementId().equals(TestEditorTestScenarioController.ID)
+					|| p.getElementId().equals(TestSuiteEditor.ID)) && (p.getObject() != null)
+					&& (((ITestStructureEditor) p.getObject()).getTestStructure()) != null) {
 				testStructureList.add(((ITestStructureEditor) p.getObject()).getTestStructure());
 			}
 		}
@@ -255,12 +255,10 @@ public class TestExplorer {
 	@Optional
 	public void reloadLibrary(
 
-	@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
-		MessageDialog.openInformation(
-				Display.getCurrent().getActiveShell(),
-				translationService.translate("%reload.library.message.dialog.title"),
-				MessageFormat.format(translationService.translate("%reload.library.message.dialog.data"),
-						testProject.getName()));
+			@UIEventTopic(TestEditorCoreEventConstants.LIBRARY_FILES_CHANGED_MODIFIED) TestProject testProject) {
+		MessageDialog.openInformation(Display.getCurrent().getActiveShell(),
+				translationService.translate("%reload.library.message.dialog.title"), MessageFormat.format(
+						translationService.translate("%reload.library.message.dialog.data"), testProject.getName()));
 
 		ReloadLibraryHandler reloadLibraryHandler = ContextInjectionFactory.make(ReloadLibraryHandler.class, context);
 		reloadLibraryHandler.execute(testProject);
@@ -338,7 +336,7 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) String testStructureName) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_TESTNAME) String testStructureName) {
 		try {
 			refreshTreeViewerOnTestStrucutre(testProjectService.findTestStructureByFullName(testStructureName));
 		} catch (SystemException e) {
@@ -355,7 +353,7 @@ public class TestExplorer {
 	@Inject
 	@Optional
 	protected void refreshTreeByLoadedSVnState(
-			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED) TestProject testProject) {
+			@UIEventTopic(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_PROJECT) TestProject testProject) {
 
 		try {
 			teamShareStatusService.update(testProject);

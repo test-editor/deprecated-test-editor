@@ -238,7 +238,7 @@ public class TestProjectServiceImpl implements TestProjectService, IContextFunct
 				testProjects.add(testProject);
 
 				if (eventBroker != null) {
-					eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED, testProject);
+					eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_STATE_UPDATED_BY_PROJECT, testProject);
 				}
 
 			}
