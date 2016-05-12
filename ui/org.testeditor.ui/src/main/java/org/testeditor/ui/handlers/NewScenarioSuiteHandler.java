@@ -40,7 +40,6 @@ public class NewScenarioSuiteHandler extends NewTestStructureHandler {
 
 	@Override
 	protected String getWindowTitle() {
-		LOGGER.info("getWindowTitle");
 		return "%popupmenu.label.new.scenario.suite";
 	}
 
@@ -69,8 +68,7 @@ public class NewScenarioSuiteHandler extends NewTestStructureHandler {
 	 * @return false, if the selection is the TestKomponenten-Suite
 	 */
 	@CanExecute
-	public boolean canExecute(
-			IEclipseContext context,
+	public boolean canExecute(IEclipseContext context,
 			@Named("org.testeditor.ui.newscenariosuite.command.parameter.canExecuteFromMainMenu") @Optional String ignoreCanExecute) {
 		// the ignoreCanExecute comes from the Application.xmi, in case of menu
 		// handling
@@ -79,8 +77,8 @@ public class NewScenarioSuiteHandler extends NewTestStructureHandler {
 		}
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		CanExecuteTestExplorerHandlerRules handlerRules = ContextInjectionFactory.make(
-				CanExecuteTestExplorerHandlerRules.class, context);
+		CanExecuteTestExplorerHandlerRules handlerRules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
 		return handlerRules.canExecuteOnTestScenarienSuiteRule(selection);
 	}
 

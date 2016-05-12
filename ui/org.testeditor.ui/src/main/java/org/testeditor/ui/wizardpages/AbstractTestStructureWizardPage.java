@@ -57,6 +57,7 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 
 	private Text nameText;
 	private TestStructure selectedTS;
+	private boolean renderNameField = true;
 	private TestStructureTree testStructureTree;
 
 	@Inject
@@ -119,40 +120,43 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		getWidgetContainer().setLayout(new GridLayout(2, false));
 
 		// Show the hint text
-		Group hintGroup = new Group(getWidgetContainer(), SWT.NORMAL);
-		FontData fontData = hintGroup.getFont().getFontData()[0];
-		hintFont = new Font(Display.getCurrent(), fontData.getName(), fontData.getHeight(), SWT.BOLD);
-		hintGroup.setFont(hintFont);
-		hintGroup.setText(getHintTextHeaderValue());
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		hintGroup.setLayoutData(gd);
-		hintGroup.setLayout(new FillLayout());
-		Label hintText = new Label(hintGroup, SWT.NORMAL);
-		hintText.setText(getHintTextValue());
-		hintText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-				CustomWidgetIdConstants.NAME_ERROR_MESSAGE_LABEL);
-		new Label(getWidgetContainer(), SWT.NORMAL).setText(translationService.translate("%wizard.project.name"));
-		// string
-		nameText = new Text(getWidgetContainer(), SWT.BORDER | SWT.NORMAL | SWT.SINGLE);
-		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		nameText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
-				CustomWidgetIdConstants.NEW_TEST_PAGE_NAME);
+		if (renderNameField) {
+			Group hintGroup = new Group(getWidgetContainer(), SWT.NORMAL);
+			FontData fontData = hintGroup.getFont().getFontData()[0];
+			hintFont = new Font(Display.getCurrent(), fontData.getName(), fontData.getHeight(), SWT.BOLD);
+			hintGroup.setFont(hintFont);
+			hintGroup.setText(getHintTextHeaderValue());
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			gd.horizontalSpan = 2;
+			hintGroup.setLayoutData(gd);
+			hintGroup.setLayout(new FillLayout());
+			Label hintText = new Label(hintGroup, SWT.NORMAL);
+			hintText.setText(getHintTextValue());
+			hintText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+					CustomWidgetIdConstants.NAME_ERROR_MESSAGE_LABEL);
+			new Label(getWidgetContainer(), SWT.NORMAL).setText(translationService.translate("%wizard.project.name"));
+			// string
+			nameText = new Text(getWidgetContainer(), SWT.BORDER | SWT.NORMAL | SWT.SINGLE);
+			nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			nameText.setData(CustomWidgetIdConstants.TEST_EDITOR_WIDGET_ID_SWT_BOT_KEY,
+					CustomWidgetIdConstants.NEW_TEST_PAGE_NAME);
 
-		// Validate its contents after every entered key
-		nameText.addModifyListener(new ModifyListener() {
+			// Validate its contents after every entered key
+			nameText.addModifyListener(new ModifyListener() {
 
-			/**
-			 * Disables the 'finish' button depending on the name-validation
-			 * 
-			 * @param e
-			 *            key(board) event
-			 */
-			@Override
-			public void modifyText(ModifyEvent e) {
-				validatePageAndSetComplete();
-			}
-		});
+				/**
+				 * Disables the 'finish' button depending on the name-validation
+				 * 
+				 * @param e
+				 *            key(board) event
+				 */
+				@Override
+				public void modifyText(ModifyEvent e) {
+					validatePageAndSetComplete();
+				}
+			});
+			nameText.setFocus();
+		}
 
 		// On default disable the 'finish' button
 		setPageComplete(false);
@@ -160,7 +164,6 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		// Required to avoid an error in the system
 		setControl(getWidgetContainer());
 
-		nameText.setFocus();
 		LOGGER.info("createLocationTree");
 		createLocationTree();
 		LOGGER.info("createLocationTree done");
@@ -191,7 +194,7 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 	 * switch.
 	 */
 	protected void validatePageAndSetComplete() {
-		if (isNameValid(nameText.getText()) && getSelectedTestStrucutureElement() != null) {
+		if (!renderNameField || (isNameValid(nameText.getText()) && getSelectedTestStrucutureElement() != null)) {
 			setPageComplete(true);
 		} else {
 			setPageComplete(false);
@@ -202,7 +205,10 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 	 * @return the entered name
 	 */
 	public String getTextInNameText() {
-		return nameText.getText();
+		if (renderNameField) {
+			return nameText.getText();
+		}
+		throw new RuntimeException("nameText is not rendered in currentDialog");
 	}
 
 	/**
@@ -391,4 +397,13 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		}
 		super.dispose();
 	}
+
+	public boolean isRenderNameField() {
+		return renderNameField;
+	}
+
+	public void setRenderNameField(boolean renderNameField) {
+		this.renderNameField = renderNameField;
+	}
+
 }

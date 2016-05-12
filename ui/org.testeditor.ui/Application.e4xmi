@@ -21,6 +21,7 @@
                 <children xsi:type="menu:MenuSeparator" xmi:id="_HYIwsC58EeKvb61axu41cw" elementId="org.testeditor.ui.menuseparator.1"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_H-u2oC58EeKvb61axu41cw" elementId="org.testeditor.ui.handledmenuitem.deleteitem" label="%popupmenu.label.delete.item" iconURI="platform:/plugin/org.testeditor.ui/icons/remove.png" mnemonics="%handledmenuitem.mnemonics.3" command="_8tNH0D69EeKim5Ef38P8Tw"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_8RlGUD6-EeKim5Ef38P8Tw" elementId="org.testeditor.ui.handledmenuitem.renameitem" label="%popupmenu.label.rename.item" iconURI="platform:/plugin/org.testeditor.ui/icons/rename.png" command="_Bf-TQD6-EeKim5Ef38P8Tw"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_HfVl4BdrEeaggIGuFK_uVA" elementId="org.testeditor.ui.handledmenuitem.moveitem" label="%popupmenu.label.move.item" command="_a3qh8BdqEeaggIGuFK_uVA"/>
                 <children xsi:type="menu:MenuSeparator" xmi:id="_x6A1gERkEeKhxa2jZYac7A" elementId="org.testeditor.ui.menuseparator.2"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_2EjEUEqbEeKVwrxWYw_qcA" elementId="org.testeditor.ui.handledmenuitem.run" label="%popupmenu.label.runtest.item" iconURI="platform:/plugin/org.testeditor.ui/icons/run.gif" tooltip="" command="_4tsekEqgEeKVwrxWYw_qcA"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_CyEaIPRhEeKhvJHgD3On6A" elementId="org.testeditor.ui.handledmenuitem.showScenarioUsage" label="%popupmenu.label.show_scenario_usage.item" iconURI="platform:/plugin/org.testeditor.ui/icons/scenario_references.gif" command="_TcLccPRgEeKhvJHgD3On6A"/>
@@ -178,6 +179,7 @@
   <handlers xmi:id="_ZkEU8EaZEeWR66uzhUPE3Q" elementId="org.testeditor.ui.handler.tearDownTestExecEnv" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ShutDownTestExecutionEnvironmentHandler" command="_xjqGIEaPEeWR66uzhUPE3Q"/>
   <handlers xmi:id="_77sfcEcoEeWR66uzhUPE3Q" elementId="org.testeditor.ui.handler.resetTestExecEnv" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.ResetTestExecutionEnvironmentHandler" command="_2uFLEEcoEeWR66uzhUPE3Q"/>
   <handlers xmi:id="_3IL18GjOEeWIf_Sh73jsFQ" elementId="org.testeditor.ui.selectBranch.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.teamshare.SelectBranchHandler" command="_rT3IwGjNEeWIf_Sh73jsFQ"/>
+  <handlers xmi:id="_Q0-NoBdtEeaggIGuFK_uVA" elementId="org.testeditor.ui.move.handler" contributionURI="bundleclass://org.testeditor.ui/org.testeditor.ui.handlers.move.MoveItemHandler" command="_a3qh8BdqEeaggIGuFK_uVA"/>
   <bindingTables xmi:id="_vtvnGiNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" bindingContext="_vtvnICNOEeKR9Jsu4DQSAw">
     <bindings xmi:id="_vtvnGyNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+Q" command="_vtvnJCNOEeKR9Jsu4DQSAw"/>
     <bindings xmi:id="_vtvnHSNOEeKR9Jsu4DQSAw" contributorURI="platform:/plugin/org.testeditor.ui" keySequence="M1+S" command="_vtvnJiNOEeKR9Jsu4DQSAw"/>
@@ -316,6 +318,7 @@
   <commands xmi:id="_xjqGIEaPEeWR66uzhUPE3Q" elementId="org.testeditor.ui.command.tearDownTestExecEnv" commandName="org.testeditor.ui.command.tearDownTestExecEnv"/>
   <commands xmi:id="_2uFLEEcoEeWR66uzhUPE3Q" elementId="org.testeditor.ui.command.resetTestExecEnv" commandName="org.testeditor.ui.command.resetTestExecEnv"/>
   <commands xmi:id="_rT3IwGjNEeWIf_Sh73jsFQ" elementId="org.testeditor.ui.selectBranch.command" commandName="org.testeditor.ui.selectBranch.command"/>
+  <commands xmi:id="_a3qh8BdqEeaggIGuFK_uVA" elementId="org.testeditor.ui.moveitem.command" commandName="org.testeditor.ui.moveitem.command"/>
   <addons xmi:id="_vtvnKSNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.core.commands.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_vtvnKiNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.contexts.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_vtvnKyNOEeKR9Jsu4DQSAw" elementId="org.eclipse.e4.ui.bindings.service" contributorURI="platform:/plugin/org.testeditor.ui" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
