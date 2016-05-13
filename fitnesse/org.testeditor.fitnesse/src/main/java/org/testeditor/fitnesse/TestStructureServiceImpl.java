@@ -457,4 +457,10 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		return fitNesseWikiParser;
 	}
 
+	@Override
+	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
+		// TODO: Methode implementieren
+		throw new SystemException("Methode not impemented");
+	}
+
 }

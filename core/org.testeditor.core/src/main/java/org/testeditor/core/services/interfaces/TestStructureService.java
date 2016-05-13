@@ -77,6 +77,18 @@ public interface TestStructureService {
 	void rename(TestStructure testStructure, String newName) throws SystemException;
 
 	/**
+	 * Moves a given test structure to a new parent.
+	 * 
+	 * @param testStructure
+	 *            test structure which should be moved
+	 * @param newParent
+	 *            the new parent of the testcase.
+	 * @throws SystemException
+	 *             is thrown if a system exception occurred
+	 */
+	void move(TestStructure testStructure, TestStructure newParent) throws SystemException;
+
+	/**
 	 * Executes a given test structure.
 	 * 
 	 * @param testStructure

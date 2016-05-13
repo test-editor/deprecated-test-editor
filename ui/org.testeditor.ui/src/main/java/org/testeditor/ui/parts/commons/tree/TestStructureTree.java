@@ -24,11 +24,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureTreeModel;
 import org.testeditor.ui.parts.commons.TestStructureViewerComparator;
 import org.testeditor.ui.parts.commons.tree.filter.ErrorInProjectConfigFilter;
 import org.testeditor.ui.parts.commons.tree.filter.ReservedNameFilter;
+import org.testeditor.ui.parts.commons.tree.filter.SkipProjectFilter;
 import org.testeditor.ui.parts.commons.tree.filter.TestCaseFilter;
 import org.testeditor.ui.parts.commons.tree.filter.TestScenarioFilter;
 import org.testeditor.ui.parts.commons.tree.filter.TestSuiteWithoutTestScenarioSuiteFilter;
@@ -96,7 +98,21 @@ public class TestStructureTree {
 	 * contain TestScenario.
 	 */
 	public void showOnlyTestScenarioSuites() {
+		showOnlyTestScenarioSuites(null);
+	}
+
+	/**
+	 * Adds a Filter to the Treeviewer so show only TestSenarioSuites, which can
+	 * contain TestScenario in a given project.
+	 * 
+	 * @param project
+	 *            - the given project
+	 */
+	public void showOnlyTestScenarioSuites(TestProject project) {
 		showParentTestStructesAndChildren();
+		if (project != null) {
+			treeViewer.addFilter(new SkipProjectFilter(project));
+		}
 		treeViewer.addFilter(new TestCaseFilter());
 		treeViewer.addFilter(new TestSuiteWithoutTestScenarioSuiteFilter());
 		treeViewer.addFilter(new ErrorInProjectConfigFilter());
@@ -118,10 +134,7 @@ public class TestStructureTree {
 	 * contain Testcases.
 	 */
 	public void showOnlyParentStructuresOfSuites() {
-		showParentTestStructesAndChildren();
-		treeViewer.addFilter(new TestCaseFilter());
-		treeViewer.addFilter(ContextInjectionFactory.make(TestScenarioFilter.class, context));
-		treeViewer.addFilter(new ErrorInProjectConfigFilter());
+		showOnlyParentStructuresOfSuites(null);
 	}
 
 	/**
@@ -217,6 +230,23 @@ public class TestStructureTree {
 	 */
 	public IStructuredSelection getSelection() {
 		return (IStructuredSelection) treeViewer.getSelection();
+	}
+
+	/**
+	 * Adds a Filter to the Treeviewer so show only Teststructures of the root
+	 * project, which can contain Testcases.
+	 * 
+	 * @param root
+	 *            - the project
+	 */
+	public void showOnlyParentStructuresOfSuites(TestProject root) {
+		showParentTestStructesAndChildren();
+		if (root != null) {
+			treeViewer.addFilter(new SkipProjectFilter(root));
+		}
+		treeViewer.addFilter(new TestCaseFilter());
+		treeViewer.addFilter(ContextInjectionFactory.make(TestScenarioFilter.class, context));
+		treeViewer.addFilter(new ErrorInProjectConfigFilter());
 	}
 
 }

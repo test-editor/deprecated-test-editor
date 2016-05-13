@@ -45,7 +45,7 @@ public class MoveTestCaseWizardPage extends AbstractNewTestStructureWizardPage {
 
 	@Override
 	protected void setTreeFilter() {
-		getTestStructureTree().showOnlyParentStructuresOfSuites();
+		getTestStructureTree().showOnlyParentStructuresOfSuites(getSelectedTestStructure().getRootElement());
 	}
 
 	@Override

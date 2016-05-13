@@ -19,13 +19,17 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
@@ -41,8 +45,18 @@ import org.testeditor.ui.wizards.MoveItemWizard;
 public class MoveItemHandler {
 
 	@Inject
+	private TestStructureService testStructureService;
+
+	@Inject
 	private TestEditorTranslationService translationService;
 
+	/**
+	 * Enables the complete button only if a folder is selected.
+	 * 
+	 * @param context
+	 *            - the context
+	 * @return true if a folder is selected
+	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
 		IStructuredSelection selection = (IStructuredSelection) context
@@ -59,33 +73,46 @@ public class MoveItemHandler {
 	 */
 	@Execute
 	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		MoveItemWizard nwiz = getWizard(context);
 
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		TestFlow lastSelection = (TestFlow) selection.getFirstElement();
+		TestStructure testStructure = (TestStructure) selection.getFirstElement();
 
+		MoveItemWizard nwiz = new MoveItemWizard();
 		nwiz.setWindowTitle(translationService.translate("%popupmenu.label.move.item"));
 
 		// Add the new-page to the wizard
-		AbstractTestStructureWizardPage newTestPage = getNewTestStructureWizardPage(lastSelection, context);
+		AbstractTestStructureWizardPage newTestPage = getNewTestStructureWizardPage(testStructure, context);
 		nwiz.addPage(newTestPage);
 
 		// Show the wizard...
 		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
 
-		wizardDialog.open();
+		if (wizardDialog.open() == Window.OK) {
+			try {
+				testStructureService.move(testStructure, nwiz.getNewTestStructureParent());
+			} catch (SystemException e) {
+				MessageDialog.openError(shell, "System-Exception", e.getLocalizedMessage());
+			}
+		}
 
 		return;
 	}
 
-	protected MoveItemWizard getWizard(IEclipseContext context) {
-		return new MoveItemWizard();
-	}
-
+	/**
+	 * create a new wizard page based on the type of the selection.
+	 * 
+	 * @param selectedTS
+	 *            - the selected testStructure
+	 * @param context
+	 *            - eclipse context (it is needed to access beans created in the
+	 *            context).
+	 * @return - the new page
+	 */
 	protected AbstractNewTestStructureWizardPage getNewTestStructureWizardPage(TestStructure selectedTS,
 			IEclipseContext context) {
 		AbstractNewTestStructureWizardPage moveItemWizardPage = null;
+
 		if (selectedTS instanceof TestCase) {
 			moveItemWizardPage = ContextInjectionFactory.make(MoveTestCaseWizardPage.class, context);
 		} else if (selectedTS instanceof TestScenario) {
@@ -93,6 +120,7 @@ public class MoveItemHandler {
 		} else {
 			throw new IllegalArgumentException("Illegal type " + selectedTS.getClass().getName());
 		}
+
 		moveItemWizardPage.setRenderNameField(false);
 		moveItemWizardPage.setSelectedTestStructure(selectedTS);
 		return moveItemWizardPage;

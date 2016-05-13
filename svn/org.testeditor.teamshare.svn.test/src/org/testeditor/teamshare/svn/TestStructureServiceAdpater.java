@@ -101,4 +101,8 @@ public class TestStructureServiceAdpater implements TestStructureService {
 	public void stepwiseTest(TestStructure testStructure) throws SystemException {
 	}
 
+	@Override
+	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
+	}
+
 }

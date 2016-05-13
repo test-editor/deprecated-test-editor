@@ -169,4 +169,10 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 				.stepwiseTest(testStructure);
 	}
 
+	@Override
+	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
+		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+				.move(testStructure, newParent);
+	}
+
 }

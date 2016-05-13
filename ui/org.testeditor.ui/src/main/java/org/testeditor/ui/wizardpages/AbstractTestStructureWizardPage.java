@@ -47,7 +47,9 @@ import org.testeditor.ui.wizardpages.nameinspector.INameInspector;
 
 /**
  * Abstract wizard for any operation regarding the test structure. E.g. a lower
- * class could implement a test case creation or a test suite renaming.
+ * class could implement a test case creation or a test suite renaming. It is
+ * possible to display the wizard with or without a name entry field.In the
+ * default configuration is the name field rendered
  */
 public abstract class AbstractTestStructureWizardPage extends WizardPage {
 
@@ -194,10 +196,14 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 	 * switch.
 	 */
 	protected void validatePageAndSetComplete() {
-		if (!renderNameField || (isNameValid(nameText.getText()) && getSelectedTestStrucutureElement() != null)) {
-			setPageComplete(true);
+		if (renderNameField) {
+			if (renderNameField || (isNameValid(nameText.getText()) && getSelectedTestStrucutureElement() != null)) {
+				setPageComplete(true);
+			} else {
+				setPageComplete(false);
+			}
 		} else {
-			setPageComplete(false);
+			setPageComplete(getSelectedTestStrucutureElement() != null);
 		}
 	}
 
@@ -398,10 +404,21 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 		super.dispose();
 	}
 
+	/**
+	 * Tests whether the name field is rendered.
+	 * 
+	 * @return - true if the name field has to be rendered.
+	 */
 	public boolean isRenderNameField() {
 		return renderNameField;
 	}
 
+	/**
+	 * Sets the parameter rendeerNameField.
+	 * 
+	 * @param renderNameField
+	 *            -the value
+	 */
 	public void setRenderNameField(boolean renderNameField) {
 		this.renderNameField = renderNameField;
 	}

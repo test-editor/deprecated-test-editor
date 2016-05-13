@@ -39,7 +39,7 @@ public class MoveScenarioWizardPage extends AbstractNewTestStructureWizardPage {
 
 	@Override
 	protected void setTreeFilter() {
-		getTestStructureTree().showOnlyTestScenarioSuites();
+		getTestStructureTree().showOnlyTestScenarioSuites(getSelectedTestStructure().getRootElement());
 	}
 
 	@Override
