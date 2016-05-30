@@ -199,7 +199,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	public void create(TestStructure testStructure) throws SystemException {
 		Path pathToTestStructure = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
 		if (Files.exists(pathToTestStructure)) {
-			throw new SystemException("TestStructure allready exits");
+			throw new SystemException("TestStructure already exits");
 		}
 		try {
 			testStructure.setUrl(pathToTestStructure.toUri().toURL());
@@ -495,9 +495,10 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
-		// TODO: Methode implementieren
-		throw new SystemException("Methode not impemented");
+	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		delete(testStructure);
+		newParent.addChild(testStructure);
+		create(testStructure);
 	}
 
 }

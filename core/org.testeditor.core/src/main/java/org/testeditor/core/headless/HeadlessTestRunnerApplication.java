@@ -33,7 +33,6 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.prefs.BackingStoreException;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.testresult.TestResult;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -103,11 +102,7 @@ public class HeadlessTestRunnerApplication implements IApplication {
 				new NullProgressMonitor());
 		if (test instanceof TestSuite) {
 			TestSuite ts = (TestSuite) test;
-			try {
-				getService(TestStructureContentService.class).refreshTestCaseComponents(ts);
-			} catch (TestCycleDetectException e) {
-				logger.warn("Cycle detected in: " + ts.getFullName());
-			}
+			getService(TestStructureContentService.class).refreshTestCaseComponents(ts);
 			interActionLogWatcherRunnable
 					.setTestCaseCount(ts.getReferredTestStrcutures().size() + ts.getAllTestChildren().size());
 		}

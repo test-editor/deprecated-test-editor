@@ -26,6 +26,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
+import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -70,6 +71,8 @@ public class MoveItemHandler {
 	 * 
 	 * @param context
 	 *            IEclipseContext
+	 * @param shell
+	 *            - the shell
 	 */
 	@Execute
 	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
@@ -90,7 +93,10 @@ public class MoveItemHandler {
 
 		if (wizardDialog.open() == Window.OK) {
 			try {
-				testStructureService.move(testStructure, nwiz.getNewTestStructureParent());
+				if (!(nwiz.getNewTestStructureParent() instanceof TestCompositeStructure)) {
+					throw new IllegalArgumentException("selected structure is not of type TestSuite");
+				}
+				testStructureService.move(testStructure, (TestCompositeStructure) nwiz.getNewTestStructureParent());
 			} catch (SystemException e) {
 				MessageDialog.openError(shell, "System-Exception", e.getLocalizedMessage());
 			}

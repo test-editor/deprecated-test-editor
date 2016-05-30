@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.testeditor.fitnesse;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -41,6 +43,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestScenarioService;
@@ -154,6 +157,38 @@ public class TestStructureServiceImplIntTest {
 
 		TestStructureServiceImpl service = new TestStructureServiceImpl();
 		service.rename(testStructure, "newName");
+
+		Path path = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
+		assertTrue(path.toAbsolutePath() + " was not found.", Files.exists(path));
+	}
+
+	/**
+	 * Test the rename of a Teststructure.
+	 * 
+	 * @throws Exception
+	 *             on Testfailue
+	 */
+	@Test
+	public void testMoveTestCase() throws Exception {
+		TestProject project = createTestProject();
+
+		Platform.getLocation();
+		FitnesseFileSystemTestStructureService fitnesseFileSystemTestStructureService = new FitnesseFileSystemTestStructureService();
+		fitnesseFileSystemTestStructureService.loadChildrenInto(project);
+
+		TestStructure testStructure = project.getTestChildByFullName("DemoWebTests.GoogleSucheSuite.SucheAkquinetTest");
+
+		TestSuite testSuite = (TestSuite) project.getTestChildByFullName("DemoWebTests.LocalDemoSuite");
+		assertNotNull(testSuite);
+
+		testStructureService.move(testStructure, testSuite);
+
+		fitnesseFileSystemTestStructureService.loadChildrenInto(project);
+		assertNull(project.getTestChildByFullName("DemoWebTests.GoogleSucheSuite.SucheAkquinetTest"));
+		TestStructure newTestStructure = project
+				.getTestChildByFullName("DemoWebTests.LocalDemoSuite.SucheAkquinetTest");
+		assertNotNull(newTestStructure);
+		assertFalse(getFitnessCode(newTestStructure).equals("!contents"));
 
 		Path path = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
 		assertTrue(path.toAbsolutePath() + " was not found.", Files.exists(path));

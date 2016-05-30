@@ -22,7 +22,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
@@ -72,8 +71,6 @@ public class CloneTestStructureHandler {
 				LOGGER.error("saving ", e);
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), translationService.translate("%error"),
 						e.getLocalizedMessage());
-			} catch (TestCycleDetectException e) {
-				LOGGER.error("cycle in: " + lastSelection.getFullName(), e);
 			}
 		}
 		return clonedTs;

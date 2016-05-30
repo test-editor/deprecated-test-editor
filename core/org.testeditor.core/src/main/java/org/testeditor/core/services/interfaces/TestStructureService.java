@@ -86,7 +86,7 @@ public interface TestStructureService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	void move(TestStructure testStructure, TestStructure newParent) throws SystemException;
+	void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException;
 
 	/**
 	 * Executes a given test structure.

@@ -170,7 +170,7 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
+	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
 		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
 				.move(testStructure, newParent);
 	}

@@ -197,7 +197,7 @@ public abstract class AbstractTestStructureWizardPage extends WizardPage {
 	 */
 	protected void validatePageAndSetComplete() {
 		if (renderNameField) {
-			if (renderNameField || (isNameValid(nameText.getText()) && getSelectedTestStrucutureElement() != null)) {
+			if (!renderNameField || (isNameValid(nameText.getText()) && getSelectedTestStrucutureElement() != null)) {
 				setPageComplete(true);
 			} else {
 				setPageComplete(false);

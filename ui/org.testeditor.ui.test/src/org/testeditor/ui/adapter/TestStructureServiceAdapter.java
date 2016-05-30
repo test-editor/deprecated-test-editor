@@ -117,7 +117,7 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
+	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
 	}
 
 }

@@ -21,7 +21,6 @@ import org.eclipse.e4.core.contexts.ContextFunction;
 import org.eclipse.e4.core.contexts.IContextFunction;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -32,14 +31,14 @@ import org.testeditor.core.services.plugins.TestStructureContentServicePlugIn;
  * Dispatcher to look up the right plug-on of TestStructureContentService.
  *
  */
-public class TestStructureContentServiceDispatcher extends ContextFunction implements TestStructureContentService,
-		IContextFunction {
+public class TestStructureContentServiceDispatcher extends ContextFunction
+		implements TestStructureContentService, IContextFunction {
 
 	private static final Logger LOGGER = Logger.getLogger(TestStructureContentServiceDispatcher.class);
 	private Map<String, TestStructureContentServicePlugIn> testStructureContentServices = new HashMap<String, TestStructureContentServicePlugIn>();
 
 	@Override
-	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException, TestCycleDetectException {
+	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException {
 		testStructureContentServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
 				.refreshTestCaseComponents(testStructure);
 	}
@@ -64,8 +63,7 @@ public class TestStructureContentServiceDispatcher extends ContextFunction imple
 
 	@Override
 	public String getTestStructureAsSourceText(TestStructure testStructure) throws SystemException {
-		return testStructureContentServices
-				.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+		return testStructureContentServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
 				.getTestStructureAsSourceText(testStructure);
 	}
 

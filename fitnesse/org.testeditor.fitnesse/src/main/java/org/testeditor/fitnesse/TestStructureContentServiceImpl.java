@@ -25,7 +25,6 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -53,18 +52,8 @@ public class TestStructureContentServiceImpl implements TestStructureContentServ
 	 * 
 	 */
 	@Override
-	public void refreshTestCaseComponents(TestStructure testStructure)
-			throws SystemException, TestCycleDetectException {
-		seenflows = new ArrayList<TestFlow>();
-		cycleFound = false;
+	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException {
 		new FitnesseFileSystemTestStructureContentService().refreshTestCaseComponents(testStructure);
-		if (cycleFound) {
-			List<String> seenFlowNames = new ArrayList<String>();
-			for (TestFlow testFlow : seenflows) {
-				seenFlowNames.add(testFlow.getFullName());
-			}
-			throw new TestCycleDetectException(seenFlowNames);
-		}
 	}
 
 	/**

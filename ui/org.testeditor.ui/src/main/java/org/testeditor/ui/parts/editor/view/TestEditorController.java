@@ -48,11 +48,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.action.Argument;
 import org.testeditor.core.model.action.ProjectActionGroups;
 import org.testeditor.core.model.action.TextType;
@@ -1280,11 +1278,6 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 				LOGGER.error("set Testcase:: FAILED", e);
 				MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e.getLocalizedMessage());
 			}
-		} catch (TestCycleDetectException e) {
-			messsageArea.setBackground(ColorConstants.COLOR_YELLOW);
-			Label label = new Label(messsageArea, SWT.WRAP);
-			label.setText(translationService.translate("%TestEditView.messagearea.cycledetected", e.getCycleString()));
-			compositeForView.layout(true, true);
 		}
 
 	}

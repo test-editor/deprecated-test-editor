@@ -212,23 +212,28 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	}
 
 	/**
-	 * Renames a scenario: Changes the name of the scenario and changes all
-	 * testcases and scenarios that calls the scenario.
+	 * updates the calls of a scenario: Changes the name and the path of the
+	 * scenario and changes all testcases and scenarios that make use of the
+	 * scenario.
 	 * 
-	 * @param scenario
-	 *            - the test scenario
+	 * @param testProject
+	 *            - the testProject
 	 * @param newName
 	 *            - the new name of the scenario
+	 * @param newPath
+	 *            - the new path of the scenario
+	 * @param oldPath
+	 *            - the old path of the scenario
+	 * @param usages
+	 *            - a list of testcases and scenarios that use the scenario
 	 * @throws SystemException
 	 *             - any exception during renaming
+	 * @return the list of updated testFlows.
 	 */
-	private void renameScenario(TestScenario scenario, String newName) throws SystemException {
+	private List<TestFlow> updateScenarioCalls(TestProject testProject, String newName, String newPath, String oldPath,
+			List<String> usages) throws SystemException {
+
 		List<TestFlow> changedFlows = new ArrayList<TestFlow>();
-
-		TestProject testProject = scenario.getRootElement();
-
-		scenario = testScenarioService.getScenarioByFullName(testProject, scenario.getFullName());
-		List<String> usages = testScenarioService.getUsedOfTestSceneario(scenario);
 
 		// Search and update all calls to the scenario to be renamed.
 		for (String usage : usages) {
@@ -237,8 +242,8 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 
 			String usageCode = testStructureContentService.getTestStructureAsSourceText(testFlow);
 			LinkedList<TestComponent> testComponents = fitNesseWikiParser.parse((TestFlow) testFlow, usageCode);
-			String include = "!include <" + scenario.getFullName();
-			String newInclude = "!include <" + scenario.getParent().getFullName() + "." + newName;
+			String include = "!include <" + oldPath;
+			String newInclude = newPath;
 			for (TestComponent testComponent : testComponents) {
 				if (testComponent instanceof TestScenarioParameterTable) {
 					TestScenarioParameterTable paramCall = (TestScenarioParameterTable) testComponent;
@@ -251,19 +256,33 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 			testFlow.setTestComponents(testComponents);
 			changedFlows.add(testFlow);
 		}
+		return changedFlows;
+	}
+
+	/**
+	 * renames a scenario.
+	 * 
+	 * @param scenario
+	 *            -the scenario to be renamed
+	 * @param newName
+	 *            - the new name of the scenario
+	 * @throws SystemException
+	 *             - any exception during execution.
+	 */
+	private void renameScenario(TestScenario scenario, String newName) throws SystemException {
+		List<String> usages = testScenarioService.getUsedOfTestSceneario(scenario);
+
+		TestProject testProject = scenario.getRootElement();
+
+		List<TestFlow> changedFlows = updateScenarioCalls(testProject, newName,
+				scenario.getParent().getFullName() + "." + newName, scenario.getFullName(), usages);
+
 		// execute the rename of the scenario itself.
 		renameFiles(scenario, newName);
 
 		// Store the changed testFlows
 		testStructureContentService.saveTestStructureData(scenario);
-		for (TestFlow testFlow : changedFlows) {
-			testStructureContentService.saveTestStructureData(testFlow);
-			if (eventBroker != null) {
-				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
-						testFlow.getFullName());
-			}
-
-		}
+		updateChangedFlows(changedFlows);
 	}
 
 	/**
@@ -458,9 +477,99 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestStructure newParent) throws SystemException {
-		// TODO: Methode implementieren
-		throw new SystemException("Methode not impemented");
+	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		testStructureContentService.refreshTestCaseComponents(testStructure);
+		if (testStructure.getParent() instanceof TestCompositeStructure) {
+			((TestCompositeStructure) testStructure.getParent()).removeChild(testStructure);
+		}
+		if (eventBroker != null) {
+			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+					testStructure.getFullName());
+		}
+		List<TestFlow> changedFlows = null;
+		if (testStructure instanceof TestScenario) {
+			changedFlows = updateScenarioUsage((TestScenario) testStructure, newParent);
+		} else {
+			clearTestHistory(testStructure);
+		}
+
+		if (testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
+			moveStructureWithTeamShare(testStructure, newParent);
+		} else {
+			new FitnesseFileSystemTestStructureService().move(testStructure, newParent);
+		}
+
+		if (changedFlows != null) {
+			updateChangedFlows(changedFlows);
+		}
+
+		if (eventBroker != null) {
+			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_RELOADED,
+					testStructure.getRootElement().getName());
+		}
+	}
+
+	/**
+	 * Saves a list of testFlows to the disk.
+	 * 
+	 * @param changedFlows
+	 *            - the list of changed tesFlows
+	 * @throws SystemException
+	 *             - any exception during renaming
+	 */
+	private void updateChangedFlows(List<TestFlow> changedFlows) throws SystemException {
+		for (TestFlow testFlow : changedFlows) {
+			testStructureContentService.saveTestStructureData(testFlow);
+			if (eventBroker != null) {
+				eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
+						testFlow.getFullName());
+			}
+
+		}
+	}
+
+	/**
+	 * Updates all calls to a scenrio during moving a scenario from one folder
+	 * to the other.
+	 * 
+	 * 
+	 * @param testScenario
+	 *            - the be moved
+	 * @param newParent
+	 *            -the new parent
+	 * @return - the list of TestFlows that have been updated
+	 * @throws SystemException
+	 *             - any exception during renaming
+	 */
+	private List<TestFlow> updateScenarioUsage(TestScenario testScenario, TestCompositeStructure newParent)
+			throws SystemException {
+		List<String> usages = testScenarioService.getUsedOfTestSceneario(testScenario);
+		String oldPath = testScenario.getFullName();
+		String newPath = newParent.getFullName() + "." + testScenario.getName();
+		List<TestFlow> changedFlows = updateScenarioCalls(testScenario.getRootElement(), testScenario.getName(),
+				newPath, oldPath, usages);
+		return changedFlows;
+	}
+
+	/**
+	 * moves a testcase or a scenario that is under version control.
+	 * 
+	 * @param testStructure
+	 *            - the teststructure to be moved
+	 * @param newParent
+	 *            - the new parent
+	 * @throws SystemException
+	 *             - any exception during renaming
+	 */
+	private void moveStructureWithTeamShare(TestStructure testStructure, TestCompositeStructure newParent)
+			throws SystemException {
+		String id = testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig().getId();
+		logger.trace("Looking up for team share service with id: " + id);
+		TeamShareService teamShareService = teamShareServices.get(id);
+		delete(testStructure);
+		newParent.addChild(testStructure);
+		create(testStructure);
+		teamShareService.addChild(testStructure, null);
 	}
 
 }

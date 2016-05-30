@@ -225,7 +225,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 			service.create(tc);
 			fail("Exception expected.");
 		} catch (SystemException e) {
-			assertTrue(e.getMessage().contains("TestStructure allready exits"));
+			assertTrue(e.getMessage().contains("TestStructure already exits"));
 		}
 	}
 

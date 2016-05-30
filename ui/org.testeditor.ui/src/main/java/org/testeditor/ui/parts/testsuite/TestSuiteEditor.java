@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.constants.TestEditorCoreEventConstants;
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
@@ -191,8 +190,8 @@ public class TestSuiteEditor implements ITestStructureEditor {
 			}
 		});
 		referredTestCasesViewer.addOpenListener(getOpenListener(referredTestCasesViewer));
-		TestStructureTreeLabelProvider labelProvider = ContextInjectionFactory.make(
-				TestStructureTreeLabelProvider.class, context);
+		TestStructureTreeLabelProvider labelProvider = ContextInjectionFactory
+				.make(TestStructureTreeLabelProvider.class, context);
 		labelProvider.setShowFullName(true);
 		referredTestCasesViewer.setLabelProvider(labelProvider);
 		referredTestCasesViewer.getTable().addSelectionListener(getTabeleSelectionListener());
@@ -255,8 +254,9 @@ public class TestSuiteEditor implements ITestStructureEditor {
 				} catch (ClassCastException e) {
 
 					if (element instanceof BrokenTestStructure) {
-						MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Info", MessageFormat
-								.format(translate.translate("%testsuiteeditor.referedtestcases.not.available"),
+						MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Info",
+								MessageFormat.format(
+										translate.translate("%testsuiteeditor.referedtestcases.not.available"),
 										((BrokenTestStructure) element).getName()));
 
 					}
@@ -384,7 +384,8 @@ public class TestSuiteEditor implements ITestStructureEditor {
 			testStructureContentService.saveTestStructureData(testSuite);
 			mpart.setDirty(false);
 			TestProject testProject = getTestStructure().getRootElement();
-			if (testProject.getTestProjectConfig() != null && testProject.getTestProjectConfig().isTeamSharedProject()) {
+			if (testProject.getTestProjectConfig() != null
+					&& testProject.getTestProjectConfig().isTeamSharedProject()) {
 				try {
 					teamShareStatusService.update(testProject);
 				} catch (FileNotFoundException e) {
@@ -431,9 +432,6 @@ public class TestSuiteEditor implements ITestStructureEditor {
 		} catch (SystemException e) {
 			LOGGER.trace("Error loading TestScenario content", e);
 			MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error", e.getCause().getMessage());
-		} catch (TestCycleDetectException e) {
-			LOGGER.trace("Error loading TestScenario content", e);
-			MessageDialog.openWarning(Display.getCurrent().getActiveShell(), "Warning", e.getCause().getMessage());
 		}
 		referredTestCasesViewer.setInput(testSuite);
 		mpart.getPersistedState().put(EDITOR_OBJECT_ID_FOR_RESTORE, testSuite.getFullName());

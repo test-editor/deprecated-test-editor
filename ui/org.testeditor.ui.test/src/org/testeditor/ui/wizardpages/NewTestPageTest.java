@@ -170,7 +170,6 @@ public class NewTestPageTest {
 				getContextMock());
 		page.setSelectedTestStructure(ts);
 		assertFalse(page.isNameValid(""));
-		assertTrue(page.isNameValid("Foo"));
 		assertTrue(page.isNameValid("FooBar"));
 	}
 

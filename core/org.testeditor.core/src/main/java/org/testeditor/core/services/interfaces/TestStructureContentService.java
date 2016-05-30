@@ -14,7 +14,6 @@ package org.testeditor.core.services.interfaces;
 import java.util.List;
 
 import org.testeditor.core.exceptions.SystemException;
-import org.testeditor.core.exceptions.TestCycleDetectException;
 import org.testeditor.core.model.teststructure.TestComponent;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestStructure;
@@ -40,11 +39,8 @@ public interface TestStructureContentService {
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 * 
-	 * @throws TestCycleDetectException
-	 *             on cycle in testcall hierarchies
 	 */
-	// TODO Rename Method to make intension clear
-	void refreshTestCaseComponents(TestStructure testStructure) throws SystemException, TestCycleDetectException;
+	void refreshTestCaseComponents(TestStructure testStructure) throws SystemException;
 
 	/**
 	 * Saves the content of the given test flow by the internal components.
