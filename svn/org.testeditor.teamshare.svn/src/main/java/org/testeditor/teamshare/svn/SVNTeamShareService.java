@@ -43,6 +43,8 @@ import org.tmatesoft.svn.core.SVNCancelException;
 import org.tmatesoft.svn.core.SVNCommitInfo;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNDirEntry;
+import org.tmatesoft.svn.core.SVNErrorCode;
+import org.tmatesoft.svn.core.SVNErrorMessage;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNNodeKind;
@@ -493,7 +495,8 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 	}
 
 	@Override
-	public void delete(TestStructure testStructure, TranslationService translationService) throws SystemException {
+	public void delete(TestStructure testStructure, final TranslationService translationService)
+			throws SystemException {
 
 		logger.trace("call to delete; testStructure: '" + testStructure.getFullName() + "'");
 
@@ -510,7 +513,13 @@ public class SVNTeamShareService implements TeamShareServicePlugIn, IContextFunc
 						logger.trace("Add to delete: Handle status: " + status.getNodeStatus().toString()
 								+ " from file: " + status.getFile().getAbsolutePath());
 					}
-					wcClient.doDelete(status.getFile(), true, false, false);
+					if (status.isCopied()) {
+						throw new SVNException(SVNErrorMessage.create(SVNErrorCode.CANCELLED,
+								translationService.translate("%svn.state.deleteNotPossible",
+										"platform:/plugin/org.testeditor.teamshare.svn")));
+					} else {
+						wcClient.doDelete(status.getFile(), true, false, false);
+					}
 				}
 			}
 		};

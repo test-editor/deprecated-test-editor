@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -34,6 +35,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.ProgressListener;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
 import org.testeditor.ui.parts.testExplorer.TestExplorer;
@@ -49,6 +51,10 @@ public abstract class AbstractUpdateOrApproveHandler {
 	private TeamShareService teamShareService;
 	@Inject
 	protected TestEditorTranslationService translationService;
+
+	@Inject
+	@Optional
+	private MetaDataService metaDataService;
 
 	private static final Logger LOGGER = Logger.getLogger(AbstractUpdateOrApproveHandler.class);
 
@@ -116,6 +122,9 @@ public abstract class AbstractUpdateOrApproveHandler {
 
 								if (executeSpecials(testStructure)) {
 									addToProjectSet(testStructure.getRootElement());
+									if (getMetaDataService() != null) {
+										getMetaDataService().refresh(testStructure.getRootElement());
+									}
 								} else {
 									noError = false;
 								}
@@ -207,6 +216,22 @@ public abstract class AbstractUpdateOrApproveHandler {
 	 */
 	protected TeamShareService getTeamService() {
 		return teamShareService;
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an info-message is displayed and null will be
+	 * returned
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			LOGGER.info(
+					"MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
+
 	}
 
 }

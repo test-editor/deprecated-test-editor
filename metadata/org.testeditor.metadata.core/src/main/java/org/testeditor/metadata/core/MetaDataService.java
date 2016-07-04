@@ -147,4 +147,6 @@ public interface MetaDataService {
 	 */
 	List<String> getTestCases(TestProject project, List<MetaDataValue> metaDataValueList);
 
+	void move(String orgName, TestStructure movedTestStructure) throws SystemException;
+
 }

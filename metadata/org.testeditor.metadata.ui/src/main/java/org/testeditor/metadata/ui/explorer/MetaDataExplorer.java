@@ -54,7 +54,7 @@ import org.testeditor.ui.handlers.OpenTestStructureHandler;
  */
 public class MetaDataExplorer {
 
-	private static final Logger LOGGER = Logger.getLogger(MetaDataExplorer.class);
+	private static final Logger logger = Logger.getLogger(MetaDataExplorer.class);
 
 	@Inject
 	private IEclipseContext context;
@@ -69,12 +69,9 @@ public class MetaDataExplorer {
 
 	private MetaDataStructureTree metaDataStructureTree;
 
-	private MPart part;
-
 	@Inject
 	public MetaDataExplorer(MPart part) {
-		LOGGER.info("call to MetaDataExplorer");
-		this.part = part;
+		logger.info("call to MetaDataExplorer");
 	}
 
 	/**
@@ -87,7 +84,7 @@ public class MetaDataExplorer {
 	 */
 	@PostConstruct
 	public void createUi(Composite parent, EMenuService service) {
-		LOGGER.info("call to createUi");
+		logger.info("call to createUi");
 		metaDataStructureTree = ContextInjectionFactory.make(MetaDataStructureTree.class, context);
 		metaDataStructureTree.createUI(parent, metaDataService);
 		// testStructureTree.showOnlyTestKomponentsSuite();
@@ -121,7 +118,7 @@ public class MetaDataExplorer {
 				eventBroker.send(UIEvents.REQUEST_ENABLEMENT_UPDATE_TOPIC, UIEvents.ALL_ELEMENT_ID);
 			}
 		});
-		LOGGER.info("done to createUi");
+		logger.info("done to createUi");
 	}
 
 	/**
@@ -169,7 +166,7 @@ public class MetaDataExplorer {
 	 */
 	@Focus
 	public void setFocusOnTree(@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
-		LOGGER.info("call to setFocusOnTree");
+		logger.info("call to setFocusOnTree");
 		if (metaDataStructureTree != null) {
 			metaDataStructureTree.getTreeViewer().getTree().setFocus();
 			shell.setDefaultButton(null);

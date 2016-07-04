@@ -29,6 +29,8 @@ import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataValue;
 
+import org.apache.log4j.Logger;
+
 /**
  * 
  * Content Provider to navigate through the TestProjects and their
@@ -36,6 +38,8 @@ import org.testeditor.metadata.core.model.MetaDataValue;
  * 
  */
 public class MetaDataTreeContentProvider implements ITreeContentProvider {
+
+	private static final Logger logger = Logger.getLogger(MetaDataTreeContentProvider.class);
 
 	private MetaDataService metaDataService;
 	@Inject
@@ -71,7 +75,12 @@ public class MetaDataTreeContentProvider implements ITreeContentProvider {
 			List<TestStructure> testCases = new ArrayList<TestStructure>();
 			for (String testCaseName : testCaseNames) {
 				try {
-					testCases.add(testProjectService.findTestStructureByFullName(testCaseName));
+					TestStructure testCase = testProjectService.findTestStructureByFullName(testCaseName);
+					if (testCase != null) {
+						testCases.add(testProjectService.findTestStructureByFullName(testCaseName));
+					} else {
+						logger.info("no testcase found for '" + testCaseName + "'");
+					}
 				} catch (SystemException e) {
 					e.printStackTrace();
 				}

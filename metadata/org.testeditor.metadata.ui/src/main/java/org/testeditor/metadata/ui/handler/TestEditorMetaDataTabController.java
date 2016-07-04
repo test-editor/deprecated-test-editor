@@ -13,6 +13,7 @@ package org.testeditor.metadata.ui.handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -198,8 +199,16 @@ public class TestEditorMetaDataTabController implements Listener, ITestEditorTab
 
 		metaDataTagList.clear();
 		metaDataTagListOrg.clear();
-		metaDataTagList.addAll(getMetaDataService().getMetaDataTags(testFlow));
-		metaDataTagListOrg.addAll(getMetaDataService().getMetaDataTags(testFlow));
+		List<MetaDataTag> tempList = getMetaDataService().getMetaDataTags(testFlow);
+		Iterator<MetaDataTag> tempListIterator = tempList.iterator();
+		while (tempListIterator.hasNext()) {
+			MetaDataTag metaDataTag = tempListIterator.next();
+			if (metaDataService.getMetaDataValue(metaDataTag, testFlow.getRootElement()) == null) {
+				tempListIterator.remove();
+			}
+		}
+		metaDataTagList.addAll(tempList);
+		metaDataTagListOrg.addAll(tempList);
 
 		Collections.sort(metaDataTagList, new MetaDataTagComparator(metaDataService, testFlow.getRootElement()));
 

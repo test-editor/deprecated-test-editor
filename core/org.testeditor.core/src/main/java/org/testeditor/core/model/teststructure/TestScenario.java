@@ -32,6 +32,11 @@ public class TestScenario extends TestFlow implements Comparable<TestScenario> {
 	}
 
 	@Override
+	public void setParent(TestStructure parent) {
+		super.setParent(parent);
+	}
+
+	@Override
 	public String getTypeName() {
 		return TestType.TESTSCENARIO.getName();
 	}
@@ -114,6 +119,13 @@ public class TestScenario extends TestFlow implements Comparable<TestScenario> {
 	 */
 	public void addInclude(String include) {
 		includes.add(include);
+	}
+
+	/**
+	 * Remove all includes from a scenario.
+	 */
+	public void clearIncludes() {
+		includes.clear();
 	}
 
 	/**

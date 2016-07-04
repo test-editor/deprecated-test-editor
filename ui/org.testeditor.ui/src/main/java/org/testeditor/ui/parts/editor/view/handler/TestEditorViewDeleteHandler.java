@@ -36,7 +36,7 @@ public class TestEditorViewDeleteHandler extends TestEditorViewHandler {
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
 		MPart partOnTop = getPartOnTop(partService);
-		return ((ITestEditorController) partOnTop.getObject()).canExecuteDelete();
+		return partOnTop != null && ((ITestEditorController) partOnTop.getObject()).canExecuteDelete();
 	}
 
 	/**

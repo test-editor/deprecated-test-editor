@@ -1003,6 +1003,7 @@ public class TestEditorControllerTest {
 	@Test
 	public void refreshTestComponentsTest() {
 		initalizeForTest();
+		testFlowForTest.setName("refreshTestComponentsTest");
 		testEditorController.refreshTestComponents(testFlowForTest);
 		assertEquals(testStructureContentServiceAdapter.getNewDescription(),
 				testFlowForTest.getTestComponents().get(0).getTexts().get(0));

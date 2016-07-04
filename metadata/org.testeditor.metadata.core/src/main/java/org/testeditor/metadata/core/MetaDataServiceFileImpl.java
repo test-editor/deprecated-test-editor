@@ -16,7 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -191,13 +191,13 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 
 		String propertiesFileName = projectPath + File.separator + META_DATA_PROPERTIES;
 		File propertiesFile = null;
-		InputStream inputStream = null;
+		InputStreamReader inputStream = null;
 		try {
 			propertiesFile = new File(propertiesFileName);
 			if (!propertiesFile.exists()) {
 				return null;
 			}
-			inputStream = new FileInputStream(propertiesFile);
+			inputStream = new InputStreamReader(new FileInputStream(propertiesFile), "UTF-8");
 			prop.load(inputStream);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("the propertiesfile " + propertiesFileName + " was not found");
@@ -219,24 +219,32 @@ public class MetaDataServiceFileImpl extends MetaDataServiceAbstractBase {
 	private void readMetaDataForFolder(TestProject testProject, File directory) {
 
 		File[] listOfFiles = directory.listFiles();
-		for (int i = 0; i < listOfFiles.length; i++) {
+		for (int i = 0; listOfFiles != null && i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile() && listOfFiles[i].getName().equals(META_DATA_XML)) {
 				String xmlTagFile = listOfFiles[i].getAbsolutePath();
-				Object fromXML = xStream.fromXML(new File(xmlTagFile));
-				if (fromXML instanceof List<?>) {
+				Object fromXML = null;
+				try {
+					fromXML = xStream.fromXML(new File(xmlTagFile));
+				} catch (Exception e) {
+					LOGGER.error("could not read xml in file '" + xmlTagFile + "'");
+				}
+				if (fromXML != null && fromXML instanceof List<?>) {
 					List<MetaDataStoreObject> metaDataStoreObjects = (List<MetaDataStoreObject>) fromXML;
-					for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
-						getMetaDataStore(testProject.getName()).put(metaDataStoreObject.getTestCase(),
-								metaDataStoreObject.getMetaDataTags());
+					if (metaDataStoreObjects != null) {
+						for (MetaDataStoreObject metaDataStoreObject : metaDataStoreObjects) {
+							getMetaDataStore(testProject.getName()).put(metaDataStoreObject.getTestCase(),
+									metaDataStoreObject.getMetaDataTags());
 
-						for (MetaDataTag metaDataTag : metaDataStoreObject.getMetaDataTags()) {
-							getMetaDataValue(metaDataTag, testProject).getTestCases().add(
-									metaDataStoreObject.getTestCase());
+							for (MetaDataTag metaDataTag : metaDataStoreObject.getMetaDataTags()) {
+								MetaDataValue metaDataValue = getMetaDataValue(metaDataTag, testProject);
+								if (metaDataValue != null) {
+									metaDataValue.getTestCases().add(metaDataStoreObject.getTestCase());
+								} else {
+									LOGGER.error("Unknown metaDataTag '" + metaDataTag.getGlobalKey() + "'");
+								}
+							}
 						}
 					}
-				} else {
-					throw new RuntimeException("illegal class of type " + fromXML.getClass().getName() + " found in "
-							+ listOfFiles[i].getAbsolutePath());
 				}
 
 			} else if (listOfFiles[i].isDirectory()) {

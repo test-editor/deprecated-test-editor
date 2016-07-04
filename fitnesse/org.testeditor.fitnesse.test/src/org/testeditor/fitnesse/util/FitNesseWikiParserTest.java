@@ -23,6 +23,7 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.BrokenTestStructure;
@@ -43,6 +44,7 @@ import org.testeditor.core.services.interfaces.LibraryReaderService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
+import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.fitnesse.TestProjectDataFactory;
 
 /**
@@ -202,6 +204,35 @@ public class FitNesseWikiParserTest {
 	}
 
 	/**
+	 * Tests the parsing of a simple Scenario Statement.
+	 * 
+	 * @throws SystemException
+	 *             is thrown in case of IO or connection exceptions
+	 */
+	@Test
+	@Ignore
+	public void parseScenarioWithScenarioCallWithParameters() throws SystemException {
+		final StringBuffer content = new StringBuffer(
+				"!include <DemoWebTests.TestSzenarien.TomatenSaft.ApplikationStopSzenario\n");
+		content.append("\n");
+		content.append("!|scenario |SzenarioSzenario _||\n");
+		content.append("|note|scenario|\n");
+		content.append("|ApplikationStopSzenario;|test|\n");
+
+		FitNesseWikiParser parser = getOUT();
+		TestScenario testScenario = new TestScenario();
+		testScenario.setParent(firstTestCase.getParent());
+		List<TestComponent> components = parser.parse(testScenario, content.toString());
+
+		TestComponent comp = components.get(0);
+		assertTrue(comp instanceof TestScenarioParameterTable);
+		TestScenarioParameterTable testScenarioParamTable = (TestScenarioParameterTable) comp;
+		assertEquals("SzenarioSzenario", testScenarioParamTable.getTitle());
+		assertTrue(testScenarioParamTable.isSimpleScriptStatement());
+
+	}
+
+	/**
 	 * 
 	 * @return the object under test created with eclipse context.
 	 */
@@ -220,6 +251,10 @@ public class FitNesseWikiParserTest {
 		context.set(TestScenarioService.class, getScenarioServiceMock());
 		context.set(TestProjectService.class, ServiceLookUpForTest.getService(TestProjectService.class));
 		context.set(ActionGroupService.class, ServiceLookUpForTest.getService(ActionGroupService.class));
+		context.set(TestStructureContentService.class,
+				ServiceLookUpForTest.getService(TestStructureContentService.class));
+		// context.set(TestStructureContentService.class, new
+		// TestStructureContentServiceAdapter());
 		return context;
 	}
 
@@ -590,6 +625,7 @@ public class FitNesseWikiParserTest {
 	 *             while parsing
 	 */
 	@Test
+	@Ignore
 	public void testParseScenarioInScenario() throws SystemException {
 		FitNesseWikiParser parser = getOUT();
 		StringBuilder content = new StringBuilder("!include <DemoWebTests.TestSzenarien.MeinSzenario\n");

@@ -37,8 +37,9 @@ public class TestEditorViewHandler {
 	protected MPart getPartOnTop(EPartService partService) {
 		MPart part = partService.getActivePart();
 		if (part != null
-				&& (part.getElementId().equals(TestEditorTestCaseController.ID) || part.getElementId().equals(
-						TestEditorTestScenarioController.ID)) && (part.getObject()) != null && part.isOnTop()) {
+				&& (part.getElementId().equals(TestEditorTestCaseController.ID)
+						|| part.getElementId().equals(TestEditorTestScenarioController.ID))
+				&& part.getObject() != null && part.isOnTop()) {
 			return part;
 		}
 		return null;

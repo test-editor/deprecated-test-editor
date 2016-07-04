@@ -13,16 +13,13 @@ package org.testeditor.metadata.ui.explorer;
 
 import java.text.NumberFormat;
 
-import org.eclipse.jface.viewers.IColorProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.graphics.Image;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.metadata.core.model.MetaData;
 import org.testeditor.metadata.core.model.MetaDataValue;
-import org.testeditor.ui.constants.ColorConstants;
 import org.testeditor.ui.constants.IconConstants;
 
 /**
@@ -30,9 +27,8 @@ import org.testeditor.ui.constants.IconConstants;
  * This class provides the labels for the testEditortree.
  * 
  */
-public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelProvider, IColorProvider {
+public class MetaDataTreeLabelProvider extends CellLabelProvider {
 
-	@Override
 	public Image getImage(Object element) {
 		if (element instanceof TestProject) {
 			return IconConstants.ICON_PROJECT;
@@ -43,8 +39,7 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 		return IconConstants.ICON_TESTCASE;
 	}
 
-	@Override
-	public String getText(Object element) {
+	public String getText(Object element, boolean tooltip) {
 		if (element instanceof TestProject) {
 			TestProject testProject = (TestProject) element;
 			return testProject.getName();
@@ -75,24 +70,22 @@ public class MetaDataTreeLabelProvider extends LabelProvider implements ILabelPr
 		}
 		if (element instanceof TestStructure) {
 			TestStructure testStructure = (TestStructure) element;
-			return testStructure.getName();
-		}
-		return null;
-	}
-
-	@Override
-	public Color getForeground(Object element) {
-		if (element instanceof MetaDataValue) {
-			MetaDataValue metaDataValue = (MetaDataValue) element;
-			if (metaDataValue.getTestCases().size() == 0) {
-				return ColorConstants.COLOR_RED;
+			if (tooltip) {
+				return testStructure.getFullName();
+			} else {
+				return testStructure.getName();
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public Color getBackground(Object element) {
-		return null;
+	public void update(ViewerCell cell) {
+		cell.setText(getText(cell.getElement(), false));
+		cell.setImage(getImage(cell.getElement()));
+	}
+
+	public String getToolTipText(Object element) {
+		return getText(element, true);
 	}
 }

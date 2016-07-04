@@ -32,6 +32,6 @@ public class TestEditorViewCCHandler extends TestEditorViewHandler {
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
 		MPart partOnTop = getPartOnTop(partService);
-		return ((ITestEditorController) partOnTop.getObject()).canExecuteCutCopy();
+		return partOnTop != null && ((ITestEditorController) partOnTop.getObject()).canExecuteCutCopy();
 	}
 }

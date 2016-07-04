@@ -70,7 +70,10 @@ public class TestData {
 	 * @return the titleline.
 	 */
 	public TestDataRow getTitleRow() {
-		return testDataRows.get(0);
+		if (testDataRows.size() > 0) {
+			return testDataRows.get(0);
+		}
+		return new TestDataRow();
 	}
 
 	/**
@@ -203,13 +206,14 @@ public class TestData {
 		TestData sortData = new TestData();
 		sortData.addEmptyTestData(this.getRowCounts(), parmaTable.getDataTable().getRows().get(0).getColumnCount());
 
-		for (int sortthisCol = 0; sortthisCol < parmaTable.getDataTable().getRows().get(0).getColumnCount(); sortthisCol++) {
+		for (int sortthisCol = 0; sortthisCol < parmaTable.getDataTable().getRows().get(0)
+				.getColumnCount(); sortthisCol++) {
 			for (int thisCol = 0; thisCol < this.getRows().get(0).getColumnCount(); thisCol++) {
 				if (parmaTable.getDataTable().getRows().get(0).getColumn(sortthisCol).toString()
 						.equals(this.getRows().get(0).getColumn(thisCol).toString())) {
 					for (int row = 0; row < this.getRowCounts(); row++) {
-						sortData.getRows().get(row)
-								.setColumn(sortthisCol, this.getRows().get(row).getColumn(thisCol).toString());
+						sortData.getRows().get(row).setColumn(sortthisCol,
+								this.getRows().get(row).getColumn(thisCol).toString());
 					}
 				}
 			}
@@ -235,8 +239,8 @@ public class TestData {
 			testDataEvaluationReturnList = paramTable.getTestDataEvaluationReturnList();
 		}
 		for (int i = 0; i < paramTable.getDataTable().getRows().get(0).getColumnCount(); i++) {
-			testDataEvaluationReturnList.addEntryInColumnHeadersOnlyInTargetTable(paramTable.getDataTable().getRows()
-					.get(0).getColumn(i).toString().toLowerCase());
+			testDataEvaluationReturnList.addEntryInColumnHeadersOnlyInTargetTable(
+					paramTable.getDataTable().getRows().get(0).getColumn(i).toString().toLowerCase());
 		}
 		if (this.getRows().size() == 0) {
 			return testDataEvaluationReturnList;

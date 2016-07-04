@@ -48,7 +48,7 @@ public class CanExecuteTestExplorerHandlerRules {
 	 * @return true if only one element is selected.
 	 */
 	public boolean canExecuteOnlyOneElementRule(IStructuredSelection selection) {
-		if (selection.size() == 1 && !(selection.getFirstElement() instanceof TestProject
+		if (selection != null && selection.size() == 1 && !(selection.getFirstElement() instanceof TestProject
 				&& ((TestProject) selection.getFirstElement()).getTestProjectConfig() == null)) {
 			return true;
 		}

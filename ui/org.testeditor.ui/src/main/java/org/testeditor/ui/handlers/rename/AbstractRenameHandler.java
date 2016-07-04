@@ -152,10 +152,10 @@ public abstract class AbstractRenameHandler {
 	 *             while file-operations
 	 */
 	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
-		testStructureService.rename(selectedTestStructure, sbname);
 		if (getMetaDataService() != null) {
 			getMetaDataService().rename(selectedTestStructure, sbname);
 		}
+		testStructureService.rename(selectedTestStructure, sbname);
 	}
 
 	/**
@@ -244,8 +244,8 @@ public abstract class AbstractRenameHandler {
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
-				CanExecuteTestExplorerHandlerRules.class, context);
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
 		return rules.canExecuteOnlyOneElementRule(explorer.getSelection())
 				&& !rules.canExecuteOnProjectMainScenarioSuite(explorer.getSelection())
 				&& rules.canExecuteOnUnusedScenario(explorer.getSelection())
@@ -272,14 +272,14 @@ public abstract class AbstractRenameHandler {
 		selectedTeststructure.setName(newName);
 		if (selectedStructureWasOpen) {
 			if (selectedTeststructure instanceof TestFlow) {
-				ContextInjectionFactory.make(OpenTestStructureHandler.class, context).execute(
-						(TestFlow) selectedTeststructure, context);
+				ContextInjectionFactory.make(OpenTestStructureHandler.class, context)
+						.execute((TestFlow) selectedTeststructure, context);
 			} else if (selectedTeststructure instanceof TestSuite) {
-				ContextInjectionFactory.make(OpenTestStructureHandler.class, context).execute(
-						(TestSuite) selectedTeststructure, context);
+				ContextInjectionFactory.make(OpenTestStructureHandler.class, context)
+						.execute((TestSuite) selectedTeststructure, context);
 			} else if (selectedTeststructure instanceof TestProject) {
-				ContextInjectionFactory.make(OpenTestStructureHandler.class, context).execute(
-						(TestProject) selectedTeststructure, context);
+				ContextInjectionFactory.make(OpenTestStructureHandler.class, context)
+						.execute((TestProject) selectedTeststructure, context);
 			}
 		}
 	}
@@ -326,7 +326,8 @@ public abstract class AbstractRenameHandler {
 	 */
 	private MetaDataService getMetaDataService() {
 		if (metaDataService == null) {
-			LOGGER.info("MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+			LOGGER.info(
+					"MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
 		}
 		return metaDataService;
 

@@ -73,6 +73,9 @@ public class FitNesseWikiParser {
 	 *             is thrown in case of invalid input or parsing errors
 	 */
 	public LinkedList<TestComponent> parse(TestFlow testFlow, String content) throws SystemException {
+		if (testFlow instanceof TestScenario) {
+			((TestScenario) testFlow).clearIncludes();
+		}
 		LinkedList<TestComponent> testComponents = new LinkedList<TestComponent>();
 		StringTokenizer stringTokenizer = new StringTokenizer(content, "\n");
 		Boolean firstRow = true;
@@ -89,9 +92,7 @@ public class FitNesseWikiParser {
 				testComponents.add(testInvisibleContent);
 			} else if (line.equalsIgnoreCase(SCENARIO_PRAEAMBLE) && testFlow instanceof TestScenario) {
 				addScenario(testFlow, testComponents, stringTokenizer);
-
-			}
-			// if line is part of a script table
+			} // if line is part of a script table
 			else if (lineIsElementOfActionGroup(line)) {
 				addTestActionGroup(testFlow, testComponents, context, line);
 			} else if (line.startsWith("!|scenario")) {
@@ -255,7 +256,7 @@ public class FitNesseWikiParser {
 	 * @return stringBuilder with the scenario names separated by spaces.
 	 */
 	private StringBuilder buildScenarioNameWithSpaces(String[] scenarioNameSplittedByCapitals) {
-		StringBuilder scenarioNameWithSpaces = new StringBuilder();
+		StringBuilder scenarioNameWithSpaces = new StringBuilder(" ");
 		for (String part : scenarioNameSplittedByCapitals) {
 			scenarioNameWithSpaces.append(part.trim()).append(" ");
 		}

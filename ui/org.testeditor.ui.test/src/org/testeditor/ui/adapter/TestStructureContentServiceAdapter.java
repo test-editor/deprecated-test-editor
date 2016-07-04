@@ -34,7 +34,7 @@ public class TestStructureContentServiceAdapter implements TestStructureContentS
 
 	@Override
 	public void refreshTestCaseComponents(TestStructure testStructure) throws SystemException {
-		if (testStructure instanceof TestCase) {
+		if ("refreshTestComponentsTest".equals(testStructure.getName())) {
 			((TestCase) testStructure).getTestComponents().add(0, new TestDescriptionTestCase(newDescription));
 		}
 

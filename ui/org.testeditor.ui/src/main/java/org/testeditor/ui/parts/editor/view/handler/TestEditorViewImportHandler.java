@@ -32,7 +32,7 @@ public class TestEditorViewImportHandler extends TestEditorViewHandler {
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
 		MPart partOnTop = getPartOnTop(partService);
-		return ((ITestEditorController) partOnTop.getObject()).isTestDataTableSelected();
+		return partOnTop != null && ((ITestEditorController) partOnTop.getObject()).isTestDataTableSelected();
 	}
 
 	/**

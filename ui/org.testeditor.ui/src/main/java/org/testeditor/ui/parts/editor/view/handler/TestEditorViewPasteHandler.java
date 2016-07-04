@@ -35,7 +35,7 @@ public class TestEditorViewPasteHandler extends TestEditorViewHandler {
 	@CanExecute
 	public boolean canExecute(EPartService partService) {
 		MPart partOnTop = getPartOnTop(partService);
-		return ((ITestEditorController) partOnTop.getObject()).canExecutePasteTestFlow();
+		return partOnTop != null && ((ITestEditorController) partOnTop.getObject()).canExecutePasteTestFlow();
 	}
 
 	/**

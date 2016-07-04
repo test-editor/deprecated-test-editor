@@ -156,9 +156,13 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	public List<MetaDataTag> getMetaDataTags(TestStructure testStructure) {
 		init(testStructure.getRootElement());
 		String projectName = testStructure.getRootElement().getFullName();
+		return getMetaDataTags(projectName, testStructure.getFullName());
+	}
+
+	private List<MetaDataTag> getMetaDataTags(String projectName, String fullName) {
 		List<MetaDataTag> value = new ArrayList<MetaDataTag>();
-		if (getMetaDataStore(projectName).containsKey(testStructure.getFullName())) {
-			value.addAll(getMetaDataStore(projectName).get(testStructure.getFullName()));
+		if (getMetaDataStore(projectName).containsKey(fullName)) {
+			value.addAll(getMetaDataStore(projectName).get(fullName));
 		}
 		return value;
 	}
@@ -194,6 +198,19 @@ public abstract class MetaDataServiceAbstractBase implements MetaDataService {
 	 *             - a systemexception
 	 */
 	protected abstract void store(TestStructure testStructure) throws SystemException;
+
+	@Override
+	public void move(String orgName, TestStructure movedTestStructure) throws SystemException {
+		init(movedTestStructure.getRootElement());
+		String projectName = movedTestStructure.getRootElement().getFullName();
+
+		if (getMetaDataStore(projectName).containsKey(orgName)) {
+			String newFullName = movedTestStructure.getFullName();
+			getMetaDataStore(projectName).put(newFullName, getMetaDataTags(projectName, orgName));
+			getMetaDataStore(projectName).remove(orgName).clear();
+			store(movedTestStructure);
+		}
+	}
 
 	@Override
 	public void rename(TestStructure testStructure, String newName) throws SystemException {

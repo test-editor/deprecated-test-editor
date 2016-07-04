@@ -18,9 +18,11 @@ import java.util.List;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.FrameworkUtil;
@@ -43,8 +45,8 @@ public class MetaDataStructureTree {
 	private ReservedNameFilter reservedNameFilter;
 
 	private TreeViewer treeViewer;
-	private IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-			MetaDataStructureTree.class).getBundleContext());
+	private IEclipseContext context = EclipseContextFactory
+			.getServiceContext(FrameworkUtil.getBundle(MetaDataStructureTree.class).getBundleContext());
 
 	/**
 	 * Creates a Tree to Display TestStrucutres in the parent Composite.
@@ -73,7 +75,7 @@ public class MetaDataStructureTree {
 		treeViewer.setContentProvider(ContextInjectionFactory.make(MetaDataTreeContentProvider.class, context));
 		treeViewer.setComparator(new TestStructureViewerComparator());
 		treeViewer.setInput(metaDataService);
-		// showParentTestStructesAndChildren();
+		ColumnViewerToolTipSupport.enableFor(treeViewer, ToolTip.NO_RECREATE);
 	}
 
 	/**

@@ -471,6 +471,19 @@ public abstract class TestEditorController implements ITestEditorController, ITe
 	public void setTestFlow(TestFlow testFlow) {
 		initializeControllerForToolboxes();
 
+		try {
+			testStructureContentService.refreshTestCaseComponents(testFlow);
+		} catch (final SystemException e) {
+			final String message = translationService.translate("%editController.ErrorUpdatingTestFlow");
+			Display.getDefault().syncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(Display.getDefault().getActiveShell(), message, e.getLocalizedMessage());
+				}
+			});
+			LOGGER.error("Error storing Testcase :: FAILED", e);
+		}
 		this.testFlow = testFlow;
 
 		if (getTestEditorTabController() != null && metaDataTab != null) {

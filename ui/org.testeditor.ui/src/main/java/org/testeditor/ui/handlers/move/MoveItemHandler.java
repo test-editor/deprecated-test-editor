@@ -11,13 +11,18 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers.move;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.log4j.Logger;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -31,6 +36,8 @@ import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.metadata.core.MetaDataService;
+import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.ui.constants.TestEditorConstants;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
@@ -45,8 +52,14 @@ import org.testeditor.ui.wizards.MoveItemWizard;
  */
 public class MoveItemHandler {
 
+	private static final Logger logger = Logger.getLogger(MoveItemHandler.class);
+
 	@Inject
 	private TestStructureService testStructureService;
+
+	@Inject
+	@Optional
+	private MetaDataService metaDataService;
 
 	@Inject
 	private TestEditorTranslationService translationService;
@@ -96,7 +109,14 @@ public class MoveItemHandler {
 				if (!(nwiz.getNewTestStructureParent() instanceof TestCompositeStructure)) {
 					throw new IllegalArgumentException("selected structure is not of type TestSuite");
 				}
+				List<MetaDataTag> metaDataTags = null;
+				if (getMetaDataService() != null) {
+					metaDataTags = getMetaDataService().getMetaDataTags(testStructure);
+				}
 				testStructureService.move(testStructure, (TestCompositeStructure) nwiz.getNewTestStructureParent());
+				if (metaDataTags != null) {
+					getMetaDataService().storeMetaDataTags(metaDataTags, new ArrayList<MetaDataTag>(), testStructure);
+				}
 			} catch (SystemException e) {
 				MessageDialog.openError(shell, "System-Exception", e.getLocalizedMessage());
 			}
@@ -130,6 +150,22 @@ public class MoveItemHandler {
 		moveItemWizardPage.setRenderNameField(false);
 		moveItemWizardPage.setSelectedTestStructure(selectedTS);
 		return moveItemWizardPage;
+	}
+
+	/**
+	 * Getter for the metaData Service. Checks if the service is set. If the
+	 * service is not there, an info-message is displayed and null will be
+	 * returned
+	 * 
+	 * @return the service
+	 */
+	private MetaDataService getMetaDataService() {
+		if (metaDataService == null) {
+			logger.info(
+					"MetaDataTabService is not there. Probably the plugin 'org.testeditor.metadata.core' is not activated");
+		}
+		return metaDataService;
+
 	}
 
 }
