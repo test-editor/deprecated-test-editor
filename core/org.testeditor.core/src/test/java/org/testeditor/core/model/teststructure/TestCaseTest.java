@@ -289,13 +289,13 @@ public class TestCaseTest {
 		// Header row
 		testScenarioParameterTable.addParameterLine("|A1|B1|C1|");
 		// data row
-		testScenarioParameterTable.addParameterLine("|X|Y|");
+		testScenarioParameterTable.addParameterLine("|X|Y|Z|Z|");
 
 		testScenarioParameterTable.setTitle("Scenario");
 		testScenario.addTestComponent(testScenarioParameterTable);
 		String sourceCode = testScenario.getSourceCode();
 
-		assertEquals("|note|scenario|\n|Scenario;|X|Y|\n", sourceCode);
+		assertEquals("|note|scenario|\n|Scenario;|X|Y|Z|Z|\n", sourceCode);
 		assertTrue(testScenarioParameterTable.getTestDataEvaluationReturnList() != null);
 		assertFalse(testScenarioParameterTable.getTestDataEvaluationReturnList()
 				.isDataRowColumnCountEqualsHeaderRowColumnCount());
@@ -336,7 +336,8 @@ public class TestCaseTest {
 	 *             SystemException
 	 */
 	@Test
-	public void addActionGroupParameterTableInScenarioWithDataRowCountHigherThanHeaderRowCount() throws SystemException {
+	public void addActionGroupParameterTableInScenarioWithDataRowCountHigherThanHeaderRowCount()
+			throws SystemException {
 		TestScenario testScenario = new TestScenario();
 		TestScenarioParameterTable testScenarioParameterTable = new TestScenarioParameterTable();
 

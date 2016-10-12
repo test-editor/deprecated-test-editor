@@ -58,4 +58,9 @@ public class TestEditorConfigurationServiceMock implements TestEditorConfigurati
 	public void initializeSystemProperties() throws IOException {
 	}
 
+	@Override
+	public boolean isAdminUser() {
+		return false;
+	}
+
 }

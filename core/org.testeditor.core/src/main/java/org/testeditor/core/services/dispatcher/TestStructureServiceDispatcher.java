@@ -79,8 +79,8 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 	}
 
 	@Override
-	public void rename(TestStructure testStructure, String newName) throws SystemException {
-		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+	public List<String> rename(TestStructure testStructure, String newName) throws SystemException {
+		return testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
 				.rename(testStructure, newName);
 	}
 
@@ -170,8 +170,8 @@ public class TestStructureServiceDispatcher extends ContextFunction implements T
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
-		testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
+	public List<String> move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		return testStructureServices.get(testStructure.getRootElement().getTestProjectConfig().getTestServerID())
 				.move(testStructure, newParent);
 	}
 

@@ -91,6 +91,7 @@ public class FitNesseWikiParser {
 				testInvisibleContent.setSourceCode(line);
 				testComponents.add(testInvisibleContent);
 			} else if (line.equalsIgnoreCase(SCENARIO_PRAEAMBLE) && testFlow instanceof TestScenario) {
+				int index = testComponents.size();
 				addScenario(testFlow, testComponents, stringTokenizer);
 			} // if line is part of a script table
 			else if (lineIsElementOfActionGroup(line)) {
@@ -203,6 +204,7 @@ public class FitNesseWikiParser {
 			String includeOfScenario = ((TestScenario) testFlow).getIncludeOfScenario(scenarioName.split(";")[0]);
 			StringBuilder scenarioStringBuider = new StringBuilder();
 			String[] scenarioNameSplittedByCapitals = scenarioName.split("(?=[A-Z])");
+
 			StringBuilder scenarioNameWithSpaces = buildScenarioNameWithSpaces(scenarioNameSplittedByCapitals);
 
 			try {
@@ -232,7 +234,6 @@ public class FitNesseWikiParser {
 							.append(scenarioNameWithSpaces.substring(1, scenarioNameWithSpaces.length() - 1))
 							.append("|\n");
 				}
-
 				StringTokenizer inputTokenizer = new StringTokenizer(scenarioStringBuider.toString(), "\n");
 
 				addTestScenarioParameterTable(testFlow, testComponents, inputTokenizer, includeOfScenario,
@@ -258,7 +259,10 @@ public class FitNesseWikiParser {
 	private StringBuilder buildScenarioNameWithSpaces(String[] scenarioNameSplittedByCapitals) {
 		StringBuilder scenarioNameWithSpaces = new StringBuilder(" ");
 		for (String part : scenarioNameSplittedByCapitals) {
-			scenarioNameWithSpaces.append(part.trim()).append(" ");
+			String partTrim = part.trim();
+			if (partTrim.length() > 0) {
+				scenarioNameWithSpaces.append(partTrim).append(" ");
+			}
 		}
 		return scenarioNameWithSpaces;
 	}
@@ -339,8 +343,9 @@ public class FitNesseWikiParser {
 				}
 			}
 			nextLine = nextLine.replaceAll(";", "");
-			if (nextLine.startsWith("!|") && nextLine.equals("!|" + parameterTable.getTitleOutOfInclude() + "|")
-					|| nextLine.startsWith("!|" + parameterTable.getName() + "|")) {
+
+			if (nextLine.startsWith("!|") && (nextLine.equals("!|" + parameterTable.getTitleOutOfInclude() + "|")
+					|| nextLine.startsWith("!|" + parameterTable.getName() + "|"))) {
 				parameterTable.setTitle(parameterTable.getTitleOutOfInclude());
 			}
 			while (stringTokenizer.hasMoreElements()) {

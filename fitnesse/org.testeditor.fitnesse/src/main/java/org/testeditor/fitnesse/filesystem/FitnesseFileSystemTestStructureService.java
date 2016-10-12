@@ -283,7 +283,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void rename(TestStructure testStructure, String newName) throws SystemException {
+	public List<String> rename(TestStructure testStructure, String newName) throws SystemException {
 
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("oldFullName: " + testStructure.getFullName() + " newName: " + newName);
@@ -300,7 +300,7 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 			LOGGER.error(message, e);
 			throw new SystemException(message + "\n" + e.getMessage(), e);
 		}
-
+		return new ArrayList<String>();
 	}
 
 	@Override
@@ -495,10 +495,14 @@ public class FitnesseFileSystemTestStructureService implements TestStructureServ
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+	public List<String> move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		List<String> changedItems = new ArrayList<String>();
+
 		delete(testStructure);
 		newParent.addChild(testStructure);
 		create(testStructure);
+
+		return changedItems;
 	}
 
 }

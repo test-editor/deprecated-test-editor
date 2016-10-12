@@ -28,6 +28,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
@@ -62,6 +63,7 @@ public class RenameTestHandlerFacadeTest {
 		TestSuite suite = new TestSuite();
 		suite.addChild(suite);
 		new TestProject().addChild(suite);
+		suite.getRootElement().setTestProjectConfig(new TestProjectConfig());
 		list.add(suite);
 		setServices(context);
 
@@ -74,6 +76,8 @@ public class RenameTestHandlerFacadeTest {
 		TestSuite ts = new TestSuite();
 		ts.addChild(tc);
 		new TestProject().addChild(ts);
+		ts.getRootElement().setTestProjectConfig(new TestProjectConfig());
+
 		list.add(tc);
 		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
 		// context.set(IEventBroker.class, getEventBrokerMock());
@@ -97,6 +101,7 @@ public class RenameTestHandlerFacadeTest {
 		context.set(TestEditorTranslationService.class, new TestEditorTranslationService());
 		context.set(IEventBroker.class, new EventBrokerMock());
 		context.set(TestEditorPlugInService.class, new TestEditorPluginServiceMock());
+		context.set(TestEditorConfigurationService.class, null);
 	}
 
 	/**
@@ -112,6 +117,9 @@ public class RenameTestHandlerFacadeTest {
 		List<TestStructure> list = new ArrayList<TestStructure>();
 		TestSuite suite = new TestSuite();
 		suite.addChild(suite);
+		new TestProject().addChild(suite);
+		suite.getRootElement().setTestProjectConfig(new TestProjectConfig());
+
 		list.add(suite);
 		TestCase tc = new TestCase();
 		new TestSuite().addChild(tc);
@@ -134,6 +142,7 @@ public class RenameTestHandlerFacadeTest {
 		List<TestStructure> list = new ArrayList<TestStructure>();
 		TestSuite suite = new TestSuite();
 		new TestProject().addChild(suite);
+		suite.getRootElement().setTestProjectConfig(new TestProjectConfig());
 		list.add(suite);
 		context.set(TestEditorConstants.TEST_EXPLORER_VIEW, new TestExplorerMock(list));
 		RenameTestHandlerFacade handler = ContextInjectionFactory.make(RenameTestHandlerFacade.class, context);

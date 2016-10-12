@@ -185,19 +185,21 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void rename(TestStructure testStructure, String newName) throws SystemException {
+	public List<String> rename(TestStructure testStructure, String newName) throws SystemException {
 
+		List<String> changedItems = null;
 		if (testStructure instanceof TestScenario) {
-			renameScenario((TestScenario) testStructure, newName);
+			changedItems = renameScenario((TestScenario) testStructure, newName);
 		} else if (testStructure instanceof TestSuite) {
-			renameTestSuite((TestSuite) testStructure, newName);
+			changedItems = renameTestSuite((TestSuite) testStructure, newName);
 		} else {
-			renameTestCase(testStructure, newName);
+			changedItems = renameTestCase(testStructure, newName);
 		}
 		if (eventBroker != null) {
 			eventBroker.post(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getFullName());
 		}
+		return changedItems;
 	}
 
 	/**
@@ -207,13 +209,14 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 *            -the suite to be renamed.
 	 * @param newName
 	 *            -the new name of the suite
+	 * @return - the list of all changed items
 	 * @throws SystemException
 	 *             - any excpetion during renaming.
 	 */
-	private void renameTestSuite(TestSuite testSuite, String newName) throws SystemException {
+	private List<String> renameTestSuite(TestSuite testSuite, String newName) throws SystemException {
 		renameFiles(testSuite, newName);
 		setName(testSuite, newName);
-		updateAllChildren(testSuite);
+		return updateAllChildren(testSuite);
 	}
 
 	/**
@@ -223,20 +226,23 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 *            - the testsuite to replace the children
 	 * @throws SystemException
 	 *             - the exception
+	 * @return - list of changed items
 	 */
-	private void updateAllChildren(TestSuite testSuite) throws SystemException {
+	private List<String> updateAllChildren(TestSuite testSuite) throws SystemException {
+		List<String> changedItems = new ArrayList<String>();
 		for (TestStructure testStructure : testSuite.getAllTestChildren()) {
 			Path path = Paths.get(FitnesseFileSystemUtility.getPathToTestStructureDirectory(testStructure));
 			try {
 				testStructure.setUrl(path.toUri().toURL());
+				changedItems.add(testStructure.getFullName());
 			} catch (MalformedURLException e) {
 				throw new SystemException(e.getMessage(), e);
 			}
 			if (testStructure instanceof TestSuite) {
-				updateAllChildren((TestSuite) testStructure);
+				changedItems.addAll(updateAllChildren((TestSuite) testStructure));
 			}
 		}
-
+		return changedItems;
 	}
 
 	/**
@@ -246,10 +252,11 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 *            - the testStructure to be renamed
 	 * @param newName
 	 *            - the newName of the tescase
+	 * @return - list of changed items
 	 * @throws SystemException
 	 *             - any excpetion during renaming
 	 */
-	private void renameTestCase(TestStructure testStructure, String newName) throws SystemException {
+	private List<String> renameTestCase(TestStructure testStructure, String newName) throws SystemException {
 		clearTestHistory(testStructure);
 		renameFiles(testStructure, newName);
 		testStructure.setName(newName);
@@ -259,6 +266,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		} catch (MalformedURLException e) {
 			throw new SystemException(e.getMessage(), e);
 		}
+		return new ArrayList<String>();
 
 	}
 
@@ -311,7 +319,8 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+	public List<String> move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		List<String> changedItems = new ArrayList<String>();
 		testStructureContentService.refreshTestCaseComponents(testStructure);
 
 		List<TestFlow> changedFlows = null;
@@ -331,12 +340,16 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		}
 		if (changedFlows != null) {
 			updateChangedFlows(changedFlows);
+			for (TestFlow testFlow : changedFlows) {
+				changedItems.add(testFlow.getFullName());
+			}
 		}
 
 		if (eventBroker != null) {
 			eventBroker.send(TestEditorCoreEventConstants.TESTSTRUCTURE_MODEL_CHANGED_UPDATE_BY_MODIFY,
 					testStructure.getRootElement().getName());
 		}
+		return changedItems;
 	}
 
 	/**
@@ -349,7 +362,7 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 	 * @throws SystemException
 	 *             - any exception during execution.
 	 */
-	private void renameScenario(TestScenario scenario, String newName) throws SystemException {
+	private List<String> renameScenario(TestScenario scenario, String newName) throws SystemException {
 		List<String> usages = testScenarioService.getUsedOfTestSceneario(scenario);
 
 		TestProject testProject = scenario.getRootElement();
@@ -365,6 +378,11 @@ public class TestStructureServiceImpl implements TestStructureServicePlugIn, ICo
 		testStructureContentService.refreshTestCaseComponents(scenario);
 		testStructureContentService.saveTestStructureData(scenario);
 		updateChangedFlows(changedFlows);
+		List<String> changedItems = new ArrayList<String>();
+		for (TestFlow flow : changedFlows) {
+			changedItems.add(flow.getFullName());
+		}
+		return changedItems;
 	}
 
 	/**

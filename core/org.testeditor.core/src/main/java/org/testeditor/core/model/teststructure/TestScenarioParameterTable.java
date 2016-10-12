@@ -228,13 +228,12 @@ public class TestScenarioParameterTable implements TestComponent {
 
 		// remove the last element
 		String[] elementList = Arrays.copyOf(elementListTemp, elementListTemp.length - 1);
-
 		TestDataRow actParams = new TestDataRow(elementList);
 
 		if (getDataTable().hasTitleRow()) {
 			int headerColumnCount = getDataTable().getTitleRow().getColumnCount();
-			if (actParams.getColumnCount() != headerColumnCount) {
-				LOGGER.info("count of datarow [" + actParams.toString() + "] is higher then row header column count ["
+			if (actParams.getColumnCount() > headerColumnCount) {
+				LOGGER.error("count of datarow [" + actParams.toString() + "] is higher then row header column count ["
 						+ headerColumnCount + "]");
 				TestDataEvaluationReturnList testDataEvaluationReturnList = new TestDataEvaluationReturnList();
 				testDataEvaluationReturnList.setDataRowColumnCountEqualsHeaderRowColumnCount(false);

@@ -13,6 +13,8 @@ package org.testeditor.ui.handlers.rename;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -69,8 +71,7 @@ public class RenameTestProjectHandler extends AbstractRenameHandler {
 				} else {
 
 					LOGGER.error(translationService.translate("%wizard.error.msgRenameProjectFailed"));
-					MessageDialog.openError(shell,
-							translationService.translate("%wizard.error.msgRenameProjectFailed"),
+					MessageDialog.openError(shell, translationService.translate("%wizard.error.msgRenameProjectFailed"),
 							translationService.translate("%wizard.error.msgRenameProjectFailed"));
 				}
 
@@ -92,8 +93,8 @@ public class RenameTestProjectHandler extends AbstractRenameHandler {
 
 	@Override
 	protected AbstractRenameTestStructureWizardPage getRenameTestStructureWizardPage(TestStructure selectedTS) {
-		RenameTestProjectWizardPage renameTestProjectWizardPage = ContextInjectionFactory.make(
-				RenameTestProjectWizardPage.class, context);
+		RenameTestProjectWizardPage renameTestProjectWizardPage = ContextInjectionFactory
+				.make(RenameTestProjectWizardPage.class, context);
 		renameTestProjectWizardPage.setSelectedTestStructure(selectedTS);
 		return renameTestProjectWizardPage;
 	}
@@ -110,17 +111,18 @@ public class RenameTestProjectHandler extends AbstractRenameHandler {
 	 *             on restOperations
 	 */
 	@Override
-	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
+	protected List<String> executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
+		return new ArrayList<String>();
 	}
 
 	@Override
 	@Execute
 	public boolean canExecute(IEclipseContext context) {
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory.make(
-				CanExecuteTestExplorerHandlerRules.class, context);
-		return super.canExecute(context)
-				&& (rules.canExecuteOnTestProjectRule(explorer.getSelection()) && ((TestStructure) explorer
-						.getSelection().getFirstElement()).getRootElement().getTestProjectConfig().getTeamShareConfig() == null);
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
+		return super.canExecute(context) && (rules.canExecuteOnTestProjectRule(explorer.getSelection())
+				&& ((TestStructure) explorer.getSelection().getFirstElement()).getRootElement().getTestProjectConfig()
+						.getTeamShareConfig() == null);
 	}
 }

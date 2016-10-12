@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers.rename;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
@@ -28,9 +31,12 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
@@ -39,6 +45,7 @@ import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
+import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.ui.ITestStructureEditor;
@@ -70,6 +77,11 @@ public abstract class AbstractRenameHandler {
 	@Inject
 	@Optional
 	private MetaDataService metaDataService;
+	@Inject
+	protected TestEditorTranslationService translationService;
+
+	@Inject
+	private TestEditorConfigurationService testEditorConfigService;
 
 	private boolean selectedStructureWasOpen = false;
 
@@ -86,7 +98,7 @@ public abstract class AbstractRenameHandler {
 	 *            the active shell
 	 */
 	@Execute
-	public void execute(IEclipseContext context, TestEditorTranslationService translationService,
+	public void execute(final IEclipseContext context, final TestEditorTranslationService translationService,
 			@Named(IServiceConstants.ACTIVE_SHELL) Shell shell) {
 
 		// Buffer holding the new name
@@ -94,7 +106,7 @@ public abstract class AbstractRenameHandler {
 
 		// Receive TreeViewer object via eclipse-context
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
-		TestStructure selected = (TestStructure) explorer.getSelection().getFirstElement();
+		final TestStructure selected = (TestStructure) explorer.getSelection().getFirstElement();
 
 		// New Wizard
 		Wizard nwiz = new Wizard() {
@@ -111,9 +123,6 @@ public abstract class AbstractRenameHandler {
 			}
 		};
 
-		// // Set the wizard title
-		// nwiz.setWindowTitle(translationService.translate("%popupmenu.label.rename.item"));
-		// Add the new-page to the wizard
 		AbstractTestStructureWizardPage renameTestPage = getRenameTestStructureWizardPage(selected);
 		nwiz.addPage(renameTestPage);
 
@@ -121,22 +130,47 @@ public abstract class AbstractRenameHandler {
 
 		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
 		// ...and if it wasn't canceled
+		final List<String> changedItems = new ArrayList<String>();
 		if (wizardDialog.open() == Window.OK) {
-
-			saveAndCloseTestStructureBeforeRename(selected, true);
-
 			try {
-				executeRenaming(selected, sbname.toString());
-				executeSpecials(selected, sbname.toString());
+				new ProgressMonitorDialog(shell).run(true, false, new IRunnableWithProgress() {
 
-			} catch (SystemException e) {
+					@Override
+					public void run(final IProgressMonitor monitor)
+							throws InvocationTargetException, InterruptedException {
+
+						monitor.beginTask(translationService.translate("%progressmonitor.label.rename.item")
+								+ selected.getFullName(), IProgressMonitor.UNKNOWN);
+
+						saveAndCloseTestStructureBeforeRename(selected, true);
+						try {
+							changedItems.addAll(executeRenaming(selected, sbname.toString()));
+							executeSpecials(selected, sbname.toString());
+						} catch (SystemException e) {
+							throw new InvocationTargetException(e);
+						}
+						if (!(selected instanceof TestProject)) {
+							refreshTestStructureInEditor(selected, sbname.toString(), context);
+						}
+
+					}
+				});
+			} catch (InvocationTargetException e) {
+				LOGGER.error(e.getMessage(), e);
 				MessageDialog.openError(shell, "System-Exception", e.getLocalizedMessage());
+			} catch (InterruptedException e) {
+				LOGGER.error(e.getMessage(), e);
 			}
-
-			if (!(selected instanceof TestProject)) {
-				refreshTestStructureInEditor(selected, sbname.toString(), context);
+			String msg = "";
+			if (selected.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
+				if (changedItems.size() > 0) {
+					msg = translationService.translate("%rename.success.msg");
+					for (String changedItem : changedItems) {
+						msg += changedItem + "\n";
+					}
+				}
+				showWarningMessage(msg);
 			}
-
 			explorer.setSelectionOn(selected);
 		}
 	}
@@ -148,14 +182,15 @@ public abstract class AbstractRenameHandler {
 	 *            the teststructure to rename
 	 * @param sbname
 	 *            the new name
+	 * @return the list of changed item
 	 * @throws SystemException
 	 *             while file-operations
 	 */
-	protected void executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
+	protected List<String> executeRenaming(TestStructure selectedTestStructure, String sbname) throws SystemException {
 		if (getMetaDataService() != null) {
 			getMetaDataService().rename(selectedTestStructure, sbname);
 		}
-		testStructureService.rename(selectedTestStructure, sbname);
+		return testStructureService.rename(selectedTestStructure, sbname);
 	}
 
 	/**
@@ -246,6 +281,9 @@ public abstract class AbstractRenameHandler {
 		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
 		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
 				.make(CanExecuteTestExplorerHandlerRules.class, context);
+		if (rules.canExecuteOnTeamShareProject(explorer.getSelection()) && !testEditorConfigService.isAdminUser()) {
+			return false;
+		}
 		return rules.canExecuteOnlyOneElementRule(explorer.getSelection())
 				&& !rules.canExecuteOnProjectMainScenarioSuite(explorer.getSelection())
 				&& rules.canExecuteOnUnusedScenario(explorer.getSelection())
@@ -331,6 +369,29 @@ public abstract class AbstractRenameHandler {
 		}
 		return metaDataService;
 
+	}
+
+	/**
+	 * Shows a general warning message to the user to reduce problems with
+	 * subversion and renaming.
+	 */
+	private void showWarningMessage(String msg) {
+		MessageDialog.openWarning(getDisplay().getActiveShell(), translationService.translate("%warn"),
+				translationService.translate("%rename.teamshare.warning") + "\n\n" + msg);
+	}
+
+	/**
+	 * gets the display.
+	 * 
+	 * @return the display
+	 */
+	protected static Display getDisplay() {
+		Display display = Display.getCurrent();
+		// may be null if outside the UI thread
+		if (display == null) {
+			display = Display.getDefault();
+		}
+		return display;
 	}
 
 }

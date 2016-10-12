@@ -71,10 +71,11 @@ public interface TestStructureService {
 	 *            old/current name)
 	 * @param newName
 	 *            new name
+	 * @return - the list of changed items
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	void rename(TestStructure testStructure, String newName) throws SystemException;
+	List<String> rename(TestStructure testStructure, String newName) throws SystemException;
 
 	/**
 	 * Moves a given test structure to a new parent.
@@ -83,10 +84,11 @@ public interface TestStructureService {
 	 *            test structure which should be moved
 	 * @param newParent
 	 *            the new parent of the testcase.
+	 * @return a list of changed items
 	 * @throws SystemException
 	 *             is thrown if a system exception occurred
 	 */
-	void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException;
+	List<String> move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException;
 
 	/**
 	 * Executes a given test structure.

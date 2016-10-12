@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.testeditor.ui.handlers.move;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.CanExecute;
@@ -25,9 +27,12 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestCase;
@@ -35,10 +40,13 @@ import org.testeditor.core.model.teststructure.TestCompositeStructure;
 import org.testeditor.core.model.teststructure.TestFlow;
 import org.testeditor.core.model.teststructure.TestScenario;
 import org.testeditor.core.model.teststructure.TestStructure;
+import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.metadata.core.MetaDataService;
 import org.testeditor.metadata.core.model.MetaDataTag;
 import org.testeditor.ui.constants.TestEditorConstants;
+import org.testeditor.ui.handlers.CanExecuteTestExplorerHandlerRules;
+import org.testeditor.ui.parts.testExplorer.TestExplorer;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
 import org.testeditor.ui.wizardpages.AbstractNewTestStructureWizardPage;
 import org.testeditor.ui.wizardpages.AbstractTestStructureWizardPage;
@@ -64,6 +72,9 @@ public class MoveItemHandler {
 	@Inject
 	private TestEditorTranslationService translationService;
 
+	@Inject
+	private TestEditorConfigurationService testEditorConfigService;
+
 	/**
 	 * Enables the complete button only if a folder is selected.
 	 * 
@@ -73,6 +84,12 @@ public class MoveItemHandler {
 	 */
 	@CanExecute
 	public boolean canExecute(IEclipseContext context) {
+		TestExplorer explorer = (TestExplorer) context.get(TestEditorConstants.TEST_EXPLORER_VIEW);
+		CanExecuteTestExplorerHandlerRules rules = ContextInjectionFactory
+				.make(CanExecuteTestExplorerHandlerRules.class, context);
+		if (rules.canExecuteOnTeamShareProject(explorer.getSelection()) && !testEditorConfigService.isAdminUser()) {
+			return false;
+		}
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
 		TestFlow lastSelection = (TestFlow) selection.getFirstElement();
@@ -92,9 +109,9 @@ public class MoveItemHandler {
 
 		IStructuredSelection selection = (IStructuredSelection) context
 				.get(TestEditorConstants.SELECTED_TEST_COMPONENTS);
-		TestStructure testStructure = (TestStructure) selection.getFirstElement();
+		final TestStructure testStructure = (TestStructure) selection.getFirstElement();
 
-		MoveItemWizard nwiz = new MoveItemWizard();
+		final MoveItemWizard nwiz = new MoveItemWizard();
 		nwiz.setWindowTitle(translationService.translate("%popupmenu.label.move.item"));
 
 		// Add the new-page to the wizard
@@ -103,26 +120,54 @@ public class MoveItemHandler {
 
 		// Show the wizard...
 		WizardDialog wizardDialog = new WizardDialog(shell, nwiz);
-
+		final List<String> changedItems = new ArrayList<String>();
 		if (wizardDialog.open() == Window.OK) {
 			try {
-				if (!(nwiz.getNewTestStructureParent() instanceof TestCompositeStructure)) {
-					throw new IllegalArgumentException("selected structure is not of type TestSuite");
-				}
-				List<MetaDataTag> metaDataTags = null;
-				if (getMetaDataService() != null) {
-					metaDataTags = getMetaDataService().getMetaDataTags(testStructure);
-				}
-				testStructureService.move(testStructure, (TestCompositeStructure) nwiz.getNewTestStructureParent());
-				if (metaDataTags != null) {
-					getMetaDataService().storeMetaDataTags(metaDataTags, new ArrayList<MetaDataTag>(), testStructure);
-				}
-			} catch (SystemException e) {
+				new ProgressMonitorDialog(shell).run(true, false, new IRunnableWithProgress() {
+
+					@Override
+					public void run(final IProgressMonitor monitor)
+							throws InvocationTargetException, InterruptedException {
+						try {
+
+							monitor.beginTask(translationService.translate("%progressmonitor.label.move.item")
+									+ testStructure.getFullName(), IProgressMonitor.UNKNOWN);
+							List<MetaDataTag> metaDataTags = null;
+							if (getMetaDataService() != null) {
+								metaDataTags = getMetaDataService().getMetaDataTags(testStructure);
+							}
+							changedItems.addAll(testStructureService.move(testStructure,
+									(TestCompositeStructure) nwiz.getNewTestStructureParent()));
+							if (metaDataTags != null) {
+								getMetaDataService().storeMetaDataTags(metaDataTags, new ArrayList<MetaDataTag>(),
+										testStructure);
+							}
+							monitor.done();
+						} catch (SystemException e) {
+							throw new InvocationTargetException(e);
+						}
+					}
+				});
+			} catch (InvocationTargetException e) {
+				logger.error(e.getMessage(), e);
 				MessageDialog.openError(shell, "System-Exception", e.getLocalizedMessage());
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage(), e);
+			}
+			String msg = "";
+			if (testStructure.getRootElement().getTestProjectConfig().getTeamShareConfig() != null) {
+				if (changedItems.size() > 0) {
+					msg = translationService.translate("%move.success.msg");
+					for (String changedItem : changedItems) {
+						msg += changedItem + "\n";
+					}
+				}
+				showWarningMessage(msg);
 			}
 		}
 
 		return;
+
 	}
 
 	/**
@@ -166,6 +211,32 @@ public class MoveItemHandler {
 		}
 		return metaDataService;
 
+	}
+
+	/**
+	 * Shows a general warning message to the user to reduce problems with
+	 * subversion and renaming.
+	 * 
+	 * @param msg
+	 *            - a message containing all changed items
+	 */
+	private void showWarningMessage(String msg) {
+		MessageDialog.openWarning(getDisplay().getActiveShell(), translationService.translate("%warn"),
+				translationService.translate("%move.teamshare.warning") + "\n\n" + msg);
+	}
+
+	/**
+	 * gets the display.
+	 * 
+	 * @return the display
+	 */
+	private static Display getDisplay() {
+		Display display = Display.getCurrent();
+		// may be null if outside the UI thread
+		if (display == null) {
+			display = Display.getDefault();
+		}
+		return display;
 	}
 
 }

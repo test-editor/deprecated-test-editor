@@ -41,7 +41,8 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void rename(TestStructure testStructure, String newName) throws SystemException {
+	public List<String> rename(TestStructure testStructure, String newName) throws SystemException {
+		return null;
 	}
 
 	@Override
@@ -117,7 +118,8 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+	public List<String> move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		return null;
 	}
 
 }

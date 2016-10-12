@@ -114,4 +114,16 @@ public interface TestEditorConfigurationService {
 	 */
 	void initializeSystemProperties() throws IOException;
 
+	/**
+	 * Identifies a user as an admin user. An admin user is able to renamve and
+	 * move testcases and scenarios. An admin user is identified by the
+	 * parameter ADMIN_USER set in the file
+	 * org.testeditor.config.service.configinternal.prefs in the .settings
+	 * directory of the org.eclipse.core.runtime in the .plugins directory of
+	 * the workspace
+	 * 
+	 * @return true if the user is an admin user
+	 */
+	boolean isAdminUser();
+
 }

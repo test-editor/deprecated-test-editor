@@ -40,6 +40,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	private static final String ID_CONFIGURATION = "org.testeditor.config.service.configinternal";
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
+	private static final String ADMIN_USER = "ADMIN_USER";
 	private static final String CURRENT_WS_VERSION = "1.1.0";
 	private FileLocatorService fileLocatorService;
 
@@ -237,6 +238,15 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 			return true;
 		}
 		return prefs.getBoolean(RESET_APP_PROPERTY, false);
+	}
+
+	@Override
+	public boolean isAdminUser() {
+		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(ID_CONFIGURATION);
+		if (!prefs.get(ADMIN_USER, "UNKNOWN").equals("1")) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
