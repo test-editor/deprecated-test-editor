@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Demo
 Bundle-SymbolicName: org.testeditor.demo
-Bundle-Version: 1.9.0-SNAPSHOT
+Bundle-Version: 1.9.0.qualifier
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BundleShape: dir
