@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Metadata UI
 Bundle-SymbolicName: org.testeditor.metadata.ui;singleton:=true
-Bundle-Version: 1.9.0.qualifier
+Bundle-Version: 1.9.0
 Service-Component: OSGI-INF/ITestEditorTabController.xml,OSGI-INF/ITestEditorTabControllerProvider.xml
 Bundle-ClassPath: .
 Export-Package: org.testeditor.metadata.ui.explorer,

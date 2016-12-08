@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Dummy Library
 Bundle-SymbolicName: org.testeditor.dummylibrary
-Bundle-Version: 1.9.0.qualifier
+Bundle-Version: 1.9.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.testeditor.core;bundle-version="1.1.0",
  org.eclipse.equinox.ds;bundle-version="1.4.100"
