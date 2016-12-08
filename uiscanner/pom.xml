@@ -15,7 +15,7 @@
 	<modules>
 	
  		<module>org.testeditor.ui.uiscanner</module>
-		<module>org.testeditor.ui.uiscanner.test</module> 
+	<!--	<module>org.testeditor.ui.uiscanner.test</module>  -->
 	
 	</modules>
 	

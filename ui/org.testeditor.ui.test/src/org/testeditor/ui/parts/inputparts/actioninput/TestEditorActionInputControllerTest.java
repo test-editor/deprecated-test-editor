@@ -77,7 +77,7 @@ public class TestEditorActionInputControllerTest {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void testEventActionsComboModfiedWithEmptyMaskSelection() throws Exception {
-		inputController.createActionLineInputArea("Allgemein Brwoser");
+		inputController.createActionLineInputArea("Allgemein Browser");
 	}
 
 	/**

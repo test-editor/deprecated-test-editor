@@ -1,0 +1,1600 @@
+<?xml version="1.0"?>
+<testResults>
+	<FitNesseVersion>v20121220 Build-20140417</FitNesseVersion>
+	<rootPath>LoginValidTest</rootPath>
+	<result>
+		<counts>
+			<right>0</right>
+			<wrong>1</wrong>
+			<ignores>10</ignores>
+			<exceptions>1</exceptions>
+		</counts>
+		<runTimeInMillis>1445</runTimeInMillis>
+		<content><![CDATA[<div class="collapsible closed"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Precompiled Libraries</p>
+	<div><br/><div class="collapsible closed"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="DemoWebTests.ScenarioLibrary">.DemoWebTests.ScenarioLibrary</a> <a href="DemoWebTests.ScenarioLibrary?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=7151365853532928436>
+	<tr>
+		<td>import</td>
+	</tr>
+	<tr>
+		<td>org.testeditor.fixture.core</td>
+	</tr>
+	<tr>
+		<td>org.testeditor.fixture.web</td>
+	</tr>
+</table>
+  <br/><table _TABLENUMBER=2555175397624295032>
+	<tr>
+		<td>Library</td>
+	</tr>
+	<tr>
+		<td><span class="pass">WebFixture</span></td>
+	</tr>
+</table>
+<br/><table _TABLENUMBER=3814638906885534563>
+	<tr class="hidden">
+		<td colspan="2">script</td>
+	</tr>
+	<tr>
+		<td>setElementlist</td>
+		<td>/home/karsten/.testeditor/DemoWebTests/ElementList.conf</td>
+	</tr>
+</table>
+<br/><b>Steuerung des Browsers</b> <hr size="5"/>
+<br/><b>Browser starten</b><br/><table _TABLENUMBER=8876282488311446239>
+	<tr>
+		<td>scenario</td>
+		<td>starte Browser</td>
+		<td>browser</td>
+	</tr>
+	<tr>
+		<td>open browser;</td>
+		<td>@browser</td>
+		<td>/home/karsten/projects/luna_tf/browser/linux/firefox/firefox</td>
+	</tr>
+</table>
+<br/><b>Seite navigieren</b><br/><table _TABLENUMBER=4772367589038501751>
+	<tr>
+		<td>scenario</td>
+		<td>navigiere auf die Seite</td>
+		<td>url</td>
+	</tr>
+	<tr>
+		<td>navigate to Url</td>
+		<td colspan="2">@url</td>
+	</tr>
+</table>
+<br/><b>Browser beenden</b><br/><table _TABLENUMBER=5587047978932580887>
+	<tr>
+		<td>scenario</td>
+		<td>beende Browser</td>
+	</tr>
+	<tr>
+		<td colspan="2">close browser</td>
+	</tr>
+</table>
+<br/><b>Eingaben</b> <hr size="5"/>
+<br/><b>Wert eingeben</b><br/><table _TABLENUMBER=1229463624013233963>
+	<tr>
+		<td>scenario</td>
+		<td>gebe in das Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>ein</td>
+	</tr>
+	<tr>
+		<td>insert</td>
+		<td>@text</td>
+		<td>into field</td>
+		<td colspan="3">@guiid</td>
+	</tr>
+</table>
+<br/><b>Wert leeren</b><br/><table _TABLENUMBER=203310164964176053>
+	<tr>
+		<td>scenario</td>
+		<td>leere das Feld</td>
+		<td>guiid</td>
+	</tr>
+	<tr>
+		<td>clear</td>
+		<td colspan="2">@guiid</td>
+	</tr>
+</table>
+<br/><b>Auswahl auswählen</b><br/><table _TABLENUMBER=7956342825464885094>
+	<tr>
+		<td>scenario</td>
+		<td>wähle in Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>aus</td>
+	</tr>
+	<tr>
+		<td>insert</td>
+		<td>@text</td>
+		<td>into field</td>
+		<td colspan="3">@guiid</td>
+	</tr>
+</table>
+<br/><b>Button betätigen</b><br/><table _TABLENUMBER=5254835463382827676>
+	<tr>
+		<td>scenario</td>
+		<td>klicke auf</td>
+		<td>guiElement</td>
+	</tr>
+	<tr>
+		<td>click</td>
+		<td colspan="2">@guiElement</td>
+	</tr>
+</table>
+<br/><b>Warten</b> <hr size="5"/>
+<br/><b>Sekunden warten</b><br/><table _TABLENUMBER=4096676044394949286>
+	<tr>
+		<td>scenario</td>
+		<td>warte</td>
+		<td>anzahlSekunden</td>
+		<td>Sekunden</td>
+	</tr>
+	<tr>
+		<td>wait</td>
+		<td>@anzahlSekunden</td>
+		<td colspan="2">seconds</td>
+	</tr>
+</table>
+<br/><b>Element warten</b><br/><table _TABLENUMBER=6305056924724969888>
+	<tr>
+		<td>scenario</td>
+		<td>warte auf Element</td>
+		<td>warteElement</td>
+	</tr>
+	<tr>
+		<td>wait for Element</td>
+		<td colspan="2">@warteElement</td>
+	</tr>
+</table>
+<br/><b>Prüfung</b> <hr size="5"/>
+<br/><b>Text prüfen</b><br/><table _TABLENUMBER=3098092325772277536>
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob der Text</td>
+		<td>textVorhanden</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>text</td>
+		<td>@textVorhanden</td>
+		<td colspan="2">is visible</td>
+	</tr>
+</table>
+<br/><b>Wert prüfen und abbrechen</b><br/><table _TABLENUMBER=3188533783948291214>
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob der Text</td>
+		<td>textVorhanden</td>
+		<td>vorhanden ist, ansonsten brich den Test ab.</td>
+	</tr>
+	<tr>
+		<td>checkTextAndTearDown;</td>
+		<td colspan="3">@textVorhanden</td>
+	</tr>
+</table>
+<br/><b>Text ungültig prüfen</b><br/><table _TABLENUMBER=7426963776528386701>
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob nicht der Text</td>
+		<td>textVorhanden</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>text</td>
+		<td>@textVorhanden</td>
+		<td colspan="2">is unvisible</td>
+	</tr>
+</table>
+<br/><b>Text im Feld prüfen</b><br/><table _TABLENUMBER=4311895165981809552>
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob der Text</td>
+		<td>textVisible</td>
+		<td>im Feld</td>
+		<td>fieldId</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>textIsVisibleInField;</td>
+		<td>@textVisible</td>
+		<td>@fieldId</td>
+		<td colspan="3"></td>
+	</tr>
+</table>
+<br/><b>Parameter erstellen</b> <br/><table _TABLENUMBER=7933193922826348597>
+	<tr>
+		<td>scenario</td>
+		<td>erstelle den Parameter</td>
+		<td>param</td>
+	</tr>
+</table>
+</div>
+</div>
+<br/></div>
+</div>
+Dieser Testfall überprüft den Login eines gültigen Benutzers. Auf der Anmelde-Maske wird ein gültiger Benutzername und Passwort eingegeben und auf den Login-Button geklickt. Anschließend wird geprüft ob der Login erfolgreich war.<br/><div class="collapsible"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="DemoWebTests.TestSzenarien.ApplikationStartSzenario">&lt;DemoWebTests.TestSzenarien.ApplikationStartSzenario</a> <a href="DemoWebTests.TestSzenarien.ApplikationStartSzenario?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=260395547652937042>
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStartSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Dieses Szenario startet die lokale Demo-Web-Applikation. Die Applikation ist bereits Bestandteil dieses Demo-Projektes, so dass keine Internet-Verbindung für die Ausführung notwendig ist. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein Browser</td>
+	</tr>
+	<tr>
+		<td>starte Browser</td>
+		<td colspan="2">Firefox</td>
+	</tr>
+	<tr>
+		<td>navigiere auf die Seite</td>
+		<td colspan="2">http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html</td>
+	</tr>
+</table>
+</div>
+</div>
+<br/><table _TABLENUMBER=8495210002552132749>
+	<tr>
+		<td>script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="fail">Applikation Start Szenario</td>
+	</tr><tr class="scenario-detail"><td colspan="1"><table _TABLENUMBER=3273220848215309854 table_name="scriptTable_18_0/scriptTable_17">
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStartSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Dieses Szenario startet die lokale Demo-Web-Applikation. Die Applikation ist bereits Bestandteil dieses Demo-Projektes, so dass keine Internet-Verbindung für die Ausführung notwendig ist. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein Browser</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="fail">starte Browser</td>
+		<td colspan="2" class="fail">Firefox</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=7571363635783400901 table_name="scriptTable_18_0/scriptTable_17_0/scriptTable_3">
+	<tr>
+		<td>scenario</td>
+		<td>starte Browser</td>
+		<td>browser</td>
+	</tr>
+	<tr>
+		<td>open browser; <span class="fail">browserPath '/home/karsten/projects/luna_tf/browser/linux/firefox/firefox does not exist</span></td>
+		<td>Firefox</td>
+		<td>/home/karsten/projects/luna_tf/browser/linux/firefox/firefox</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">navigiere auf die Seite</td>
+		<td colspan="2" class="ignore">http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=9008270347779633795 table_name="scriptTable_18_0/scriptTable_17_1/scriptTable_4">
+	<tr>
+		<td>scenario</td>
+		<td>navigiere auf die Seite</td>
+		<td>url</td>
+	</tr>
+	<tr>
+		<td>navigate to Url <span class="ignore">Test not run</span></td>
+		<td colspan="2">http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html</td>
+	</tr>
+</table></td></tr>
+</table></td></tr>
+</table>
+<table _TABLENUMBER=7903566071221404170>
+	<tr class="hidden">
+		<td colspan="5">script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="ignore">überprüfe ob der Text</td>
+		<td class="ignore">Eine Beispiel Web-Applikation</td>
+		<td class="ignore">im Feld</td>
+		<td class="ignore">headline</td>
+		<td class="ignore">vorhanden ist</td>
+	</tr><tr class="scenario-detail"><td colspan="5"><table _TABLENUMBER=8279597246814490099 table_name="scriptTable_19_0/scriptTable_15">
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob der Text</td>
+		<td>textVisible</td>
+		<td>im Feld</td>
+		<td>fieldId</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>textIsVisibleInField; <span class="ignore">Test not run</span></td>
+		<td>Eine Beispiel Web-Applikation</td>
+		<td>headline</td>
+		<td colspan="3"></td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">gebe in das Feld</td>
+		<td class="ignore">user</td>
+		<td class="ignore">den Wert</td>
+		<td class="ignore">Max Mustermann</td>
+		<td class="ignore">ein</td>
+	</tr><tr class="scenario-detail"><td colspan="5"><table _TABLENUMBER=5673371655892482645 table_name="scriptTable_19_1/scriptTable_6">
+	<tr>
+		<td>scenario</td>
+		<td>gebe in das Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>ein</td>
+	</tr>
+	<tr>
+		<td>insert <span class="ignore">Test not run</span></td>
+		<td>Max Mustermann</td>
+		<td>into field</td>
+		<td colspan="3">user</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">gebe in das Feld</td>
+		<td class="ignore">password</td>
+		<td class="ignore">den Wert</td>
+		<td class="ignore">maxi</td>
+		<td class="ignore">ein</td>
+	</tr><tr class="scenario-detail"><td colspan="5"><table _TABLENUMBER=3540806143674731123 table_name="scriptTable_19_2/scriptTable_6">
+	<tr>
+		<td>scenario</td>
+		<td>gebe in das Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>ein</td>
+	</tr>
+	<tr>
+		<td>insert <span class="ignore">Test not run</span></td>
+		<td>maxi</td>
+		<td>into field</td>
+		<td colspan="3">password</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">wähle in Feld</td>
+		<td class="ignore">land</td>
+		<td class="ignore">den Wert</td>
+		<td class="ignore">Deutschland</td>
+		<td class="ignore">aus</td>
+	</tr><tr class="scenario-detail"><td colspan="5"><table _TABLENUMBER=5761271477979194447 table_name="scriptTable_19_3/scriptTable_8">
+	<tr>
+		<td>scenario</td>
+		<td>wähle in Feld</td>
+		<td>guiid</td>
+		<td>den Wert</td>
+		<td>text</td>
+		<td>aus</td>
+	</tr>
+	<tr>
+		<td>insert <span class="ignore">Test not run</span></td>
+		<td>Deutschland</td>
+		<td>into field</td>
+		<td colspan="3">land</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">klicke auf</td>
+		<td colspan="4" class="ignore">login</td>
+	</tr><tr class="scenario-detail"><td colspan="5"><table _TABLENUMBER=3168293614344078749 table_name="scriptTable_19_4/scriptTable_9">
+	<tr>
+		<td>scenario</td>
+		<td>klicke auf</td>
+		<td>guiElement</td>
+	</tr>
+	<tr>
+		<td>click <span class="ignore">Test not run</span></td>
+		<td colspan="2">login</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">überprüfe ob der Text</td>
+		<td class="ignore">Eine Beispiel Web-Applikation</td>
+		<td class="ignore">im Feld</td>
+		<td class="ignore">headline</td>
+		<td class="ignore">vorhanden ist</td>
+	</tr><tr class="scenario-detail"><td colspan="5"><table _TABLENUMBER=601833171519980889 table_name="scriptTable_19_5/scriptTable_15">
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob der Text</td>
+		<td>textVisible</td>
+		<td>im Feld</td>
+		<td>fieldId</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>textIsVisibleInField; <span class="ignore">Test not run</span></td>
+		<td>Eine Beispiel Web-Applikation</td>
+		<td>headline</td>
+		<td colspan="3"></td>
+	</tr>
+</table></td></tr>
+</table>
+<table _TABLENUMBER=1000468133429643361>
+	<tr class="hidden">
+		<td colspan="3">script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="ignore">überprüfe ob der Text</td>
+		<td class="ignore">war erfolgreich</td>
+		<td class="ignore">vorhanden ist</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=5923212514557624213 table_name="scriptTable_20_0/scriptTable_12">
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob der Text</td>
+		<td>textVorhanden</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>text <span class="ignore">Test not run</span></td>
+		<td>war erfolgreich</td>
+		<td colspan="2">is visible</td>
+	</tr>
+</table></td></tr>
+	<tr class="scenario closed">
+		<td class="ignore">überprüfe ob nicht der Text</td>
+		<td class="ignore">Login</td>
+		<td class="ignore">vorhanden ist</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=2253001515120921330 table_name="scriptTable_20_1/scriptTable_14">
+	<tr>
+		<td>scenario</td>
+		<td>überprüfe ob nicht der Text</td>
+		<td>textVorhanden</td>
+		<td>vorhanden ist</td>
+	</tr>
+	<tr>
+		<td>text <span class="ignore">Test not run</span></td>
+		<td>Login</td>
+		<td colspan="2">is unvisible</td>
+	</tr>
+</table></td></tr>
+</table>
+<div class="collapsible"><ul><li><a href='#' class='expandall'>Expand All</a></li><li><a href='#' class='collapseall'>Collapse All</a></li></ul>
+	<p class="title">Included page: <a href="DemoWebTests.TestSzenarien.ApplikationStopSzenario">&lt;DemoWebTests.TestSzenarien.ApplikationStopSzenario</a> <a href="DemoWebTests.TestSzenarien.ApplikationStopSzenario?edit&amp;redirectToReferer=true&amp;redirectAction=" class="edit">(edit)</a></p>
+	<div><table _TABLENUMBER=7288172956153409121>
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStopSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Dieses Szenario beendet den Test, der Browser wird geschlossen.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein Browser</td>
+	</tr>
+	<tr>
+		<td colspan="3">beende Browser</td>
+	</tr>
+</table>
+</div>
+</div>
+<br/><table _TABLENUMBER=3361831430287334895>
+	<tr>
+		<td>script</td>
+	</tr>
+	<tr class="scenario closed">
+		<td class="ignore">Applikation Stop Szenario</td>
+	</tr><tr class="scenario-detail"><td colspan="1"><table _TABLENUMBER=5879274105054496165 table_name="scriptTable_22_0/scriptTable_21">
+	<tr>
+		<td>scenario</td>
+		<td>ApplikationStopSzenario _</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Description: Dieses Szenario beendet den Test, der Browser wird geschlossen.</td>
+	</tr>
+	<tr>
+		<td>note</td>
+		<td colspan="2">Maske: Allgemein Browser</td>
+	</tr>
+	<tr class="scenario closed">
+		<td colspan="3" class="ignore">beende Browser</td>
+	</tr><tr class="scenario-detail"><td colspan="3"><table _TABLENUMBER=1458541739171625630 table_name="scriptTable_22_0/scriptTable_21_0/scriptTable_5">
+	<tr>
+		<td>scenario</td>
+		<td>beende Browser</td>
+	</tr>
+	<tr>
+		<td colspan="2">close browser <span class="ignore">Test not run</span></td>
+	</tr>
+</table></td></tr>
+</table></td></tr>
+</table>
+]]></content>
+		<relativePageName>LoginValidTest</relativePageName>
+
+		<tables>
+			<table>
+				<name>import_0</name>
+				<row>
+					<col><![CDATA[import]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[org.testeditor.fixture.core]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[org.testeditor.fixture.web]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>library_1</name>
+				<row>
+					<col><![CDATA[Library]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[pass(WebFixture)]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_2</name>
+				<row>
+					<col><![CDATA[script]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[setElementlist]]></col>
+					<col><![CDATA[/home/karsten/.testeditor/DemoWebTests/ElementList.conf]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_3</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[starte Browser]]></col>
+					<col><![CDATA[browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[open browser;]]></col>
+					<col><![CDATA[@browser]]></col>
+					<col><![CDATA[/home/karsten/projects/luna_tf/browser/linux/firefox/firefox]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_4</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[navigiere auf die Seite]]></col>
+					<col><![CDATA[url]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[navigate to Url]]></col>
+					<col><![CDATA[@url]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_5</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[beende Browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[close browser]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_6</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[gebe in das Feld]]></col>
+					<col><![CDATA[guiid]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[ein]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[insert]]></col>
+					<col><![CDATA[@text]]></col>
+					<col><![CDATA[into field]]></col>
+					<col><![CDATA[@guiid]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_7</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[leere das Feld]]></col>
+					<col><![CDATA[guiid]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[clear]]></col>
+					<col><![CDATA[@guiid]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_8</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[wähle in Feld]]></col>
+					<col><![CDATA[guiid]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[aus]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[insert]]></col>
+					<col><![CDATA[@text]]></col>
+					<col><![CDATA[into field]]></col>
+					<col><![CDATA[@guiid]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_9</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[klicke auf]]></col>
+					<col><![CDATA[guiElement]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[click]]></col>
+					<col><![CDATA[@guiElement]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_10</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[warte]]></col>
+					<col><![CDATA[anzahlSekunden]]></col>
+					<col><![CDATA[Sekunden]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[wait]]></col>
+					<col><![CDATA[@anzahlSekunden]]></col>
+					<col><![CDATA[seconds]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_11</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[warte auf Element]]></col>
+					<col><![CDATA[warteElement]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[wait for Element]]></col>
+					<col><![CDATA[@warteElement]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_12</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[textVorhanden]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[@textVorhanden]]></col>
+					<col><![CDATA[is visible]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_13</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[textVorhanden]]></col>
+					<col><![CDATA[vorhanden ist, ansonsten brich den Test ab.]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[checkTextAndTearDown;]]></col>
+					<col><![CDATA[@textVorhanden]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_14</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob nicht der Text]]></col>
+					<col><![CDATA[textVorhanden]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[@textVorhanden]]></col>
+					<col><![CDATA[is unvisible]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_15</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[textVisible]]></col>
+					<col><![CDATA[im Feld]]></col>
+					<col><![CDATA[fieldId]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[textIsVisibleInField;]]></col>
+					<col><![CDATA[@textVisible]]></col>
+					<col><![CDATA[@fieldId]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_16</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[erstelle den Parameter]]></col>
+					<col><![CDATA[param]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_17</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[ApplikationStartSzenario _]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Description: Dieses Szenario startet die lokale Demo-Web-Applikation. Die Applikation ist bereits Bestandteil dieses Demo-Projektes, so dass keine Internet-Verbindung für die Ausführung notwendig ist. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Maske: Allgemein Browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[starte Browser]]></col>
+					<col><![CDATA[Firefox]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[navigiere auf die Seite]]></col>
+					<col><![CDATA[http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_18</name>
+				<row>
+					<col><![CDATA[script]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[Applikation Start Szenario]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_18_0/scriptTable_17</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[ApplikationStartSzenario _]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Description: Dieses Szenario startet die lokale Demo-Web-Applikation. Die Applikation ist bereits Bestandteil dieses Demo-Projektes, so dass keine Internet-Verbindung für die Ausführung notwendig ist. Der zu verwendene Browser kann hier bei Bedarf umgestellt werden.]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Maske: Allgemein Browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[starte Browser]]></col>
+					<col><![CDATA[Firefox]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[navigiere auf die Seite]]></col>
+					<col><![CDATA[http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_18_0/scriptTable_17_0/scriptTable_3</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[starte Browser]]></col>
+					<col><![CDATA[browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[open browser; fail(browserPath '/home/karsten/projects/luna_tf/browser/linux/firefox/firefox does not exist)]]></col>
+					<col><![CDATA[Firefox]]></col>
+					<col><![CDATA[/home/karsten/projects/luna_tf/browser/linux/firefox/firefox]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_18_0/scriptTable_17_1/scriptTable_4</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[navigiere auf die Seite]]></col>
+					<col><![CDATA[url]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[navigate to Url ignore(Test not run)]]></col>
+					<col><![CDATA[http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19</name>
+				<row>
+					<col><![CDATA[script]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[Eine Beispiel Web-Applikation]]></col>
+					<col><![CDATA[im Feld]]></col>
+					<col><![CDATA[headline]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[gebe in das Feld]]></col>
+					<col><![CDATA[user]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[Max Mustermann]]></col>
+					<col><![CDATA[ein]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[gebe in das Feld]]></col>
+					<col><![CDATA[password]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[maxi]]></col>
+					<col><![CDATA[ein]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[wähle in Feld]]></col>
+					<col><![CDATA[land]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[Deutschland]]></col>
+					<col><![CDATA[aus]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[klicke auf]]></col>
+					<col><![CDATA[login]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[Eine Beispiel Web-Applikation]]></col>
+					<col><![CDATA[im Feld]]></col>
+					<col><![CDATA[headline]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19_0/scriptTable_15</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[textVisible]]></col>
+					<col><![CDATA[im Feld]]></col>
+					<col><![CDATA[fieldId]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[textIsVisibleInField; ignore(Test not run)]]></col>
+					<col><![CDATA[Eine Beispiel Web-Applikation]]></col>
+					<col><![CDATA[headline]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19_1/scriptTable_6</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[gebe in das Feld]]></col>
+					<col><![CDATA[guiid]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[ein]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[insert ignore(Test not run)]]></col>
+					<col><![CDATA[Max Mustermann]]></col>
+					<col><![CDATA[into field]]></col>
+					<col><![CDATA[user]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19_2/scriptTable_6</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[gebe in das Feld]]></col>
+					<col><![CDATA[guiid]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[ein]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[insert ignore(Test not run)]]></col>
+					<col><![CDATA[maxi]]></col>
+					<col><![CDATA[into field]]></col>
+					<col><![CDATA[password]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19_3/scriptTable_8</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[wähle in Feld]]></col>
+					<col><![CDATA[guiid]]></col>
+					<col><![CDATA[den Wert]]></col>
+					<col><![CDATA[text]]></col>
+					<col><![CDATA[aus]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[insert ignore(Test not run)]]></col>
+					<col><![CDATA[Deutschland]]></col>
+					<col><![CDATA[into field]]></col>
+					<col><![CDATA[land]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19_4/scriptTable_9</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[klicke auf]]></col>
+					<col><![CDATA[guiElement]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[click ignore(Test not run)]]></col>
+					<col><![CDATA[login]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_19_5/scriptTable_15</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[textVisible]]></col>
+					<col><![CDATA[im Feld]]></col>
+					<col><![CDATA[fieldId]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[textIsVisibleInField; ignore(Test not run)]]></col>
+					<col><![CDATA[Eine Beispiel Web-Applikation]]></col>
+					<col><![CDATA[headline]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_20</name>
+				<row>
+					<col><![CDATA[script]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[war erfolgreich]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[überprüfe ob nicht der Text]]></col>
+					<col><![CDATA[Login]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_20_0/scriptTable_12</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob der Text]]></col>
+					<col><![CDATA[textVorhanden]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[text ignore(Test not run)]]></col>
+					<col><![CDATA[war erfolgreich]]></col>
+					<col><![CDATA[is visible]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_20_1/scriptTable_14</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[überprüfe ob nicht der Text]]></col>
+					<col><![CDATA[textVorhanden]]></col>
+					<col><![CDATA[vorhanden ist]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[text ignore(Test not run)]]></col>
+					<col><![CDATA[Login]]></col>
+					<col><![CDATA[is unvisible]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scenarioTable_21</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[ApplikationStopSzenario _]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Description: Dieses Szenario beendet den Test, der Browser wird geschlossen.]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Maske: Allgemein Browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[beende Browser]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_22</name>
+				<row>
+					<col><![CDATA[script]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[Applikation Stop Szenario]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_22_0/scriptTable_21</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[ApplikationStopSzenario _]]></col>
+					<col><![CDATA[]]>
+					</col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Description: Dieses Szenario beendet den Test, der Browser wird geschlossen.]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[note]]></col>
+					<col><![CDATA[Maske: Allgemein Browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[beende Browser]]></col>
+
+				</row>
+
+			</table>
+			<table>
+				<name>scriptTable_22_0/scriptTable_21_0/scriptTable_5</name>
+				<row>
+					<col><![CDATA[scenario]]></col>
+					<col><![CDATA[beende Browser]]></col>
+
+				</row>
+				<row>
+					<col><![CDATA[close browser ignore(Test not run)]]></col>
+
+				</row>
+
+			</table>
+
+		</tables>
+
+
+		<instructions>
+			<instructionResult>
+				<instruction><![CDATA[[import_0_0, import, org.testeditor.fixture.core]]]></instruction>
+				<slimResult><![CDATA[OK]]></slimResult>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[import_0_1, import, org.testeditor.fixture.web]]]></instruction>
+				<slimResult><![CDATA[OK]]></slimResult>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[library_1_0, make, library1, WebFixture]]]></instruction>
+				<slimResult><![CDATA[OK]]></slimResult>
+				<expectation>
+					<status>right</status>
+					<instructionId>library_1_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ConstructionExpectation</type>
+					<actual><![CDATA[OK]]></actual>
+					<expected><![CDATA[WebFixture]]></expected>
+					<evaluationMessage><![CDATA[pass(WebFixture)]]></evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_2_0, call, scriptTableActor, setElementlist, /home/karsten/.testeditor/DemoWebTests/ElementList.conf]]]></instruction>
+				<slimResult><![CDATA[/__VOID__/]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_2_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_2_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<actual><![CDATA[/__VOID__/]]></actual>
+					<expected><![CDATA[setElementlist]]></expected>
+					<evaluationMessage><![CDATA[setElementlist]]></evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_18_0/scriptTable_17_0/scriptTable_3_0, call, scriptTableActor, openBrowser, Firefox, /home/karsten/projects/luna_tf/browser/linux/firefox/firefox]]]></instruction>
+				<slimResult><![CDATA[!fail:browserPath '/home/karsten/projects/luna_tf/browser/linux/firefox/firefox does not exist]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_18_0/scriptTable_17_0/scriptTable_3_0
+					</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_18_0/scriptTable_17_0/scriptTable_3_0
+					</instructionId>
+					<col>2</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>wrong</status>
+					<instructionId>scriptTable_18_0/scriptTable_17_0/scriptTable_3_0
+					</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<actual><![CDATA[!fail:browserPath '/home/karsten/projects/luna_tf/browser/linux/firefox/firefox does not exist]]></actual>
+					<expected><![CDATA[open browser;]]></expected>
+					<evaluationMessage><![CDATA[open browser; fail(browserPath '/home/karsten/projects/luna_tf/browser/linux/firefox/firefox does not exist)]]></evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_18_0/scriptTable_17_1/scriptTable_4_0, call, scriptTableActor, navigateToUrl, http://localhost:48439/files/demo/ExampleApplication/WebApplicationDe/index.html]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_18_0/scriptTable_17_1/scriptTable_4_0
+					</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_18_0/scriptTable_17_1/scriptTable_4_0
+					</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_19_0/scriptTable_15_0, call, scriptTableActor, textIsVisibleInField, Eine Beispiel Web-Applikation, headline, ]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_0/scriptTable_15_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_0/scriptTable_15_0</instructionId>
+					<col>2</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_0/scriptTable_15_0</instructionId>
+					<col>3</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_0/scriptTable_15_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_19_1/scriptTable_6_0, call, scriptTableActor, insertIntoField, Max Mustermann, user]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_1/scriptTable_6_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_1/scriptTable_6_0</instructionId>
+					<col>3</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_1/scriptTable_6_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_19_2/scriptTable_6_0, call, scriptTableActor, insertIntoField, maxi, password]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_2/scriptTable_6_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_2/scriptTable_6_0</instructionId>
+					<col>3</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_2/scriptTable_6_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_19_3/scriptTable_8_0, call, scriptTableActor, insertIntoField, Deutschland, land]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_3/scriptTable_8_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_3/scriptTable_8_0</instructionId>
+					<col>3</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_3/scriptTable_8_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_19_4/scriptTable_9_0, call, scriptTableActor, click, login]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_4/scriptTable_9_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_4/scriptTable_9_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_19_5/scriptTable_15_0, call, scriptTableActor, textIsVisibleInField, Eine Beispiel Web-Applikation, headline, ]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_5/scriptTable_15_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_5/scriptTable_15_0</instructionId>
+					<col>2</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_5/scriptTable_15_0</instructionId>
+					<col>3</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_19_5/scriptTable_15_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_20_0/scriptTable_12_0, call, scriptTableActor, textIsVisible, war erfolgreich]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_20_0/scriptTable_12_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_20_0/scriptTable_12_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_20_1/scriptTable_14_0, call, scriptTableActor, textIsUnvisible, Login]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_20_1/scriptTable_14_0</instructionId>
+					<col>1</col>
+					<row>1</row>
+					<type>ArgumentExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_20_1/scriptTable_14_0</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+			<instructionResult>
+				<instruction><![CDATA[[scriptTable_22_0/scriptTable_21_0/scriptTable_5_0, call, scriptTableActor, closeBrowser]]]></instruction>
+				<slimResult><![CDATA[Test not run]]></slimResult>
+				<expectation>
+					<status>ignored</status>
+					<instructionId>scriptTable_22_0/scriptTable_21_0/scriptTable_5_0
+					</instructionId>
+					<col>0</col>
+					<row>1</row>
+					<type>ScriptActionExpectation</type>
+					<evaluationMessage><![CDATA[]]>
+					</evaluationMessage>
+				</expectation>
+
+			</instructionResult>
+
+		</instructions>
+
+	</result>
+
+	<executionLog>
+		<testSystem>slim:fitnesse.slim.SlimService</testSystem>
+		<command></command>
+		<exitCode>0</exitCode>
+		<stdOut>sysout</stdOut>
+		<stdErr>syserror
+		</stdErr>
+	</executionLog>
+
+	<finalCounts>
+		<right>0</right>
+		<wrong>0</wrong>
+		<ignores>0</ignores>
+		<exceptions>0</exceptions>
+	</finalCounts>
+	<totalRunTimeInMillis>0</totalRunTimeInMillis>
+
+</testResults>

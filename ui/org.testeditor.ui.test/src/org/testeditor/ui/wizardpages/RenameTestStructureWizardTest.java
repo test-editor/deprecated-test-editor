@@ -33,8 +33,6 @@ import org.testeditor.ui.utilities.TestEditorTranslationService;
 /**
  * Test for the renaming wizard of testcase, testsuite and testscenario.
  * 
- * @author llipinski
- * 
  */
 public class RenameTestStructureWizardTest {
 

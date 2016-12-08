@@ -9,7 +9,10 @@
 	<module name="TreeWalker">
 		<property name="tabWidth" value="4" />
 		<module name="FileContentsHolder" />
-		<module name="ConstantName" />
+		<module name="ConstantName">
+       	 	<!-- Allow "log" -->
+        	<property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*|logger)$"/>
+        </module>
 		<module name="LocalFinalVariableName" />
 		<module name="LocalVariableName" />
 		<module name="MemberName" />

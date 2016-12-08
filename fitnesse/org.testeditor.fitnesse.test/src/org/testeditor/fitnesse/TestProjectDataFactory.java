@@ -63,8 +63,8 @@ public final class TestProjectDataFactory {
 		properties.put(TestProjectService.VERSION_TAG, TestProjectService.VERSION1_2);
 		LibraryConfigurationServicePlugIn libraryConfigurationService = plugInService
 				.getLibraryConfigurationServiceFor("org.testeditor.xmllibrary");
-		firstTestprojectConfig.setProjectLibraryConfig(libraryConfigurationService
-				.createProjectLibraryConfigFrom(properties));
+		firstTestprojectConfig
+				.setProjectLibraryConfig(libraryConfigurationService.createProjectLibraryConfigFrom(properties));
 		firstTestProject.setTestProjectConfig(firstTestprojectConfig);
 		firstTestProject.addChild(firstTestCase);
 		return firstTestProject;

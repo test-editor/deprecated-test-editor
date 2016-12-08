@@ -50,6 +50,7 @@ public class ActionPart {
 	/**
 	 * Gets the value of the position property.
 	 * 
+	 * @return position
 	 */
 	public int getPosition() {
 		return position;
@@ -58,6 +59,8 @@ public class ActionPart {
 	/**
 	 * Sets the value of the position property.
 	 * 
+	 * @param value
+	 *            for position
 	 */
 	public void setPosition(int value) {
 		this.position = value;

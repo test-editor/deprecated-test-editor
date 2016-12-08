@@ -17,16 +17,19 @@ package org.testeditor.teamshare.svn;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -37,17 +40,16 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.exceptions.TeamAuthentificationException;
-import org.testeditor.core.model.team.TeamChangeType;
 import org.testeditor.core.model.teststructure.TestCase;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.TeamShareService;
+import org.testeditor.core.services.plugins.TeamShareStatusServicePlugIn;
 import org.testeditor.teamshare.svn.util.SvnHelper;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNErrorCode;
@@ -57,9 +59,12 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.ISVNStatusHandler;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNStatus;
 import org.tmatesoft.svn.core.wc.SVNStatusClient;
+import org.tmatesoft.svn.core.wc.SVNUpdateClient;
+import org.tmatesoft.svn.core.wc.SVNWCClient;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 /**
@@ -70,13 +75,15 @@ public class SVNTeamShareServiceLocalTest {
 
 	private static final String SOURCE_WORKSPACE_PATH = "./testProject";
 	private static final String REPOSITORY_PATH = "./testrepo";
+	private static final String CORRUPT_SVN_DB = "./corrupt_db/wc.db";
+	private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
 	private static final String PROJEKT_NAME = "DemoWebTests";
 
 	private static String targetWorkspacePath;
 
 	private static String projectpath;
-	private static final Logger LOGGER = Logger.getLogger(SVNTeamShareService.class);
+	private static final Logger logger = Logger.getLogger(SVNTeamShareService.class);
 
 	private TeamShareService teamService;
 
@@ -88,9 +95,9 @@ public class SVNTeamShareServiceLocalTest {
 	@BeforeClass
 	public static void initialize() {
 		if (!System.getProperty("java.io.tmpdir").endsWith(File.separator)) {
-			targetWorkspacePath = System.getProperty("java.io.tmpdir") + File.separator + "testProjectJUnit";
+			targetWorkspacePath = TEMP_DIR + File.separator + "testProjectJUnit";
 		} else {
-			targetWorkspacePath = System.getProperty("java.io.tmpdir") + "testProjectJUnit";
+			targetWorkspacePath = TEMP_DIR + "testProjectJUnit";
 		}
 		projectpath = targetWorkspacePath + File.separator + PROJEKT_NAME;
 
@@ -106,7 +113,7 @@ public class SVNTeamShareServiceLocalTest {
 	@Before
 	public void setUp() throws Exception {
 
-		LOGGER.setLevel(Level.ERROR);
+		logger.setLevel(Level.ERROR);
 		System.setProperty("svn.default.comment", "xyz");
 
 		teamService = new SVNTeamShareService();
@@ -136,15 +143,19 @@ public class SVNTeamShareServiceLocalTest {
 	 * This method creates a new Testproject.
 	 * 
 	 * @param repositoryPath
-	 *            can be local (on file system usage: "file:///c:/tmp/testrepo") <br>
+	 *            can be local (on file system usage: "file:///c:/tmp/testrepo")
+	 *            <br>
 	 *            or remote (on a remote svn system)
 	 * @param userName
 	 *            can be empty for local share
 	 * @param password
 	 *            can be empty for local share
 	 * @return test project
+	 * @throws MalformedURLException
+	 *             on problems creating testdata
 	 */
-	private TestProject createTestProject(String repositoryPath, String userName, String password) {
+	private TestProject createTestProject(String repositoryPath, String userName, String password)
+			throws MalformedURLException {
 
 		TestProject testProject = new TestProject();
 		testProject.setName(PROJEKT_NAME);
@@ -152,6 +163,8 @@ public class SVNTeamShareServiceLocalTest {
 		TestProjectConfig testProjectConfig = new TestProjectConfig();
 
 		testProjectConfig.setProjectPath(projectpath);
+
+		testProject.setUrl(new File(projectpath).toURI().toURL());
 
 		SVNTeamShareConfig svnTeamShareConfig = new SVNTeamShareConfig();
 
@@ -206,10 +219,12 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.share(testProject, translationService, "");
 
 		// Add new Testpage
-		SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testPageName);
+		Path createNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME,
+				testPageName);
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(createNewTestPage.toFile());
 
 		testProject.addChild(testCase);
 
@@ -284,15 +299,17 @@ public class SVNTeamShareServiceLocalTest {
 		// Add new Suite
 		Path suitePath = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, suiteName);
 		// Add new Test
-		SvnHelper.createNewTestPage(suitePath.toString(), testName.toString());
+		Path createNewTestPage = SvnHelper.createNewTestPage(suitePath.toString(), testName.toString());
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName(suiteName);
+		testSuite.setUrl(suitePath.toFile());
 		testProject.addChild(testSuite);
 		teamService.addChild(testSuite, translationService);
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testName);
+		testCase.setUrl(createNewTestPage.toFile());
 
 		testSuite.addChild(testCase);
 		teamService.addChild(testCase, translationService);
@@ -356,6 +373,7 @@ public class SVNTeamShareServiceLocalTest {
 			}
 		});
 		localDemoSuite.setChildCountInBackend(1);
+		localDemoSuite.setUrl(loginSuite.getParentFile());
 		localDemoSuite.setName("LocalDemoSuite");
 		testProject.addChild(localDemoSuite);
 
@@ -432,8 +450,8 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.checkout(testProject, translationService);
 
 		// checkout was successfull
-		assertTrue(FileUtils.directoryContains(new File(targetWorkspacePath), new File(targetWorkspacePath + "/"
-				+ PROJEKT_NAME)));
+		assertTrue(FileUtils.directoryContains(new File(targetWorkspacePath),
+				new File(targetWorkspacePath + "/" + PROJEKT_NAME)));
 
 	}
 
@@ -463,6 +481,7 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(createdNewTestPage.toFile());
 
 		testProject.addChild(testCase);
 		TestStructure parent = testCase.getParent();
@@ -507,17 +526,18 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName(testPageName);
+		testSuite.setUrl(createdNewSuite.toFile());
 
 		testProject.addChild(testSuite);
 		TestStructure parent = testSuite.getParent();
 
 		String testCaseName = "MyFirstTestCase";
-		Path createdNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/"
-				+ testPageName, testCaseName);
+		Path createdNewTestPage = SvnHelper
+				.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testPageName, testCaseName);
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
-
+		testPage.setUrl(createdNewTestPage.toUri().toURL());
 		testSuite.addChild(testPage);
 
 		teamService.approve(testSuite, translationService, "");
@@ -590,15 +610,17 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.setName(testPageName);
+		testSuite.setUrl(createdNewSuite.toFile());
 
 		testProject.addChild(testSuite);
 
 		String testCaseName = "MyFirstTestCase";
-		Path createdNewTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/"
-				+ testPageName, testCaseName);
+		Path createdNewTestPage = SvnHelper
+				.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/" + testPageName, testCaseName);
 
 		TestCase testPage = new TestCase();
 		testPage.setName(testCaseName);
+		testPage.setUrl(createdNewTestPage.toUri().toURL());
 
 		testSuite.addChild(testPage);
 
@@ -648,11 +670,11 @@ public class SVNTeamShareServiceLocalTest {
 	/**
 	 * Tests the ignore list.
 	 * 
-	 * @throws SystemException
+	 * @throws Exception
 	 *             System failure
 	 */
 	@Test
-	public void testIgnoreListPositive() throws SystemException {
+	public void testIgnoreListPositive() throws Exception {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 
@@ -662,9 +684,11 @@ public class SVNTeamShareServiceLocalTest {
 				TrueFileFilter.INSTANCE);
 
 		for (File file : listFiles) {
-			for (String ignoreItem : ignoreList) {
-				assertNotEquals("File/Directory: " + file.getName() + " must not be shared !", file.getName(),
-						ignoreItem);
+			if (!file.getAbsolutePath().contains(".svn")) {
+				for (String ignoreItem : ignoreList) {
+					assertNotEquals("File/Directory: " + file.getName() + " must not be shared !", file.getName(),
+							ignoreItem);
+				}
 			}
 		}
 	}
@@ -673,11 +697,11 @@ public class SVNTeamShareServiceLocalTest {
 	 * Negative test for ignore list. Directory "DemoWebTests" must not be
 	 * found.
 	 * 
-	 * @throws SystemException
+	 * @throws Exception
 	 *             System failure
 	 */
 	@Test
-	public void testIgnoreListNegative() throws SystemException {
+	public void testIgnoreListNegative() throws Exception {
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
 
@@ -747,15 +771,18 @@ public class SVNTeamShareServiceLocalTest {
 
 	/**
 	 * Tests that a Config with an empty url is invalid.
+	 * 
+	 * @throws Exception
+	 *             System failure
 	 */
 	@Test
-	public void testConfigurationIsInValidOnEmptyURL() {
+	public void testConfigurationIsInValidOnEmptyURL() throws Exception {
 		TestProject testProject = createTestProject("moreStuff", "", "");
 		try {
 			teamService.validateConfiguration(testProject, translationService);
 			fail("ValidateConfiguration should throw Exception on empty url.");
 		} catch (SystemException e) {
-			LOGGER.equals(e);
+			logger.equals(e);
 		}
 	}
 
@@ -763,11 +790,11 @@ public class SVNTeamShareServiceLocalTest {
 	 * Tests that a Config with a not existing TestProject in the SVN Repo is
 	 * invalid.
 	 * 
-	 * @throws SVNException
+	 * @throws Exception
 	 *             on wrong test setup
 	 */
 	@Test
-	public void testConfigurationIsInValidOnNotExistingProjectName() throws SVNException {
+	public void testConfigurationIsInValidOnNotExistingProjectName() throws Exception {
 		TestProject testProject = createTestProject(SVNURL.fromFile(new File(REPOSITORY_PATH)).toDecodedString(), "",
 				"");
 		testProject.setName("Not Existing Project");
@@ -775,7 +802,7 @@ public class SVNTeamShareServiceLocalTest {
 			teamService.validateConfiguration(testProject, translationService);
 			fail("ValidateConfiguration should throw Exception on not existing Project.");
 		} catch (SystemException e) {
-			LOGGER.equals(e);
+			logger.equals(e);
 		}
 	}
 
@@ -799,8 +826,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE175005Test() {
-		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.RA_DAV_ALREADY_EXISTS,
-				"Path 'myLocation/myFile' already exists"));
+		SVNException exception = new SVNException(
+				SVNErrorMessage.create(SVNErrorCode.RA_DAV_ALREADY_EXISTS, "Path 'myLocation/myFile' already exists"));
 
 		assertTrue(substitudeSVNException(exception, translationService).startsWith("translated key %svnE175005"));
 	}
@@ -812,8 +839,8 @@ public class SVNTeamShareServiceLocalTest {
 	public void substitudeSVNExceptionE170001Test() {
 		String message = "Authentication required for '<http://localhost:80> Subversion Repo'";
 		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.RA_NOT_AUTHORIZED, message));
-		assertTrue(substitudeSVNException(exception, translationService).startsWith(
-				"translated key %svnE170001 " + message.split("'")[1]));
+		assertTrue(substitudeSVNException(exception, translationService)
+				.startsWith("translated key %svnE170001 " + message.split("'")[1]));
 	}
 
 	/**
@@ -844,10 +871,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE160024Test() {
-		SVNException exception = new SVNException(
-				SVNErrorMessage
-						.create(SVNErrorCode.FS_CONFLICT,
-								"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
+		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.FS_CONFLICT,
+				"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
 
 		assertTrue(substitudeSVNException(exception, translationService).contains("E160024"));
 	}
@@ -857,10 +882,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void substitudeSVNExceptionE155015Test() {
-		SVNException exception = new SVNException(
-				SVNErrorMessage
-						.create(SVNErrorCode.WC_FOUND_CONFLICT,
-								"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
+		SVNException exception = new SVNException(SVNErrorMessage.create(SVNErrorCode.WC_FOUND_CONFLICT,
+				"Approval is not possible because another user changed and approved test \n\n 'myLocation/myFile' \n\n Please contact your test manager or project administrator."));
 
 		assertTrue(substitudeSVNException(exception, translationService).contains("E155015"));
 	}
@@ -942,8 +965,8 @@ public class SVNTeamShareServiceLocalTest {
 	}
 
 	/**
-	 * Test for {@link
-	 * SVNTeamShareServiceRevert(org.testeditor.core.model.teststructure.
+	 * Test for
+	 * {@link SVNTeamShareServiceRevert(org.testeditor.core.model.teststructure.
 	 * TestStructure)} Method.
 	 * 
 	 * @throws IOException
@@ -962,14 +985,17 @@ public class SVNTeamShareServiceLocalTest {
 		teamService.share(testProject, translationService, "");
 
 		// Add new Testpage
-		SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testPageName);
+		Path testSuitePath = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, "TestSuite");
+		Path newTestPage = SvnHelper.createNewTestPage(projectpath + "/FitNesseRoot/" + PROJEKT_NAME + "/TestSuite",
+				testPageName);
 
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(newTestPage.toFile());
 
 		TestSuite testSuite = new TestSuite();
 		testSuite.addChild(testCase);
-
+		testSuite.setUrl(newTestPage.toFile().getParentFile());
 		testProject.addChild(testSuite);
 
 		teamService.approve(testSuite, translationService, "");
@@ -1022,6 +1048,7 @@ public class SVNTeamShareServiceLocalTest {
 		assertTrue(testStructurePath.toFile().exists());
 		TestCase testCase = new TestCase();
 		testCase.setName(testPageName);
+		testCase.setUrl(new File(projectpath + "/FitNesseRoot/" + PROJEKT_NAME, testPageName).toURI().toURL());
 		testProject.addChild(testCase);
 		teamService.addChild(testCase, translationService);
 		teamService.approve(testCase, translationService, "");
@@ -1042,6 +1069,8 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void testShareProjectDisconnect() throws IOException, SVNException, SystemException {
+		TeamShareStatusServicePlugIn statusPlugin = new SVNTeamShareStatusService();
+		((SVNTeamShareService) teamService).bind(statusPlugin);
 
 		TestProject testProject = createTestProject(REPOSITORY_PATH, "", "");
 		teamService.share(testProject, translationService, "");
@@ -1053,7 +1082,15 @@ public class SVNTeamShareServiceLocalTest {
 		assertFalse(testProject.getTestProjectConfig().isTeamSharedProject());
 	}
 
-	@Ignore
+	/**
+	 * Test that the revert operation also removes added and not commited files
+	 * from the workspace.
+	 * 
+	 * @throws SystemException
+	 *             on test failure.
+	 * @throws IOException
+	 *             on test failure.
+	 */
 	@Test
 	public void testRevertWithAddedTestcase() throws SystemException, IOException {
 		String testPageName = "MyFirstTestRevertTest";
@@ -1070,13 +1107,15 @@ public class SVNTeamShareServiceLocalTest {
 		String suiteName = "SuiteName";
 		testSuite.setName(suiteName);
 		testProject.addChild(testSuite);
-		SvnHelper.createNewTestPage(pathToTestFiles, suiteName);
+		Path createNewTestSuite = SvnHelper.createNewTestPage(pathToTestFiles, suiteName);
+		testSuite.setUrl(createNewTestSuite.toFile());
 		teamService.addChild(testSuite, translationService);
 
 		TestCase testCase = new TestCase();
-		SvnHelper
+		Path createNewTestPage = SvnHelper
 				.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, testPageName);
 		testCase.setName(testPageName);
+		testCase.setUrl(createNewTestPage.toFile());
 		testSuite.addChild(testCase);
 		teamService.addChild(testCase, translationService);
 
@@ -1099,8 +1138,8 @@ public class SVNTeamShareServiceLocalTest {
 
 		status = teamService.getStatus(testProject, translationService);
 
-		File updateFile = new File(testProject.getTestProjectConfig().getProjectPath()
-				+ "/TechnicalBindingTypeCollection.xml");
+		File updateFile = new File(
+				testProject.getTestProjectConfig().getProjectPath() + "/TechnicalBindingTypeCollection.xml");
 		String appendedString = "This is a SVN-reverting Test";
 		SvnHelper.updateFile(updateFile, appendedString);
 
@@ -1112,10 +1151,11 @@ public class SVNTeamShareServiceLocalTest {
 
 		TestCase sctestCase = new TestCase();
 		String scTestPageName = "secondTestCase";
-		SvnHelper.createNewTestPage(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar,
-				scTestPageName);
+		Path sccreateNewTestPage = SvnHelper.createNewTestPage(
+				pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, scTestPageName);
 		sctestCase.setName(scTestPageName);
 		testSuite.addChild(sctestCase);
+		sctestCase.setUrl(sccreateNewTestPage.toFile());
 		teamService.addChild(sctestCase, translationService);
 
 		String secStatus = teamService.getStatus(testProject, translationService);
@@ -1126,8 +1166,8 @@ public class SVNTeamShareServiceLocalTest {
 		String newstatus = teamService.getStatus(testProject, translationService);
 		Assert.assertTrue(newstatus.contains("TechnicalBindingTypeCollection.xml;normal 1"));
 
-		Assert.assertFalse(SvnHelper.existsTestCase(pathToTestFiles + File.separatorChar + suiteName
-				+ File.separatorChar, scTestPageName));
+		Assert.assertFalse(SvnHelper
+				.existsTestCase(pathToTestFiles + File.separatorChar + suiteName + File.separatorChar, scTestPageName));
 
 		readFileToString = FileUtils.readFileToString(updateFile);
 		Assert.assertFalse(readFileToString.contains(appendedString));
@@ -1166,17 +1206,136 @@ public class SVNTeamShareServiceLocalTest {
 	 */
 	@Test
 	public void testDisconnectProject() throws Exception {
-		TestProject testProject = createTestProject(System.getProperty("java.io.tmpdir") + File.separator
-				+ "disconnectPrj", "", "");
+		TestProject testProject = createTestProject(
+				System.getProperty("java.io.tmpdir") + File.separator + "disconnectPrj", "", "");
 		TestSuite testSuite = new TestSuite();
-		testSuite.setTeamChangeType(TeamChangeType.ADD);
 		testProject.addChild(testSuite);
 		TestCase testCase = new TestCase();
-		testSuite.setTeamChangeType(TeamChangeType.MOVED);
 		testSuite.addChild(testCase);
+		TeamShareStatusServicePlugIn statusPlugin = new SVNTeamShareStatusService();
+		((SVNTeamShareService) teamService).bind(statusPlugin);
 		teamService.disconnect(testProject, translationService);
-		assertEquals(TeamChangeType.NONE, testSuite.getTeamChangeType());
-		assertEquals(TeamChangeType.NONE, testCase.getTeamChangeType());
+		assertFalse(statusPlugin.isModified(testProject));
+		assertNull("Expecting test project is removed from statsus service.", statusPlugin.getModified(testProject));
+	}
+
+	/**
+	 * Tests the handling of broken svn-db.
+	 * <ol>
+	 * <li>Setup create a new local repository and replace the ws.db with a
+	 * broken instance.
+	 * <li>Check that the svnService will detect the error in the db.
+	 * <li>Fix the error with a cleanup
+	 * <li>Tests that the svnService will not detect any error any more.
+	 * </ol>
+	 * 
+	 * @throws Exception
+	 *             on svn error
+	 */
+	@Test
+	public void testReleaseLockedSVNDir() throws Exception {
+		TestProject testProject = createTestProject(SVNURL.fromFile(new File(REPOSITORY_PATH)).toDecodedString(), "",
+				"");
+
+		teamService.share(testProject, translationService, "");
+
+		FileUtils.copyFile(new File(CORRUPT_SVN_DB), new File(projectpath, ".svn" + File.separator + "wc.db"));
+
+		assertTrue(teamService.isCleanupNeeded(testProject));
+		teamService.cleanup(testProject);
+		assertFalse(teamService.isCleanupNeeded(testProject));
+	}
+
+	/**
+	 * Deletes a directory used in tests if it exists.
+	 * 
+	 * @param dir
+	 *            checked to be deleted.
+	 * @throws IOException
+	 *             on io problems.
+	 */
+	private void cleanUpTestDir(File dir) throws IOException {
+		if (dir.exists()) {
+			FileUtils.deleteDirectory(dir);
+		}
+	}
+
+	/**
+	 * Creates a new directory in the working copy and adds it to version
+	 * control.
+	 * 
+	 * @param parent
+	 *            directory in the working copy
+	 * @param name
+	 *            of the new directory
+	 * @param svnwcClient
+	 *            used to add the new created directory.
+	 * @return a file representing the new created directory
+	 * @throws SVNException
+	 *             on svn problems.
+	 */
+	private File createDirectoryInWC(File parent, String name, SVNWCClient svnwcClient) throws SVNException {
+		File result = new File(parent, name);
+		assertTrue(result.mkdir());
+		svnwcClient.doAdd(result, true, true, true, SVNDepth.INFINITY, true, true);
+		return result;
+	}
+
+	/**
+	 * Tests the extraction of release names from an svn structure.
+	 * 
+	 * @throws Exception
+	 *             on test failure
+	 */
+	@Test
+	public void testGetAvailableReleases() throws Exception {
+		File repoWithReleases = new File(TEMP_DIR, "repo_releases");
+		cleanUpTestDir(repoWithReleases);
+		SVNURL localRepository = SVNRepositoryFactory.createLocalRepository(repoWithReleases, true, false);
+		SVNClientManager clientManager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(false), "", "");
+		SVNUpdateClient updateClient = clientManager.getUpdateClient();
+		File wc = new File(TEMP_DIR, "wc_releases");
+		cleanUpTestDir(wc);
+		updateClient.doCheckout(localRepository, wc, SVNRevision.HEAD, SVNRevision.HEAD, SVNDepth.INFINITY, true);
+		File trunk = createDirectoryInWC(wc, "trunk", clientManager.getWCClient());
+		File tags = createDirectoryInWC(wc, "tags", clientManager.getWCClient());
+		File branches = createDirectoryInWC(wc, "branches", clientManager.getWCClient());
+		File noReleaselayout = createDirectoryInWC(wc, "otherStuff", clientManager.getWCClient());
+		createDirectoryInWC(tags, "v1.0", clientManager.getWCClient());
+		createDirectoryInWC(branches, "v1.1", clientManager.getWCClient());
+		createDirectoryInWC(branches, "v1.2", clientManager.getWCClient());
+		clientManager.getCommitClient().doCommit(new File[] { trunk, tags, branches, noReleaselayout }, false, "", null,
+				null, false, true, SVNDepth.INFINITY);
+		TestProject testProject = new TestProject();
+		TestProjectConfig testProjectConfig = new TestProjectConfig();
+		SVNTeamShareConfig aTeamShareConfig = new SVNTeamShareConfig();
+		SVNURL trunkURL = SVNURL.fromFile(new File(repoWithReleases.getAbsolutePath() + File.separator + "trunk"));
+		SVNURL branchURL = SVNURL
+				.fromFile(new File(repoWithReleases.getAbsolutePath() + File.separator + "/branches/v1.1"));
+		SVNURL otherStuff = SVNURL
+				.fromFile(new File(repoWithReleases.getAbsolutePath() + File.separator + "/otherStuff"));
+		aTeamShareConfig.setUrl(trunkURL.toString());
+		testProjectConfig.setTeamShareConfig(aTeamShareConfig);
+		testProject.setTestProjectConfig(testProjectConfig);
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleases(testProject).keySet());
+		aTeamShareConfig.setUrl(branchURL.toString());
+		validateReleaseNamesOnLegalPath(teamService.getAvailableReleases(testProject).keySet());
+		aTeamShareConfig.setUrl(otherStuff.toString());
+		assertTrue(teamService.getAvailableReleases(testProject).isEmpty());
+	}
+
+	/**
+	 * Verifies the test result for testGetAvailableReleases.
+	 * 
+	 * @param names
+	 *            to be verified.
+	 */
+	private void validateReleaseNamesOnLegalPath(Set<String> names) {
+		assertTrue(names.size() == 3);
+		assertTrue(names.contains("trunk"));
+		assertTrue(names.contains("v1.1"));
+		assertTrue(names.contains("v1.2"));
+		assertFalse(names.contains("v1.0"));
 	}
 
 }

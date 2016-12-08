@@ -22,8 +22,8 @@ import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.EclipseContextFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
-import org.eclipse.e4.ui.services.internal.events.EventBroker;
 import org.junit.Test;
+import org.osgi.service.event.EventHandler;
 import org.testeditor.core.exceptions.SystemException;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
@@ -78,7 +78,7 @@ public class TeamModificationCheckJobTest {
 			}
 		});
 		context.set(TestStateProtocolService.class, new TestStateProtocolService());
-		context.set(IEventBroker.class, new EventBroker());
+		context.set(IEventBroker.class, getEventBroker());
 		TeamModificationCheckJob checkJob = ContextInjectionFactory.make(TeamModificationCheckJob.class, context);
 		checkJob.checkForModifications();
 		assertEquals(1, monitor.size());
@@ -118,10 +118,44 @@ public class TeamModificationCheckJobTest {
 		});
 		TestStateProtocolService protocolService = new TestStateProtocolService();
 		context.set(TestStateProtocolService.class, protocolService);
-		context.set(IEventBroker.class, new EventBroker());
+		context.set(IEventBroker.class, getEventBroker());
 		TeamModificationCheckJob checkJob = ContextInjectionFactory.make(TeamModificationCheckJob.class, context);
 		checkJob.checkForModifications();
 		assertEquals(10, protocolService.getAvailableUpdatesFor(tp));
+	}
+
+	/**
+	 * 
+	 * @return eventborker mock.
+	 */
+	private IEventBroker getEventBroker() {
+		return new IEventBroker() {
+
+			@Override
+			public boolean unsubscribe(EventHandler eventHandler) {
+				return false;
+			}
+
+			@Override
+			public boolean subscribe(String topic, String filter, EventHandler eventHandler, boolean headless) {
+				return false;
+			}
+
+			@Override
+			public boolean subscribe(String topic, EventHandler eventHandler) {
+				return false;
+			}
+
+			@Override
+			public boolean send(String topic, Object data) {
+				return false;
+			}
+
+			@Override
+			public boolean post(String topic, Object data) {
+				return false;
+			}
+		};
 	}
 
 }

@@ -7,11 +7,27 @@
 
 	<groupId>org.testeditor</groupId>
 	<artifactId>Test-Editor</artifactId>
-  <version>1.9.0-SNAPSHOT</version>
+	<version>1.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Test-Editor full dist</name>
-	  	
+
+	<profiles>
+		<profile>
+			<id>jreProduct</id>
+			<modules>
+				<module>jreproduct</module>
+				<module>product</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>product</id>
+			<modules>
+				<module>product</module>
+			</modules>
+		</profile>
+	</profiles>
+
 	<modules>
 		<module>build/org.testeditor.build</module>
 		<module>core</module>
@@ -19,13 +35,11 @@
 		<module>fitnesse</module>
 		<module>xmllib</module>
 		<module>svn</module>
- 		<module>ui</module>
- 		<module>uianalyzer</module>
+		<module>ui</module>
+		<module>uianalyzer</module>
 		<module>metadata</module>
- 		<module>uiscanner</module>
- 		<module>dashboard</module>
-		<module>product</module>
-		<module>jreproduct</module>
+		<module>uiscanner</module>
+		<module>dashboard</module>
 	</modules>
-	
+
 </project>

@@ -34,9 +34,11 @@ import org.osgi.service.prefs.PreferencesService;
 import org.testeditor.core.model.teststructure.TestProject;
 import org.testeditor.core.model.teststructure.TestProjectConfig;
 import org.testeditor.core.services.interfaces.TestEditorConfigurationService;
+import org.testeditor.core.services.interfaces.TestExecutionEnvironmentService;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestServerService;
 import org.testeditor.core.services.interfaces.TestStructureService;
+import org.testeditor.ui.adapter.TestExceutionEnvironmentServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
 import org.testeditor.ui.mocks.PreferencesServiceMock;
 import org.testeditor.ui.utilities.TestEditorTranslationService;
@@ -126,10 +128,19 @@ public class ApplicationLifeCycleHandlerTest {
 	public void testShutDownApplication() {
 		final HashSet<String> set = new HashSet<String>();
 		ApplicationLifeCycleHandler handler = new ApplicationLifeCycleHandler() {
+			@Override
 			public void stopBackendServers(org.eclipse.core.runtime.IProgressMonitor monitor) {
 				set.add("stop");
 			}
 		};
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(getClass()).getBundleContext());
+		context.set(IServiceConstants.ACTIVE_SHELL, null);
+		context.set(TestExecutionEnvironmentService.class, new TestExceutionEnvironmentServiceAdapter());
+		context.set(TranslationService.class, getTranslationServiceMock());
+
+		ContextInjectionFactory.inject(handler, context);
+
 		handler.shutDownApplication();
 		assertTrue(set.contains("stop"));
 	}
@@ -140,8 +151,8 @@ public class ApplicationLifeCycleHandlerTest {
 	 * @return IEclipseContext
 	 */
 	private IEclipseContext getContext() {
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-				ApplicationLifeCycleHandlerTest.class).getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(ApplicationLifeCycleHandlerTest.class).getBundleContext());
 		context.set(TranslationService.class, getTranslationServiceMock());
 		context.set(TestStructureService.class, null);
 		context.set(PreferencesService.class, new PreferencesServiceMock());

@@ -55,7 +55,6 @@ import org.xml.sax.InputSource;
  *         AllRunsTAble identification as error is performed, when slimresult is
  *         not OK or TRUE
  */
-@SuppressWarnings("restriction")
 public class TableErrorIdent {
 
 	@Inject
@@ -248,8 +247,12 @@ public class TableErrorIdent {
 				Element expectation = (Element) expectations.item(i);
 
 				String actual = expectation.getElementsByTagName("actual").item(0).getTextContent();
-				actual = actual.startsWith("Exception:") ? "Exception" : actual;
-				actual = actual.startsWith("!fail:") ? actual.substring(6) : actual;
+				if (actual.startsWith("Exception:")) {
+					actual = "Exception";
+				}
+				if (actual.startsWith("!fail:")) {
+					actual = actual.substring(6);
+				}
 
 				// called method
 				String method = expectation.getElementsByTagName("expected").item(0).getTextContent();
@@ -266,7 +269,10 @@ public class TableErrorIdent {
 
 				TableItem item = new TableItem(table, SWT.NONE);
 				item.setText(0, action.toString());
-				item.setText(1, actual != null ? actual.trim() : "");
+				if (actual == null) {
+					actual = "";
+				}
+				item.setText(1, actual.trim());
 			}
 		} catch (XPathExpressionException e) {
 			LOGGER.warn("XPath leads to an error: ", e);

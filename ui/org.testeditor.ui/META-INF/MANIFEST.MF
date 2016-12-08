@@ -57,5 +57,9 @@ Import-Package: javax.annotation;version="1.0.0",
  org.testeditor.core.util,
  org.testeditor.fitnesse.util,
  org.testeditor.metadata.core,
- org.testeditor.metadata.core.model
+ org.testeditor.metadata.core.model,
+ org.testeditor.teamshare.svn,
+ org.tmatesoft.svn.core;version="1.8.10.r10446_v20150526_1454",
+ org.tmatesoft.svn.core.auth;version="1.8.10.r10446_v20150526_1454",
+ org.tmatesoft.svn.core.wc;version="1.8.10.r10446_v20150526_1454"
 Bundle-ActivationPolicy: lazy

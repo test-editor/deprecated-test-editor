@@ -69,7 +69,6 @@ import org.xml.sax.SAXException;
  *         double click on test result cell sends data to ErrorTable to update
  *         it
  */
-@SuppressWarnings("restriction")
 public class TableAllRuns {
 
 	@Inject
@@ -157,7 +156,7 @@ public class TableAllRuns {
 	@Optional
 	public void getEvent(@UIEventTopic("FileName") String fileName, Composite parent, EModelService modelService,
 			MApplication app, IEclipseContext context) throws ParserConfigurationException, SAXException, IOException,
-			NumberFormatException, DOMException, JDOMException {
+					NumberFormatException, DOMException, JDOMException {
 
 		String filenameSplitted = getLastName(fileName);
 		String[] arr = fileName.split("\\.");
@@ -180,15 +179,15 @@ public class TableAllRuns {
 		}
 
 		MPart mPart = (MPart) modelService.find("org.testeditor.ui.part.1", app);
-		if (fileList != null
-				&& fileList.length != 0
-				&& !(mPart.getLabel().equals(translationService.translate("%dashboard.table.label.allruns",
-						CONTRIBUTOR_URI) + " " + filenameSplitted))) {
+		if (fileList != null && fileList.length != 0
+				&& !(mPart.getLabel()
+						.equals(translationService.translate("%dashboard.table.label.allruns", CONTRIBUTOR_URI) + " "
+								+ filenameSplitted))) {
 
 			mPart.setLabel(translationService.translate("%dashboard.table.label.allruns", CONTRIBUTOR_URI) + " "
 					+ filenameSplitted);
-			mPart.setTooltip(translationService.translate("%dashboard.table.label.allruns", CONTRIBUTOR_URI) + " "
-					+ fileName);
+			mPart.setTooltip(
+					translationService.translate("%dashboard.table.label.allruns", CONTRIBUTOR_URI) + " " + fileName);
 
 			if (table != null) {
 				table.dispose();
@@ -216,8 +215,8 @@ public class TableAllRuns {
 					column.setText(titelsList.get(j));
 					column.setWidth(150);
 					column.setAlignment(SWT.CENTER);
-					column.setToolTipText(translationService.translate(
-							"%dashboard.table.label.allruns.tooltip.testcase", CONTRIBUTOR_URI));
+					column.setToolTipText(translationService
+							.translate("%dashboard.table.label.allruns.tooltip.testcase", CONTRIBUTOR_URI));
 				}
 
 				// set test cases results in table
@@ -228,19 +227,19 @@ public class TableAllRuns {
 			} else {
 				// create table for suite
 				TableColumn suiteColumn = new TableColumn(table, SWT.CENTER);
-				suiteColumn.setText(translationService.translate("%dashboard.table.label.allruns.suite",
-						CONTRIBUTOR_URI));
+				suiteColumn
+						.setText(translationService.translate("%dashboard.table.label.allruns.suite", CONTRIBUTOR_URI));
 				suiteColumn.setWidth(150);
 				suiteColumn.setAlignment(SWT.CENTER);
-				suiteColumn.setToolTipText(translationService.translate("%dashboard.table.label.allruns.tooltip.suite",
-						CONTRIBUTOR_URI));
+				suiteColumn.setToolTipText(
+						translationService.translate("%dashboard.table.label.allruns.tooltip.suite", CONTRIBUTOR_URI));
 				for (int j = 0; j < columnsToLoad; j++) {
 					TableColumn tableColumn = new TableColumn(table, SWT.CENTER);
 					tableColumn.setText(titelsList.get(j));
 					tableColumn.setWidth(150);
 					tableColumn.setAlignment(SWT.CENTER);
-					tableColumn.setToolTipText(translationService.translate(
-							"%dashboard.table.label.allruns.tooltip.suite", CONTRIBUTOR_URI));
+					tableColumn.setToolTipText(translationService
+							.translate("%dashboard.table.label.allruns.tooltip.suite", CONTRIBUTOR_URI));
 				}
 
 				// set suite results in table
@@ -264,8 +263,8 @@ public class TableAllRuns {
 	 * @param objektList
 	 *            list of all suite GoogleSucheSuite runs <AllRunsResult>
 	 * @param objektListSuiteTests
-	 *            list of all test cases runs in suite, for each suite run
-	 *            <List<AllRunsResult>>
+	 *            list of all test cases runs in suite, for each suite run <List
+	 *            <AllRunsResult>>
 	 * @param item
 	 *            table row
 	 */
@@ -276,9 +275,8 @@ public class TableAllRuns {
 		for (int j = 0; j < table.getColumnCount() - 1; j++) {
 			if (!blankCell) {
 				TableItem itemBlank = new TableItem(table, SWT.NONE);
-				itemBlank
-						.setText(0, translationService.translate("%dashboard.table.label.allruns.suite.testcases",
-								CONTRIBUTOR_URI));
+				itemBlank.setText(0, translationService.translate("%dashboard.table.label.allruns.suite.testcases",
+						CONTRIBUTOR_URI));
 				itemBlank.setBackground(new Color(Display.getDefault(), 199, 199, 199)); // gray
 				blankCell = true;
 			}
@@ -346,8 +344,8 @@ public class TableAllRuns {
 	 * @param objektList
 	 *            list of all suite GoogleSucheSuite runs <AllRunsResult>
 	 * @param objektListSuiteTests
-	 *            list of all test cases runs in suite, for each suite run
-	 *            <List<AllRunsResult>>
+	 *            list of all test cases runs in suite, for each suite run <List
+	 *            <AllRunsResult>>
 	 */
 
 	private void sendDataToErrorTable(final List<AllRunsResult> objektList,
@@ -355,6 +353,7 @@ public class TableAllRuns {
 		table.addListener(SWT.MouseDoubleClick, new Listener() {
 			private int columnCount = table.getColumnCount();
 
+			@Override
 			public void handleEvent(Event event) {
 				Point pt = new Point(event.x, event.y);
 				TableItem item = table.getItem(pt);
@@ -378,18 +377,12 @@ public class TableAllRuns {
 							for (int o = 0; o < objektListSuiteTests.get(i - 1).size(); o++) {
 								if (testname.equals(getLastName(objektListSuiteTests.get(i - 1).get(o).getName()))) {
 									File testcasePath = new File(objektList.get(i - 1).getTestResultFilePath()
-											.getParentFile().getParentFile()
-											+ "\\"
-											+ objektListSuiteTests.get(i - 1).get(o).getName()
-											+ "\\"
-											+ objektListSuiteTests.get(i - 1).get(o).getDate()
-											+ "_"
-											+ objektListSuiteTests.get(i - 1).get(o).getQuantityRight()
-											+ "_"
-											+ objektListSuiteTests.get(i - 1).get(o).getQuantityWrong()
-											+ "_"
-											+ objektListSuiteTests.get(i - 1).get(o).getQuantityIgnores()
-											+ "_"
+											.getParentFile().getParentFile() + "\\"
+											+ objektListSuiteTests.get(i - 1).get(o).getName() + "\\"
+											+ objektListSuiteTests.get(i - 1).get(o).getDate() + "_"
+											+ objektListSuiteTests.get(i - 1).get(o).getQuantityRight() + "_"
+											+ objektListSuiteTests.get(i - 1).get(o).getQuantityWrong() + "_"
+											+ objektListSuiteTests.get(i - 1).get(o).getQuantityIgnores() + "_"
 											+ objektListSuiteTests.get(i - 1).get(o).getQuantityExceptions() + ".xml");
 									objektListSuiteTests.get(i - 1).get(o).setTestResultFilePath(testcasePath);
 									eventBroker.send("Testobject", objektListSuiteTests.get(i - 1).get(o));
@@ -434,7 +427,7 @@ public class TableAllRuns {
 			item.setBackground(j + indexShift, new Color(Display.getDefault(), 255, 182, 153));
 			item.setText(j + indexShift, objektList.get(j).getResultSummary());
 			item.setImage(j + indexShift, MyLabelProvider.getImage("/failed.png"));
-		}// SUITE Successfully
+		} // SUITE Successfully
 		if (objektList.get(j).isSuccessfully()) {
 			item.setBackground(j + indexShift, new Color(Display.getDefault(), 161, 223, 101));
 			item.setText(j + indexShift, objektList.get(j).getResultSummary());
@@ -453,8 +446,8 @@ public class TableAllRuns {
 	 * sets data for suite. if suite in LastRunsTable selected
 	 * 
 	 * @param objektListSuiteTests
-	 *            list of all test cases runs in suite, for each suite run
-	 *            <List<AllRunsResult>>
+	 *            list of all test cases runs in suite, for each suite run <List
+	 *            <AllRunsResult>>
 	 * @param subitem
 	 *            test cases rows
 	 * @param j
@@ -505,8 +498,8 @@ public class TableAllRuns {
 	 * @param objektList
 	 *            list of all suite GoogleSucheSuite runs <AllRunsResult>
 	 * @param objektListAllSuiteTests
-	 *            list of all test cases runs in suite, for each suite run
-	 *            <List<AllRunsResult>>
+	 *            list of all test cases runs in suite, for each suite run <List
+	 *            <AllRunsResult>>
 	 * @param fileName
 	 *            DemoWebTests.NurTestafal
 	 * @param dir
@@ -538,8 +531,8 @@ public class TableAllRuns {
 	 */
 	private ArrayList<String> setAllRunResultData(ArrayList<List<AllRunsResult>> objektListAllSuiteTests,
 			List<AllRunsResult> objektList, String fileName, File dir, File[] fileList, ArrayList<String> titelsList)
-			throws ParserConfigurationException, SAXException, IOException, NumberFormatException, DOMException,
-			JDOMException {
+					throws ParserConfigurationException, SAXException, IOException, NumberFormatException, DOMException,
+					JDOMException {
 
 		// Inverse processing, because newest column comes first
 		for (int k = fileList.length - 1; k >= 0; k--) {
@@ -580,9 +573,7 @@ public class TableAllRuns {
 	 * 
 	 * @param fileList
 	 *            list of files
-	 * @param fileCount
-	 *            amount of file in a list
-	 * @param i
+	 * @param k
 	 *            file in a list counter
 	 * @param test
 	 *            test object
@@ -663,15 +654,13 @@ public class TableAllRuns {
 	 * 
 	 * @param fileList
 	 *            list of files
-	 * @param fileCount
-	 *            amount of file in a list
-	 * @param i
+	 * @param k
 	 *            file in a list counter
 	 * @param test
 	 *            test object
 	 * @param objektListSuiteTestCases
-	 *            list of all test cases runs in suite, for each suite run
-	 *            <List<AllRunsResult>>
+	 *            list of all test cases runs in suite, for each suite run <List
+	 *            <AllRunsResult>>
 	 * @throws SAXException
 	 *             parsing exception if xml element not found
 	 * @throws IOException
@@ -685,7 +674,7 @@ public class TableAllRuns {
 	 */
 	private void retrieveSuiteData(File[] fileList, int k, AllRunsResult test,
 			List<AllRunsResult> objektListSuiteTestCases) throws ParserConfigurationException, SAXException,
-			IOException, FileNotFoundException, UnsupportedEncodingException {
+					IOException, FileNotFoundException, UnsupportedEncodingException {
 		int suiteDurationInt = calculateSuiteDuration(test.getTestResultFilePath());
 		test.setDuration(suiteDurationInt);
 
@@ -735,7 +724,8 @@ public class TableAllRuns {
 					NodeList childPageHistoryReference = node.getChildNodes();
 					boolean testcaseDataSet = false;
 					boolean suiteSetupTearSuite = true;
-					for (int m = 0, lenchildPageHistoryReference = childPageHistoryReference.getLength(); m < lenchildPageHistoryReference; m++) {
+					for (int m = 0, lenchildPageHistoryReference = childPageHistoryReference
+							.getLength(); m < lenchildPageHistoryReference; m++) {
 						Node nodepageHistoryReference = childPageHistoryReference.item(m);
 						if (nodepageHistoryReference.getNodeType() == Node.ELEMENT_NODE) {
 							if (nodepageHistoryReference.getNodeName().equals("name")) {
@@ -768,8 +758,8 @@ public class TableAllRuns {
 											ignores = true;
 										}
 										if (nodeCounts.getNodeName().equals("exceptions")) {
-											suiteTests.setQuantityExceptions(Integer.parseInt(nodeCounts
-													.getTextContent()));
+											suiteTests.setQuantityExceptions(
+													Integer.parseInt(nodeCounts.getTextContent()));
 											exceptions = true;
 										}
 										if (exceptions && ignores && wrong && right) {

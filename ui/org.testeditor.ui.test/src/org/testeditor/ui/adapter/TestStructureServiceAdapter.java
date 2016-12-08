@@ -41,7 +41,8 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	}
 
 	@Override
-	public void rename(TestStructure testStructure, String newName) throws SystemException {
+	public List<String> rename(TestStructure testStructure, String newName) throws SystemException {
+		return null;
 	}
 
 	@Override
@@ -97,6 +98,28 @@ public class TestStructureServiceAdapter implements TestStructureService {
 	@Override
 	public boolean hasTestExecutionLog(TestStructure testStructure) throws SystemException {
 		return false;
+	}
+
+	@Override
+	public String lookUpTestStructureFullNameMatchedToPath(TestProject testProject, String path) {
+		return null;
+	}
+
+	@Override
+	public void pauseTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public void resumeTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public void stepwiseTest(TestStructure testStructure) throws SystemException {
+	}
+
+	@Override
+	public List<String> move(TestStructure testStructure, TestCompositeStructure newParent) throws SystemException {
+		return null;
 	}
 
 }

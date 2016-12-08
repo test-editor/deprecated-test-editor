@@ -62,6 +62,9 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		assertTrue(file.exists());
 		TestStructure testStructure = service.createTestStructureFrom(file);
 		assertTrue(testStructure instanceof TestCase);
+		assertNotNull(testStructure.getUrl());
+		assertTrue(new File(testStructure.getUrl().toURI()).exists());
+		assertEquals(FileLocator.toFileURL(this.getClass().getResource("/history/")), testStructure.getUrl());
 	}
 
 	/**
@@ -149,11 +152,11 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	public void testRemoveTestStructure() throws Exception {
 		TestProject testProject = createTestProjectsInWS();
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
-		assertTrue("Directory of Testcase exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
+		assertTrue("Directory of Testcase exists.", Files
+				.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
 		service.delete(testProject.getTestChildByFullName("tp.tc"));
-		assertFalse("Directory of Testcase is removed.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
+		assertFalse("Directory of Testcase is removed.", Files
+				.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
 	}
 
 	/**
@@ -166,17 +169,15 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	public void testRenameTestStructure() throws Exception {
 		TestProject testProject = createTestProjectsInWS();
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
-		assertTrue("Testcase exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
+		assertTrue("Testcase exists.", Files
+				.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
 		service.rename(testProject.getTestChildByFullName("tp.tc"), "tcChanged");
 
-		assertFalse("Testcase with oldname does not exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
+		assertFalse("Testcase with oldname does not exists.", Files
+				.exists(Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tc")));
 
-		assertTrue(
-				"Testcase with changed name exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/tcChanged")));
+		assertTrue("Testcase with changed name exists.", Files.exists(
+				Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/tcChanged")));
 
 	}
 
@@ -194,20 +195,16 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		tc.setName("MyTestCase");
 		testProject.addChild(tc);
 		service.create(tc);
-		assertTrue(
-				"Directory of Testcase exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/MyTestCase")));
-		assertTrue(
-				"Content of Testcase exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/MyTestCase/content.txt")));
-		assertTrue(
-				"Properties of Testcase exists.",
+		assertTrue("Directory of Testcase exists.", Files.exists(
+				Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/MyTestCase")));
+		assertTrue("Content of Testcase exists.", Files.exists(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/MyTestCase/content.txt")));
+		assertTrue("Properties of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/MyTestCase/properties.xml")));
-		assertTrue(new String(Files.readAllBytes(Paths.get(Platform.getLocation().toFile().toPath().toString()
-				+ "/tp/FitNesseRoot/tp/MyTestCase/properties.xml")), StandardCharsets.UTF_8).contains("<Test/>"));
+		assertTrue(new String(Files.readAllBytes(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/MyTestCase/properties.xml")),
+				StandardCharsets.UTF_8).contains("<Test/>"));
 	}
 
 	/**
@@ -228,7 +225,7 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 			service.create(tc);
 			fail("Exception expected.");
 		} catch (SystemException e) {
-			assertTrue(e.getMessage().contains("TestStructure allready exits"));
+			assertTrue(e.getMessage().contains("TestStructure already exits"));
 		}
 	}
 
@@ -247,12 +244,9 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		TestStructure structure = testProject.getTestChildByFullName("tp.ts");
 		((TestCompositeStructure) structure).addChild(tc);
 		service.create(tc);
-		assertTrue(
-				"Directory of Testcase exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/ts/MyTestCase")));
-		assertTrue(
-				"Properties of Testcase exists.",
+		assertTrue("Directory of Testcase exists.", Files.exists(
+				Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/ts/MyTestCase")));
+		assertTrue("Properties of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/ts/MyTestCase/properties.xml")));
 		assertTrue(new String(Files.readAllBytes(Paths.get(Platform.getLocation().toFile().toPath().toString()
@@ -273,22 +267,15 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		ts.setName("CiSuite");
 		testProject.addChild(ts);
 		service.create(ts);
-		assertTrue(
-				"Directory of TestSuite exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/CiSuite")));
-		assertTrue(
-				"Content of TestSuite exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/CiSuite/content.txt")));
-		assertTrue(
-				"Properties of TestSuite exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/CiSuite/properties.xml")));
-		assertTrue(
-				"Property Suite exists.",
-				new String(Files.readAllBytes(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/CiSuite/properties.xml")), StandardCharsets.UTF_8).contains("<Suite/>"));
+		assertTrue("Directory of TestSuite exists.", Files.exists(
+				Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/CiSuite")));
+		assertTrue("Content of TestSuite exists.", Files.exists(Paths
+				.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/CiSuite/content.txt")));
+		assertTrue("Properties of TestSuite exists.", Files.exists(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/CiSuite/properties.xml")));
+		assertTrue("Property Suite exists.", new String(Files.readAllBytes(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/CiSuite/properties.xml")),
+				StandardCharsets.UTF_8).contains("<Suite/>"));
 	}
 
 	/**
@@ -305,23 +292,16 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		tsc.setName("Scenario");
 		testProject.addChild(tsc);
 		service.create(tsc);
-		assertTrue(
-				"Directory of TestScenario exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/Scenario")));
-		assertTrue(
-				"Content of TestScenario exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/Scenario/content.txt")));
-		assertTrue(
-				"Properties of TestScenario exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/Scenario/properties.xml")));
-		assertTrue(
-				"Peroperty is Testscenario",
+		assertTrue("Directory of TestScenario exists.", Files.exists(
+				Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/Scenario")));
+		assertTrue("Content of TestScenario exists.", Files.exists(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/Scenario/content.txt")));
+		assertTrue("Properties of TestScenario exists.", Files.exists(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/Scenario/properties.xml")));
+		assertTrue("Peroperty is Testscenario",
 				new String(Files.readAllBytes(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/Scenario/properties.xml")), StandardCharsets.UTF_8)
-						.contains("<TESTSCENARIO/>"));
+								.contains("<TESTSCENARIO/>"));
 	}
 
 	/**
@@ -338,23 +318,18 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		scs.setName("ScenarioSuite");
 		testProject.addChild(scs);
 		service.create(scs);
-		assertTrue(
-				"Directory of ScenarioSuite exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/ScenarioSuite")));
-		assertTrue(
-				"Content of ScenarioSuite exists.",
+		assertTrue("Directory of ScenarioSuite exists.", Files.exists(
+				Paths.get(Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/ScenarioSuite")));
+		assertTrue("Content of ScenarioSuite exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/ScenarioSuite/content.txt")));
-		assertTrue(
-				"Properties of ScenarioSuite exists.",
+		assertTrue("Properties of ScenarioSuite exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/ScenarioSuite/properties.xml")));
-		assertTrue(
-				"Property Suites exitsts.",
+		assertTrue("Property Suites exitsts.",
 				new String(Files.readAllBytes(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/ScenarioSuite/properties.xml")), StandardCharsets.UTF_8)
-						.contains("<Suites/>"));
+								.contains("<Suites/>"));
 	}
 
 	/**
@@ -375,17 +350,14 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 		tsc.setName("Scenario");
 		scs.addChild(tsc);
 		service.create(tsc);
-		assertTrue(
-				"Directory of Testcase exists.",
-				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
-						+ "/tp/FitNesseRoot/tp/ScenarioSuite/Scenario")));
-		assertTrue(
-				"Properties of Testcase exists.",
+		assertTrue("Directory of Testcase exists.", Files.exists(Paths.get(
+				Platform.getLocation().toFile().toPath().toString() + "/tp/FitNesseRoot/tp/ScenarioSuite/Scenario")));
+		assertTrue("Properties of Testcase exists.",
 				Files.exists(Paths.get(Platform.getLocation().toFile().toPath().toString()
 						+ "/tp/FitNesseRoot/tp/ScenarioSuite/Scenario/properties.xml")));
 		assertTrue(new String(Files.readAllBytes(Paths.get(Platform.getLocation().toFile().toPath().toString()
 				+ "/tp/FitNesseRoot/tp/ScenarioSuite/Scenario/properties.xml")), StandardCharsets.UTF_8)
-				.contains("<TESTSCENARIO/>"));
+						.contains("<TESTSCENARIO/>"));
 	}
 
 	/**
@@ -521,10 +493,88 @@ public class FitnesseFileSystemTestStructureServiceTest extends FitnesseFileSyst
 	public void testGetRunnableForLazyLoading() throws Exception {
 		FitnesseFileSystemTestStructureService service = new FitnesseFileSystemTestStructureService();
 		URL url = FileLocator.toFileURL(this.getClass().getResource("/history/ts_properties.xml"));
-		TestCompositeStructure testStructure = (TestCompositeStructure) service.createTestStructureFrom(new File(url
-				.toURI()));
+		TestCompositeStructure testStructure = (TestCompositeStructure) service
+				.createTestStructureFrom(new File(url.toURI()));
 		Runnable runnable = service.getTestProjectLazyLoader(testStructure);
 		assertNotNull(runnable);
+	}
+
+	/**
+	 * Tests file with content.txt.
+	 */
+	@Test
+	public void testConvertToFitNessePathWithContentTxt() {
+
+		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "FitNesseRoot"
+				+ File.separatorChar + "DemoWebTests" + File.separatorChar + "LocalDemoSuite" + File.separatorChar
+				+ "LoginSuite" + File.separatorChar + "content.txt";
+		String fitNessePage = new FitnesseFileSystemTestStructureService()
+				.lookUpTestStructureFullNameMatchedToPath(null, file);
+
+		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite", fitNessePage);
+
+	}
+
+	/**
+	 * Tests file without content.txt.
+	 */
+	@Test
+	public void testConvertToFitNessePathWithoutContentTxt() {
+
+		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "FitNesseRoot"
+				+ File.separatorChar + "DemoWebTests" + File.separatorChar + "LocalDemoSuite" + File.separatorChar
+				+ "LoginSuite";
+		String fitNessePage = new FitnesseFileSystemTestStructureService()
+				.lookUpTestStructureFullNameMatchedToPath(null, file);
+
+		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite", fitNessePage);
+
+	}
+
+	/**
+	 * Tests file without fitnesseroot.
+	 */
+	@Test
+	public void testConvertToFitNessePathWithoutFitNesseRoot() {
+
+		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "ActionGroup.xml";
+		String fitNessePage = new FitnesseFileSystemTestStructureService()
+				.lookUpTestStructureFullNameMatchedToPath(null, file);
+
+		assertEquals("ActionGroup.xml", fitNessePage);
+
+	}
+
+	/**
+	 * Tests file with metadata.xml.
+	 */
+	@Test
+	public void testConvertToFitNessePathWithMetaDataXml() {
+
+		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "metadata.xml";
+		TestProject tp = new TestProject();
+		tp.setName("DemoWebTests");
+		String fitNessePage = new FitnesseFileSystemTestStructureService().lookUpTestStructureFullNameMatchedToPath(tp,
+				file);
+
+		assertEquals("DemoWebTests", fitNessePage);
+
+	}
+
+	/**
+	 * Tests file with properties.xml.
+	 */
+	@Test
+	public void testConvertToFitNessePathWithPropertiesXml() {
+
+		String file = "c:" + File.separatorChar + "DemoWebTests" + File.separatorChar + "FitNesseRoot"
+				+ File.separatorChar + "DemoWebTests" + File.separatorChar + "LocalDemoSuite" + File.separatorChar
+				+ "LoginSuite" + File.separatorChar + "properties.xml";
+		String fitNessePage = new FitnesseFileSystemTestStructureService()
+				.lookUpTestStructureFullNameMatchedToPath(null, file);
+
+		assertEquals("DemoWebTests.LocalDemoSuite.LoginSuite", fitNessePage);
+
 	}
 
 }

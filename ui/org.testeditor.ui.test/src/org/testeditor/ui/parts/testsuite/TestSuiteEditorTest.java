@@ -52,7 +52,7 @@ import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
 import org.testeditor.core.services.interfaces.TestStructureService;
 import org.testeditor.core.util.TestStateProtocolService;
-import org.testeditor.teamshare.svn.SVNTeamShareStatusServiceNew;
+import org.testeditor.teamshare.svn.SVNTeamShareStatusService;
 import org.testeditor.ui.adapter.MPartAdapter;
 import org.testeditor.ui.adapter.PartServiceAdapter;
 import org.testeditor.ui.adapter.TestProjectServiceAdapter;
@@ -268,7 +268,7 @@ public class TestSuiteEditorTest {
 		context.set(TestStateProtocolService.class, null);
 		context.set(TestStructureService.class, null);
 		eventBroker = new EventBrokerMock();
-		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusServiceNew());
+		context.set(TeamShareStatusServiceNew.class, new SVNTeamShareStatusService());
 		context.set(IEventBroker.class, eventBroker);
 		context.set(TestStructureContentService.class, new TestStructureContentServiceAdapter() {
 			@Override
@@ -324,8 +324,8 @@ public class TestSuiteEditorTest {
 						}
 
 						@Override
-						public List toList() {
-							ArrayList list = new ArrayList();
+						public List<Object> toList() {
+							ArrayList<Object> list = new ArrayList<Object>();
 							list.add(getFirstElement());
 							return list;
 						}
@@ -341,7 +341,7 @@ public class TestSuiteEditorTest {
 						}
 
 						@Override
-						public Iterator iterator() {
+						public Iterator<Object> iterator() {
 							return toList().iterator();
 						}
 

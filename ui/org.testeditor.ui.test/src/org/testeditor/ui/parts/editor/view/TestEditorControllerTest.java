@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +58,7 @@ import org.testeditor.core.model.teststructure.TestStructure;
 import org.testeditor.core.model.teststructure.TestSuite;
 import org.testeditor.core.services.interfaces.ActionGroupService;
 import org.testeditor.core.services.interfaces.ServiceLookUpForTest;
+import org.testeditor.core.services.interfaces.TeamShareStatusServiceNew;
 import org.testeditor.core.services.interfaces.TestProjectService;
 import org.testeditor.core.services.interfaces.TestScenarioService;
 import org.testeditor.core.services.interfaces.TestStructureContentService;
@@ -342,9 +344,8 @@ public class TestEditorControllerTest {
 				new TestDescriptionTestCase("Hallo World!"), 1, 0, true);
 		testEditorController.setLastUnSavedTestComponentInput(testEditorInputObject);
 		assertNull(testEditorController.getLastUnSavedTestComponentInput(new TestActionGroup().getClass().getName()));
-		assertEquals(testEditorInputObject,
-				testEditorController.getLastUnSavedTestComponentInput(new TestDescriptionTestCase().getClass()
-						.getName()));
+		assertEquals(testEditorInputObject, testEditorController
+				.getLastUnSavedTestComponentInput(new TestDescriptionTestCase().getClass().getName()));
 	}
 
 	/**
@@ -471,8 +472,8 @@ public class TestEditorControllerTest {
 		initializeSpecialTestFlowAndProject();
 		TestEditorTestDataTransferContainer testEditorTestDataTransferContainer = new TestEditorTestDataTransferContainer();
 		testEditorTestDataTransferContainer.setTestProjectName(testProject.getName());
-		assertFalse(testEditorController
-				.isTransferObjTestflowTransForParentProject(testEditorTestDataTransferContainer));
+		assertFalse(
+				testEditorController.isTransferObjTestflowTransForParentProject(testEditorTestDataTransferContainer));
 	}
 
 	/**
@@ -1002,9 +1003,10 @@ public class TestEditorControllerTest {
 	@Test
 	public void refreshTestComponentsTest() {
 		initalizeForTest();
+		testFlowForTest.setName("refreshTestComponentsTest");
 		testEditorController.refreshTestComponents(testFlowForTest);
-		assertEquals(testStructureContentServiceAdapter.getNewDescription(), testFlowForTest.getTestComponents().get(0)
-				.getTexts().get(0));
+		assertEquals(testStructureContentServiceAdapter.getNewDescription(),
+				testFlowForTest.getTestComponents().get(0).getTexts().get(0));
 	}
 
 	/**
@@ -1094,8 +1096,8 @@ public class TestEditorControllerTest {
 	@Before
 	public void setup() {
 		shell = new Shell();
-		IEclipseContext context = EclipseContextFactory.getServiceContext(FrameworkUtil.getBundle(
-				TestEditorViewKeyHandler.class).getBundleContext());
+		IEclipseContext context = EclipseContextFactory
+				.getServiceContext(FrameworkUtil.getBundle(TestEditorViewKeyHandler.class).getBundleContext());
 		context.set(EPartService.class, new PartServiceAdapter());
 		context.set(TestEditorTranslationService.class, null);
 		testStructureContentServiceAdapter = new TestStructureContentServiceAdapter();
@@ -1108,6 +1110,27 @@ public class TestEditorControllerTest {
 		context.set(IEventBroker.class, eventBroker);
 		context.set(Composite.class, new Composite(shell, SWT.NONE));
 		context.set(Shell.class, shell);
+		context.set(TeamShareStatusServiceNew.class, new TeamShareStatusServiceNew() {
+
+			@Override
+			public void update(TestProject testProject) throws FileNotFoundException {
+			}
+
+			@Override
+			public boolean remove(TestProject testProject) {
+				return false;
+			}
+
+			@Override
+			public boolean isModified(TestStructure testStructure) {
+				return false;
+			}
+
+			@Override
+			public List<String> getModified(TestProject testProject) {
+				return null;
+			}
+		});
 		mPartAdapter = new MPartAdapter();
 		context.set(MPart.class, mPartAdapter);
 		testEditorController = ContextInjectionFactory.make(TestEditorControllerMock.class, context);

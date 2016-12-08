@@ -11,7 +11,6 @@
  *******************************************************************************/
 package org.testeditor.ui;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
@@ -19,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.junit.Before;
@@ -35,6 +35,8 @@ import org.osgi.framework.FrameworkUtil;
  * 
  */
 public class TestBundleProperties {
+	private static Logger logger = Logger.getLogger(TestBundleProperties.class.getName());
+
 	private Properties messagePropertiesDe = new Properties();
 	private Properties messagePropertiesDefault = new Properties();
 
@@ -61,8 +63,12 @@ public class TestBundleProperties {
 	 */
 	@Test
 	public void testBundlePropertiesEqual() {
-
-		assertEquals(messagePropertiesDefault.size(), messagePropertiesDe.size());
+		for (Object key : messagePropertiesDefault.keySet()) {
+			assertTrue("key '" + key + "' not found in german Properties", messagePropertiesDe.containsKey(key));
+		}
+		for (Object key : messagePropertiesDe.keySet()) {
+			assertTrue("key '" + key + "' not found in default Properties", messagePropertiesDefault.containsKey(key));
+		}
 
 	}
 
@@ -97,13 +103,15 @@ public class TestBundleProperties {
 	 *            as a string
 	 * @return true, if all keys are in the value-properties included.
 	 */
-	private boolean writeDifferent(Properties messagePropertiesKey, Properties messagePropertiesValue, String language) {
+	private boolean writeDifferent(Properties messagePropertiesKey, Properties messagePropertiesValue,
+			String language) {
 		boolean allKeysInValueProperties = true;
 		Enumeration<Object> keys = messagePropertiesKey.keys();
 
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement().toString();
 			if (messagePropertiesValue.getProperty(key) == null) {
+				logger.warning("Key '" + key + "' not found in " + language);
 				allKeysInValueProperties = false;
 			}
 		}
