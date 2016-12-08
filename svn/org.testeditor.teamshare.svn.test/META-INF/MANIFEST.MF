@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test the Team Share SVN Bundle
 Bundle-SymbolicName: org.testeditor.teamshare.svn.test
-Bundle-Version: 1.8.1
+Bundle-Version: 1.9.0-SNAPSHOT
 Fragment-Host: org.testeditor.teamshare.svn;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit;bundle-version="4.11.0",
