@@ -40,7 +40,7 @@ public class TestEditorConfigurationServiceImpl implements TestEditorConfigurati
 	private static final String ID_CONFIGURATION = "org.testeditor.config.service.configinternal";
 	static final String SLIM_CMD_PREFIX = "SLIM_CMD_VAR_";
 	private static final String WS_VERSION_ID = "TE_WS_VERSION";
-	private static final String CURRENT_WS_VERSION = "1.9.0";
+	private static final String CURRENT_WS_VERSION = "1.9.1";
 	private static final String ADMIN_USER = "ADMIN_USER";
 
 	private FileLocatorService fileLocatorService;

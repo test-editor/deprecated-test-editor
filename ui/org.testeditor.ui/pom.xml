@@ -9,12 +9,12 @@
   <parent>
 	<artifactId>parent</artifactId>
     <groupId>org.testeditor</groupId>
-    <version>1.9.0</version>
+    <version>1.9.1-SNAPSHOT</version>
 	    <relativePath>../../build/org.testeditor.build</relativePath>	    
   </parent>
   
   <groupId>org.testeditor</groupId>
   <artifactId>org.testeditor.ui</artifactId>
-  <version>1.9.0</version>
+  <version>1.9.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>  
 </project>
